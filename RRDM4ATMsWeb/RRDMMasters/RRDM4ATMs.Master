@@ -1,0 +1,108 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="RRDM4ATMs.master.cs" Inherits="RRDM4ATMsWeb.MasterPages.RRDM4ATMs" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head runat="server">
+    <link rel="stylesheet" type="text/css" href="~/Content/StyleSheetRRDM.css" />
+    <title>RRDM for ATMs</title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+
+<body>
+    <form id="RRDM4ATMs" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server">
+            <Scripts>
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="jquery.ui.combined" />
+            </Scripts>
+        </asp:ScriptManager>
+        <script type="text/javascript">
+            window.onload = function () {
+                // The panel 'pnlMain' is scrollable, so save/restore its top 
+                var pnl = document.getElementById("pnlMain");
+                var pnl_position = document.getElementById("pnlMain_Pos");
+                var position1 = parseInt('<%=Request.Form["pnlMain_Pos"] %>');
+
+                if (isNaN(position1)) {
+                    position1 = 0;
+                }
+                pnl.scrollTop = position1;
+                pnl.onscroll = function () {
+                    pnl_position.value = pnl.scrollTop;
+                };
+
+            };
+        </script>
+
+
+        <div id="divWrapper" style="position: relative; width: 1024px; margin-left: auto; margin-right: auto">
+
+            <%-- Page Header --%>
+            <div id="divHeader">
+                <asp:Panel ID="pnlHeader" runat="server" Height="60px" Width="1024px"
+                    Style="z-index: 1; left: 0px; top: 0px; position: absolute; color: white; background-color: #2371C0">
+
+                    <asp:HyperLink ID="hlMainMenu" runat="server" NavigateUrl="~/WebFormMain.aspx"
+                        ImageUrl="~/Images/RRDMLogo.png" ImageWidth="50px" ImageHeight="50px" BackColor="White"
+                        ToolTip="Back to Main Menu"
+                        Style="z-index: 1; position: absolute; width: 50px; height: 50px; left: 5px; top: 5px; background-color: #FFFFFF;">
+                    </asp:HyperLink>
+
+                    <asp:Table ID="tblHeaderLeft" CssClass="HeaderLarge" runat="server"
+                        Style="z-index: 1; position: absolute; width: 760px; height: 60px; left: 64px; top: 0px">
+                        <asp:TableRow VerticalAlign="Middle">
+                            <asp:TableCell HorizontalAlign="Left" VerticalAlign="Middle" Width="180px" Font-Size="Medium">RRDM Solutions</asp:TableCell>
+                            <asp:TableCell HorizontalAlign="Center" VerticalAlign="Middle" Width="590px">
+                                <asp:Label ID="lblFunctionName" runat="server" Text="Label">
+                                <%=Page.Title.ToString() %>
+                                </asp:Label>
+                            </asp:TableCell>
+                        </asp:TableRow>
+                    </asp:Table>
+
+                    <asp:Table ID="tblHeaderRight" CssClass="HeaderSmall" runat="server"
+                        Style="z-index: 1; position: absolute; width: 200px; height: 60px; left: 824px; top: 0px">
+                        <asp:TableRow VerticalAlign="Middle">
+                            <asp:TableCell HorizontalAlign="Right" Width="150px">User ID: <%=Session["UserID"]%></asp:TableCell>
+                        </asp:TableRow>
+                        <asp:TableRow VerticalAlign="Middle">
+                            <asp:TableCell HorizontalAlign="Right" Width="150px"><%=DateTime.Now.ToString()%></asp:TableCell>
+                        </asp:TableRow>
+                    </asp:Table>
+
+                </asp:Panel>
+            </div>
+
+
+            <%-- Main/Content Area --%>
+            <div id="divMain" style="position: absolute; left: 0px; top: 60px; background-color: #F0F0F0">
+                <%-- The hiden field is for JS to save the panel's top scroll-position --%>
+                <input type="hidden" id="pnlMain_Pos" name="pnlMain_Pos" />
+
+                <asp:Panel ID="pnlMain" runat="server" Width="1024px" ScrollBars="Auto">
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolderMain" runat="server">
+                    </asp:ContentPlaceHolder>
+                </asp:Panel>
+</div>
+                <%-- Footer Line --%>
+                <div id="divFooter">
+                    <asp:Panel ID="pnlFooter" CssClass="HeaderSmall" runat="server" Height="24px" Width="1024px"
+                        Style="z-index: 1; position: absolute; left: 0px; top: auto; color: white; background-color: #2371C0">
+                        <asp:Table ID="tblFooter" runat="server" CellPadding="2" Style="z-index: 1; position: absolute;">
+                            <asp:TableRow VerticalAlign="Middle">
+                                <asp:TableCell ID="ftrLeft" HorizontalAlign="Left" Width="340px"> Copyright © 2015 RRDM Solutions</asp:TableCell>
+                                <asp:TableCell ID="ftrCenter" HorizontalAlign="Center" Width="342px"></asp:TableCell>
+                                <asp:TableCell ID="ftrRight" HorizontalAlign="Right" Width="340px"></asp:TableCell>
+                            </asp:TableRow>
+                        </asp:Table>
+                    </asp:Panel>
+                </div>
+
+            
+        </div>
+    </form>
+</body>
+</html>

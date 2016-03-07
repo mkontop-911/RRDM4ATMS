@@ -1,0 +1,14 @@
+﻿body {
+}
+
+
+.HeaderLarge {
+    font-family: "Microsoft Sans Serif";
+    font-size: x-large;
+    font-weight:bolder;
+}
+
+.HeaderSmall {
+    font-family: "Microsoft Sans Serif";
+    font-size: small;
+}

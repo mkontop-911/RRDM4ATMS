@@ -1,0 +1,78 @@
+/*ipad Landscape*/
+@media only screen and (min-width: 960px) and (max-width: 1199px),only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+    }
+/*ipad Portrait*/
+@media only screen and (min-width: 768px) and (max-width: 959px),only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+ 
+}
+@media screen and (max-width: 991px) 
+{
+    .panel-body 
+    {
+        height:auto !important
+        }
+    .home-padd {
+        margin-left: 12.5%;
+    }
+    .home-padd:nth-child(6) {
+        margin-left: 0;
+    }
+    }
+ /*Mini Tablets*/
+@media screen and (max-width: 767px) 
+{
+    .main-menu 
+    {
+        display:none;
+        }
+    .slicknav_menu {
+	    display:block
+    }
+    .header-info 
+    {
+        margin-right:20px;
+        }
+}
+@media only screen and (max-width: 480px) 
+{
+    .header .top-menu 
+    {
+        float: none !important;
+        clear: both;
+        padding: 10px 0;
+        }
+    .header .top-menu ul 
+    {
+        margin: 15px auto;
+        width: 186px;
+        }
+    .header .header-logo 
+    {
+        float: none;
+        margin-right:0px
+
+        }
+    .header .header-logo img
+    {
+        display: block;
+        margin: 0 auto;
+        
+        }
+    .header .header-info 
+    {
+        float: none;
+        width: 100%;
+        text-align: center;
+        margin-right:0px
+        }
+    .header .header-ttl 
+    {
+        width:100%;
+        text-align:center
+        }
+    .menu-ttl 
+    {
+        float:none !important;
+        text-align:center
+        }
+}

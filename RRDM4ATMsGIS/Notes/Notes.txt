@@ -1,0 +1,61 @@
+﻿Google Geocoding Web Service via HTTP .NET client implemented in request(GeoRequest)-response(GeoResponse) fashion.
+Installation & Usage
+
+In order to use the GoogleGecoding you have to:
+add reference to Artem.GoogleGeocoding
+add using statement for Artem.Google.Net namespace.
+Features
+
+Support standard and reverse geocoding;
+Samples
+
+Geocoding Request
+    GeoRequest request = new GeoRequest("plovdiv bulgaria");
+    GeoResponse response = request.GetResponse();
+    GeoLocation location = response.Results[0].Geometry.Location;
+    double latitude = location.Latitude;
+    double longitude = location.Longitude;
+    // TODO use latitude/longitude values
+
+Reverse Geocoding Request
+    GeoRequest request = new GeoRequest(42.1438409, 24.7495615);
+    GeoResponse response = request.GetResponse();
+    string address = response.Results[0].FormattedAddress;
+    // TODO use address values
+
+
+Status Codes
+--------------
+The "status" field within the Geocoding response object contains the status of the request, and may contain debugging information 
+to help you track down why geocoding is not working. The "status" field may contain the following values:
+
+"OK" indicates that no errors occurred; the address was successfully parsed and at least one geocode was returned.
+"ZERO_RESULTS" indicates that the geocode was successful but returned no results. This may occur if the geocoder was passed a non-existent address.
+"OVER_QUERY_LIMIT" indicates that you are over your quota.
+"REQUEST_DENIED" indicates that your request was denied.
+"INVALID_REQUEST" generally indicates that the query (address, components or latlng) is missing.
+"UNKNOWN_ERROR" indicates that the request could not be processed due to a server error. The request may succeed if you try again.
+
+
+Error Messages
+---------------
+When the geocoder returns a status code other than OK, there may be an additional error_message field within the Geocoding response object. 
+This field contains more detailed information about the reasons behind the given status code.
+
+
+Location Type
+-------------------
+location_type stores additional data about the specified location. The following values are currently supported:
+
+"ROOFTOP" 
+		indicates that the returned result is a precise geocode for which we have location information accurate down to street address precision.
+"RANGE_INTERPOLATED" 
+		indicates that the returned result reflects an approximation (usually on a road) interpolated between two precise points (such as intersections). Interpolated results are generally returned when rooftop geocodes are unavailable for a street address.
+"GEOMETRIC_CENTER" 
+		indicates that the returned result is the geometric center of a result such as a polyline (for example, a street) or polygon (region).
+"APPROXIMATE" 
+		indicates that the returned result is approximate.
+
+
+
+

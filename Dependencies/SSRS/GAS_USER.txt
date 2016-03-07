@@ -1,0 +1,14 @@
+Error:
+User, group, or role 'xxx' already exists in the current database. (.Net SqlClient Data Provider)
+
+Explanation:
+This error happens when you try to add user mapping to the server logins using username which already exists in the database to be assigned.
+
+In my case, the user exists in both server logins and database logins, but the user mapping and database roles on the server logins for this user cannot be modified although the user mapping is incorrect, because it already exists on the database logins.
+
+Solution:
+Run this script to update the user mapping accordingly.
+USE <database_name>
+EXEC sp_change_Users_login 'update_one', '<login_username>', '<login_username>'
+
+This will update the user mapping and database roles on server logins to follow the ones on the database logins.

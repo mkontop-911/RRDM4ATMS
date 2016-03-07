@@ -1,0 +1,86 @@
+﻿04-Mar-15 11:32:40 AM : 
+04-Mar-15 11:32:40 AM : 
+04-Mar-15 11:32:40 AM : 
+04-Mar-15 11:32:40 AM :  ID = 5
+04-Mar-15 11:32:40 AM :  ========
+04-Mar-15 11:32:40 AM : Page_Load()..
+04-Mar-15 11:32:40 AM :    --> Initial Load
+04-Mar-15 11:32:40 AM : Populate Details()..
+04-Mar-15 11:32:41 AM : GoogleMap1_Load()..
+04-Mar-15 11:32:41 AM : Page_PreRender()..
+04-Mar-15 11:32:41 AM : GoogleMap1_PreRender()..
+04-Mar-15 11:32:41 AM : PlaceGeoMarker()..
+04-Mar-15 11:32:43 AM : 
+04-Mar-15 11:32:43 AM : 
+04-Mar-15 11:32:43 AM : 
+04-Mar-15 11:32:43 AM :  PRESS SEARCH
+04-Mar-15 11:32:43 AM :  ============
+04-Mar-15 11:32:43 AM : Page_Load()..
+04-Mar-15 11:32:43 AM :    --> IsPostBack
+04-Mar-15 11:32:43 AM : GoogleMap1_Load()..
+04-Mar-15 11:32:43 AM : btSearch_Click()..
+04-Mar-15 11:32:44 AM : gvATMs_DataBound()..
+04-Mar-15 11:32:44 AM : gvATMs_SelectedIndexChanged()..
+04-Mar-15 11:32:44 AM : Page_PreRender()..
+04-Mar-15 11:32:44 AM : CreateGeoMarkerFromDataKey()..
+04-Mar-15 11:32:44 AM : PlaceGeoMarker()..
+04-Mar-15 11:32:44 AM : GoogleMap1_PreRender()..
+04-Mar-15 11:32:44 AM : PlaceGeoMarker()..
+04-Mar-15 11:33:00 AM : 
+04-Mar-15 11:33:00 AM : 
+04-Mar-15 11:33:00 AM : 
+04-Mar-15 11:33:00 AM : DRAG MARKER ---> not ok
+04-Mar-15 11:33:00 AM : =============
+04-Mar-15 11:33:00 AM : Page_Load()..
+04-Mar-15 11:33:00 AM :    --> IsPostBack
+04-Mar-15 11:33:00 AM : GoogleMap1_Load()..
+04-Mar-15 11:33:00 AM : MarkerDragEnd()..
+04-Mar-15 11:33:00 AM : Page_PreRender()..
+04-Mar-15 11:33:00 AM : CreateGeoMarkerFromDataKey().. <<<<<< ????
+04-Mar-15 11:33:00 AM : PlaceGeoMarker()..
+04-Mar-15 11:33:00 AM : GoogleMap1_PreRender()..
+04-Mar-15 11:33:00 AM : PlaceGeoMarker()..
+
+==============================================================================================
+
+04-Mar-15 11:37:35 AM : 
+04-Mar-15 11:37:35 AM : 
+04-Mar-15 11:37:35 AM : 
+04-Mar-15 11:37:35 AM : ID = 5
+04-Mar-15 11:37:35 AM : ========
+04-Mar-15 11:37:35 AM : Page_Load()..
+04-Mar-15 11:37:35 AM :    --> Initial Load
+04-Mar-15 11:37:35 AM : Populate Details()..
+04-Mar-15 11:37:36 AM : GoogleMap1_Load()..
+04-Mar-15 11:37:36 AM : Page_PreRender()..
+04-Mar-15 11:37:36 AM : GoogleMap1_PreRender()..
+04-Mar-15 11:37:36 AM : PlaceGeoMarker()..
+04-Mar-15 11:37:40 AM : 
+04-Mar-15 11:37:40 AM : 
+04-Mar-15 11:37:40 AM : 
+04-Mar-15 11:37:40 AM : SHOW
+04-Mar-15 11:37:40 AM : ======
+04-Mar-15 11:37:40 AM : Page_Load()..
+04-Mar-15 11:37:40 AM :    --> IsPostBack
+04-Mar-15 11:37:40 AM : GoogleMap1_Load()..
+04-Mar-15 11:37:40 AM : btShow_Click()..
+04-Mar-15 11:37:40 AM : ShowGeoMarker()..
+04-Mar-15 11:37:40 AM : PlaceGeoMarker()..
+04-Mar-15 11:37:40 AM : Page_PreRender()..
+04-Mar-15 11:37:40 AM : GoogleMap1_PreRender()..
+04-Mar-15 11:37:40 AM : PlaceGeoMarker()..
+04-Mar-15 11:37:45 AM : 
+04-Mar-15 11:37:45 AM : 
+04-Mar-15 11:37:45 AM : 
+04-Mar-15 11:37:45 AM : DRAG ---> ok
+04-Mar-15 11:37:45 AM : ===========
+04-Mar-15 11:37:45 AM : Page_Load()..
+04-Mar-15 11:37:45 AM :    --> IsPostBack
+04-Mar-15 11:37:45 AM : GoogleMap1_Load()..
+04-Mar-15 11:37:45 AM : MarkerDragEnd()..
+04-Mar-15 11:37:45 AM : Page_PreRender()..
+04-Mar-15 11:37:45 AM : GoogleMap1_PreRender()..
+04-Mar-15 11:37:45 AM : PlaceGeoMarker()..
+
+
+============================================================

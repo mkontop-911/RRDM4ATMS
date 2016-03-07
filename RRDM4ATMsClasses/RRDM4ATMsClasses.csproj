@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7AC63154-20AB-4ABE-BB75-57DA8DB8427E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RRDM4ATMs</RootNamespace>
+    <AssemblyName>RRDM4ATMsClasses</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Form56R_EWB00_VisaAuthPool.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R_EWB00_VisaAuthPool.Designer.cs">
+      <DependentUpon>Form56R_EWB00_VisaAuthPool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RRDMJTMIdentificationDetailsClass.cs" />
+    <Compile Include="RRDMErrorsORExceptionsCharacteristics.cs" />
+    <Compile Include="RRDMJTMQueue.cs" />
+    <Compile Include="RRDMJTMQueueCreationClass.cs" />
+    <Compile Include="RRDMKontoTempJournal.cs" />
+    <Compile Include="RRDMReconcMaskRecordsLocation.cs" />
+    <Compile Include="RRDMReconcCategATMsRMCycles.cs" />
+    <Compile Include="RRDMReconcMasksVsMetaExceptions.cs" />
+    <Compile Include="RRDMReconcMatchingFields.cs" />
+    <Compile Include="RRDMReconcCategoriesMatchingSessions.cs" />
+    <Compile Include="RRDMReconcCategories.cs" />
+    <Compile Include="RRDMReconcCategStageVsMatchingFields.cs" />
+    <Compile Include="RRDMReconcFilesClassTEST.cs" />
+    <Compile Include="RRDMReconcFileFieldsFromBankToRRDM.cs" />
+    <Compile Include="RRDMReconcMatchedUnMatchedVisaAuthorClass.cs" />
+    <Compile Include="RRDMReconcSourceFiles.cs" />
+    <Compile Include="RRDMCit_Orders.cs" />
+    <Compile Include="RRDMAccountsClass.cs" />
+    <Compile Include="RRDMActiveDirectory.cs" />
+    <Compile Include="RRDMActiveDirectoryHelper.cs" />
+    <Compile Include="RRDMAllowedAtmsAndUpdateFromJournal.cs" />
+    <Compile Include="RRDMAtmsClass.cs" />
+    <Compile Include="RRDMAtmsCostClass.cs" />
+    <Compile Include="RRDMAtmsDailyTransHistory.cs" />
+    <Compile Include="RRDMAtmsMainClass.cs" />
+    <Compile Include="RRDMAuthorisationProcess.cs" />
+    <Compile Include="RRDMBanks.cs" />
+    <Compile Include="RRDMCaptureCardsClass.cs" />
+    <Compile Include="RRDMCashInOut.cs" />
+    <Compile Include="RRDMComboClass.cs" />
+    <Compile Include="RRDMControllerMsgClass.cs" />
+    <Compile Include="RRDMCounterClass.cs" />
+    <Compile Include="RRDMDepositsClass.cs" />
+    <Compile Include="RRDMDisputesOwnersHistory.cs" />
+    <Compile Include="RRDMDisputesTableClass.cs" />
+    <Compile Include="RRDMDisputeTrasactionClass.cs" />
+    <Compile Include="RRDMEmailClass2.cs" />
+    <Compile Include="RRDMErrorsClassWithActions.cs" />
+    <Compile Include="RRDMErrorsFromKontoToMatchingClass.cs" />
+    <Compile Include="RRDME_JournalTxtClass.cs" />
+    <Compile Include="RRDME_Journal_Process.cs" />
+    <Compile Include="RRDMFixedDaysReplAtmClass.cs" />
+    <Compile Include="RRDMGasParameters.cs" />
+    <Compile Include="RRDMGroups.cs" />
+    <Compile Include="RRDMHolidays.cs" />
+    <Compile Include="RRDMHostBatchesClass.cs" />
+    <Compile Include="RRDMHostMatchingClassGeneralLedger.cs" />
+    <Compile Include="RRDMHostGeneralLegerTblsClass.cs" />
+    <Compile Include="RRDMHostTransClass.cs" />
+    <Compile Include="RRDMMatchedDates.cs" />
+    <Compile Include="RRDMMergedAtms_Jcc_HostTrans.cs" />
+    <Compile Include="RRDMNewSession.cs" />
+    <Compile Include="RRDMNotesBalances.cs" />
+    <Compile Include="RRDMPerformanceTraceClass.cs" />
+    <Compile Include="RRDMPostedTrans.cs" />
+    <Compile Include="RRDMReconcCategoriesVsSourcesFiles.cs" />
+    <Compile Include="RRDMReconcCountersClass.cs" />
+    <Compile Include="RRDMReplActionsClass.cs" />
+    <Compile Include="RRDMReplDatesCalc.cs" />
+    <Compile Include="RRDMReplStatsClass.cs" />
+    <Compile Include="RRDMRightToAccessAtm.cs" />
+    <Compile Include="RRDMSpecialRoutines.cs" />
+    <Compile Include="RRDMTempAtmLocation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RRDMTracesReadUpdate.cs" />
+    <Compile Include="RRDMTransAndTransToBePostedClass.cs" />
+    <Compile Include="RRDMTurboReconcClass.cs" />
+    <Compile Include="RRDMUpdateAuthUserForSpecialGrids.cs" />
+    <Compile Include="RRDMUpdateGrids.cs" />
+    <Compile Include="RRDMUsersAccessToAtms.cs" />
+    <Compile Include="RRDMUsersAndSignedRecord.cs" />
+    <Compile Include="RRDMUserVsAuthorizers.cs" />
+    <Compile Include="RRDM_JccTransClass.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Form56R_EWB00_VisaAuthPool.resx">
+      <DependentUpon>Form56R_EWB00_VisaAuthPool.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /y $(TargetDir)$(ProjectName).dll C:\VBoxShared
+copy /y $(TargetDir)$(ProjectName).dll C:\RRDM\JTM
+copy /y $(TargetDir)$(ProjectName).dll C:\RRDM\RRDMFileAgent
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

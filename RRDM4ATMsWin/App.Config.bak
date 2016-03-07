@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <configSections>
+    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" requirePermission="false" />
+  </configSections>
+  <appSettings>
+    <add key="log4net.Internal.Debug" value="true" />
+    <add key="ClientSettingsProvider.ServiceUri" value="" />
+    
+    <add key="RRDMMapsGroupNoURL" value="http://localhost/main.aspx" />
+    <add key="RRDMMapsMainURL" value="http://localhost/main.aspx" />
+    <add key="RRDMMapsGeoQueryURL" value="http://localhost/GeoQuery.aspx" />
+  </appSettings>
+  <log4net>
+    <appender name="LogFileAppender" type="log4net.Appender.RollingFileAppender">
+      <param name="File" value="C:\Users\Panicos\Desktop\LATESTGAS20140525\GAS Log Files\" />
+      <datePattern value="dd.MM.yyyy'.log'" />
+      <staticLogFileName value="false" />
+      <appendToFile value="true" />
+      <rollingStyle value="Composite" />
+      <countDirection value="1" />
+      <maxSizeRollBackups value="7" />
+      <maximumFileSize value="5MB" />
+      <layout type="log4net.Layout.PatternLayout">
+        <param name="ConversionPattern" value="%d [%t] %-5p %c %m%n" />
+      </layout>
+    </appender>
+    <appender name="AdoNetAppender_SqlServer" type="log4net.Appender.AdoNetAppender">
+      <bufferSize value="1" />
+      <connectionType value="System.Data.SqlClient.SqlConnection, System.Data, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+      <connectionString value="Data Source=localhost;Initial Catalog=ATMS;Integrated Security=True;Connect Timeout=0;" />
+      <commandText value="INSERT INTO ErrorCapturedLog ([Date],[Thread],[Level],[Logger],[Message],[Exception]) VALUES (@log_date, @thread, @log_level, @logger, @message, @exception)" />
+      <parameter>
+        <parameterName value="@log_date" />
+        <dbType value="DateTime" />
+        <layout type="log4net.Layout.RawTimeStampLayout" />
+      </parameter>
+      <parameter>
+        <parameterName value="@thread" />
+        <dbType value="String" />
+        <size value="255" />
+        <layout type="log4net.Layout.PatternLayout">
+          <conversionPattern value="%thread" />
+        </layout>
+      </parameter>
+      <parameter>
+        <parameterName value="@log_level" />
+        <dbType value="String" />
+        <size value="50" />
+        <layout type="log4net.Layout.PatternLayout">
+          <conversionPattern value="%level" />
+        </layout>
+      </parameter>
+      <parameter>
+        <parameterName value="@logger" />
+        <dbType value="String" />
+        <size value="255" />
+        <layout type="log4net.Layout.PatternLayout">
+          <conversionPattern value="%logger" />
+        </layout>
+      </parameter>
+      <parameter>
+        <parameterName value="@message" />
+        <dbType value="String" />
+        <size value="4000" />
+        <layout type="log4net.Layout.PatternLayout">
+          <conversionPattern value="%message" />
+        </layout>
+      </parameter>
+      <parameter>
+        <parameterName value="@exception" />
+        <dbType value="String" />Zzz
+        <size value="2000" />
+        <layout type="log4net.Layout.ExceptionLayout" />
+      </parameter>
+    </appender>
+    <!--<appender name="SmtpAppender" type="log4net.Appender.SmtpAppender">-->
+    <!--<authentication value="Basic" />-->
+    <!--<username value="someone@gmail.com" />-->
+    <!--<password value="mypassword" />-->
+    <!--<to value="mkontop@mymail.com" />-->
+    <!--<from value="someonr@mymail.com" />-->
+    <!--<subject value="Error from Appliction" />-->
+    <!--<smtpHost value="smtp.mymail.com" />-->
+    <!--<port value="465" />-->
+    <!--<bufferSize value="128" />-->
+    <!--<lossy value="true" />-->
+    <!--<evaluator type="log4net.Core.LevelEvaluator">-->
+    <!--<threshold value="WARN" />-->
+    <!--</evaluator>-->
+    <!--<layout type="log4net.Layout.PatternLayout">-->
+    <!--<conversionPattern value="%date [%thread] %-5level %logger [%property] - %message%newline -Line: %location%newline -PC: %machine%newline -User:%username%newline" />-->
+    <!--</layout>-->
+    <!--</appender>-->
+    <appender name="EventLogAppender" type="log4net.Appender.EventLogAppender">
+      <param name="LogName" value="Application" />
+      <param name="ApplicationName" value="GAS Application" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%date [%thread] %-5level %logger [%property] - %message%newline -Line: %location%newline --PC: %machine%newline -User:%username%newline" />
+      </layout>
+    </appender>
+    <root>
+      <level value="ALL" />
+      <appender-ref ref="LogFileAppender" />
+      <!--<appender-ref ref="AdoNetAppender_SqlServer" />-->
+    </root>
+    <logger name="GAS">
+      <level value="All" />
+      <appender-ref ref="AdoNetAppender_SqlServer" />
+      <!--appender-ref ref="EventLogAppender" />-->
+      <!--<appender-ref ref="LogFileAppender" />-->
+      <!--appender-ref ref="SmtpAppender" />-->
+    </logger>
+  </log4net>
+  <system.diagnostics>
+    <trace autoflush="true">
+      <listeners>
+        <add name="textWriterTraceListener" type="System.Diagnostics.TextWriterTraceListener" initializeData="C:\temp\log4net.log" />
+      </listeners>
+    </trace>
+  </system.diagnostics>
+  <connectionStrings>
+    <add name="ATMSConnectionString" connectionString="Data Source=localhost;Initial Catalog=ATMS;Integrated Security=True;Connect Timeout=0"
+      providerName="System.Data.SqlClient" />
+    <add name="RRDM4ATMsWin.Properties.Settings.ATMSConnectionString"
+      connectionString="Data Source=localhost;Initial Catalog=ATMS;Integrated Security=True;Connect Timeout=30"
+      providerName="System.Data.SqlClient" />
+  </connectionStrings>
+  <startup useLegacyV2RuntimeActivationPolicy="true">
+    <supportedRuntime version="v4.0" />
+  </startup>
+  <system.web>
+    <membership defaultProvider="ClientAuthenticationMembershipProvider">
+      <providers>
+        <add name="ClientAuthenticationMembershipProvider" type="System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider, System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" serviceUri="" />
+      </providers>
+    </membership>
+    <roleManager defaultProvider="ClientRoleProvider" enabled="true">
+      <providers>
+        <add name="ClientRoleProvider" type="System.Web.ClientServices.Providers.ClientRoleProvider, System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" serviceUri="" cacheTimeout="86400" />
+      </providers>
+    </roleManager>
+  </system.web>
+</configuration>

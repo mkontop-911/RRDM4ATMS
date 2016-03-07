@@ -1,0 +1,670 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/23/2016 9:44:17 AM"
+  DTS:CreationName="SSIS.Package.3"
+  DTS:CreatorComputerName="SANCHO"
+  DTS:CreatorName="SANCHO\Alex"
+  DTS:Description="SSIS Package Description"
+  DTS:DTSID="{27A5D2A5-5DDA-499C-ABC6-BDDEFF2F26C4}"
+  DTS:ExecutableType="SSIS.Package.3"
+  DTS:LastModifiedProductVersion="11.0.5058.0"
+  DTS:LocaleID="1033"
+  DTS:MaxErrorCount="0"
+  DTS:ObjectName="RRDM_AGENT_ReconcSourceFileLayout-Export"
+  DTS:VersionGUID="{B67B94F4-A18D-4316-A603-58172708A9D4}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">6</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DestinationConnectionExcel]"
+      DTS:CreationName="EXCEL"
+      DTS:DTSID="{FBA1DB24-0BA0-4482-B216-ABB3BA385258}"
+      DTS:ObjectName="DestinationConnectionExcel">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=D:\Alex\Development\RRDM\RRDM Reconciliations\RRDM_AGENT_ReconcSourceFileLayout.xls;Extended Properties=&quot;EXCEL 8.0;HDR=YES&quot;;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[SourceConnectionOLEDB]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{25A5CDDD-83C0-4D7B-A50F-F8576AFDB44F}"
+      DTS:ObjectName="SourceConnectionOLEDB">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=SANCHO;Initial Catalog=RRDM_AGENT;Provider=SQLNCLI11;Integrated Security=SSPI;Auto Translate=false;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Data Flow Task 1"
+      DTS:CreationName="SSIS.Pipeline.3"
+      DTS:DelayValidation="True"
+      DTS:DTSID="{70592B19-0073-4C4C-AE09-C3EEC08055B4}"
+      DTS:ExecutableType="SSIS.Pipeline.3"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Data Flow Task 1"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          defaultBufferSize="3145728"
+          version="1">
+          <components>
+            <component
+              refId="Package\Data Flow Task 1\Data Conversion 0 - 0"
+              componentClassID="{62B1106C-7DB8-4EC8-ADD6-4C664DFFC54A}"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion 0 - 0"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task 1\Data Conversion 0 - 0.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Data Conversion 0 - 0.Inputs[Data Conversion Input].Columns[LayoutID]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="LayoutID"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[LayoutID]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Data Conversion 0 - 0.Inputs[Data Conversion Input].Columns[FieldID]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="FieldID"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[FieldID]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Data Conversion 0 - 0.Inputs[Data Conversion Input].Columns[ColumnName]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="ColumnName"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[ColumnName]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Data Conversion 0 - 0.Inputs[Data Conversion Input].Columns[FieldType]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="FieldType"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[FieldType]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Data Flow Task 1\Data Conversion 0 - 0.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output].Columns[LayoutID]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output].Columns[LayoutID]"
+                      name="LayoutID"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[LayoutID]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output].Columns[FieldID]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output].Columns[FieldID]"
+                      name="FieldID"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[FieldID]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output].Columns[ColumnName]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output].Columns[ColumnName]"
+                      name="ColumnName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[ColumnName]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output].Columns[FieldType]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output].Columns[FieldType]"
+                      name="FieldType"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[FieldType]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Data Flow Task 1\Data Conversion 0 - 0.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout"
+              componentClassID="{1F5D5712-2FBA-4CB9-A95A-86C1F336E1DA}"
+              contactInfo="Excel Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Excel Destination"
+              name="Destination - ReconcSourceFileLayout"
+              usesDispositions="true"
+              validateExternalMetadata="False">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">ReconcSourceFileLayout</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DestinationConnectionExcel]"
+                  connectionManagerRefId="Package.ConnectionManagers[DestinationConnectionExcel]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].Columns[SeqNo]"
+                      cachedDataType="i4"
+                      cachedName="SeqNo"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[SeqNo]"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[SeqNo]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].Columns[LayoutID]"
+                      cachedDataType="nText"
+                      cachedName="LayoutID"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[LayoutID]"
+                      lineageId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output].Columns[LayoutID]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].Columns[FieldID]"
+                      cachedDataType="nText"
+                      cachedName="FieldID"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[FieldID]"
+                      lineageId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output].Columns[FieldID]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].Columns[ColumnName]"
+                      cachedDataType="nText"
+                      cachedName="ColumnName"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[ColumnName]"
+                      lineageId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output].Columns[ColumnName]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].Columns[StartPos]"
+                      cachedDataType="i4"
+                      cachedName="StartPos"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[StartPos]"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[StartPos]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].Columns[Length]"
+                      cachedDataType="i4"
+                      cachedName="Length"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[Length]"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[Length]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].Columns[FieldType]"
+                      cachedDataType="nText"
+                      cachedName="FieldType"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[FieldType]"
+                      lineageId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output].Columns[FieldType]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[SeqNo]"
+                      dataType="i4"
+                      name="SeqNo" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[LayoutID]"
+                      dataType="nText"
+                      name="LayoutID" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[FieldID]"
+                      dataType="nText"
+                      name="FieldID" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[ColumnName]"
+                      dataType="nText"
+                      name="ColumnName" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[StartPos]"
+                      dataType="i4"
+                      name="StartPos" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[Length]"
+                      dataType="i4"
+                      name="Length" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input].ExternalColumns[FieldType]"
+                      dataType="nText"
+                      name="FieldType" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Outputs[Excel Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Excel Destination Error Output"
+                  synchronousInputId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Outputs[Excel Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Outputs[Excel Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Outputs[Excel Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Outputs[Excel Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout"
+              componentClassID="{165A526D-D5DE-47FF-96A6-F8274C19826B}"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Source - ReconcSourceFileLayout"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[ReconcSourceFileLayout]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[SourceConnectionOLEDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[SourceConnectionOLEDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[SeqNo]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[SeqNo]"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[SeqNo]"
+                      name="SeqNo"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[LayoutID]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[LayoutID]"
+                      length="50"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[LayoutID]"
+                      name="LayoutID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[FieldID]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[FieldID]"
+                      length="50"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[FieldID]"
+                      name="FieldID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[ColumnName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[ColumnName]"
+                      length="50"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[ColumnName]"
+                      name="ColumnName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[StartPos]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[StartPos]"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[StartPos]"
+                      name="StartPos"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[Length]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[Length]"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[Length]"
+                      name="Length"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[FieldType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[FieldType]"
+                      length="50"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].Columns[FieldType]"
+                      name="FieldType"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[SeqNo]"
+                      dataType="i4"
+                      name="SeqNo" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[LayoutID]"
+                      dataType="wstr"
+                      length="50"
+                      name="LayoutID" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[FieldID]"
+                      dataType="wstr"
+                      length="50"
+                      name="FieldID" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[ColumnName]"
+                      dataType="wstr"
+                      length="50"
+                      name="ColumnName" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[StartPos]"
+                      dataType="i4"
+                      name="StartPos" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[Length]"
+                      dataType="i4"
+                      name="Length" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output].ExternalColumns[FieldType]"
+                      dataType="wstr"
+                      length="50"
+                      name="FieldType" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[SeqNo]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[SeqNo]"
+                      name="SeqNo" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[LayoutID]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[LayoutID]"
+                      name="LayoutID" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[FieldID]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[FieldID]"
+                      name="FieldID" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[ColumnName]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[ColumnName]"
+                      name="ColumnName" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[StartPos]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[StartPos]"
+                      name="StartPos" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[Length]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[Length]"
+                      name="Length" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[FieldType]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[FieldType]"
+                      name="FieldType" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Data Flow Task 1.Paths[Data Conversion Output]"
+              endId="Package\Data Flow Task 1\Destination - ReconcSourceFileLayout.Inputs[Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\Data Flow Task 1\Data Conversion 0 - 0.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Data Flow Task 1.Paths[OLE DB Source Output]"
+              endId="Package\Data Flow Task 1\Data Conversion 0 - 0.Inputs[Data Conversion Input]"
+              name="OLE DB Source Output"
+              startId="Package\Data Flow Task 1\Source - ReconcSourceFileLayout.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Drop table(s) SQL Task 1"
+      DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:DTSID="{DAEC1C35-3700-4C01-9095-18606049A2D5}"
+      DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Drop table(s) SQL Task 1"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{FBA1DB24-0BA0-4482-B216-ABB3BA385258}"
+          SQLTask:SqlStatementSource="drop table `ReconcSourceFileLayout`&#xA;GO&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Preparation SQL Task 1"
+      DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:DTSID="{252DDEB3-AE81-4E15-8ED4-E1B889F096E3}"
+      DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Preparation SQL Task 1"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{FBA1DB24-0BA0-4482-B216-ABB3BA385258}"
+          SQLTask:SqlStatementSource="CREATE TABLE `ReconcSourceFileLayout` (&#xA;`SeqNo` Long,&#xA;`LayoutID` LongText,&#xA;`FieldID` LongText,&#xA;`ColumnName` LongText,&#xA;`StartPos` Long,&#xA;`Length` Long,&#xA;`FieldType` LongText&#xA;)&#xA;GO&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{21538E7E-9EFB-48C5-93D1-5F703AF78DE1\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{21538E7E-9EFB-48C5-93D1-5F703AF78DE1}"
+      DTS:From="Package\Preparation SQL Task 1"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{21538E7E-9EFB-48C5-93D1-5F703AF78DE1}"
+      DTS:To="Package\Data Flow Task 1" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{7EDD6AB2-7545-43EF-83CE-7AAE8E648B03\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{7EDD6AB2-7545-43EF-83CE-7AAE8E648B03}"
+      DTS:From="Package\Drop table(s) SQL Task 1"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{7EDD6AB2-7545-43EF-83CE-7AAE8E648B03}"
+      DTS:To="Package\Preparation SQL Task 1"
+      DTS:Value="2" />
+  </DTS:PrecedenceConstraints>
+</DTS:Executable>

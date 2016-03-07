@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ATMSDataSet18" targetNamespace="http://tempuri.org/ATMSDataSet18.xsd" xmlns:mstns="http://tempuri.org/ATMSDataSet18.xsd" xmlns="http://tempuri.org/ATMSDataSet18.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="ATMSConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ATMSConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.RRDM4ATMsWin.Properties.Settings.GlobalReference.Default.ATMSConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="MergeAtmsHostTransFileTableAdapter" GeneratorDataComponentClassName="MergeAtmsHostTransFileTableAdapter" Name="MergeAtmsHostTransFile" UserDataComponentName="MergeAtmsHostTransFileTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ATMSConnectionString (Settings)" DbObjectName="ATMS.dbo.MergeAtmsHostTransFile" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT TranNo, AtmTraceNo, AtmNo, BankId, CardNo, AccNo, AuthCode, RemNo, HostDtTime, RefNo, AtmDtTime, SystemTarget, TransType, TransDesc, CurrDesc, TranAmount, SesNo, Expr1, Operator FROM dbo.MergeAtmsHostTransFile</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="TranNo" DataSetColumn="TranNo" />
+              <Mapping SourceColumn="AtmTraceNo" DataSetColumn="AtmTraceNo" />
+              <Mapping SourceColumn="AtmNo" DataSetColumn="AtmNo" />
+              <Mapping SourceColumn="BankId" DataSetColumn="BankId" />
+              <Mapping SourceColumn="CardNo" DataSetColumn="CardNo" />
+              <Mapping SourceColumn="AccNo" DataSetColumn="AccNo" />
+              <Mapping SourceColumn="AuthCode" DataSetColumn="AuthCode" />
+              <Mapping SourceColumn="RemNo" DataSetColumn="RemNo" />
+              <Mapping SourceColumn="HostDtTime" DataSetColumn="HostDtTime" />
+              <Mapping SourceColumn="RefNo" DataSetColumn="RefNo" />
+              <Mapping SourceColumn="AtmDtTime" DataSetColumn="AtmDtTime" />
+              <Mapping SourceColumn="SystemTarget" DataSetColumn="SystemTarget" />
+              <Mapping SourceColumn="TransType" DataSetColumn="TransType" />
+              <Mapping SourceColumn="TransDesc" DataSetColumn="TransDesc" />
+              <Mapping SourceColumn="CurrDesc" DataSetColumn="CurrDesc" />
+              <Mapping SourceColumn="TranAmount" DataSetColumn="TranAmount" />
+              <Mapping SourceColumn="SesNo" DataSetColumn="SesNo" />
+              <Mapping SourceColumn="Expr1" DataSetColumn="Expr1" />
+              <Mapping SourceColumn="Operator" DataSetColumn="Operator" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="ATMSDataSet18" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="ATMSDataSet18" msprop:Generator_UserDSName="ATMSDataSet18">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="MergeAtmsHostTransFile" msprop:Generator_TableClassName="MergeAtmsHostTransFileDataTable" msprop:Generator_TableVarName="tableMergeAtmsHostTransFile" msprop:Generator_RowChangedName="MergeAtmsHostTransFileRowChanged" msprop:Generator_TablePropName="MergeAtmsHostTransFile" msprop:Generator_RowDeletingName="MergeAtmsHostTransFileRowDeleting" msprop:Generator_RowChangingName="MergeAtmsHostTransFileRowChanging" msprop:Generator_RowEvHandlerName="MergeAtmsHostTransFileRowChangeEventHandler" msprop:Generator_RowDeletedName="MergeAtmsHostTransFileRowDeleted" msprop:Generator_RowClassName="MergeAtmsHostTransFileRow" msprop:Generator_UserTableName="MergeAtmsHostTransFile" msprop:Generator_RowEvArgName="MergeAtmsHostTransFileRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TranNo" msprop:Generator_ColumnVarNameInTable="columnTranNo" msprop:Generator_ColumnPropNameInRow="TranNo" msprop:Generator_ColumnPropNameInTable="TranNoColumn" msprop:Generator_UserColumnName="TranNo" type="xs:int" />
+              <xs:element name="AtmTraceNo" msprop:Generator_ColumnVarNameInTable="columnAtmTraceNo" msprop:Generator_ColumnPropNameInRow="AtmTraceNo" msprop:Generator_ColumnPropNameInTable="AtmTraceNoColumn" msprop:Generator_UserColumnName="AtmTraceNo" type="xs:int" minOccurs="0" />
+              <xs:element name="AtmNo" msprop:Generator_ColumnVarNameInTable="columnAtmNo" msprop:Generator_ColumnPropNameInRow="AtmNo" msprop:Generator_ColumnPropNameInTable="AtmNoColumn" msprop:Generator_UserColumnName="AtmNo" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="BankId" msprop:Generator_ColumnVarNameInTable="columnBankId" msprop:Generator_ColumnPropNameInRow="BankId" msprop:Generator_ColumnPropNameInTable="BankIdColumn" msprop:Generator_UserColumnName="BankId" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="8" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CardNo" msprop:Generator_ColumnVarNameInTable="columnCardNo" msprop:Generator_ColumnPropNameInRow="CardNo" msprop:Generator_ColumnPropNameInTable="CardNoColumn" msprop:Generator_UserColumnName="CardNo" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="16" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="AccNo" msprop:Generator_ColumnVarNameInTable="columnAccNo" msprop:Generator_ColumnPropNameInRow="AccNo" msprop:Generator_ColumnPropNameInTable="AccNoColumn" msprop:Generator_UserColumnName="AccNo" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="16" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="AuthCode" msprop:Generator_ColumnVarNameInTable="columnAuthCode" msprop:Generator_ColumnPropNameInRow="AuthCode" msprop:Generator_ColumnPropNameInTable="AuthCodeColumn" msprop:Generator_UserColumnName="AuthCode" type="xs:int" minOccurs="0" />
+              <xs:element name="RemNo" msprop:Generator_ColumnVarNameInTable="columnRemNo" msprop:Generator_ColumnPropNameInRow="RemNo" msprop:Generator_ColumnPropNameInTable="RemNoColumn" msprop:Generator_UserColumnName="RemNo" type="xs:int" minOccurs="0" />
+              <xs:element name="HostDtTime" msprop:Generator_ColumnVarNameInTable="columnHostDtTime" msprop:Generator_ColumnPropNameInRow="HostDtTime" msprop:Generator_ColumnPropNameInTable="HostDtTimeColumn" msprop:Generator_UserColumnName="HostDtTime" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="RefNo" msprop:Generator_ColumnVarNameInTable="columnRefNo" msprop:Generator_ColumnPropNameInRow="RefNo" msprop:Generator_ColumnPropNameInTable="RefNoColumn" msprop:Generator_UserColumnName="RefNo" type="xs:int" minOccurs="0" />
+              <xs:element name="AtmDtTime" msprop:Generator_ColumnVarNameInTable="columnAtmDtTime" msprop:Generator_ColumnPropNameInRow="AtmDtTime" msprop:Generator_ColumnPropNameInTable="AtmDtTimeColumn" msprop:Generator_UserColumnName="AtmDtTime" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="SystemTarget" msprop:Generator_ColumnVarNameInTable="columnSystemTarget" msprop:Generator_ColumnPropNameInRow="SystemTarget" msprop:Generator_ColumnPropNameInTable="SystemTargetColumn" msprop:Generator_UserColumnName="SystemTarget" type="xs:int" minOccurs="0" />
+              <xs:element name="TransType" msprop:Generator_ColumnVarNameInTable="columnTransType" msprop:Generator_ColumnPropNameInRow="TransType" msprop:Generator_ColumnPropNameInTable="TransTypeColumn" msprop:Generator_UserColumnName="TransType" type="xs:int" minOccurs="0" />
+              <xs:element name="TransDesc" msprop:Generator_ColumnVarNameInTable="columnTransDesc" msprop:Generator_ColumnPropNameInRow="TransDesc" msprop:Generator_ColumnPropNameInTable="TransDescColumn" msprop:Generator_UserColumnName="TransDesc" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CurrDesc" msprop:Generator_ColumnVarNameInTable="columnCurrDesc" msprop:Generator_ColumnPropNameInRow="CurrDesc" msprop:Generator_ColumnPropNameInTable="CurrDescColumn" msprop:Generator_UserColumnName="CurrDesc" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TranAmount" msprop:Generator_ColumnVarNameInTable="columnTranAmount" msprop:Generator_ColumnPropNameInRow="TranAmount" msprop:Generator_ColumnPropNameInTable="TranAmountColumn" msprop:Generator_UserColumnName="TranAmount" type="xs:decimal" minOccurs="0" />
+              <xs:element name="SesNo" msprop:Generator_ColumnVarNameInTable="columnSesNo" msprop:Generator_ColumnPropNameInRow="SesNo" msprop:Generator_ColumnPropNameInTable="SesNoColumn" msprop:Generator_UserColumnName="SesNo" type="xs:int" minOccurs="0" />
+              <xs:element name="Expr1" msprop:Generator_ColumnVarNameInTable="columnExpr1" msprop:Generator_ColumnPropNameInRow="Expr1" msprop:Generator_ColumnPropNameInTable="Expr1Column" msprop:Generator_UserColumnName="Expr1" type="xs:int" />
+              <xs:element name="Operator" msprop:Generator_ColumnVarNameInTable="columnOperator" msprop:Generator_ColumnPropNameInRow="Operator" msprop:Generator_ColumnPropNameInTable="OperatorColumn" msprop:Generator_UserColumnName="Operator" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="8" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:MergeAtmsHostTransFile" />
+      <xs:field xpath="mstns:TranNo" />
+      <xs:field xpath="mstns:Expr1" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

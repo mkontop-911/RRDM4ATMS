@@ -1,0 +1,62 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SiteMaster.master.cs" Inherits="RRDM4ATMsGIS.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <link href="StyleSheet1.css" rel="stylesheet" type="text/css" />
+    <title>ATM Locations</title>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+
+</head>
+
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        <div id="divForm">
+
+            <%-- Header Area --%>
+            <asp:Panel ID="pnlHeader" runat="server" Style="height: 60px; width: 1600px; z-index: 1; left: 0px; top: 1px; position: absolute; font-size: small; background-color: #2377C0; font-family: 'Microsoft Sans Serif'">
+                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Home.aspx" ImageUrl="~/Icons/Logo2.png" ImageWidth="50px" ImageHeight="50px" BackColor="White" 
+                    style="z-index: 1; left: 5px; top: 5px; position: absolute; width: 50px; height: 50px; background-color: #FFFFFF; " >
+                </asp:HyperLink>
+                <asp:Table ID="tblHeader" CssClass="RRDM1" runat="server" Style="z-index: 1; left: 64px; position: relative; height: 60px; width: 1536px; top: 0px; font-size: small; font-family: 'Microsoft Sans Serif';">
+                    <asp:TableRow VerticalAlign="Middle">
+                        <asp:TableCell HorizontalAlign="Left" Width="150px" Font-Size="Larger" Font-Bold="true">RRDM Solutions</asp:TableCell>
+                        <asp:TableCell HorizontalAlign="Center" Font-Size="X-Large" Font-Bold="true">ATM Locations</asp:TableCell>
+                        <asp:TableCell HorizontalAlign="Right" Width="200px" Font-Size="Larger" Font-Bold="true">RRDM for ATMs</asp:TableCell>
+                    </asp:TableRow>
+                </asp:Table>
+            </asp:Panel>
+
+            <%-- Main Area --%>
+            <div id="divMain" style="top: 60px; height: 658px">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolderMain" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+
+            <%-- Status Line --%>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolderStatus" runat="server">
+                <asp:Panel ID="pnlStatus" CssClass="RRDM1" runat="server" HorizontalAlign="Center"
+                    Style="left: 0px; top: 723px; height: 24px; width: 1600px; position: absolute; font-size: small; font-family: 'Microsoft Sans Serif'">
+                    <asp:Label ID="lblStatus" CssClass="RRDM1" runat="server"
+                        Style="z-index: 1; position: absolute; left: 4px; top: 3px; height: 21px; width: 1592px; font-size:medium; font-family: 'Microsoft Sans Serif'; " Font-Bold="True" ForeColor="#FFFFCC" Font-Underline="True"></asp:Label>
+                </asp:Panel>
+            </asp:ContentPlaceHolder>
+            <%-- Footer Line --%>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolderFooter" runat="server">
+                <asp:Table ID="tblFooter" CssClass="RRDM1" runat="server" CellPadding="2" Style="z-index: 1; left: 0px; top: 746px; height: 25px; width: 1600px; position: absolute; font-size:small; font-family: 'Microsoft Sans Serif'">
+                    <asp:TableRow VerticalAlign="Middle">
+                        <asp:TableCell ID="ftrLeft" HorizontalAlign="Left" Width="340px"> Copyright © 2015 RRDM Solutions</asp:TableCell>
+                        <asp:TableCell ID="ftrCenter" HorizontalAlign="Center" Width="342px"></asp:TableCell>
+                        <asp:TableCell ID="ftrRight" HorizontalAlign="Right" Width="340px"><%=DateTime.Now.ToString()%></asp:TableCell>
+                    </asp:TableRow>
+                </asp:Table>
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>

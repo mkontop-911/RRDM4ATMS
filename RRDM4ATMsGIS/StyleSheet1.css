@@ -1,0 +1,84 @@
+﻿body {
+}
+
+.RRDM0 {
+    background-color: #FFFFFF;
+    font-family: "Microsoft Sans Serif";
+    font-size: small;
+    color: black;
+}
+
+.RRDM1 {
+    background-color: #2377C0;
+    font-family: "Microsoft Sans Serif";
+    font-size: medium;
+    color: #FFFFFF;
+    z-index: 1;
+    left: 0px;
+    top: 0px;
+    position: absolute;
+    height: 26px;
+    width: 33px;
+}
+
+#divMain {
+    height: 660px;
+    z-index: 1;
+    left: 0px;
+    top: 60px;
+    position: absolute;
+    width: 1024px;
+}
+
+.dtlTable {
+    width: 311px;
+    height: 211px;
+}
+
+.dtlRow {
+    height: 17px;
+}
+
+.FldCell {
+    border: 1px solid #2377C0;
+    background-color: white;
+    height: 20px;
+}
+
+.FldLabel {
+    text-align: right;
+    height: 15px;
+    margin-right: 3px;
+}
+
+.TextBoxCell {
+    z-index: 1;
+    left: 8px;
+    top: -1px;
+    position: relative;
+    width: 223px;
+    height: 37px;
+}
+
+.TextBoxCellTall {
+    z-index: 1;
+    left: 8px;
+    top: -1px;
+    position: relative;
+    height: 55px;
+    width: 223px;
+}
+
+.TextBoxCellTall2 {
+    z-index: 1;
+    left: 8px;
+    top: -1px;
+    position: relative;
+    height: 31px;
+    width: 223px;
+}
+
+.Label {
+    
+    vertical-align:middle;
+}
