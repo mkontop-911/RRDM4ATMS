@@ -143,6 +143,7 @@
             this.dataGridViewMatched = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.timerJournals = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -487,6 +488,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.buttonInvalidCit);
             this.panel2.Controls.Add(this.labelLine);
             this.panel2.Controls.Add(this.buttonShowEntries);
@@ -1748,6 +1750,21 @@
             this.timerJournals.Interval = 10000;
             this.timerJournals.Tick += new System.EventHandler(this.timerJournals_Tick);
             // 
+            // button1
+            // 
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button1.FlatAppearance.BorderSize = 2;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button1.Location = new System.Drawing.Point(532, 153);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(105, 27);
+            this.button1.TabIndex = 560;
+            this.button1.Text = "Find Recycle 2";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // Form502_Load_And_Match_BDC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1900,5 +1917,6 @@
         private System.Windows.Forms.Label labelLine;
         private System.Windows.Forms.Button buttonViewBULK;
         private System.Windows.Forms.Button buttonInvalidCit;
+        private System.Windows.Forms.Button button1;
     }
 }
