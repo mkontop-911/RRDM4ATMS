@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -38,27 +37,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.authoriserDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.authorNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.typeOfAuthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.openRecordDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.userIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.seqNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dateOfInsertDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dateOfCloseDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.userVsAuthorizersBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.aTMSDataSet36 = new RRDM4ATMsWin.ATMSDataSet36();
             this.label22 = new System.Windows.Forms.Label();
             this.buttonRemote = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.userVsAuthorizersTableAdapter = new RRDM4ATMsWin.ATMSDataSet36TableAdapters.UserVsAuthorizersTableAdapter();
+            this.buttonLocal = new System.Windows.Forms.Button();
             this.textBoxMessage = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.userVsAuthorizersBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet36)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -115,7 +100,6 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -126,17 +110,6 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.authoriserDataGridViewTextBoxColumn,
-            this.authorNameDataGridViewTextBoxColumn,
-            this.typeOfAuthDataGridViewTextBoxColumn,
-            this.openRecordDataGridViewCheckBoxColumn,
-            this.userIdDataGridViewTextBoxColumn,
-            this.seqNumberDataGridViewTextBoxColumn,
-            this.dateOfInsertDataGridViewTextBoxColumn,
-            this.dateOfCloseDataGridViewTextBoxColumn,
-            this.operatorDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.userVsAuthorizersBindingSource;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
@@ -163,80 +136,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(499, 208);
             this.dataGridView1.TabIndex = 3;
             this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
-            // 
-            // authoriserDataGridViewTextBoxColumn
-            // 
-            this.authoriserDataGridViewTextBoxColumn.DataPropertyName = "Authoriser";
-            this.authoriserDataGridViewTextBoxColumn.HeaderText = "Authoriser";
-            this.authoriserDataGridViewTextBoxColumn.Name = "authoriserDataGridViewTextBoxColumn";
-            this.authoriserDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // authorNameDataGridViewTextBoxColumn
-            // 
-            this.authorNameDataGridViewTextBoxColumn.DataPropertyName = "AuthorName";
-            this.authorNameDataGridViewTextBoxColumn.HeaderText = "AuthorName";
-            this.authorNameDataGridViewTextBoxColumn.Name = "authorNameDataGridViewTextBoxColumn";
-            this.authorNameDataGridViewTextBoxColumn.ReadOnly = true;
-            this.authorNameDataGridViewTextBoxColumn.Width = 120;
-            // 
-            // typeOfAuthDataGridViewTextBoxColumn
-            // 
-            this.typeOfAuthDataGridViewTextBoxColumn.DataPropertyName = "TypeOfAuth";
-            this.typeOfAuthDataGridViewTextBoxColumn.HeaderText = "TypeOfAuth";
-            this.typeOfAuthDataGridViewTextBoxColumn.Name = "typeOfAuthDataGridViewTextBoxColumn";
-            this.typeOfAuthDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // openRecordDataGridViewCheckBoxColumn
-            // 
-            this.openRecordDataGridViewCheckBoxColumn.DataPropertyName = "OpenRecord";
-            this.openRecordDataGridViewCheckBoxColumn.HeaderText = "OpenRecord";
-            this.openRecordDataGridViewCheckBoxColumn.Name = "openRecordDataGridViewCheckBoxColumn";
-            this.openRecordDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // userIdDataGridViewTextBoxColumn
-            // 
-            this.userIdDataGridViewTextBoxColumn.DataPropertyName = "UserId";
-            this.userIdDataGridViewTextBoxColumn.HeaderText = "UserId";
-            this.userIdDataGridViewTextBoxColumn.Name = "userIdDataGridViewTextBoxColumn";
-            this.userIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // seqNumberDataGridViewTextBoxColumn
-            // 
-            this.seqNumberDataGridViewTextBoxColumn.DataPropertyName = "SeqNumber";
-            this.seqNumberDataGridViewTextBoxColumn.HeaderText = "SeqNumber";
-            this.seqNumberDataGridViewTextBoxColumn.Name = "seqNumberDataGridViewTextBoxColumn";
-            this.seqNumberDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // dateOfInsertDataGridViewTextBoxColumn
-            // 
-            this.dateOfInsertDataGridViewTextBoxColumn.DataPropertyName = "DateOfInsert";
-            this.dateOfInsertDataGridViewTextBoxColumn.HeaderText = "DateOfInsert";
-            this.dateOfInsertDataGridViewTextBoxColumn.Name = "dateOfInsertDataGridViewTextBoxColumn";
-            this.dateOfInsertDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // dateOfCloseDataGridViewTextBoxColumn
-            // 
-            this.dateOfCloseDataGridViewTextBoxColumn.DataPropertyName = "DateOfClose";
-            this.dateOfCloseDataGridViewTextBoxColumn.HeaderText = "DateOfClose";
-            this.dateOfCloseDataGridViewTextBoxColumn.Name = "dateOfCloseDataGridViewTextBoxColumn";
-            this.dateOfCloseDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // operatorDataGridViewTextBoxColumn
-            // 
-            this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
-            this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
-            this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
-            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // userVsAuthorizersBindingSource
-            // 
-            this.userVsAuthorizersBindingSource.DataMember = "UserVsAuthorizers";
-            this.userVsAuthorizersBindingSource.DataSource = this.aTMSDataSet36;
-            // 
-            // aTMSDataSet36
-            // 
-            this.aTMSDataSet36.DataSetName = "ATMSDataSet36";
-            this.aTMSDataSet36.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // label22
             // 
@@ -267,26 +166,22 @@
             this.buttonRemote.UseVisualStyleBackColor = true;
             this.buttonRemote.Click += new System.EventHandler(this.buttonRemote_Click);
             // 
-            // button1
+            // buttonLocal
             // 
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.BorderSize = 2;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(358, 368);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(76, 27);
-            this.button1.TabIndex = 247;
-            this.button1.Text = "Local";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // userVsAuthorizersTableAdapter
-            // 
-            this.userVsAuthorizersTableAdapter.ClearBeforeFill = true;
+            this.buttonLocal.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.buttonLocal.FlatAppearance.BorderSize = 2;
+            this.buttonLocal.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonLocal.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonLocal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonLocal.ForeColor = System.Drawing.Color.White;
+            this.buttonLocal.Location = new System.Drawing.Point(358, 368);
+            this.buttonLocal.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonLocal.Name = "buttonLocal";
+            this.buttonLocal.Size = new System.Drawing.Size(76, 27);
+            this.buttonLocal.TabIndex = 247;
+            this.buttonLocal.Text = "Local";
+            this.buttonLocal.UseVisualStyleBackColor = true;
+            this.buttonLocal.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBoxMessage
             // 
@@ -307,7 +202,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.ClientSize = new System.Drawing.Size(548, 400);
             this.Controls.Add(this.textBoxMessage);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonLocal);
             this.Controls.Add(this.buttonRemote);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.panel1);
@@ -320,8 +215,6 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.userVsAuthorizersBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet36)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -332,21 +225,9 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Button buttonRemote;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonLocal;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label2;
-        private ATMSDataSet36 aTMSDataSet36;
-        private System.Windows.Forms.BindingSource userVsAuthorizersBindingSource;
-        private ATMSDataSet36TableAdapters.UserVsAuthorizersTableAdapter userVsAuthorizersTableAdapter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn authoriserDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn authorNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn typeOfAuthDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn openRecordDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn userIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn seqNumberDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dateOfInsertDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dateOfCloseDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn operatorDataGridViewTextBoxColumn;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label1;

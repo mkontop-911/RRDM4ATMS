@@ -28,21 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label18 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerEnd = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerStart = new System.Windows.Forms.DateTimePicker();
             this.label15 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBoxThisDate = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBoxSameAs = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -74,10 +74,12 @@
             this.label13 = new System.Windows.Forms.Label();
             this.tableLayoutPanelHeader = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonFinish = new System.Windows.Forms.Button();
+            this.ButtonUpdateAll = new System.Windows.Forms.Button();
             this.textBoxMsgBoard = new System.Windows.Forms.TextBox();
             this.buttonBack = new System.Windows.Forms.Button();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
+            this.textBoxSameAsType = new System.Windows.Forms.TextBox();
+            this.textBoxThisDateType = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel4.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -115,12 +117,12 @@
             this.label14.TabIndex = 283;
             this.label14.Text = "MAKE SELECTION";
             // 
-            // dateTimePicker3
+            // dateTimePickerEnd
             // 
-            this.dateTimePicker3.Location = new System.Drawing.Point(612, 39);
-            this.dateTimePicker3.Name = "dateTimePicker3";
-            this.dateTimePicker3.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker3.TabIndex = 295;
+            this.dateTimePickerEnd.Location = new System.Drawing.Point(612, 39);
+            this.dateTimePickerEnd.Name = "dateTimePickerEnd";
+            this.dateTimePickerEnd.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerEnd.TabIndex = 295;
             // 
             // label1
             // 
@@ -147,47 +149,47 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView1.GridColor = System.Drawing.Color.LightGray;
             this.dataGridView1.Location = new System.Drawing.Point(7, 7);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(643, 360);
+            this.dataGridView1.Size = new System.Drawing.Size(777, 412);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
             // 
-            // dateTimePicker1
+            // dateTimePickerStart
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(612, 11);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 291;
+            this.dateTimePickerStart.Location = new System.Drawing.Point(612, 11);
+            this.dateTimePickerStart.Name = "dateTimePickerStart";
+            this.dateTimePickerStart.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerStart.TabIndex = 291;
             // 
             // label15
             // 
@@ -207,7 +209,7 @@
             this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button3.Location = new System.Drawing.Point(881, 6);
+            this.button3.Location = new System.Drawing.Point(881, 35);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(68, 24);
             this.button3.TabIndex = 288;
@@ -215,13 +217,13 @@
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
-            // textBox4
+            // textBoxThisDate
             // 
-            this.textBox4.Location = new System.Drawing.Point(82, 37);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.ReadOnly = true;
-            this.textBox4.Size = new System.Drawing.Size(81, 20);
-            this.textBox4.TabIndex = 306;
+            this.textBoxThisDate.Location = new System.Drawing.Point(82, 37);
+            this.textBoxThisDate.Name = "textBoxThisDate";
+            this.textBoxThisDate.ReadOnly = true;
+            this.textBoxThisDate.Size = new System.Drawing.Size(81, 20);
+            this.textBoxThisDate.TabIndex = 306;
             // 
             // label17
             // 
@@ -233,13 +235,13 @@
             this.label17.TabIndex = 305;
             this.label17.Text = "This Date";
             // 
-            // textBox3
+            // textBoxSameAs
             // 
-            this.textBox3.Location = new System.Drawing.Point(82, 63);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(81, 20);
-            this.textBox3.TabIndex = 304;
+            this.textBoxSameAs.Location = new System.Drawing.Point(82, 63);
+            this.textBoxSameAs.Name = "textBoxSameAs";
+            this.textBoxSameAs.ReadOnly = true;
+            this.textBoxSameAs.Size = new System.Drawing.Size(81, 20);
+            this.textBoxSameAs.TabIndex = 304;
             // 
             // label2
             // 
@@ -265,19 +267,21 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.White;
+            this.panel4.Controls.Add(this.textBoxSameAsType);
+            this.panel4.Controls.Add(this.textBoxThisDateType);
             this.panel4.Controls.Add(this.textBox7);
             this.panel4.Controls.Add(this.label5);
             this.panel4.Controls.Add(this.label4);
             this.panel4.Controls.Add(this.dateTimePicker2);
-            this.panel4.Controls.Add(this.textBox4);
+            this.panel4.Controls.Add(this.textBoxThisDate);
             this.panel4.Controls.Add(this.label17);
-            this.panel4.Controls.Add(this.textBox3);
+            this.panel4.Controls.Add(this.textBoxSameAs);
             this.panel4.Controls.Add(this.label2);
             this.panel4.Controls.Add(this.label20);
             this.panel4.ForeColor = System.Drawing.Color.Black;
-            this.panel4.Location = new System.Drawing.Point(687, 396);
+            this.panel4.Location = new System.Drawing.Point(822, 396);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(302, 223);
+            this.panel4.Size = new System.Drawing.Size(400, 223);
             this.panel4.TabIndex = 279;
             // 
             // textBox7
@@ -317,7 +321,7 @@
             // 
             this.dateTimePicker2.Location = new System.Drawing.Point(82, 127);
             this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker2.Size = new System.Drawing.Size(267, 20);
             this.dateTimePicker2.TabIndex = 307;
             this.dateTimePicker2.ValueChanged += new System.EventHandler(this.dateTimePicker2_ValueChanged);
             // 
@@ -336,7 +340,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 85F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1004, 85);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1260, 85);
             this.tableLayoutPanel4.TabIndex = 249;
             // 
             // flowLayoutPanel1
@@ -380,7 +384,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 63F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 292F));
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(863, 2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(1119, 2);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -500,7 +504,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1002, 684);
+            this.panel1.Size = new System.Drawing.Size(1258, 684);
             this.panel1.TabIndex = 245;
             // 
             // label3
@@ -519,7 +523,7 @@
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label12.Location = new System.Drawing.Point(690, 372);
+            this.label12.Location = new System.Drawing.Point(825, 372);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(223, 18);
             this.label12.TabIndex = 280;
@@ -543,7 +547,7 @@
             this.panel3.ForeColor = System.Drawing.Color.Black;
             this.panel3.Location = new System.Drawing.Point(9, 230);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(661, 391);
+            this.panel3.Size = new System.Drawing.Size(799, 437);
             this.panel3.TabIndex = 1;
             // 
             // panel2
@@ -553,19 +557,20 @@
             this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.comboBox1);
             this.panel2.Controls.Add(this.label13);
-            this.panel2.Controls.Add(this.dateTimePicker3);
+            this.panel2.Controls.Add(this.dateTimePickerEnd);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.dateTimePicker1);
+            this.panel2.Controls.Add(this.dateTimePickerStart);
             this.panel2.Controls.Add(this.label15);
             this.panel2.Controls.Add(this.button3);
             this.panel2.ForeColor = System.Drawing.Color.Black;
             this.panel2.Location = new System.Drawing.Point(9, 114);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(980, 73);
+            this.panel2.Size = new System.Drawing.Size(1202, 73);
             this.panel2.TabIndex = 0;
             // 
             // comboBox2
             // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(125, 37);
             this.comboBox2.Name = "comboBox2";
@@ -584,6 +589,7 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(125, 6);
             this.comboBox1.Name = "comboBox1";
@@ -612,7 +618,7 @@
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 89F));
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 89F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1008, 89);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1264, 89);
             this.tableLayoutPanelHeader.TabIndex = 260;
             // 
             // tableLayoutPanel2
@@ -622,7 +628,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
-            this.tableLayoutPanel2.Controls.Add(this.ButtonFinish, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ButtonUpdateAll, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.textBoxMsgBoard, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonBack, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -631,24 +637,24 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1004, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1260, 36);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
-            // ButtonFinish
+            // ButtonUpdateAll
             // 
-            this.ButtonFinish.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.ButtonFinish.FlatAppearance.BorderSize = 2;
-            this.ButtonFinish.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.ButtonFinish.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.ButtonFinish.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ButtonFinish.Location = new System.Drawing.Point(923, 2);
-            this.ButtonFinish.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
-            this.ButtonFinish.Name = "ButtonFinish";
-            this.ButtonFinish.Size = new System.Drawing.Size(71, 27);
-            this.ButtonFinish.TabIndex = 244;
-            this.ButtonFinish.Text = "Finish";
-            this.ButtonFinish.UseVisualStyleBackColor = true;
-            this.ButtonFinish.Click += new System.EventHandler(this.ButtonFinish_Click);
+            this.ButtonUpdateAll.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.ButtonUpdateAll.FlatAppearance.BorderSize = 2;
+            this.ButtonUpdateAll.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.ButtonUpdateAll.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.ButtonUpdateAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonUpdateAll.Location = new System.Drawing.Point(1179, 2);
+            this.ButtonUpdateAll.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
+            this.ButtonUpdateAll.Name = "ButtonUpdateAll";
+            this.ButtonUpdateAll.Size = new System.Drawing.Size(71, 27);
+            this.ButtonUpdateAll.TabIndex = 244;
+            this.ButtonUpdateAll.Text = "Update DB";
+            this.ButtonUpdateAll.UseVisualStyleBackColor = true;
+            this.ButtonUpdateAll.Click += new System.EventHandler(this.ButtonUpdateAll_Click);
             // 
             // textBoxMsgBoard
             // 
@@ -673,14 +679,14 @@
             this.buttonBack.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
             this.buttonBack.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonBack.Location = new System.Drawing.Point(840, 2);
+            this.buttonBack.Location = new System.Drawing.Point(1096, 2);
             this.buttonBack.Margin = new System.Windows.Forms.Padding(2);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(76, 27);
             this.buttonBack.TabIndex = 246;
-            this.buttonBack.Text = "< Back";
+            this.buttonBack.Text = "Finish";
             this.buttonBack.UseVisualStyleBackColor = true;
-            this.buttonBack.Visible = false;
+            this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
             // 
             // tableLayoutPanelMain
             // 
@@ -697,15 +703,31 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1008, 730);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1264, 730);
             this.tableLayoutPanelMain.TabIndex = 259;
+            // 
+            // textBoxSameAsType
+            // 
+            this.textBoxSameAsType.Location = new System.Drawing.Point(186, 63);
+            this.textBoxSameAsType.Name = "textBoxSameAsType";
+            this.textBoxSameAsType.ReadOnly = true;
+            this.textBoxSameAsType.Size = new System.Drawing.Size(163, 20);
+            this.textBoxSameAsType.TabIndex = 313;
+            // 
+            // textBoxThisDateType
+            // 
+            this.textBoxThisDateType.Location = new System.Drawing.Point(186, 37);
+            this.textBoxThisDateType.Name = "textBoxThisDateType";
+            this.textBoxThisDateType.ReadOnly = true;
+            this.textBoxThisDateType.Size = new System.Drawing.Size(163, 20);
+            this.textBoxThisDateType.TabIndex = 312;
             // 
             // Form12
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1008, 730);
+            this.ClientSize = new System.Drawing.Size(1264, 730);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.ForeColor = System.Drawing.Color.White;
@@ -739,16 +761,16 @@
 
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.DateTimePicker dateTimePicker3;
+        private System.Windows.Forms.DateTimePicker dateTimePickerEnd;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dateTimePickerStart;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBoxThisDate;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBoxSameAs;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Panel panel4;
@@ -768,7 +790,7 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelHeader;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Button ButtonFinish;
+        private System.Windows.Forms.Button ButtonUpdateAll;
         private System.Windows.Forms.Button buttonBack;
         private System.Windows.Forms.TextBox textBoxMsgBoard;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
@@ -784,5 +806,7 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TextBox textBoxSameAsType;
+        private System.Windows.Forms.TextBox textBoxThisDateType;
     }
 }

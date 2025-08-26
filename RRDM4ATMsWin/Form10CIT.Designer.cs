@@ -1409,7 +1409,7 @@
             // 
             // button51
             // 
-            this.button51.BackgroundImage = global::RRDM4ATMsWin.Properties.Resources.msgIcon;
+            //this.button51.BackgroundImage = global::RRDM4ATMsWin.Properties.Resources.msgIcon;
             this.button51.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button51.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.button51.FlatAppearance.BorderSize = 0;
@@ -1429,7 +1429,7 @@
             // 
             // button52
             // 
-            this.button52.BackgroundImage = global::RRDM4ATMsWin.Properties.Resources.commIcon;
+            //button52.BackgroundImage = Properties.Resources.commIcon;
             this.button52.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button52.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.button52.FlatAppearance.BorderSize = 0;

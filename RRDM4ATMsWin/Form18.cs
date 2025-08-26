@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -23,13 +16,18 @@ namespace RRDM4ATMsWin
 
         RRDMComboClass Cc = new RRDMComboClass();
 
+        RRDMAtmsClass Ac = new RRDMAtmsClass(); 
+
+        RRDMUsersRecords Us = new RRDMUsersRecords();
+        RRDMUsersAccessToAtms Ua = new RRDMUsersAccessToAtms(); 
+
         DateTime NullPastDate = new DateTime(1900, 01, 01);
 
         //TEST
         DateTime WorkingToday = new DateTime(2014, 07, 06);
 
         string WCitId;
-        int WGroupNo;
+       // int WGroupNo;
 
         string filter; 
 
@@ -41,12 +39,10 @@ namespace RRDM4ATMsWin
   //      int WFunctionNo;
         string WSignedId;
         int WSignRecordNo;
-        int WSecLevel;
+        string WSecLevel;
         string WOperator;
-    //    bool WPrive;
 
-
-        public Form18(string InSignedId, int SignRecordNo, int InSecLevel, string InOperator, int InFunction)
+        public Form18(string InSignedId, int SignRecordNo, string InSecLevel, string InOperator, int InFunction)
         {
             WSignedId = InSignedId;
             WSignRecordNo = SignRecordNo;
@@ -56,33 +52,28 @@ namespace RRDM4ATMsWin
             InitializeComponent();
 
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            pictureBox1.BackgroundImage = appResImg.logo2;
+
+            labelUserId.Text = WSignedId;
 
             //TEST
             dateTimePicker1.Value = WorkingToday;
-            dateTimePicker2.Value = WorkingToday;
+            dateTimePicker2.Value = DateTime.Now.Date;  
             
             textBoxMsgBoard.Text = "View CIT operational and financial information"; 
 
-     //       buttonNext.Hide();
-          
         }
 
         // Load 
         private void Form18_Load(object sender, EventArgs e)
         {
             
-            filter = "Operator = '" + WOperator + "' AND UserType ='CIT Company'";
+            filter = " Operator = '" + WOperator + "' AND UserType ='CIT Company'";
+            
 
-            usersTableBindingSource.Filter = filter;
-            this.usersTableTableAdapter.Fill(this.aTMSDataSet27.UsersTable);
+            Us.ReadUsersAndFillDataTable(WSignedId, WOperator, filter, ""); // Read User table 
 
-            if (dataGridView1.Rows.Count == 0)
-            {
-                MessageBox.Show("No available CIT providers.");
-                this.Dispose();
-                return;
-            }
+            ShowGrid(); 
 
         }
 
@@ -93,7 +84,6 @@ namespace RRDM4ATMsWin
             string temp = rowSelected.Cells[0].Value.ToString();
             WCitId = temp;
 
-           
             comboBox1.DataSource = Cc.GetUserAccs(WOperator, WCitId);
             comboBox1.DisplayMember = "DisplayValue";
 
@@ -101,17 +91,29 @@ namespace RRDM4ATMsWin
             comboBox2.DisplayMember = "DisplayValue";
 
             label13.Text = temp;
-            
-            usersAtmTableBindingSource.Filter = "Operator = '" + WOperator + "' AND UserId ='" + WCitId + "'";
-            this.usersAtmTableTableAdapter.Fill(this.aTMSDataSet29.UsersAtmTable);
 
-            //comboBox1.Text = "CIT Cash";
-            //comboBox2.Text = "EUR"; 
+            //filter = "Operator = '" + WOperator + "' AND UserId ='" + WCitId + "'";
 
-            radioButton1.Checked = true; 
+            //Ua.ReadUserAccessToAtmsFillTable(filter);
+
+            Ac.ReadAtmAndFillTableByAtmsCitId(WSignedId, WOperator, WCitId);
+
+            ShowGridAtms();
+
+            //ShowGrid2();
+
+            radioButton1.Checked = true;
 
         }
-    
+
+        //
+        // Group Enter 
+        private void dataGridView2_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridViewRow rowSelected = dataGridView2.Rows[e.RowIndex];
+            string WAtmNo = rowSelected.Cells[1].Value.ToString();
+        }
+
         // GO TO TODAY STATUS
         private void button3_Click(object sender, EventArgs e)
         {
@@ -127,21 +129,7 @@ namespace RRDM4ATMsWin
         {
             Form18_Load(this, new EventArgs());
         }
-        //
-        // Group Enter 
-        private void dataGridView2_RowEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            DataGridViewRow rowSelected = dataGridView2.Rows[e.RowIndex];
-            textBox1.Text = rowSelected.Cells[1].Value.ToString();
-            if (textBox1.Text == "")
-            {
-            }
-            else
-            {
-                WGroupNo = int.Parse(textBox1.Text);
-            }
-           
-        }
+       
         // SHOW THE ATMS 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -153,7 +141,7 @@ namespace RRDM4ATMsWin
         // SHOW USERS
         private void button5_Click(object sender, EventArgs e)
         {
-            NForm13 = new Form13(WSignedId, WSignRecordNo, WOperator ,WCitId);
+            NForm13 = new Form13(WSignedId, WSignRecordNo, WOperator ,WCitId, 1);
             NForm13.ShowDialog();
             
         }
@@ -230,15 +218,125 @@ namespace RRDM4ATMsWin
 
             NForm31 = new Form31(WSignedId, WSignRecordNo, WOperator, WCitId, WAccName, WAccCurr, WAction, 
                     FromDate, ToDate, "" );
-                NForm31.ShowDialog();
-              
+                NForm31.ShowDialog();          
             
         }
         // ACTION MESSAGES 
         private void button4_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("These are the actions messages send to CIT Company");
+            MessageBox.Show("These are no licenses for Google Maps yet.");
             return;
+        }
+
+        //******************
+        // SHOW GRID dataGridView1
+        //******************
+        private void ShowGrid()
+        {
+            dataGridView1.DataSource = Us.UsersInDataTable.DefaultView;
+
+            if (dataGridView1.Rows.Count == 0)
+            {
+                MessageBox.Show("No available CIT providers.");
+                this.Dispose();
+                return;
+            }
+
+            dataGridView1.Columns[0].Width = 50; // User Id/ CitID
+            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[1].Width = 110; // User Name
+            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[2].Width = 170; //  email 
+            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            //dataGridView1.Sort(dataGridView1.Columns[2], ListSortDirection.Ascending);
+
+            dataGridView1.Columns[3].Width = 150; // Mobile
+            dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[4].Width = 120; // date Open
+            dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[5].Width = 70; // User Type
+            dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[6].Width = 80; // Cit Id 
+            dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+        }
+
+
+        //******************
+        // SHOW GRID dataGridView2
+        //******************
+        private void ShowGrid2()
+        {
+            dataGridView2.DataSource = Ua.UsersToAtmsDataTable.DefaultView;
+
+
+            if (dataGridView2.Rows.Count == 0)
+            {
+                MessageBox.Show("No available ATMs or Groups.");
+               // this.Dispose();
+                return;
+            }
+
+            dataGridView2.Columns[0].Width = 50; // User Id
+            dataGridView2.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[1].Width = 70; // Atm no
+            dataGridView2.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[2].Width = 250; //  ATM Name 
+            dataGridView2.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[3].Width = 50; //  Group of ATMs
+            dataGridView2.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView2.Columns[3].Visible = false;
+
+            dataGridView2.Columns[4].Width = 80; // Replenishment
+            dataGridView2.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[5].Width = 80; // Reconciliation 
+            dataGridView2.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[6].Width = 130; // Date of insert 
+            dataGridView2.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+        }
+
+        private void ShowGridAtms()
+        {
+
+            dataGridView2.DataSource = Ac.ATMsDetailsDataTable.DefaultView;
+
+            if (dataGridView2.Rows.Count == 0)
+            {
+                MessageBox.Show("No ATMs Available!");
+                return;
+            }
+            else
+            {
+                labelTotalATMs.Text = "Total ATMs =.." + dataGridView2.Rows.Count.ToString();
+            }
+
+            dataGridView2.Columns[0].Width = 90; // AtmNo
+            dataGridView2.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[1].Width = 110; //Atms Name
+            dataGridView2.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[2].Width = 60; //  Branch
+            dataGridView2.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[3].Width = 60; // Cit
+            dataGridView2.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[4].Width = 70; // CashInType
+            dataGridView2.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            
         }
 
         // Finish 
@@ -247,7 +345,8 @@ namespace RRDM4ATMsWin
         {
             this.Dispose(); 
         }
-           
+
+       
     }
 }
 

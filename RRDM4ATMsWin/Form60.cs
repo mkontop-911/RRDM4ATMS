@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -15,11 +10,11 @@ namespace RRDM4ATMsWin
     {
         RRDMDisputesTableClass Di = new RRDMDisputesTableClass();
 
-        RRDMDisputeTrasactionClass Dt = new RRDMDisputeTrasactionClass();
+        RRDMDisputeTransactionsClass Dt = new RRDMDisputeTransactionsClass();
 
         RRDMGasParameters Gp = new RRDMGasParameters();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         // NOTES 
         string Order;
@@ -61,7 +56,7 @@ namespace RRDM4ATMsWin
             InitializeComponent();
 
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             labelStep1.Text = "Disputes for Card No: " + WCardNo;
       
@@ -73,7 +68,7 @@ namespace RRDM4ATMsWin
             SelectionCriteria = "Operator ='" + WOperator + "' AND CardNo='" + WCardNo + "'";
 
             WithDate = false;
-            Di.ReadDisputesInTable(SelectionCriteria, NullPastDate, WithDate);
+            Di.ReadDisputesInTable(WOperator, WSignedId, WCardNo, NullPastDate, WithDate, 13);
 
             dataGridView1.DataSource = Di.DisputesSelected.DefaultView;
 
@@ -180,7 +175,7 @@ namespace RRDM4ATMsWin
                 textBox7.Hide();
                 textBox5.Hide();
 
-                pictureBox2.BackgroundImage = Properties.Resources.GREEN_LIGHT;
+                pictureBox2.BackgroundImage = appResImg.GREEN_LIGHT;
             }
 
             textBox2.Text = Di.TargetDate.ToString();
@@ -202,15 +197,15 @@ namespace RRDM4ATMsWin
 
                 if (Remain.TotalHours > QualityRange2)
                 {
-                    pictureBox2.BackgroundImage = Properties.Resources.GREEN_LIGHT;
+                    pictureBox2.BackgroundImage = appResImg.GREEN_LIGHT;
                 }
                 if (Remain.TotalHours >= QualityRange1 & Remain.TotalHours <= QualityRange2)
                 {
-                    pictureBox2.BackgroundImage = Properties.Resources.YELLOW;
+                    pictureBox2.BackgroundImage = appResImg.YELLOW;
                 }
                 if (Remain.TotalHours < QualityRange1)
                 {
-                    pictureBox2.BackgroundImage = Properties.Resources.RED_LIGHT;
+                    pictureBox2.BackgroundImage = appResImg.RED_LIGHT;
                 }
             }
 
@@ -225,11 +220,13 @@ namespace RRDM4ATMsWin
             }
             else labelNumberNotes2.Text = "0";
 
-            string filter = "DisputeNumber =" + WDisputeNo;
+            // Show GRID Of Dispute transactions 
 
-            disputesTransTableBindingSource.Filter = filter;
-            //  dataGridView2.Sort(dataGridView2.Columns[0], ListSortDirection.Descending);
-            this.disputesTransTableTableAdapter.Fill(this.aTMSDataSet54.DisputesTransTable);
+            //string filter = "DisputeNumber =" + WDisputeNo;
+
+            Dt.ReadDisputeTransDataTable(WDisputeNo);
+
+            ShowGridDisputeTrans();
 
         }
 
@@ -244,7 +241,7 @@ namespace RRDM4ATMsWin
             string WMode;
             if (Di.Active == true) WMode = "Update";
             else WMode = "Read";
-            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, WParameter3, WParameter4, WMode, SearchP4);
+            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, "", WParameter3, WParameter4, WMode, SearchP4);
             NForm197.FormClosed += NForm197_FormClosed;
             NForm197.ShowDialog();
         }
@@ -258,6 +255,45 @@ namespace RRDM4ATMsWin
         {
             this.Dispose(); 
         }
+        //******************
+        // SHOW GRID dataGridView2
+        //******************
+        private void ShowGridDisputeTrans()
+        {
+            dataGridView2.DataSource = Dt.DisputeTransDataTable.DefaultView;
 
+            if (dataGridView2.Rows.Count == 0)
+            {
+                return;
+            }
+            dataGridView2.Columns[0].Width = 70; // DispTranNo
+            dataGridView2.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[1].Width = 70; // MaskRecordId
+            dataGridView2.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[2].Width = 100; //  TranDate
+            dataGridView2.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            //dataGridView1.Sort(dataGridView1.Columns[2], ListSortDirection.Ascending);
+
+            dataGridView2.Columns[3].Width = 80; // TranAmount
+            dataGridView2.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dataGridView2.Columns[4].Width = 80; // DisputedAmt
+            dataGridView2.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dataGridView2.Columns[5].Width = 80; // DecidedAmount 
+            dataGridView2.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            //
+            // DATA TABLE ROWS DEFINITION 
+            //
+            //ATMsDetailsDataTable.Columns.Add("DispTranNo", typeof(int));
+            //ATMsDetailsDataTable.Columns.Add("MaskRecordId", typeof(int));
+            //ATMsDetailsDataTable.Columns.Add("TranDate", typeof(DateTime));
+            //ATMsDetailsDataTable.Columns.Add("TranAmount", typeof(string));
+            //ATMsDetailsDataTable.Columns.Add("DisputedAmt", typeof(string));
+            //ATMsDetailsDataTable.Columns.Add("DecidedAmount", typeof(string));
+        }
     }
 }

@@ -42,9 +42,10 @@
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Location = new System.Drawing.Point(12, 52);
+            this.panel1.Location = new System.Drawing.Point(16, 64);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(611, 598);
+            this.panel1.Size = new System.Drawing.Size(815, 736);
             this.panel1.TabIndex = 0;
             // 
             // button1
@@ -55,10 +56,10 @@
             this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button1.Location = new System.Drawing.Point(523, 562);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
+            this.button1.Location = new System.Drawing.Point(697, 692);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 13, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(71, 27);
+            this.button1.Size = new System.Drawing.Size(95, 33);
             this.button1.TabIndex = 247;
             this.button1.Text = "Route";
             this.button1.UseVisualStyleBackColor = true;
@@ -66,12 +67,13 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(17, 9);
+            this.textBox1.Location = new System.Drawing.Point(23, 11);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(577, 549);
+            this.textBox1.Size = new System.Drawing.Size(768, 675);
             this.textBox1.TabIndex = 0;
             this.textBox1.TabStop = false;
             // 
@@ -82,9 +84,8 @@
             this.labelStep1.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelStep1.ForeColor = System.Drawing.Color.White;
             this.labelStep1.Location = new System.Drawing.Point(0, 0);
-            this.labelStep1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelStep1.Name = "labelStep1";
-            this.labelStep1.Size = new System.Drawing.Size(442, 36);
+            this.labelStep1.Size = new System.Drawing.Size(544, 42);
             this.labelStep1.TabIndex = 243;
             this.labelStep1.Text = "Email content will be as below";
             // 
@@ -97,10 +98,10 @@
             this.buttonProceed.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonProceed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonProceed.ForeColor = System.Drawing.Color.White;
-            this.buttonProceed.Location = new System.Drawing.Point(535, 655);
-            this.buttonProceed.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
+            this.buttonProceed.Location = new System.Drawing.Point(713, 806);
+            this.buttonProceed.Margin = new System.Windows.Forms.Padding(3, 2, 13, 2);
             this.buttonProceed.Name = "buttonProceed";
-            this.buttonProceed.Size = new System.Drawing.Size(71, 27);
+            this.buttonProceed.Size = new System.Drawing.Size(95, 33);
             this.buttonProceed.TabIndex = 245;
             this.buttonProceed.Text = "Proceed";
             this.buttonProceed.UseVisualStyleBackColor = true;
@@ -115,10 +116,10 @@
             this.ButtonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonCancel.ForeColor = System.Drawing.Color.White;
-            this.ButtonCancel.Location = new System.Drawing.Point(452, 655);
-            this.ButtonCancel.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
+            this.ButtonCancel.Location = new System.Drawing.Point(603, 806);
+            this.ButtonCancel.Margin = new System.Windows.Forms.Padding(3, 2, 13, 2);
             this.ButtonCancel.Name = "ButtonCancel";
-            this.ButtonCancel.Size = new System.Drawing.Size(71, 27);
+            this.ButtonCancel.Size = new System.Drawing.Size(95, 33);
             this.ButtonCancel.TabIndex = 246;
             this.ButtonCancel.Text = "Cancel";
             this.ButtonCancel.UseVisualStyleBackColor = true;
@@ -126,15 +127,16 @@
             // 
             // Form2_EMailContent
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(635, 694);
+            this.ClientSize = new System.Drawing.Size(847, 854);
             this.Controls.Add(this.ButtonCancel);
             this.Controls.Add(this.buttonProceed);
             this.Controls.Add(this.labelStep1);
             this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Form2_EMailContent";
             this.Text = "Form2_EMailContent";
             this.Load += new System.EventHandler(this.Form2_EMailContent_Load);

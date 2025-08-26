@@ -1,18 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
-using System.Configuration;
+using RRDM4ATMs;
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 namespace RRDM4ATMsWin
 {
@@ -20,8 +9,9 @@ namespace RRDM4ATMsWin
     {
         RRDMGasParameters Gp = new RRDMGasParameters();
         RRDMCounterClass Cc = new RRDMCounterClass();
+      
         RRDMDisputesTableClass Dtc = new RRDMDisputesTableClass();
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
    //     string WUserOperator;
 
@@ -34,10 +24,10 @@ namespace RRDM4ATMsWin
 
         string WSignedId;
         int WSignRecordNo;
-        int WSecLevel;
+        string WSecLevel;
         string WOperator;
      
-        public Form193(string InSignedId, int InSignRecordNo, int InSecLevel, string InOperator)
+        public Form193(string InSignedId, int InSignRecordNo, string InSecLevel, string InOperator)
         {
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
@@ -46,8 +36,10 @@ namespace RRDM4ATMsWin
       
 
             InitializeComponent();
+
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             textBox1.Text = WOperator;
 
@@ -82,7 +74,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox13.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox13.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox13.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"603", "1",  "", "");
@@ -93,7 +85,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox12.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox12.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox12.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"604", "1",  "", "");
@@ -103,18 +95,18 @@ namespace RRDM4ATMsWin
             if (Temp < QualityRange1)
             {
                 // Green
-                pictureBox2.BackgroundImage = Properties.Resources.GREEN_LIGHT_Repl1;
+                pictureBox2.BackgroundImage = appResImg.GREEN_LIGHT_Repl;
             }
 
             if (Temp > QualityRange2)
             {
                 // Red 
-                pictureBox2.BackgroundImage = Properties.Resources.RED_LIGHT_Repl;
+                pictureBox2.BackgroundImage = appResImg.RED_LIGHT_Repl;
             }
             if (Temp >= QualityRange1 & Temp <= QualityRange2)
             {
                 // Yellow 
-                pictureBox2.BackgroundImage = Properties.Resources.YELLOW_Repl;
+                pictureBox2.BackgroundImage = appResImg.YELLOW_Repl;
             }
 
             // UNRECONCILED DAYS
@@ -124,7 +116,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox20.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox20.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox20.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"603", "2",  "", "");
@@ -133,7 +125,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox19.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox19.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox19.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"604", "2",  "", "");
@@ -142,18 +134,18 @@ namespace RRDM4ATMsWin
             if (Temp < QualityRange1)
             {
                 // Green
-                pictureBox3.BackgroundImage = Properties.Resources.GREEN_LIGHT_Repl1;
+                pictureBox3.BackgroundImage = appResImg.GREEN_LIGHT_Repl;
             }
 
             if (Temp > QualityRange2)
             {
                 // Red 
-                pictureBox3.BackgroundImage = Properties.Resources.RED_LIGHT_Repl;
+                pictureBox3.BackgroundImage = appResImg.RED_LIGHT_Repl;
             }
             if (Temp >= QualityRange1 & Temp <= QualityRange2)
             {
                 // Yellow 
-                pictureBox3.BackgroundImage = Properties.Resources.YELLOW_Repl;
+                pictureBox3.BackgroundImage = appResImg.YELLOW_Repl;
             }
 
 
@@ -164,7 +156,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox11.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox11.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox11.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"603", "3",  "", "");
@@ -173,7 +165,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox10.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox10.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox10.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"604", "3",  "", "");
@@ -182,18 +174,18 @@ namespace RRDM4ATMsWin
             if (Temp < QualityRange1)
             {
                 // Green
-                pictureBox4.BackgroundImage = Properties.Resources.GREEN_LIGHT_Repl1;
+                pictureBox4.BackgroundImage = appResImg.GREEN_LIGHT_Repl;
             }
 
             if (Temp > QualityRange2)
             {
                 // Red 
-                pictureBox4.BackgroundImage = Properties.Resources.RED_LIGHT_Repl;
+                pictureBox4.BackgroundImage = appResImg.RED_LIGHT_Repl;
             }
             if (Temp >= QualityRange1 & Temp <= QualityRange2)
             {
                 // Yellow 
-                pictureBox4.BackgroundImage = Properties.Resources.YELLOW_Repl;
+                pictureBox4.BackgroundImage = appResImg.YELLOW_Repl;
             }
 
             // ATMS ERRORS NUMBER  
@@ -203,7 +195,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox9.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox9.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox9.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"603", "4",  "", "");
@@ -212,7 +204,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox8.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox8.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox8.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"604", "4",  "", "");
@@ -221,18 +213,18 @@ namespace RRDM4ATMsWin
             if (Temp < QualityRange1)
             {
                 // Green
-                pictureBox5.BackgroundImage = Properties.Resources.GREEN_LIGHT_Repl1;
+                pictureBox5.BackgroundImage = appResImg.GREEN_LIGHT_Repl;
             }
 
             if (Temp > QualityRange2)
             {
                 // Red 
-                pictureBox5.BackgroundImage = Properties.Resources.RED_LIGHT_Repl;
+                pictureBox5.BackgroundImage = appResImg.RED_LIGHT_Repl;
             }
             if (Temp >= QualityRange1 & Temp <= QualityRange2)
             {
                 // Yellow 
-                pictureBox5.BackgroundImage = Properties.Resources.YELLOW_Repl;
+                pictureBox5.BackgroundImage = appResImg.YELLOW_Repl;
             }
 
             // HOST ERRORS NUMBER  
@@ -242,7 +234,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox15.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox15.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox15.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"603", "5",  "", "");
@@ -251,7 +243,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox14.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox14.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox14.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"604", "5",  "", "");
@@ -260,18 +252,18 @@ namespace RRDM4ATMsWin
             if (Temp < QualityRange1)
             {
                 // Green
-                pictureBox6.BackgroundImage = Properties.Resources.GREEN_LIGHT_Repl1;
+                pictureBox6.BackgroundImage = appResImg.GREEN_LIGHT_Repl;
             }
 
             if (Temp > QualityRange2)
             {
                 // Red 
-                pictureBox6.BackgroundImage = Properties.Resources.RED_LIGHT_Repl;
+                pictureBox6.BackgroundImage = appResImg.RED_LIGHT_Repl;
             }
             if (Temp >= QualityRange1 & Temp <= QualityRange2)
             {
                 // Yellow 
-                pictureBox6.BackgroundImage = Properties.Resources.YELLOW_Repl;
+                pictureBox6.BackgroundImage = appResImg.YELLOW_Repl;
             }
 
             // REPL DURATION MINUTES  
@@ -279,7 +271,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox18.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox18.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox18.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"603", "6",  "", "");
@@ -288,7 +280,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox1.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox1.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox1.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"604", "6",  "", "");
@@ -299,7 +291,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox23.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox23.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox23.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"603", "7",  "", "");
@@ -308,7 +300,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox22.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox22.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox22.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator,"604", "7",  "", "");

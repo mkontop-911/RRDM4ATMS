@@ -1,37 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿
+using System;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
+using RRDM4ATMs;
 using System.Configuration;
+using System.Linq;
+
+using System.Text;
+//using System.Data.SqlClient;
+
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 
 namespace RRDM4ATMsWin
 {
     public partial class Form5 : Form
     {
-     //   Form11 NForm11;
-        RRDMReconcMatchedUnMatchedVisaAuthorClass Rm = new RRDMReconcMatchedUnMatchedVisaAuthorClass(); 
+
+        RRDMMatchingTxns_MasterPoolATMs Mpa = new RRDMMatchingTxns_MasterPoolATMs();
+
         RRDMDisputesTableClass Di = new RRDMDisputesTableClass();
-        RRDMDisputeTrasactionClass Dt = new RRDMDisputeTrasactionClass();
-        
-        RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass();
+        RRDMDisputeTransactionsClass Dt = new RRDMDisputeTransactionsClass();
+
+        //RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass();
+
         RRDMErrorsClassWithActions Ec = new RRDMErrorsClassWithActions();
         RRDMAtmsClass Ac = new RRDMAtmsClass();
         RRDMGasParameters Gp = new RRDMGasParameters();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
-        RRDM_JccTransClass Jt = new RRDM_JccTransClass(); 
+        RRDM_JccTransClass Jt = new RRDM_JccTransClass();
+
+        RRDMReconcJobCycles Rjc = new RRDMReconcJobCycles();
 
         string WD11 = "WD11";
         string WD12 = "WD12";
@@ -60,11 +62,19 @@ namespace RRDM4ATMsWin
         string WD37 = "WD37";
         string WD38 = "WD38";
 
-
         string WD40 = "WD40";
         string WD41 = "WD41";
+        // RRNumber or traces 
+        string WD45 = "";
+        string WD46 = "";
+        string WD47 = "";
+        string WD48 = "";
 
-        int TranCount = 0; 
+        string WD50 = "";
+
+        string WD39 = "";
+
+        int TranCount = 0;
 
         public DataTable CardAtmsTran = new DataTable();
 
@@ -72,37 +82,17 @@ namespace RRDM4ATMsWin
 
         string WFilter;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-          ["ATMSConnectionString"].ConnectionString;
+        //string connectionString = ConfigurationManager.ConnectionStrings
+        //  ["ATMSConnectionString"].ConnectionString;
 
-        //int TotalChosenATMs;
-        //int TotalChosenJCC; 
+        bool AutoOwner = false;
 
-        //int TotTrans;
-
-        //bool FoundInMatchedUnMatched; 
+        string UserToBeOwner = ""; 
 
         int WDispNo;
-        bool chosen;
-        string AtmNo;
-        int ATMTranNo;
-        int JCCTranNo;
-        string Curr;
-        decimal Amount;
+        bool WSelect;
+
         decimal DispAmnt;
-        DateTime TranDate;
-        string Descr;
-        int ErrNo;
-        string Origin;
-        // "OurATMs"
-        // "ProcessorATMs"
-        // "ProcessorMerchants" 
-
-        bool FoundInUnMatched;
-        bool FoundInMatched;
-
-        bool FoundInPoolATMs;
-       
 
         DateTime NullPastDate = new DateTime(1900, 01, 01);
 
@@ -110,17 +100,21 @@ namespace RRDM4ATMsWin
 
         string WCardNoBin;
 
+        int WReconcCycleNo; 
+
         string WSignedId;
         int WSignRecordNo;
         string WOperator;
-     
+
+        bool CreateDisputeForCaller = false;
+
         DateTime WFromDate;
         DateTime WToDate;
         string WCardNoIn;
-        int WTranNo;
+        int WUniqueRecordId;
         decimal WCounted;
         int WInDispNo;
-        string WComment; 
+        string WComment;
         int WFrom;
         string WOrigin; // Gets Values "ATM", "JCC" to denote 
 
@@ -130,33 +124,84 @@ namespace RRDM4ATMsWin
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
             WOperator = InOperator;
-  
+
             WCardNoIn = InCardNo;
-            WTranNo = InTranNo;
+            WUniqueRecordId = InTranNo;
             WCounted = InCounted;
             WInDispNo = InDispNo; // > 0 if InFrom = 4 
-            WComment = InComment; 
-            WFrom = InFrom; 
+            WComment = InComment;
+            WFrom = InFrom;
+
             // 1 = call is coming from Main Form, 
-            // 2 = Call is coming from Pre-Investigation 
+            // 2 = Call is coming from Pre-Investigation (Unique)
+            // 22 = Call is coming from Pre-Investigation (Unique) and Create Dispute on calling User Name 
             // 3 = Call is coming from deposits in difference,  
-            // 4= call is coming for updating details of dispute,  
-            // 5= call is coming from Reconciliation Process for ATMs CAsh - Record found in pool 
+            // 4 = call is coming for updating details of dispute,  
+            // 5 = call is coming from Reconciliation Process for ATMs CAsh - Record found in pool - Replenishment
             //
-            // 7= call is coming from Reconciliation Process matching reconciliation - record found through mask,
+            // 7 = call is coming from Reconciliation Process matching reconciliation - Reconciliation
+            // - record found through mask, OR Is Used from Replenishment in case of the presenter error.
 
             WOrigin = InOrigin; // "ATM" OR "JCC" OR "RMCategory"; 
 
             InitializeComponent();
 
+            pictureBox1.BackgroundImage = appResImg.logo2;
+
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+
+            labelUserId.Text = WSignedId;
+            
+            if (WFrom == 22)
+            {
+                WFrom = 2; // turn it to 2
+                CreateDisputeForCaller = true;  
+                if (Environment.MachineName == "RRDM-PANICOS")
+                {
+                    // It is OK you proceed 
+                    buttonNext.Text = "NEXT";
+                    buttonNext.Hide(); 
+                }
+                else
+                {
+                    MessageBox.Show("You cannot proceed to create dispute on your name.");
+                    return; 
+                }
+            }
+            else
+            {
+                buttonNext.Text = "PRINT"; 
+            }
+
+            // Find Current RM Cycle 
+                    string WJobCategory = "ATMs";
+
+            WReconcCycleNo = Rjc.ReadLastReconcJobCycleATMsAndNostroWithMinusOne(WOperator, WJobCategory);
 
             textBoxMsgBoard.Text = "Input information for dispute";
 
             Gp.ParamId = "252"; // Dispute methods - Internal Or external Customer   
             comboBoxVisitType.DataSource = Gp.GetParamOccurancesNm(WOperator);
             comboBoxVisitType.DisplayMember = "DisplayValue";
+
+            string ParId = "253"; // AUTO Assign Owner 
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TempAuto = Gp.OccuranceNm;
+
+            if (TempAuto == "YES")
+            {
+                AutoOwner = true; 
+            }
+            else
+            {
+                AutoOwner = false;
+
+                label15.Hide();
+                label16.Hide();
+                textBoxOwnerId.Hide();
+                textBoxOwnerNM.Hide();
+            }
 
             tbComments.Text = WComment;
 
@@ -169,113 +214,93 @@ namespace RRDM4ATMsWin
                 {
                     string ParamId = "252"; // Dispute method Deposit    
                     string OccNumber = "7";
-                    Gp.ReadParametersSpecificParmAndOccurance(WOperator, ParamId, OccNumber);
-
-                    comboBoxVisitType.Text = Gp.OccuranceNm; 
-                }
-                if (WFrom == 5)
-                {
-                    string ParamId = "252"; // Dispute method Reconciliation 
-                    string OccNumber = "8";
-                    Gp.ReadParametersSpecificParmAndOccurance(WOperator, ParamId, OccNumber);
+                    Gp.ReadParametersSpecificParmAndOccurance(WOperator, ParamId, OccNumber, "", "");
 
                     comboBoxVisitType.Text = Gp.OccuranceNm;
 
-                    btTransactions.Text = "Show Trans"; 
-                }
+                    // Deposit difference 
+                    radioButtonDepositDiff.Checked = true;
 
-                if (WFrom == 7)
+                    tbComments.Text = InComment;
+
+                }
+                if (WFrom == 5)
                 {
-                    string ParamId = "252"; // Dispute method Reconciliation 
-                    string OccNumber = "10";
-                    Gp.ReadParametersSpecificParmAndOccurance(WOperator, ParamId, OccNumber);
+                    string ParamId = "252"; // Dispute method replenishment 
+                    string OccNumber = "8";
+                    Gp.ReadParametersSpecificParmAndOccurance(WOperator, ParamId, OccNumber, "", "");
 
                     comboBoxVisitType.Text = Gp.OccuranceNm;
 
                     btTransactions.Text = "Show Trans";
                 }
 
-     // find record details in InPool or matched unmatched tables
-
-                if (WTranNo > 0) 
+                if (WFrom == 7)
                 {
-                    if (WFrom == 5) // Record to be found from InPool
-                    {
-                        //TEST
-                        Tc.ReadInPoolTransSpecific(WTranNo);
-                        if (Tc.RecordFound == true)
-                        {
-                            FoundInPoolATMs = true;
+                    string ParamId = "252"; // Dispute method Reconciliation 
+                    string OccNumber = "8";
+                    Gp.ReadParametersSpecificParmAndOccurance(WOperator, ParamId, OccNumber, "", "");
 
-                            tbCardNo.Text = Tc.CardNo;
-                            tbAccNo.Text = Tc.AccNo;
+                    comboBoxVisitType.Text = Gp.OccuranceNm;
 
-                            dateTimePickerFrom.Value = Tc.AtmDtTime;
-                            dateTimePickerTo.Value = Tc.AtmDtTime;
-
-                        }
-                        else
-                        {
-                            MessageBox.Show("Record Not Found");
-                            return;
-                        }
-                     }
-                    if (WFrom == 7) // Transaction will be found in Matched /Unmatched 
-                    {
-                        // Find Details of Masked REcord 
-                        Rm.ReadMatchedORUnMatchedFileSpecificRecordByMaskId("Matched", WTranNo);
-                        if (Rm.RecordFound == true)
-                        {
-                            //FoundInMatchedUnMatched = true;
-                            FoundInMatched = true;
-                            dateTimePickerFrom.Value = Rm.TransDate;
-                            dateTimePickerTo.Value = Rm.TransDate;
-                            tbAccNo.Text = Rm.AccNumber;
-                        }
-                        else
-                        {
-                            Rm.ReadMatchedORUnMatchedFileSpecificRecordByMaskId("UnMatched", WTranNo);
-                            if (Rm.RecordFound == true)
-                            {
-                                //FoundInMatchedUnMatched = true;
-                                FoundInUnMatched = true;
-                                dateTimePickerFrom.Value = Rm.TransDate;
-                                dateTimePickerTo.Value = Rm.TransDate;
-                                tbAccNo.Text = Rm.AccNumber;
-                            }
-                            else
-                            {
-                                MessageBox.Show("Record Not Found");
-                                    return;
-
-                            }
-                        }
-                    }
-                   
+                    btTransactions.Text = "Show Transactions";
                 }
-                
-             
+
                 tbCardNo.Text = WCardNoIn;
-                
 
-                if (WFrom == 3)
+
+                // find record details 
+                if (WUniqueRecordId > 0)
                 {
-                    radioButtonDepositDiff.Checked = true;
 
-                    MessageBox.Show("Under Construction"); 
+                    string SelectionCriteria = " WHERE UniqueRecordId = " + WUniqueRecordId;
+                    Mpa.ReadMatchingTxnsMasterPoolBySelectionCriteria(SelectionCriteria,2);
+                    if (Mpa.RecordFound == true)
+                    {
+                        //FoundInPoolATMs = true;
+                        //RRDMUsersRecords Ur = new RRDMUsersRecords(); 
+                        Us.ReadUsersRecord(WSignedId); 
+                        if (Us.Branch =="001" || Us.Branch == "0001")
+                        {
+                            tbCardNo.Text = Mpa.Card_Encrypted;
+                        }
+                        else
+                        {
+                            string input = Mpa.CardNumber;
+                            /*
+                             *
+                             * Change * to 1
+                             *
+                             * */
+                            char[] array = input.ToCharArray();
+                            for (int i = 0; i < array.Length; i++)
+                            {
+                                char let = array[i];
+                              
+                                 if (let == '*')
+                                    array[i] = 'M';
+                            }
+                            tbCardNo.Text = new string(array);
+                        }
 
-                    //Tc.DepCount = WCounted;
+                        tbAccNo.Text = Mpa.AccNumber;
 
-                    //Tc.AtmMsg = "Transaction will be moved to dispute";
+                        dateTimePickerFrom.Value = Mpa.TransDate;
+                        dateTimePickerTo.Value = Mpa.TransDate;
 
-                    //Tc.UpdateTransforDep(WMaskRecordId);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Record Not Found");
+                        return;
+                    }
                 }
-                if (WFrom == 5 || WFrom == 7) 
+
+
+                if (WFrom == 5 || WFrom == 7)
                 {
                     radioButtonReconcDiff.Checked = true;
                 }
-               
-               
             }
 
             if (WFrom == 4)
@@ -286,32 +311,38 @@ namespace RRDM4ATMsWin
                 tbId.Text = WInDispNo.ToString();
 
                 Di.ReadDispute(WInDispNo);
-           
-                comboBoxVisitType.Text = Di.VisitType; 
+
+                comboBoxVisitType.Text = Di.VisitType;
 
                 tbCustName.Text = Di.CustName;
                 tbCardNo.Text = Di.CardNo;
                 tbAccNo.Text = Di.AccNo;
                 tbCustPhone.Text = Di.CustPhone;
                 tbCustEmail.Text = Di.CustEmail;
-                
+
+                if (Di.IsCardLostStolen == true)
+                {
+                    radioButtonLost.Checked = true;
+                }
+                else radioButtonLost.Checked = false;
+
                 if (Di.DispType == 1) radioButton1.Checked = true;
                 if (Di.DispType == 2) radioButton2.Checked = true;
                 if (Di.DispType == 3) radioButton3.Checked = true;
                 if (Di.DispType == 4) radioButtonDepositDiff.Checked = true;
-                if (Di.DispType == 5) radioButtonReconcDiff.Checked = true; 
+                if (Di.DispType == 5) radioButtonReconcDiff.Checked = true;
                 if (Di.DispType == 6) radioButtonOther.Checked = true;
 
                 textBox4.Text = Di.OtherDispTypeDescr;
 
                 tbComments.Text = Di.DispComments;
                 //
-                // HIDE FIELDS FOR DATES REALED TO TRANSACTIONS - Not allowed 
+                // HIDE FIELDS FOR DATES RELALED TO TRANSACTIONS - Not allowed 
                 //
                 btTransactions.Hide();
-                label29.Hide();
+                label12.Hide();
                 label4.Hide();
-                label30.Hide();
+                label7.Hide();
                 dateTimePickerFrom.Hide();
                 dateTimePickerTo.Hide();
             }
@@ -320,14 +351,14 @@ namespace RRDM4ATMsWin
             label13.Hide();
             panel4.Hide();
 
-            button1.Hide();
-            
+            buttonNext.Hide();
+
 
             buttonAdd.Hide();
 
             if (WFrom == 4)
             {
-                buttonAdd.Text = "Update"; 
+                buttonAdd.Text = "Update";
                 buttonAdd.Show();
             }
         }
@@ -336,7 +367,11 @@ namespace RRDM4ATMsWin
         //
         private void btTransactions_Click_1(object sender, EventArgs e)
         {
-
+            if (radioButtonNotLost.Checked == false & radioButtonLost.Checked == false)
+            {
+                MessageBox.Show("Please select if card is Stolen");
+                return;
+            }
             if (tbCustName.Text == "")
             {
                 MessageBox.Show("Please enter Customer Name!");
@@ -345,7 +380,7 @@ namespace RRDM4ATMsWin
 
             // Telephone Validation 
             string Telephone = tbCustPhone.Text;
-            
+
             if (Telephone != "")
             {
                 System.Text.RegularExpressions.Regex expr = new System.Text.RegularExpressions.Regex
@@ -372,8 +407,8 @@ namespace RRDM4ATMsWin
                     MessageBox.Show("invalid telephone");
                     return;
                 }
-            }  
-            
+            }
+
             string email = tbCustEmail.Text;
 
             if (email != "")
@@ -389,127 +424,117 @@ namespace RRDM4ATMsWin
                 {
                     MessageBox.Show("invalid email");
                     return;
-                } 
+                }
             }
 
             if (radioButton1.Checked == false & radioButton2.Checked == false & radioButton3.Checked == false &
-                 radioButtonDepositDiff.Checked == false & radioButtonReconcDiff.Checked == false & radioButtonOther.Checked == false)
+                 radioButtonDepositDiff.Checked == false & radioButtonReconcDiff.Checked == false & radioButtonOther.Checked == false
+                 & radioButtonNeverDone.Checked == false
+                  & radioButtonNeverReceived.Checked == false
+                   & radioButtonNotAsDescribed.Checked == false
+                    & radioButtonDefective.Checked == false
+                     & radioButtonCanceled.Checked == false
+                 )
             {
                 MessageBox.Show("Choose type of Dispute please");
                 return;
             }
 
             // Show transactions 
+           // tbCardNo.Text = "526402******0569"; 
+            if (radioButtonDepositDiff.Checked == true) // Deposits ...  ... 
+            {
+                WFilter = " WHERE CardNumber ='" + tbCardNo.Text + "' AND Operator ='" + WOperator + "'"
+                          + " AND (TransType = 23 OR TransType = 24 OR TransType = 25) ";
+            }
+            else // Withdrawls ... ... 
+            {
+                WFilter = " WHERE CardNumber ='" + tbCardNo.Text + "' AND Operator ='" + WOperator + "'"
+                          + " AND TransType = 11 ";
 
-        
-                if (radioButtonDepositDiff.Checked == true) // Deposits ...  ... 
+                if (tbAccNo.Text != "")
                 {
-                    WFilter = "CardNumber ='"+ tbCardNo.Text + "' AND Operator = @Operator "
-                              + " AND (TransType = 23 OR TransType = 24) ";
+                    WFilter = " WHERE AccNumber ='" + tbAccNo.Text + "' AND Operator ='" + WOperator + "'"
+                         + " AND TransType = 11 ";
                 }
-                else // Withdrawls ... ... 
-                {
-                    WFilter = "CardNumber ='" + tbCardNo.Text + "' AND Operator = @Operator "
-                              + " AND TransType = 11 ";
+            }
 
-                    //    + " WHERE CardNo = @CardNo AND TransType = 11 AND (AtmDtTime >= @WFromDate AND  AtmDtTime <= @WToDate) ";
-                }
+            if (WUniqueRecordId > 0) // Coming from pre-investigation or deposits where Tran is specified 
+            {
+                WFilter = " WHERE Operator ='" + WOperator + "'" + " AND UniqueRecordId = " + WUniqueRecordId; // Only this transaction  
 
-
-                if ((WFrom == 2 & WOrigin == "ATM") || WFrom == 3 || WFrom == 5) // Coming from pre-nvestigation or deposits where Tran is specified 
-                {
-                    //WFilter = " MaskRecordId = " + WTranNo;
-
-                    btTransactions.Hide();
-                }
-
-                if (WFrom == 7) // Coming from pre-nvestigation or deposits where Tran is specified 
-                {
-                    WFilter = "Operator = @Operator AND MaskRecordId = " + WTranNo; // Only this transaction  
-
-                    btTransactions.Hide();
-                }
+                btTransactions.Hide();
+            }
 
             WFromDate = dateTimePickerFrom.Value;
             WToDate = dateTimePickerTo.Value;
             WCardNo = tbCardNo.Text;
             //TEST
-            if (WCardNo.Length >15)
+            if (WCardNo.Length > 15)
             {
                 WCardNoBin = WCardNo.Substring(0, 6) + "******" + WCardNo.Substring(12, 4);
             }
-           
-            label13.Text = "TRANSACTIONS FOR: " + WCardNo;
 
-            string WSortValue = "SeqNo";
-            //string WhatFile = "Both";
-            int CallingFrom = 2; // Disputes 
+            label13.Text = "TRANSACTIONS FOR: " + WCardNo;
 
             if ((WFrom == 2 & WOrigin == "ATM") || WFrom == 3 || WFrom == 5 || WFrom == 7)
             {
-                
 
-                Rm.ReadBothMatchedUnMatchedFileTable(WOperator, WFilter, NullPastDate, NullPastDate, WSortValue, CallingFrom);
+                string WSortCriteria = "";
 
+                //No Dates Are selected
 
-                if (Rm.RecordFound == true)
+                DateTime FromDt = NullPastDate;
+                DateTime ToDt = NullPastDate;
+
+                int Mode = 3;
+
+                Mpa.ReadMatchingTxnsMasterPoolByRangeAndFillTable(WOperator, WSignedId, Mode, WFilter, WSortCriteria, FromDt, ToDt,2);
+
+                if (Mpa.RecordFound == true)
                 {
-                    // Record found in Unmatched / Matched
-                    dataGridView1.DataSource = Rm.RMDataTableLeft.DefaultView;
-                    textBox5.Text = Rm.TotalSelected.ToString(); 
+                    dataGridView1.DataSource = Mpa.MatchingMasterDataTableATMs.DefaultView;
+                    textBox5.Text = Mpa.TotalSelected.ToString();
                 }
-                else
+
+                if (Mpa.TotalSelected == 1)
                 {
-                    Tc.ReadInPoolTransSpecificForDisputesTable(WTranNo);
-                    dataGridView1.DataSource = Tc.TableDisputedTrans.DefaultView;
-                    textBox5.Text = Tc.TotalSelected.ToString(); 
-                  //  
+                    // Check if already within this cycle
+                    Dt.ReadDisputeTranByATMAndReplCycle(Mpa.TerminalId, Mpa.ReplCycleNo);
+
+                    if (Dt.RecordFound == true)
+                    {
+                        // Get the User Id 
+                        Di.ReadDispute(Dt.DisputeNumber);
+                        if (Di.RecordFound == true)
+                        {
+                            // Check if exist 
+                            UserToBeOwner = Di.OwnerId;
+                        }
+                    }
                 }
-             
             }
             else
             {
-                Rm.ReadBothMatchedUnMatchedFileTable(WOperator, WFilter, WFromDate, WToDate, WSortValue, CallingFrom);
-                if (Rm.RecordFound == true)
+                //With Selected dates 
+                Mpa.ReadMatchingTxnsMasterPoolByRangeAndFillTable(WOperator, WSignedId, 3, WFilter, "", WFromDate, WToDate,2);
+
+                if (Mpa.RecordFound == true)
                 {
-                    // Record found in Unmatched / Matched
-                    dataGridView1.DataSource = Rm.RMDataTableLeft.DefaultView;
-                    textBox5.Text = Rm.TotalSelected.ToString(); 
+                    dataGridView1.DataSource = Mpa.MatchingMasterDataTableATMs.DefaultView;
+                    textBox5.Text = Mpa.TotalSelected.ToString();
+
+                
                 }
                 else
                 {
-                    //Tc.ReadInPoolTransSpecificForDisputesTable(WMaskRecordId);
-                    //dataGridView1.DataSource = Tc.TableDisputedTrans.DefaultView;
-                    ////  
+
                 }
-              
             }
 
-           
+            // Show Grid
 
-                dataGridView1.Columns[0].Name = "Chosen";
-                dataGridView1.Columns[1].Name = "DisputedAmnt";
-                dataGridView1.Columns[2].Name = "Card";
-                dataGridView1.Columns[3].Name = "Account";
-                dataGridView1.Columns[4].Name = "Curr";
-                dataGridView1.Columns[5].Name = "Amount";
-                dataGridView1.Columns[6].Name = "TransDate";
-                dataGridView1.Columns[7].Name = "TransDescr";
-                dataGridView1.Columns[8].Name = "MaskRecordId";
-                dataGridView1.Columns[9].Name = "RMCategory";
-
-                // SIZE
-                dataGridView1.Columns["Chosen"].Width = 50; //
-                dataGridView1.Columns["DisputedAmnt"].Width = 60;
-                dataGridView1.Columns["Card"].Width = 60;
-                dataGridView1.Columns["Account"].Width = 60;
-                dataGridView1.Columns["Curr"].Width = 60;
-                dataGridView1.Columns["Amount"].Width = 70;
-                dataGridView1.Columns["TransDate"].Width = 70;
-                dataGridView1.Columns["TransDescr"].Width = 100;
-                dataGridView1.Columns["MaskRecordId"].Width = 60;
-                dataGridView1.Columns["RMCategory"].Width = 85;
-
+            ShowGrid();
 
             // NOTES for final comment 
             Order = "Descending";
@@ -522,31 +547,16 @@ namespace RRDM4ATMsWin
             }
             else labelNumberNotes2.Text = "0";
 
-            // Check If Data 
-            if (dataGridView1.Rows.Count == 0 )
-            {
-                //MessageBox.Show("No transactions to be posted");
-                Form2 MessageForm = new Form2("No transactions for this selection");
-                MessageForm.ShowDialog();
-
-                panel4.Hide(); 
-                label13.Hide();
-
-                return;
-            }
-               
-
-            textBox5.Text = Rm.TotalSelected.ToString();
+            textBox5.Text = Mpa.TotalSelected.ToString();
 
             label13.Show();
             panel4.Show();
 
-            button1.Show();
-
+            //buttonNext.Show();
 
             buttonAdd.Show();
 
-            textBoxMsgBoard.Text = "Review transactions and mark the dispute ones."; 
+            textBoxMsgBoard.Text = "Review transactions and mark the dispute ones.";
         }
 
         //
@@ -554,256 +564,457 @@ namespace RRDM4ATMsWin
         // 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            if (radioButton1.Checked == false & radioButton2.Checked == false &
-              radioButton3.Checked == false & radioButtonDepositDiff.Checked == false & radioButtonReconcDiff.Checked == false & radioButtonOther.Checked == false)
+            try
             {
-                MessageBox.Show("Please Choose Dispute type");
-                return;
-            }
+                if (radioButtonNotLost.Checked == false & radioButtonLost.Checked == false)
+                {
+                    MessageBox.Show("Please select if card is Stolen");
+                    return;
+                }
 
-            if (WFrom == 4) // Updating of already existing Dispute 
-            {
-                Di.ReadDispute(WInDispNo); 
+                if (radioButton1.Checked == false & radioButton2.Checked == false & radioButton3.Checked == false &
+                  radioButtonDepositDiff.Checked == false 
+                  & radioButtonReconcDiff.Checked == false
+                  & radioButtonOther.Checked == false
+                  & radioButtonNeverDone.Checked == false
+                   & radioButtonNeverReceived.Checked == false
+                    & radioButtonNotAsDescribed.Checked == false
+                     & radioButtonDefective.Checked == false
+                      & radioButtonCanceled.Checked == false
+                  )
+                {
+                    MessageBox.Show("Choose type of Dispute please");
+                    return;
+                }
+                // Validate Input For Invalid Characters 
 
-                Di.CardNo = tbCardNo.Text;
-                Di.AccNo = tbAccNo.Text;
-                Di.CustName = tbCustName.Text;
+                if (RRDMInputValidationRoutines.IsAlfaNumeric(tbCustName.Text))
+                {
+                    //   No Problem 
+                }
+                else
+                {
+                    MessageBox.Show("invalid characters in Customer Name");
+                    return;
+                }
+                if (RRDMInputValidationRoutines.IsAlfaNumeric(tbCardNo.Text))
+                {
+                    //   No Problem 
+                }
+                else
+                {
+                    MessageBox.Show("invalid characters in Card Number");
+                    return;
+                }
+                if (RRDMInputValidationRoutines.IsAlfaNumeric(tbAccNo.Text))
+                {
+                    //   No Problem 
+                }
+                else
+                {
+                    MessageBox.Show("invalid characters in Account Number");
+                    return;
+                }
 
                 if (tbCustPhone.Text == "")
                 {
-                    Di.CustPhone = "Not Availble";
+                    MessageBox.Show("Please Enter Customer Phone. It is Mandatory");
+                    return; 
+                }
+                
+                if (RRDMInputValidationRoutines.IsAlfaNumeric(tbCustPhone.Text))
+                {
+                    //   No Problem 
                 }
                 else
                 {
-                    Di.CustPhone = tbCustPhone.Text;
+                    MessageBox.Show("invalid characters in CustPhone ");
+                    return;
                 }
 
-                if (tbCustEmail.Text == "")
+                if (RRDMInputValidationRoutines.IsAlfaNumeric(textBox2.Text))
                 {
-                    Di.CustEmail = "Not Availble";
+                    //   No Problem 
                 }
                 else
                 {
-                    Di.CustEmail = tbCustEmail.Text;
+                    MessageBox.Show("invalid characters in RRN ");
+                    return;
                 }
 
-                if (radioButton1.Checked == true) Di.DispType = 1;
-                if (radioButton2.Checked == true) Di.DispType = 2;
-                if (radioButton3.Checked == true) Di.DispType = 3;
-                if (radioButtonDepositDiff.Checked == true) Di.DispType = 4;            
-                if (radioButtonReconcDiff.Checked == true) Di.DispType = 5;
-                if (radioButtonOther.Checked == true) Di.DispType = 6;
-                Di.OtherDispTypeDescr = textBox4.Text;
-                Di.DispComments = tbComments.Text;
-                Di.VisitType = comboBoxVisitType.Text;
-
-                Di.UpdateDisputeRecord(Di.DispId);
-
-                MessageBox.Show("Dispute with number : " + Di.DispId.ToString() + " has been updated");
-
-                WDispNo = Di.DispId; 
-
-                return; 
-            } 
-
-            if (int.TryParse(tbId.Text, out WDispNo))
-            {
-            }
-            else
-            {
-                //  MessageBox.Show(textBox1.Text, "Please enter a valid number!");
-                //   return;
-            }
-
-            int TranSelected = 0; 
-
-            for (int rows = 0; rows < dataGridView1.Rows.Count - 1; rows++)
-            {
-
-                chosen = (bool)dataGridView1.Rows[rows].Cells["Chosen"].Value;
-                if (WFrom != 5) WTranNo = (int)dataGridView1.Rows[rows].Cells["MaskRecordId"].Value;
-
-                if (chosen == true)
+                if (WFrom == 4) // Updating of already existing Dispute 
                 {
-                    TranSelected = TranSelected + 1; 
-                    // Check if already exist
-                    Dt.ReadDisputeTranForInPool(WTranNo);
-                    if (Dt.RecordFound == true & Dt.DisputeNumber != WDispNo)
+                    Di.ReadDispute(WInDispNo);
+
+                    Di.CardNo = tbCardNo.Text.Trim();
+                    Di.AccNo = tbAccNo.Text;
+                    Di.CustName = tbCustName.Text;
+
+                    if (tbCustPhone.Text == "")
                     {
-                        MessageBox.Show("MaskRecordId: " + WTranNo.ToString() + " Already exist in Dispute Number: "
-                                                                                                + Dt.DisputeNumber.ToString());
-                        WDispNo = Dt.DisputeNumber;
-                        return;
+                        Di.CustPhone = "Not Available";
+                    }
+                    else
+                    {
+                        Di.CustPhone = tbCustPhone.Text.Trim();
                     }
 
+                    if (tbCustEmail.Text == "")
+                    {
+                        Di.CustEmail = "Not Available";
+                    }
+                    else
+                    {
+                        Di.CustEmail = tbCustEmail.Text;
+                    }
+
+                    if (radioButton1.Checked == true) Di.DispType = 1;
+                    if (radioButton2.Checked == true) Di.DispType = 2;
+                    if (radioButton3.Checked == true) Di.DispType = 3;
+                    if (radioButtonDepositDiff.Checked == true) Di.DispType = 4;
+                    if (radioButtonReconcDiff.Checked == true) Di.DispType = 5;
+                    if (radioButtonOther.Checked == true) Di.DispType = 6;
+                    if (radioButtonNeverDone.Checked == true) Di.DispType = 7;
+                    if (radioButtonNotAsDescribed.Checked == true) Di.DispType = 8;
+                    if (radioButtonDefective.Checked == true) Di.DispType = 9;
+                    if (radioButtonCanceled.Checked == true) Di.DispType = 10;
+
+                    Di.OtherDispTypeDescr = textBox4.Text;
+                    Di.DispComments = tbComments.Text;
+                    Di.VisitType = comboBoxVisitType.Text;
+                    if (radioButtonLost.Checked == true)
+                    {
+                        Di.IsCardLostStolen = true;
+                    }
+                    else Di.IsCardLostStolen = false;
+
+                    string OwnerXx = Di.OwnerId;
+
+                    Di.UpdateDisputeRecord(Di.DispId);
+
+                    MessageBox.Show("Dispute with number : " + Di.DispId.ToString() + " has been updated");
+
+                    WDispNo = Di.DispId;
+
+                    return;
+                }
+
+                if (int.TryParse(tbId.Text, out WDispNo))
+                {
+                }
+                else
+                {
+                    //  MessageBox.Show(textBox1.Text, "Please enter a valid number!");
+                    //   return;
+                }
+
+                int TranSelected = 0;
+
+                int K = 0;
+
+                while (K <= (dataGridView1.Rows.Count - 1))
+                {
+                    WSelect = (bool)dataGridView1.Rows[K].Cells["Select"].Value;
+                    if (WFrom != 5) WUniqueRecordId = (int)dataGridView1.Rows[K].Cells["RecordId"].Value;
+
+                    if (WSelect == true)
+                    {
+                        TranSelected = TranSelected + 1;
+                        // Check if already exist
+                        // And was not cancelled
+                        Dt.ReadDisputeTranByUniqueRecordId(WUniqueRecordId);
+                       // Dt.RecordFound == true & Dt.DisputeActionId != 6 // NOT CANCELLED
+                       // In CASE Of Cancel another dispute can be oppened 
+                        if (Dt.RecordFound == true & Dt.DisputeNumber != WDispNo)
+                        {
+                            MessageBox.Show("RecordId: " + WUniqueRecordId.ToString() + " Already exist in Dispute Number: "
+                                                                                                    + Dt.DisputeNumber.ToString());
+                            WDispNo = Dt.DisputeNumber;
+                            return;
+                        }
+
+                    }
+
+                    K++; // Read Next entry of the table 
+                }
+
+                if (TranSelected == 0) // User didnt select a transaction 
+                {
+                    MessageBox.Show("Please select a transaction to be moved to dispute.");
+                    return;
+                }
+
+                if (tbId.Text == string.Empty || tbId.Text=="0")  // Create new dispute 
+                {
+                    Di.BankId = WOperator;
+                    Us.ReadUsersRecord(WSignedId); 
+                    Di.RespBranch = Us.Branch; // Creator Branch 
+                    Di.LastUpdateDtTm = DateTime.Now;
+                    Di.DispFrom = WFrom;
+                    Di.DispType = 0;
+
+                    if (radioButton1.Checked == true) Di.DispType = 1;
+                    if (radioButton2.Checked == true) Di.DispType = 2;
+                    if (radioButton3.Checked == true) Di.DispType = 3;
+                    if (radioButtonDepositDiff.Checked == true) Di.DispType = 4;
+                    if (radioButtonReconcDiff.Checked == true) Di.DispType = 5;
+                    if (radioButtonOther.Checked == true) Di.DispType = 6;
+                    if (radioButtonNeverDone.Checked == true) Di.DispType = 7;
+                    if (radioButtonNotAsDescribed.Checked == true) Di.DispType = 8;
+                    if (radioButtonDefective.Checked == true) Di.DispType = 9;
+                    if (radioButtonCanceled.Checked == true) Di.DispType = 10;
+
+                    Di.OpenDate = DateTime.Now;
+                    DateTime today = DateTime.Now;
+
+                    Gp.ReadParametersSpecificId(WOperator, "605", "1", "", ""); // LIMIT to be solved date // Dispute target dates 
+                    int QualityRange1 = (int)Gp.Amount;
+
+                    Di.TargetDate = today.AddDays(QualityRange1);
+
+                    Di.CloseDate = NullPastDate;
+                    Di.CardNo = tbCardNo.Text.Trim();
+                   
+                    Di.AccNo = tbAccNo.Text;
+                    Di.CustName = tbCustName.Text;
+
+                    if (tbCustPhone.Text == "")
+                    {
+                        Di.CustPhone = "Not Available";
+                    }
+                    else
+                    {
+                        Di.CustPhone = tbCustPhone.Text.Trim();
+                    }
+
+                    if (tbCustEmail.Text == "")
+                    {
+                        Di.CustEmail = "Not Available";
+                    }
+                    else
+                    {
+                        Di.CustEmail = tbCustEmail.Text;
+                    }
+
+                    Di.OtherDispTypeDescr = textBox4.Text;
+                    Di.DispComments = tbComments.Text;
+                    Di.VisitType = comboBoxVisitType.Text;
+
+                    if (radioButtonLost.Checked == true)
+                    {
+                        Di.IsCardLostStolen = true;
+                    }
+                    else Di.IsCardLostStolen = false;
+
+                    Di.OpenByUserId = WSignedId;
+
+                    if (AutoOwner == true & CreateDisputeForCaller == false)
+                    {
+                        RRDMUsers_Applications_Roles Uar = new RRDMUsers_Applications_Roles();
+
+                        Uar.ReadUsersVsApplicationsVsRolesByUser(UserToBeOwner);
+                        if (Uar.RecordFound == true & Uar.SecLevel == "04")
+                        {
+                            // Then OK USER STILL EXISTS 
+                        }
+                        else
+                        {
+                            // User no more an authoriser
+                            UserToBeOwner = ""; 
+                        }
+                      
+                        string MinUser;
+                        if (UserToBeOwner != "")
+                        {
+                            MinUser = UserToBeOwner;
+
+                            Di.HasOwner = true;
+                            Di.OwnerId = MinUser;
+
+                            label15.Show();
+                            label16.Show();
+                            textBoxOwnerId.Show();
+                            textBoxOwnerNM.Show();
+
+                            Us.ReadUsersRecord(MinUser);
+
+                            textBoxOwnerId.Text = Di.OwnerId;
+                            textBoxOwnerNM.Text = Us.UserName;
+                        }
+                        else
+                        {
+                            MinUser = Uar.ReadUsersVsApplicationsVsRolesByApplication_For_Disputes_Min_User("ATMS/CARDS");
+                            if (Uar.RecordFound == true)
+                            {
+                                Di.HasOwner = true;
+                                Di.OwnerId = MinUser;
+
+                                label15.Show();
+                                label16.Show();
+                                textBoxOwnerId.Show();
+                                textBoxOwnerNM.Show();
+
+                                Us.ReadUsersRecord(MinUser);
+
+                                textBoxOwnerId.Text = Di.OwnerId;
+                                textBoxOwnerNM.Text = Us.UserName;
+                            }
+                            else
+                            {
+                                Di.HasOwner = false;
+                                Di.OwnerId = "";
+                            }
+                        }              
+                    }
+                    else
+                    {
+                        if (WFrom == 5 || WFrom == 7 || CreateDisputeForCaller == true)
+                        {
+                            Di.HasOwner = true;
+                            Di.OwnerId = WSignedId;
+
+                            Us.ReadUsersRecord(WSignedId);
+
+                            textBoxOwnerId.Text = Di.OwnerId;
+                            textBoxOwnerNM.Text = Us.UserName;
+                        }
+                        else
+                        {
+                            Di.HasOwner = false;
+                            Di.OwnerId = "";
+                        }
+                    }
+
+         
+                    Di.Active = true;
+
+                    Di.DisputeCreatorId = WSignedId; 
+
+                    Di.Operator = WOperator;
+
+                    Di.DispId = Di.InsertDisputeRecord();
+
+                    Dt.DeleteTransOfthisDispute(Di.DispId);
+                    // Call Method to insert chosen transactions 
+                    InsertDisputeTrans(Di.DispId);
+
+                    // Create the action and Update the Mpa
+
+                    RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+                    Usi.ReadSignedActivityByKey(WSignRecordNo);
+
+                    if (Usi.StepLevel < 1)
+                    {
+                        Usi.StepLevel = 1;
+                        Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+                    }
+
+                    tbId.Text = Di.DispId.ToString();
+
+                    MessageBox.Show("New Dispute with number: " + tbId.Text + " has been created");
+                    WDispNo = Di.DispId;
+                    buttonNext.Show();
+                }
+                else
+                {
+                    // Update Dispute record 
+
+                    Di.ReadDispute(WDispNo);
+
+                    Di.OpenDate = DateTime.Now;
+
+                    Di.CardNo = tbCardNo.Text;
+                    Di.AccNo = tbAccNo.Text;
+                    Di.CustName = tbCustName.Text;
+
+                    if (tbCustPhone.Text == "")
+                    {
+                        Di.CustPhone = "Not Available";
+                    }
+                    else
+                    {
+                        Di.CustPhone = tbCustPhone.Text;
+                    }
+
+                    if (tbCustEmail.Text == "")
+                    {
+                        Di.CustEmail = "Not Available";
+                    }
+                    else
+                    {
+                        Di.CustEmail = tbCustEmail.Text;
+                    }
+
+                    if (radioButton1.Checked == true) Di.DispType = 1;
+                    if (radioButton2.Checked == true) Di.DispType = 2;
+                    if (radioButton3.Checked == true) Di.DispType = 3;
+                    if (radioButtonDepositDiff.Checked == true) Di.DispType = 4;
+                    if (radioButtonReconcDiff.Checked == true) Di.DispType = 5;
+                    if (radioButtonOther.Checked == true) Di.DispType = 6;
+                    if (radioButtonNeverDone.Checked == true) Di.DispType = 7;
+                    if (radioButtonNotAsDescribed.Checked == true) Di.DispType = 8;
+                    if (radioButtonDefective.Checked == true) Di.DispType = 9;
+                    if (radioButtonCanceled.Checked == true) Di.DispType = 10;
+
+                    Di.OtherDispTypeDescr = textBox4.Text;
+                    Di.DispComments = tbComments.Text;
+                    Di.VisitType = comboBoxVisitType.Text;
+
+                    if (radioButtonLost.Checked == true)
+                    {
+                        Di.IsCardLostStolen = true;
+                    }
+                    else Di.IsCardLostStolen = false;
+
+                    Di.UpdateDisputeRecord(Di.DispId);
+
+                    Dt.DeleteTransOfthisDispute(Di.DispId);
+                    // Call Method to insert chosen transactions 
+                    InsertDisputeTrans(Di.DispId);
+
+                    if (CreateDisputeForCaller ==true)
+                    {
+                        buttonNext.Text = "NEXT";
+
+                        buttonNext.Show(); 
+                    }
+
+                    MessageBox.Show("Dispute with number : " + Di.DispId.ToString() + " has been updated");
+                    WDispNo = Di.DispId;
+                    buttonNext.Show(); 
                 }
             }
-
-            if (TranSelected == 0) // User didnt select a transaction 
+            catch (Exception ex)
             {
-                MessageBox.Show("Please select a transaction to be moved to dispute.");
-                return; 
+                CatchDetails(ex);
             }
 
-            if (tbId.Text == String.Empty)  // Create new dispute 
-            {
-                Di.BankId = WOperator; 
-                Di.RespBranch = "251";
-                Di.LastUpdateDtTm = DateTime.Now;
-                Di.DispFrom = WFrom;
-                Di.DispType = 0;
-
-                if (radioButton1.Checked == true) Di.DispType = 1;
-                if (radioButton2.Checked == true) Di.DispType = 2;
-                if (radioButton3.Checked == true) Di.DispType = 3;
-                if (radioButtonDepositDiff.Checked == true) Di.DispType = 4;
-                if (radioButtonReconcDiff.Checked == true) Di.DispType = 5;
-                if (radioButtonOther.Checked == true) Di.DispType = 6;
-
-                Di.OpenDate = DateTime.Now;
-                DateTime today = DateTime.Now;
-
-                Gp.ReadParametersSpecificId(WOperator, "605", "1",  "", ""); // LIMIT to be solved date // Dispute target dates 
-                int QualityRange1 = (int)Gp.Amount;
-
-                Di.TargetDate = today.AddDays(QualityRange1);
-
-                Di.CloseDate = NullPastDate; 
-                Di.CardNo = tbCardNo.Text;
-                Di.AccNo = tbAccNo.Text;
-                Di.CustName = tbCustName.Text;
-
-                if (tbCustPhone.Text == "")
-                {
-                    Di.CustPhone = "Not Availble";
-                }
-                else
-                {
-                    Di.CustPhone = tbCustPhone.Text;
-                }
-
-                if (tbCustEmail.Text == "")
-                {
-                    Di.CustEmail = "Not Availble";
-                }
-                else
-                {
-                    Di.CustEmail = tbCustEmail.Text;
-                }
-
-                Di.OtherDispTypeDescr = textBox4.Text;
-                Di.DispComments = tbComments.Text;
-                Di.VisitType = comboBoxVisitType.Text;
-
-                Di.OpenByUserId = WSignedId;
-
-                Di.Active = true;
-
-                Di.Operator = WOperator; 
-
-                Di.InsertDisputeRecord();
-
-                //TEST 
-                Di.ReadDisputeLastNo(WSignedId);
-
-                Dt.DeleteTransOfthisDispute(Di.DispId);
-                // Call Method to insert chosen transactions 
-                InsertDisputeTrans(Di.DispId);
-
-                Us.ReadSignedActivityByKey(WSignRecordNo);
-
-                if (Us.StepLevel < 1)
-                {
-                    Us.StepLevel = 1;
-                    Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
-                }
-
-                //Identity = Di.Identity;
-                //MessageBox.Show(Identity.ToString());
-                //Identity = Di.nEOID;// nEOID = Convert.ToInt32(retVal);
-                //MessageBox.Show(Identity.ToString());
-
-                Di.ReadDisputeLastNo(WSignedId);
-
-                //MessageBox.Show(DispID.ToString());
-               
-                tbId.Text = Di.DispId.ToString();
-
-                MessageBox.Show("New Dispute with number: " + tbId.Text + " has been created");
-                WDispNo = Di.DispId;
-            }
-
-            else
-            {
-              // Update Dispute record 
-               
-                Di.OpenDate = DateTime.Now;
-                
-                Di.CardNo = tbCardNo.Text;
-                Di.AccNo = tbAccNo.Text;
-                Di.CustName = tbCustName.Text;
-
-                if (tbCustPhone.Text == "")
-                {
-                    Di.CustPhone = "Not Availble";
-                }
-                else
-                {
-                    Di.CustPhone = tbCustPhone.Text;
-                }
-
-                if (tbCustEmail.Text == "")
-                {
-                    Di.CustEmail = "Not Availble";
-                }
-                else
-                {
-                    Di.CustEmail = tbCustEmail.Text;
-                }
-                
-                if (radioButton1.Checked == true) Di.DispType = 1;
-                if (radioButton2.Checked == true) Di.DispType = 2;
-                if (radioButton3.Checked == true) Di.DispType = 3;
-                if (radioButtonDepositDiff.Checked == true) Di.DispType = 4;
-                if (radioButtonReconcDiff.Checked == true) Di.DispType = 5;           
-                if (radioButtonOther.Checked == true) Di.DispType = 6;
-                Di.OtherDispTypeDescr = textBox4.Text;
-                Di.DispComments = tbComments.Text;
-                Di.VisitType = comboBoxVisitType.Text;
-
-                Di.UpdateDisputeRecord(Di.DispId);
-
-                Dt.DeleteTransOfthisDispute(Di.DispId);
-                // Call Method to insert chosen transactions 
-                InsertDisputeTrans(Di.DispId);
-
-                MessageBox.Show("Dispute with number : " + Di.DispId.ToString() + " has been updated");
-                WDispNo = Di.DispId;
-            }
-      
         }
-
 
         // Insert Dispute ALL Transactions 
         private void InsertDisputeTrans(int InDispNo)
         {
-            TranCount = 0; 
-            // INSERT TRANSACTIONS FOR OUR ATMS
+            try
+            {
+                TranCount = 0;
+                // INSERT TRANSACTIONS FOR OUR ATMS
 
-                for (int rows = 0; rows < dataGridView1.Rows.Count - 1; rows++)
+                int K = 0;
+
+                while (K <= (dataGridView1.Rows.Count - 1))
                 {
-                    chosen = (bool)dataGridView1.Rows[rows].Cells["Chosen"].Value;
-                    if (WFrom != 5) WTranNo = (int)dataGridView1.Rows[rows].Cells["MaskRecordId"].Value;
+                    WSelect = (bool)dataGridView1.Rows[K].Cells["Select"].Value;
+                    if (WFrom != 5) WUniqueRecordId = (int)dataGridView1.Rows[K].Cells["RecordId"].Value;
 
-                    DispAmnt = (decimal)dataGridView1.Rows[rows].Cells["DisputedAmnt"].Value;
+                    DispAmnt = (decimal)dataGridView1.Rows[K].Cells["DisputedAmnt"].Value;
 
-                    if (chosen == true)
+                    if (WSelect == true)
                     {
                         // Check if already exist
-                        Dt.ReadDisputeTranForInPool(WTranNo);
+                        Dt.ReadDisputeTranByUniqueRecordId(WUniqueRecordId);
                         if (Dt.RecordFound == true)
                         {
-                            MessageBox.Show("RecordId: " + WTranNo.ToString() + " Already exist in Dispute Number: "
+                            MessageBox.Show("RecordId: " + WUniqueRecordId.ToString() + " Already exist in Dispute Number: "
                                 + Dt.DisputeNumber.ToString());
                             WDispNo = Dt.DisputeNumber;
                             return;
@@ -812,7 +1023,7 @@ namespace RRDM4ATMsWin
                         {
                             if (WFrom == 5) // Record to be found from InPool
                             {
-                                Ec.ReadErrorsTableSpecificByTransNo(WTranNo);
+                                Ec.ReadErrorsTableSpecificByUniqueRecordId(WUniqueRecordId);
                                 if (Ec.RecordFound == true)
                                 {
                                     Dt.ErrNo = Ec.ErrNo; // GET THE ERROR No from Error table 
@@ -821,176 +1032,227 @@ namespace RRDM4ATMsWin
                             }
                             else // Not coming from Cash reconciliation 
                             {
-                                Ec.ReadErrorsTableSpecificByMaskRecordId(WTranNo);
+                                Ec.ReadErrorsTableSpecificByUniqueRecordId(WUniqueRecordId);
                                 if (Ec.RecordFound == true)
                                 {
                                     Dt.ErrNo = Ec.ErrNo; // GET THE ERROR No from Error table 
                                 }
                                 else Dt.ErrNo = 0;
-
                             }
-                          
+
                             // Find Details of Masked REcord 
 
-                            if (WFrom == 5) // Record to be found from InPool
+                            string SelectionCriteria = " WHERE UniqueRecordId = " + WUniqueRecordId;
+                            Mpa.ReadMatchingTxnsMasterPoolBySelectionCriteria(SelectionCriteria,2);
+
+                            if (Mpa.RecordFound == true)
                             {
-                                //TEST
-                                Tc.ReadInPoolTransSpecific(WTranNo);
-                                if (Tc.RecordFound == true)
-                                {
-                                    Dt.SystemTarget = Tc.SystemTarget;
-                                    Dt.ReplCycle = Tc.SesNo;
-                                    Dt.StartTrxn = Tc.StartTrxn;
-                                    Dt.EndTrxn = Tc.EndTrxn;
-                                    Dt.ErrNo = Tc.ErrNo;
-                                    Dt.MaskRecordId = Tc.MaskRecordId;
+                                //FoundInMatchedUnMatched = true;
+                                Dt.UniqueRecordId = Mpa.UniqueRecordId;
 
-                                    Dt.BankId = Tc.BankId;
-                                    Dt.DbTranNo = WTranNo;
-                                    Dt.TranDate = Tc.AtmDtTime;
-                                    Dt.AtmNo = Tc.AtmNo;
+                                Dt.BankId = Mpa.Operator;
+                                Dt.DbTranNo = Mpa.SeqNo;
+                                Dt.TranDate = Mpa.TransDate;
+                                Dt.AtmNo = Mpa.TerminalId;
 
+                                Dt.CardNo = Mpa.CardNumber;
+                                Dt.AccNo = Mpa.AccNumber;
+                                Dt.CurrencyNm = Mpa.TransCurr;
+                                Dt.TranAmount = Mpa.TransAmount;
 
-                                    Dt.CardNo = Tc.CardNo;
-                                    Dt.AccNo = Tc.AccNo;
-                                    Dt.CurrencyNm = Tc.CurrDesc;
-                                    Dt.TranAmount = Tc.TranAmount;
-
-                                    Dt.TransType = Tc.TransType;
-                                    Dt.TransDesc = Tc.TransDesc;
-
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Record Not Found");
-                                    return;
-                                }
+                                Dt.TransType = Mpa.TransType;
+                                Dt.TransDesc = Mpa.TransDescr;
+                                Dt.ReplCycle = Mpa.ReplCycleNo; 
                             }
-                            if (WFrom != 5) // Transaction doesnot come from ATMs cash reconciliation but comes from RM Matched /Unmatched  it can be 7 or 
+                            else
                             {
-                                Rm.ReadMatchedORUnMatchedFileSpecificRecordByMaskId("Matched", WTranNo);
-                                if (Rm.RecordFound == true)
-                                {
-                                    //FoundInMatchedUnMatched = true;
-                                    Dt.MaskRecordId = Rm.MaskRecordId;
-
-                                    Dt.BankId = Rm.Operator;
-                                    Dt.DbTranNo = Rm.SeqNo;
-                                    Dt.TranDate = Rm.TransDate;
-                                    Dt.AtmNo = Rm.TerminalId;
-
-                                    Dt.CardNo = Rm.CardNumber;
-                                    Dt.AccNo = Rm.AccNumber;
-                                    Dt.CurrencyNm = Rm.TransCurr;
-                                    Dt.TranAmount = Rm.TransAmount;
-
-                                    Dt.TransType = Rm.TransType;
-                                    Dt.TransDesc = Rm.TransDescr;
-
-                                }
-                                else
-                                {
-                                    Rm.ReadMatchedORUnMatchedFileSpecificRecordByMaskId("UnMatched", WTranNo);
-                                    if (Rm.RecordFound == true)
-                                    {
-                                        //FoundInMatchedUnMatched = true;
-                                        Dt.MaskRecordId = Rm.MaskRecordId;
-
-                                        Dt.BankId = Rm.Operator;
-                                        Dt.DbTranNo = Rm.SeqNo;
-                                        Dt.TranDate = Rm.TransDate;
-                                        Dt.AtmNo = Rm.TerminalId;
-
-                                        Dt.CardNo = Rm.CardNumber;
-                                        Dt.AccNo = Rm.AccNumber;
-                                        Dt.CurrencyNm = Rm.TransCurr;
-                                        Dt.TranAmount = Rm.TransAmount;
-
-                                        Dt.TransType = Rm.TransType;
-                                        Dt.TransDesc = Rm.TransDescr;
-
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Record Not Found");
-                                        return;
-                                    }
-                                }
+                                MessageBox.Show("Record Not Found");
+                                return;
                             }
 
-                            
-                         
+
                             Dt.DisputeNumber = InDispNo;
                             Dt.DispDtTm = DateTime.Now;
                             Dt.Origin = WOrigin;
-
-                           
 
                             //// READ ATM TO FIND REPL GROUP
                             Ac.ReadAtm(Dt.AtmNo);
                             if (Ac.RecordFound)
                             {
                                 Dt.ReplGroup = Ac.AtmsReplGroup;
-                              
+
                             }
                             else
                             {
-                                Dt.ReplGroup = 0 ;
+                                Dt.ReplGroup = 0;
                             }
 
                             Dt.CardType = "Chip";
-                           
-                            
+
                             Dt.DisputedAmt = DispAmnt;
                             Dt.DisputeActionId = 0;
                             Dt.ActionDtTm = Di.TargetDate;
                             Dt.DecidedAmount = 0;
                             Dt.ReasonForAction = 0;
                             Dt.ActionComment = "";
-                            Dt.PostDate = NullPastDate; 
+                            Dt.PostDate = NullPastDate;
                             Dt.ClosedDispute = false;
 
                             TranCount = TranCount + 1;
                             //Set up printing variables 
                             if (TranCount == 1)
                             {
-                                WD21 = Dt.TranDate.Date.ToString();
-                                WD22 = Dt.AtmNo.ToString();
+                                WD21 = Dt.TranDate.ToString();
+                                if (Mpa.ACCEPTOR_ID != "")
+                                {
+                                    WD22 = Mpa.ACCEPTOR_ID+ " "+ Mpa.ACCEPTORNAME ;
+                                }
+                                else
+                                {
+                                    WD22 = Dt.AtmNo.ToString();
+                                }
+                                
                                 WD23 = Dt.TranAmount.ToString();
                                 WD24 = Dt.DisputedAmt.ToString();
+
+                                if (Mpa.RRNumber != "0")
+                                {
+                                    WD45 = Mpa.RRNumber.ToString();
+                                }
+                                if (Mpa.TraceNoWithNoEndZero > 0)
+                                {
+                                    WD45 = Mpa.TraceNoWithNoEndZero.ToString();
+                                }
                             }
 
                             if (TranCount == 2)
                             {
-                                WD25 = Dt.TranDate.Date.ToString();
-                                WD26 = Dt.AtmNo.ToString();
+                                WD25 = Dt.TranDate.ToString();
+                                if (Mpa.ACCEPTOR_ID != "")
+                                {
+                                    WD26 = Mpa.ACCEPTOR_ID + " " + Mpa.ACCEPTORNAME;
+                                }
+                                else
+                                {
+                                    WD26 = Dt.AtmNo.ToString();
+                                }
                                 WD27 = Dt.TranAmount.ToString();
                                 WD28 = Dt.DisputedAmt.ToString();
+
+                                if (Mpa.RRNumber != "0")
+                                {
+                                    WD46 = Mpa.RRNumber.ToString();
+                                }
+                                if (Mpa.TraceNoWithNoEndZero > 0)
+                                {
+                                    WD46 = Mpa.TraceNoWithNoEndZero.ToString();
+                                }
                             }
 
                             if (TranCount == 3)
                             {
-                                WD29 = Dt.TranDate.Date.ToString();
-                                WD30 = Dt.AtmNo.ToString();
+                                WD29 = Dt.TranDate.ToString();
+                                if (Mpa.ACCEPTOR_ID != "")
+                                {
+                                    WD30 = Mpa.ACCEPTOR_ID + " " + Mpa.ACCEPTORNAME;
+                                }
+                                else
+                                {
+                                    WD30 = Dt.AtmNo.ToString();
+                                }
                                 WD31 = Dt.TranAmount.ToString();
                                 WD32 = Dt.DisputedAmt.ToString();
+
+                                if (Mpa.RRNumber != "0")
+                                {
+                                    
+                                       WD47 = Mpa.RRNumber.ToString();
+                                }
+                                if (Mpa.TraceNoWithNoEndZero > 0)
+                                {
+                                    WD47 = Mpa.TraceNoWithNoEndZero.ToString();
+                                }
                             }
 
                             if (TranCount == 4)
                             {
-                                WD33 = Dt.TranDate.Date.ToString();
-                                WD34 = Dt.AtmNo.ToString();
+                                WD33 = Dt.TranDate.ToString();
+                                if (Mpa.ACCEPTOR_ID != "")
+                                {
+                                    WD34 = Mpa.ACCEPTOR_ID + " " + Mpa.ACCEPTORNAME;
+                                }
+                                else
+                                {
+                                    WD34 = Dt.AtmNo.ToString();
+                                }
                                 WD35 = Dt.TranAmount.ToString();
                                 WD36 = Dt.DisputedAmt.ToString();
+
+                                if (Mpa.RRNumber != "0")
+                                {
+                                    WD48 = Mpa.RRNumber.ToString();
+                                }
+                                if (Mpa.TraceNoWithNoEndZero > 0)
+                                {
+                                    WD48 = Mpa.TraceNoWithNoEndZero.ToString();
+                                }
                             }
                             Dt.Operator = WOperator;
                             Dt.InsertDisputeTran(InDispNo);
-
                             WDispNo = InDispNo;
+
+                           // Create Action Occurance
+                            RRDMActions_Occurances Aoc = new RRDMActions_Occurances();
+                            string WUniqueRecordIdOrigin = "Master_Pool";
+                            string WMaker_ReasonOfAction = "Money Difference";
+
+                            string WOriginWorkFlow = "";
+
+                            int WAction = 1;
+
+                            WOriginWorkFlow = "Dispute";
+
+                            if (WFrom == 5)
+                            {
+                                WOriginWorkFlow = "Replenishment";
+                            }
+
+                            if (WFrom == 7)
+                            {
+                                WOriginWorkFlow = "Reconciliation";
+                            }
+
+                            string WActionId = "05";
+
+                            Aoc.CreateActionsTxnsPerActionId(WOperator, WSignedId,
+                                                                WActionId, WUniqueRecordIdOrigin,
+                                                                WUniqueRecordId, Mpa.TransCurr, Mpa.TransAmount,
+                                                                Mpa.TerminalId, Mpa.ReplCycleNo, WMaker_ReasonOfAction, WOriginWorkFlow);
+
+                            // UPDATE ACTION STAGE TO '03'
+                            string WStage = "02"; // Confirmed by maker 
+                            Aoc.UpdateOccurancesStage("Master_Pool", Mpa.UniqueRecordId, WStage, DateTime.Now, WReconcCycleNo, WSignedId);
+                            // Also Authoriser 
+                            // Also Update Stage as "03"
+                            Aoc.UpdateOccurancesForAuthoriser("Master_Pool", Mpa.UniqueRecordId, WSignedId, 999, WSignedId);
+
+                            // UPDATE ACTIONTYPE Mpa
+
+                            Mpa.ActionType = WActionId; 
+                            Mpa.Comments = "Transaction moved to dispute with ID="+InDispNo.ToString();
+                            Mpa.UpdateMpaRecordsWithActionType(Mpa.UniqueRecordId, Mpa.ActionType
+                                          , Mpa.Comments, 2); 
                         }
                     }
+                    K++; // Read Next entry of the table 
                 }
+            }
+            catch (Exception ex)
+            {
+                CatchDetails(ex);
+            }
 
+           
         }
 
         //AUDIT TRAIL : GET IMAGE AND INSERT IT IN AUDIT TRAIL 
@@ -1006,55 +1268,101 @@ namespace RRDM4ATMsWin
             //     At.InsertRecord(InCategory, InSubCategory, InTypeOfChange, InUser, SCREENa);
         }
 
-
         // Print Dispute 
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            //Create Printing 
-            Di.ReadDispute(WDispNo);
-            WD11 = Di.CustName;
-            WD12 = Di.AccNo;
-            WD13 = Di.CardNo;
-            //TEST
-            WD14 = "Y";
-            WD15 = "N";
-
-            WD16 = Di.CustPhone;
-            WD17 = Di.CustEmail;
-
-            string TDispType = "251"; // Parameter Id for dispute types
-
-            Gp.ReadParametersSpecificId(WOperator, TDispType.ToString(), Di.DispType.ToString(), "", "");
-
-            WD37 = Gp.OccuranceNm;
-
-            if (Di.DispType == 5)
+            if (CreateDisputeForCaller == false)
             {
-                WD38 = Di.OtherDispTypeDescr; 
+                //Create Printing 
+                if (WDispNo == 0)
+                {
+                    MessageBox.Show("No dispute created yet");
+                    return;
+                }
+                Di.ReadDispute(WDispNo);
+                WD11 = Di.CustName;
+                WD12 = Di.AccNo;
+                WD13 = Di.CardNo;
+                //TEST
+                if (Mpa.TXNSRC == "1")
+                {
+                    WD14 = "Y";
+                    WD15 = "N";
+                }
+                else
+                {
+                    WD14 = "N";
+                    WD15 = "Y";
+                }
+
+                if (Mpa.TerminalType == "20")
+                {
+                    WD50 = "Y";
+                    WD14 = "N";
+                    WD15 = "N";
+                }
+                else
+                {
+                    WD50 = "N";
+                }
+
+                WD16 = Di.CustPhone;
+                WD17 = Di.CustEmail;
+
+                string InBankIdLogo = WOperator;
+
+                string TDispType = "251"; // Parameter Id for dispute types
+
+                Gp.ReadParametersSpecificId(WOperator, TDispType.ToString(), Di.DispType.ToString(), "", "");
+
+                WD37 = Gp.OccuranceNm;
+
+                if (Di.DispType == 5)
+                {
+                    WD38 = Di.OtherDispTypeDescr;
+                }
+                else
+                {
+                    WD38 = tbComments.Text;
+                }
+
+                WD40 = Di.DispId.ToString();
+
+                RRDMUsersRecords Us = new RRDMUsersRecords();
+                Us.ReadUsersRecord(WSignedId);
+
+                WD41 = Us.UserName;
+
+                if (radioButtonNotLost.Checked == true)
+                {
+                    WD39 = "NOT LOST CARD";
+                }
+                else
+                {
+                    WD39 = "LOST/STOLEN CARD";
+                }
+
+                Form56R5 ReportDispute = new Form56R5(WD11, WD12, WD13, WD14, WD15, WD16, WD17,
+                            WD21, WD22, WD23, WD24,
+                            WD25, WD26, WD27, WD28,
+                            WD29, WD30, WD31, WD32,
+                            WD33, WD34, WD35, WD36,
+                            WD37, WD38,
+                            WD40, WD41, InBankIdLogo, WD39, WD45, WD46, WD47, WD48, WD50);
+
+                ReportDispute.Show();
             }
             else
             {
-                WD38 = ""; 
-            }
-
-            WD40 = Di.DispId.ToString(); 
-
-            RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
-            Us.ReadUsersRecord(WSignedId);
-
-            WD41 = Us.UserName;
-
-            Form56R5 ReportDispute = new Form56R5(WD11, WD12, WD13, WD14, WD15, WD16, WD17,
-                        WD21, WD22, WD23, WD24,
-                        WD25, WD26, WD27, WD28,
-                        WD29, WD30, WD31, WD32,
-                        WD33, WD34, WD35, WD36,
-                        WD37, WD38,
-                        WD40, WD41); 
-
-            ReportDispute.Show();
+                //CreateDisputeForCaller we go to dispute 
+                // THIS WFrom = 22 
+                // You go to Form109 
+                Form4 NForm4; 
+                NForm4 = new Form4(WSignedId, WSignRecordNo, WOperator, WOperator, WDispNo);
+                //NForm4.FormClosed += NForm4_FormClosed;
+                NForm4.ShowDialog();
+            }       
         }
 
         protected override CreateParams CreateParams
@@ -1072,18 +1380,17 @@ namespace RRDM4ATMsWin
 
         }
 
-
-//**********************************************************************
-// START NOTES 
-//**********************************************************************
+        //**********************************************************************
+        // START NOTES 
+        //**********************************************************************
         // NOTES 
         string Order;
 
         string WParameter4;
         string WSearchP4;
-        RRDMCaseNotes Cn = new RRDMCaseNotes(); 
+        RRDMCaseNotes Cn = new RRDMCaseNotes();
 
-// Add ATTACHements for notes 
+        // Add ATTACHements for notes 
         private void buttonNotes2_Click(object sender, EventArgs e)
         {
             if (Di.DispId != 0)
@@ -1093,16 +1400,16 @@ namespace RRDM4ATMsWin
                 string WParameter4 = "Notes For Dispute " + "DispNo: " + Di.DispId.ToString();
                 string SearchP4 = "";
                 string WMode = "Update";
-                NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, WParameter3, WParameter4, WMode, SearchP4);
+                NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, "", WParameter3, WParameter4, WMode, SearchP4);
                 NForm197.FormClosed += NForm197_FormClosed;
                 NForm197.ShowDialog();
             }
             else
             {
-                MessageBox.Show("Open dispute and then insert attachements"); 
-            } 
+                MessageBox.Show("Open dispute and then insert attachements");
+            }
         }
-// Set Number of notes 
+        // Set Number of notes 
         void NForm197_FormClosed(object sender, FormClosedEventArgs e)
         {
             // NOTES for final comment 
@@ -1116,37 +1423,163 @@ namespace RRDM4ATMsWin
             }
             else labelNumberNotes2.Text = "0";
         }
-// Finish 
+        // Finish 
         private void buttonFinish_Click(object sender, EventArgs e)
         {
-            this.Close(); 
+            this.Close();
         }
-// Show Map Info for all tansactions by time 
+        // Show Map Info for all tansactions by time 
         private void buttonShowMaps_Click(object sender, EventArgs e)
         {
             Form350_Route NForm350_Route;
+
             NForm350_Route = new Form350_Route("TRANSACTIONS MADE ON MAP BY TIME");
 
             NForm350_Route.ShowDialog();
         }
-// Check if request is coming from JCC Or Visa 
+        // Check if request is coming from JCC Or Visa 
         private void comboBoxVisitType_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxVisitType.Text == "Through visa request" || comboBoxVisitType.Text == "Through JCC request")
             {
                 label10.Show();
-                textBox2.Show(); 
+                textBox2.Show();
             }
             else
             {
                 label10.Hide();
-                textBox2.Hide(); 
+                textBox2.Hide();
             }
         }
-//**********************************************************************
-// END NOTES 
-//**********************************************************************    
-      
+        //**********************************************************************
+        // END NOTES 
+        //**********************************************************************  
+
+        // Show Grid 
+
+        public void ShowGrid()
+        {
+
+            // Check If Data 
+            if (dataGridView1.Rows.Count == 0)
+            {
+                Form2 MessageForm = new Form2("No transactions for this selection");
+                MessageForm.ShowDialog();
+
+                panel4.Hide();
+                label13.Hide();
+
+                return;
+            }
+
+
+            //MatchingMasterDataTableATMs.Columns.Add("MatchingCateg", typeof(string));
+            //MatchingMasterDataTableATMs.Columns.Add("RMCateg", typeof(string));
+            //MatchingMasterDataTableATMs.Columns.Add("Card", typeof(string));
+
+            DataGridViewCellStyle style = new DataGridViewCellStyle();
+            style.Format = "N2";
+
+            //    MatchingMasterDataTableATMs.Columns.Add("Select", typeof(bool));
+            //    MatchingMasterDataTableATMs.Columns.Add("DisputedAmnt", typeof(decimal));
+            //    MatchingMasterDataTableATMs.Columns.Add("RecordId", typeof(int));
+
+            dataGridView1.Columns[0].Width = 50; // Select 
+            //dataGridView1.Columns[0].Name = "Select";
+            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[1].Width = 60; // Disputed Amnt
+            //dataGridView1.Columns[1].Name = "Disputed Amnt";
+            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dataGridView1.Columns[2].Width = 60; // Record Id
+            //dataGridView1.Columns[2].Name = "RecordId";
+            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[3].Width = 40; // Action
+            dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[4].Width = 70; // Terminal
+            dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[5].Width = 50; // Terminal Type, ATM, POS etc 
+            dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[6].Width = 90; // Descr
+            dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[7].Width = 40; // Err
+            dataGridView1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[8].Width = 40; // Mask
+            dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[9].Width = 90; // Account
+            dataGridView1.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView1.Columns[9].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
+
+            dataGridView1.Columns[10].Width = 50; // Ccy
+            dataGridView1.Columns[10].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[11].Width = 80; // Amount
+            dataGridView1.Columns[11].DefaultCellStyle = style;
+            dataGridView1.Columns[11].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridView1.Columns[11].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
+            dataGridView1.Columns[11].DefaultCellStyle.ForeColor = Color.Red;
+            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.Purple;
+
+            dataGridView1.Columns[12].Width = 120; // Date
+            dataGridView1.Columns[12].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+
+            int tempUniqueNo = 0;
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                //WSeqNo = (int)rowSelected.Cells[0].Value;
+                //bool WSelect = (bool)row.Cells[1].Value;
+
+                tempUniqueNo = (int)row.Cells[2].Value;
+
+                Dt.ReadDisputeTranByUniqueRecordId(tempUniqueNo);
+                if (Dt.RecordFound == true)
+                {
+                    row.DefaultCellStyle.BackColor = Color.Red;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
+                else
+                {
+                    row.DefaultCellStyle.BackColor = Color.White;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
+
+            }
+        }
+        // Catch Details
+        private static void CatchDetails(Exception ex)
+        {
+            RRDMLog4Net Log = new RRDMLog4Net();
+
+            StringBuilder WParameters = new StringBuilder();
+
+            WParameters.Append("User : ");
+            WParameters.Append("NotAssignYet");
+            WParameters.Append(Environment.NewLine);
+
+            WParameters.Append("ATMNo : ");
+            WParameters.Append("NotDefinedYet");
+            WParameters.Append(Environment.NewLine);
+
+            string Logger = "RRDM4Atms";
+            string Parameters = WParameters.ToString();
+
+            Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+            System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                + " . Application will be aborted! Call controller to take care. ");
+
+            // Environment.Exit(0);
+        }
     }
 }
 

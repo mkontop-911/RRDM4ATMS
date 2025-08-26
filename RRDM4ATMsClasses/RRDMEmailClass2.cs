@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Net.Mail;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMEmailClass2
+    public class RRDMEmailClass2 : Logger
     {
+        public RRDMEmailClass2() : base() { }
+
 
         RRDMBanks Ba = new RRDMBanks(); 
 
@@ -24,7 +18,12 @@ namespace RRDM4ATMs
         public string ErrorOutput;
 
         public void SendEmail(string Operator, string Recipient, string Subject, string EmailBody)
-        { 
+        {
+            if (Operator == "BCAIEGCX")
+            {
+                return;
+            }
+
             try
             {
             MailMessage message = new MailMessage();
@@ -64,10 +63,8 @@ namespace RRDM4ATMs
             }
             catch (Exception ex)
             {
-                ErrorFound = true;
-                ErrorOutput = "An error occurred in RRDMEmailClass2............. " + ex.Message;
-                MessageSent = false;
-                return; 
+
+                CatchDetails(ex);
             }
         }
     }

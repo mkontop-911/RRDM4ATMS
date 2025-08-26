@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Drawing;
 using System.Configuration;
@@ -20,10 +17,12 @@ namespace RRDM4ATMsGIS
          * Keep a global list of ATM records. It is updated in Populate_GridView() 
          * every time records are brought from the database
          */
-        static private List<ATMDetails> ATMsCache = new List<ATMDetails>();
-
+        static private List<RRDMTempAtmsLocation.ATMDetails> ATMsCache = new List<RRDMTempAtmsLocation.ATMDetails>();
 
         static private int GroupFilter;
+        static private string UserFilter;
+        static private string GroupFilterDescr;
+        static private string StatusMsg;
 
         /* ================================================================================== */
         protected void Page_Load(object sender, EventArgs e)
@@ -32,20 +31,52 @@ namespace RRDM4ATMsGIS
             if (!IsPostBack) // Initial load
             {
                 Int32 GroupNo;
+                string User;
+                string GroupDescr;
+
 #if DEBUG
                 PrintLog("   --> Initial Load");
 #endif
                 UpdateFooter("ftrCenter", " ");
 
-                string Id = Request.QueryString["GroupNo"];
-                if (Id != null)
+                User = Request.QueryString["UserId"];
+                if (User != null)
+                { 
+                    UserFilter = User;
+                }
+                else
+                {
+                    UserFilter = "";
+                }
+
+
+                GroupDescr = Request.QueryString["GroupDescr"];
+                if (GroupDescr != null)
+                {
+                    GroupFilterDescr = GroupDescr;
+                }
+                else
+                {
+                    GroupFilterDescr = "";
+                }
+
+                string qs = Request.QueryString["GroupNo"];
+                if (qs != null)
                 {
                     try
                     {
-                        GroupNo = int.Parse(Id);
+                        string strMsg;
+                        GroupNo = int.Parse(qs);
                         GroupFilter = GroupNo;
-
-                        string strMsg = string.Format("Displaying ATMs from Group No: {0}", GroupFilter);
+                        if (GroupFilterDescr == "") // Set the text to appear at the bottom (on the 'Status Line')
+                        {
+                            strMsg = string.Format("Displaying ATMs from Group No: {0}", GroupFilter); 
+                        }
+                        else
+                        {
+                            strMsg = string.Format("Displaying ATMs from Group: '{0}'", GroupFilterDescr);
+                        }
+                        StatusMsg = strMsg;
                         UpdateStatusLine(strMsg);
 #if DEBUG
                         PrintLog(strMsg);
@@ -65,8 +96,16 @@ namespace RRDM4ATMsGIS
                 {
                     GroupFilter = -1;
                 }
+
+               if (GroupFilter == -1)
+                {
+                    GroupFilterDescr = "";
+                    UserFilter = "";
+                }
 #if DEBUG
                 PrintLog(string.Format(" GroupFilter = {0}", GroupFilter));
+                PrintLog(string.Format(" UserFilter = {0}", UserFilter));
+                PrintLog(string.Format(" GroupFilterDescr = {0}", GroupFilterDescr));
 #endif
 
             }
@@ -162,7 +201,7 @@ namespace RRDM4ATMsGIS
             PrintLog("Populate_GridView()");
 #endif
             ATMsCache.Clear();
-            List<ATMDetails> ListOfATMs = new List<ATMDetails>();
+            List<RRDMTempAtmsLocation.ATMDetails> ListOfATMs = new List<RRDMTempAtmsLocation.ATMDetails>();
             string CS = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
             using (SqlConnection con = new SqlConnection(CS))
             {
@@ -171,16 +210,22 @@ namespace RRDM4ATMsGIS
                     string sqlText = "";
                     SqlCommand sqlCmd = new SqlCommand();
                     sqlCmd.Connection = con;
-                    if (cbAllRecords.Checked)
+                    if (cbAllRecords.Checked) /* The DisplayAll checkbox is checked, so get all records.. */
                     {
-                        /* The DisplayAll checkbox is checked, so get all records.. */
-                        if (GroupFilter == -1)
+                        if (GroupFilter == -1) // No Group specified, so select only records with Mode = 1 
                         {
-                            sqlText = "SELECT * from [TempAtmLocation]";
+                            sqlText = "SELECT * from [TempAtmLocation] WHERE Mode = 1";
                         }
-                        else
+                        else // A Group is specified, so select only records with Mode = 2
                         {
-                            sqlText = " SELECT * FROM TempAtmLocation WHERE GroupNo = @GN";
+                            if (UserFilter.Length > 0)
+                            {
+                                sqlText = " SELECT * FROM TempAtmLocation WHERE Mode = 2 AND UserId = '" + UserFilter + "' AND GroupNo = @GN";
+                            }
+                            else // No User ID was passed
+                            {
+                                sqlText = " SELECT * FROM TempAtmLocation WHERE Mode = 2 AND GroupNo = @GN";
+                            }
                             SqlParameter sqlparam = new SqlParameter();
                             sqlparam.ParameterName = "@GN";
                             sqlparam.SqlDbType = SqlDbType.Int;
@@ -189,21 +234,27 @@ namespace RRDM4ATMsGIS
                         }
 
                     }
-                    else
+                    else  /* DisplayAll not checked; so select records from database based on checked Districts in the checkbox list */
                     {
-                        /* Select records from database based on checked items in the checkbox list */
                         string sqlFilter = "";
                         int index = 0;
 
-                        if (GroupFilter != -1)
+                        if (GroupFilter != -1) // A Group is specified, so select only records with Mode = 2
                         {
-                            SqlParameter sqlparam = new SqlParameter();
-                            sqlparam.ParameterName = "@GN";
-                            sqlparam.SqlDbType = SqlDbType.Int;
-                            sqlparam.Value = GroupFilter;
-                            sqlCmd.Parameters.Add(sqlparam);
-
-                            sqlFilter = " GroupNo = @GN and (";
+                            sqlCmd.Parameters.AddWithValue("@GN", GroupFilter);
+                            if (UserFilter.Length > 0)
+                            {
+                                sqlCmd.Parameters.AddWithValue("@UId", UserFilter);
+                                sqlFilter = " Mode = 2 AND UserId = @UId AND GroupNo = @GN AND (";
+                            }
+                            else
+                            {
+                                sqlFilter = " Mode = 2 AND GroupNo = @GN AND (";
+                            }
+                        }
+                        else // No Group; Show ALL!
+                        {
+                            sqlFilter = " Mode = 1 AND (";
                         }
 
                         foreach (ListItem item in cblDistricts.Items)
@@ -219,13 +270,14 @@ namespace RRDM4ATMsGIS
                             }
                         }
 
-                        if (!string.IsNullOrWhiteSpace(sqlFilter))
+                        if (index > 0)
                         {
-                            sqlText += "SELECT * from [TempAtmLocation] Where " + sqlFilter.Substring(0, sqlFilter.Length - 3);
-                            if (GroupFilter != -1)
-                            {
-                                sqlText += ")";
-                            }
+                            sqlText += "SELECT * from [TempAtmLocation] Where " + sqlFilter.Substring(0, sqlFilter.Length - 3) + ")";
+                        }
+                        else
+                        {
+                            // No District selected; do not query the database
+                            sqlText = "";
                         }
 
                     }
@@ -241,14 +293,12 @@ namespace RRDM4ATMsGIS
                         SqlDataReader rdr = sqlCmd.ExecuteReader();
                         while (rdr.Read())
                         {
-                            ATMDetails Rec = new ATMDetails();
+                            RRDMTempAtmsLocation.ATMDetails Rec = new RRDMTempAtmsLocation.ATMDetails();
 
                             Rec.ATMId = Convert.ToInt32(rdr["SeqNo"]);
                             Rec.ATMNumber = rdr["AtmNo"].ToString();
                             Rec.ATMColorId = rdr["ColorId"].ToString();
-                            Rec.ATMColorDesc = rdr["ColorDesc"].ToString();
                             Rec.ATMGroupNo = Convert.ToInt32(rdr["GroupNo"]);
-                            Rec.ATMGroupDesc = rdr["GroupDesc"].ToString();
                             Rec.ATMStreet = rdr["Street"].ToString();
                             Rec.ATMTown = rdr["Town"].ToString();
                             Rec.ATMPostalCode = rdr["PostalCode"].ToString();
@@ -256,6 +306,19 @@ namespace RRDM4ATMsGIS
                             Rec.ATMCountry = rdr["Country"].ToString();
                             Rec.ATMLat = Convert.ToDouble(rdr["Latitude"]);
                             Rec.ATMLon = Convert.ToDouble(rdr["Longitude"]);
+
+                            if (GroupFilter == -1)
+                            {
+                                Rec.ATMGroupDesc = string.Format("{0}, {1}", Rec.ATMStreet, Rec.ATMTown);
+                                Rec.ATMColorDesc = Rec.ATMGroupDesc;
+
+
+                            }
+                            else
+                            {
+                                Rec.ATMGroupDesc = rdr["GroupDesc"].ToString();
+                                Rec.ATMColorDesc = rdr["ColorDesc"].ToString();
+                            }
 
                             ListOfATMs.Add(Rec);
                             ATMsCache.Add(Rec);
@@ -301,6 +364,18 @@ namespace RRDM4ATMsGIS
             }
         }
 
+        /* ===  Data Row bound to GridView. Change descriprion column header ================================ */
+        protected void gvATMs_RowBound(object sender, GridViewRowEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(GroupFilterDescr))
+            { 
+                if (e.Row.RowType == DataControlRowType.Header)
+                    {
+                    e.Row.Cells[2].Text = GroupFilterDescr;
+                    }
+            }
+        }
+
 
         /* === New item is selected in GV. Display its details in the Details Panel ========= */
         protected void gvATMs_SelectedIndexChanged(object sender, EventArgs e)
@@ -315,7 +390,7 @@ namespace RRDM4ATMsGIS
                 PrintLog(string.Format("   --> DataKey={0}", gvATMs.SelectedDataKey.Value));
 #endif
                 PopulateDetails(gvATMs.SelectedDataKey);
-                UpdateStatusLine("");
+                // UpdateStatusLine("");
 
                 PlaceSingle_GoogleMapMarker(gvATMs.SelectedDataKey);
             }
@@ -328,20 +403,21 @@ namespace RRDM4ATMsGIS
             PrintLog(string.Format("PopulateDetails()   --> DataKey={0}", dataKey.Value));
 #endif
             /* Get the record from the database */
-            ATMDetails DetRec = new ATMDetails();
+            RRDMTempAtmsLocation.ATMDetails DetRec = new RRDMTempAtmsLocation.ATMDetails();
 
-            DetRec = AtmDataAccess.GetATMDetails((int)dataKey.Value);
+            DetRec = RRDMTempAtmsLocation.AtmDataAccess.GetATMDetails((int)dataKey.Value);
 
             if (DetRec != null)
             {
                 tbAtmNo.Text = DetRec.ATMNumber;
-                tbColorId.Text = DetRec.ATMColorId;
+                // tbColorId.Text = DetRec.ATMColorId;
                 tbStreet.Text = DetRec.ATMStreet;
                 tbTown.Text = DetRec.ATMTown;
                 tbPostalCode.Text = DetRec.ATMPostalCode;
                 tbDistrict.Text = DetRec.ATMDistrict;
                 tbCountry.Text = DetRec.ATMCountry;
-                tbGroupDesc.Text = DetRec.ATMGroupDesc;
+                // tbGroupDesc.Text = DetRec.ATMGroupDesc;
+                tbGroupDesc.Text = DetRec.ATMColorDesc;
 
                 /* Set the read-only property to the fields */
                 tbAtmNo.ReadOnly = true;
@@ -351,7 +427,7 @@ namespace RRDM4ATMsGIS
                 tbDistrict.ReadOnly = true;
                 tbCountry.ReadOnly = true;
                 tbGroupDesc.ReadOnly = true;
-                tbColorId.ReadOnly = true;
+                // tbColorId.ReadOnly = true;
 
                 /* Set the border color for the Description field */
                 tbGroupDesc.BorderColor = ColorTranslator.FromHtml("#FF0000");
@@ -383,14 +459,19 @@ namespace RRDM4ATMsGIS
 #endif
             GoogleMarkers1.Markers.Clear();
 
+#if DEBUG
+            PrintLog(string.Format("   --> ATMsCache.Count = {0}", ATMsCache.Count));
+#endif
+
             /* Use the ATMs Cache global List */
-            foreach (ATMDetails Rec in ATMsCache)
+            foreach (RRDMTempAtmsLocation.ATMDetails Rec in ATMsCache)
             {
                 Marker marker = new Marker();
 
                 iID = Convert.ToInt32(Rec.ATMId);
                 sTitle = Rec.ATMNumber;     // the marker title
-                sInfo = Rec.ATMGroupDesc;  // the marker info
+                // sInfo = Rec.ATMGroupDesc;  // the marker info
+                sInfo = Rec.ATMColorDesc;  // the marker info
                 sStreet = Rec.ATMStreet.Trim();
                 Lat = Rec.ATMLat;
                 Lon = Rec.ATMLon;
@@ -425,32 +506,33 @@ namespace RRDM4ATMsGIS
                 string ColorId = (Rec.ATMColorId).Trim();
                 switch (ColorId)
                 {
-                    case "1":
+                    case "1": // Red
                         {
                             marker.Icon = "/icons/marker-red.png";
                             break;
                         }
-                    case "2":
+                    case "2": // Green
                         {
                             marker.Icon = "/icons/marker-green.png";
                             break;
                         }
-                    case "3":
+                    case "3": // Blue
                         {
                             marker.Icon = "/icons/marker-blue.png";
                             break;
                         }
-                    case "4":
+                    case "4": // Black
                         {
                             marker.Icon = "/icons/marker-black.png";
                             break;
                         }
-                    default:
+                    default: // White
                         {
                             marker.Icon = "/icons/marker-white.png";
                             break;
                         }
                 }
+
 
                 GoogleMarkers1.Markers.Add(marker);
             }
@@ -459,15 +541,56 @@ namespace RRDM4ATMsGIS
             bounds.NorthEast.Longitude = LonE;
             bounds.SouthWest.Latitude = LatS;
             bounds.SouthWest.Longitude = LonW;
-            GoogleMap1.Bounds = bounds;
+            // GoogleMap1.Bounds = bounds;
 
             LatCenter = (LatN + LatS) / 2;
             LonCenter = (LonE + LonW) / 2;
 
-            if (ATMsCache.Count > 0)
-            { GoogleMap1.Zoom = 16; }
-            else
-            { GoogleMap1.Zoom = 2; }
+
+            string ConfigZoom;
+            int ZoomLevel = 3;
+
+            if (ATMsCache.Count == 0)
+            {
+                ZoomLevel = 3;
+            }
+
+            if (ATMsCache.Count == 1)
+            {
+                ConfigZoom = ConfigurationManager.AppSettings["SingleMarkerInitialZoomIn"];
+                if (!Int32.TryParse(ConfigZoom, out ZoomLevel))
+                {
+                    ZoomLevel = 17;
+                }
+                /*
+                bounds.NorthEast.Latitude -= 1;
+                bounds.NorthEast.Longitude -= 1;
+                bounds.SouthWest.Latitude -= 1;
+                bounds.SouthWest.Longitude -= 1;
+                GoogleMap1.Bounds = bounds;
+                */
+#if DEBUG
+                PrintLog(string.Format("   --> ATMs Count = 1"));
+
+#endif
+
+            }
+            if (ATMsCache.Count > 1)
+            {
+                ConfigZoom = ConfigurationManager.AppSettings["MultiMarkerInitialZoomIn"];
+                if (!Int32.TryParse(ConfigZoom, out ZoomLevel))
+                {
+                    ZoomLevel = 3;
+                }
+                GoogleMap1.Bounds = bounds;
+
+            }
+
+            GoogleMap1.Zoom = ZoomLevel;
+#if DEBUG
+            PrintLog(string.Format("   --> ZoomLevel = {0}", GoogleMap1.Zoom));
+#endif
+
             GoogleMap1.Center.Latitude = LatCenter;
             GoogleMap1.Center.Longitude = LonCenter;
 
@@ -475,6 +598,7 @@ namespace RRDM4ATMsGIS
             PrintLog(string.Format("   --> Bounds: NE [{0},{1}]  SW [{2},{3}]",
             bounds.NorthEast.Latitude, bounds.NorthEast.Longitude, bounds.SouthWest.Latitude, bounds.SouthWest.Longitude));
 #endif
+
         }
 
         /* ================================================================================== */
@@ -492,14 +616,19 @@ namespace RRDM4ATMsGIS
 #endif
 
             /* Get the record from the database */
-            ATMDetails Rec = new ATMDetails();
-            Rec = AtmDataAccess.GetATMDetails((int)dataKey.Value);
+            RRDMTempAtmsLocation.ATMDetails Rec = new RRDMTempAtmsLocation.ATMDetails();
+            Rec = RRDMTempAtmsLocation.AtmDataAccess.GetATMDetails((int)dataKey.Value);
 
             if (Rec != null)
             {
+                string ConfigZoom;
+                int ZoomLevel;
+
                 iID = Convert.ToInt32(Rec.ATMId);
                 sTitle = Rec.ATMNumber;     // the marker title
-                sInfo = Rec.ATMGroupDesc;  // the marker info
+                sTitle = Rec.ATMNumber;     // the marker title
+                // sInfo = Rec.ATMGroupDesc;  // the marker info
+                sInfo = Rec.ATMColorDesc;  // the marker info
                 sStreet = Rec.ATMStreet.Trim();
                 Lat = Rec.ATMLat;
                 Lon = Rec.ATMLon;
@@ -518,42 +647,48 @@ namespace RRDM4ATMsGIS
                 string ColorId = (Rec.ATMColorId).Trim();
                 switch (ColorId)
                 {
-                    case "1":
+                    case "1": // Red
                         {
                             marker.Icon = "/icons/marker-red.png";
                             break;
                         }
-                    case "2":
+                    case "2": // Green
                         {
                             marker.Icon = "/icons/marker-green.png";
                             break;
                         }
-                    case "3":
+                    case "3": // Blue
                         {
                             marker.Icon = "/icons/marker-blue.png";
                             break;
                         }
-                    case "4":
+                    case "4": // Black
                         {
                             marker.Icon = "/icons/marker-black.png";
                             break;
                         }
-                    default:
+                    default: // White
                         {
                             marker.Icon = "/icons/marker-white.png";
                             break;
                         }
                 }
 
+                ConfigZoom = ConfigurationManager.AppSettings["SingleMarkerInitialZoomIn"];
+                if (!Int32.TryParse(ConfigZoom, out ZoomLevel))
+                {
+                    ZoomLevel = 17;
+                }
+
                 GoogleMarkers1.Markers.Add(marker);
 
-                GoogleMap1.Zoom = 19;
                 if (Lat == 0 && Lon == 0)
                 {
                     GoogleMap1.Zoom = 3;
                 }
                 else
                 {
+                    GoogleMap1.Zoom = ZoomLevel;
                     GoogleMap1.Center.Latitude = Lat;
                     GoogleMap1.Center.Longitude = Lon;
                 }
@@ -583,42 +718,42 @@ namespace RRDM4ATMsGIS
 #if DEBUG
             PrintLog("GoogleMap1_PreRender()");
 #endif
-//            if (IsPostBack)
-//            {
-//#if DEBUG
-//                PrintLog("   -->PostBack");
-//#endif
-//                /* TO DO */
-//                /* Do not Invoke when in Single Marker Mode */
-//                bool dvVisible = pnlDetails.Visible;
-//                if (!dvVisible)
-//                {
-//                    if (ATMsCache.Count > 0)
-//                        Place_GoogleMapMarkers();
-//                }
-//                else
-//                {
-//                    //PlaceSingle_GoogleMapMarker();
-//                }
-//            }
+            //            if (IsPostBack)
+            //            {
+            //#if DEBUG
+            //                PrintLog("   -->PostBack");
+            //#endif
+            //                /* TO DO */
+            //                /* Do not Invoke when in Single Marker Mode */
+            //                bool dvVisible = pnlDetails.Visible;
+            //                if (!dvVisible)
+            //                {
+            //                    if (ATMsCache.Count > 0)
+            //                        Place_GoogleMapMarkers();
+            //                }
+            //                else
+            //                {
+            //                    //PlaceSingle_GoogleMapMarker();
+            //                }
+            //            }
 
-//            if (GoogleMap1.Bounds != null)
-//            {
-//                bnd.NorthEast.Latitude = GoogleMap1.Bounds.NorthEast.Latitude;
-//                bnd.NorthEast.Longitude = GoogleMap1.Bounds.NorthEast.Longitude;
-//                bnd.SouthWest.Latitude = GoogleMap1.Bounds.SouthWest.Latitude;
-//                bnd.SouthWest.Longitude = GoogleMap1.Bounds.SouthWest.Longitude;
-//#if DEBUG
-//                PrintLog(string.Format("   --> Bounds: NE [{0},{1}]  SW [{2},{3}]",
-//                bnd.NorthEast.Latitude, bnd.NorthEast.Longitude, bnd.SouthWest.Latitude, bnd.SouthWest.Longitude));
-//#endif
-//            }
-//            else
-//            {
-//#if DEBUG
-//                PrintLog("   --> GoogleMap1.Bounds is NULL!");
-//#endif
-//            }
+            //            if (GoogleMap1.Bounds != null)
+            //            {
+            //                bnd.NorthEast.Latitude = GoogleMap1.Bounds.NorthEast.Latitude;
+            //                bnd.NorthEast.Longitude = GoogleMap1.Bounds.NorthEast.Longitude;
+            //                bnd.SouthWest.Latitude = GoogleMap1.Bounds.SouthWest.Latitude;
+            //                bnd.SouthWest.Longitude = GoogleMap1.Bounds.SouthWest.Longitude;
+            //#if DEBUG
+            //                PrintLog(string.Format("   --> Bounds: NE [{0},{1}]  SW [{2},{3}]",
+            //                bnd.NorthEast.Latitude, bnd.NorthEast.Longitude, bnd.SouthWest.Latitude, bnd.SouthWest.Longitude));
+            //#endif
+            //            }
+            //            else
+            //            {
+            //#if DEBUG
+            //                PrintLog("   --> GoogleMap1.Bounds is NULL!");
+            //#endif
+            //            }
         }
 
 
@@ -666,7 +801,6 @@ namespace RRDM4ATMsGIS
             System.Diagnostics.Debug.WriteLine(string.Format("{0} : {1}", DateTime.Now, Text));
         }
 #endif
-
 
 
     }

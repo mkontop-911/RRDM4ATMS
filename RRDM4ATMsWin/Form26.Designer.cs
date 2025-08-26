@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form26));
             this.button2 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.textBox3usercommentold = new System.Windows.Forms.TextBox();
@@ -39,60 +39,53 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.captNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.atmNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.traceNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cardNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.captDtTmDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.captureCdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.reasonDescDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.actionDtTmDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.customerNmDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sesNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bankIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.branchIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.actionCommentsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.actionCodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.scannedSignedDataGridViewImageColumn = new System.Windows.Forms.DataGridViewImageColumn();
-            this.openRecDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.capturedCardsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.aTMSDataSet33 = new RRDM4ATMsWin.ATMSDataSet33();
             this.label13 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button5 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
             this.textBox2Name = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.radioButton7 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton5 = new System.Windows.Forms.RadioButton();
             this.radioButton6 = new System.Windows.Forms.RadioButton();
-            this.label14 = new System.Windows.Forms.Label();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.button6 = new System.Windows.Forms.Button();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button5Show = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.radioButtonReceived = new System.Windows.Forms.RadioButton();
+            this.labelNumberNotes2 = new System.Windows.Forms.Label();
+            this.buttonNotes2 = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
+            this.labelListOfCaptureCards = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBoxAddCaptured = new System.Windows.Forms.CheckBox();
+            this.labelManualInput = new System.Windows.Forms.Label();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.textBoxBranch = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.dateTimePickerDateOfCaptured = new System.Windows.Forms.DateTimePicker();
+            this.label20 = new System.Windows.Forms.Label();
+            this.textBoxAtm = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.buttonUpdate = new System.Windows.Forms.Button();
+            this.buttonAdd = new System.Windows.Forms.Button();
+            this.textBoxCardNumber = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
             this.labelATMno = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelSessionNo = new System.Windows.Forms.Label();
             this.labelToday = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -106,15 +99,13 @@
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelHeader = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.capturedCardsTableAdapter = new RRDM4ATMsWin.ATMSDataSet33TableAdapters.CapturedCardsTableAdapter();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.capturedCardsBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet33)).BeginInit();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.panel4.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -134,19 +125,19 @@
             this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Location = new System.Drawing.Point(490, 191);
+            this.button2.Location = new System.Drawing.Point(382, 218);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(89, 24);
             this.button2.TabIndex = 326;
             this.button2.Text = "Update / Print";
             this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Location = new System.Drawing.Point(172, 243);
+            this.label7.Location = new System.Drawing.Point(172, 516);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(55, 13);
             this.label7.TabIndex = 319;
@@ -155,10 +146,10 @@
             // textBox3usercommentold
             // 
             this.textBox3usercommentold.BackColor = System.Drawing.Color.White;
-            this.textBox3usercommentold.Location = new System.Drawing.Point(219, 27);
+            this.textBox3usercommentold.Location = new System.Drawing.Point(191, 27);
             this.textBox3usercommentold.Multiline = true;
             this.textBox3usercommentold.Name = "textBox3usercommentold";
-            this.textBox3usercommentold.Size = new System.Drawing.Size(360, 40);
+            this.textBox3usercommentold.Size = new System.Drawing.Size(280, 57);
             this.textBox3usercommentold.TabIndex = 301;
             // 
             // label6
@@ -166,7 +157,7 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(216, 5);
+            this.label6.Location = new System.Drawing.Point(186, 5);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(118, 18);
             this.label6.TabIndex = 300;
@@ -176,7 +167,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(23, 243);
+            this.label4.Location = new System.Drawing.Point(23, 516);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(143, 13);
             this.label4.TabIndex = 318;
@@ -197,222 +188,68 @@
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.captNoDataGridViewTextBoxColumn,
-            this.atmNoDataGridViewTextBoxColumn,
-            this.traceNoDataGridViewTextBoxColumn,
-            this.cardNoDataGridViewTextBoxColumn,
-            this.captDtTmDataGridViewTextBoxColumn,
-            this.captureCdDataGridViewTextBoxColumn,
-            this.reasonDescDataGridViewTextBoxColumn,
-            this.actionDtTmDataGridViewTextBoxColumn,
-            this.customerNmDataGridViewTextBoxColumn,
-            this.sesNoDataGridViewTextBoxColumn,
-            this.bankIdDataGridViewTextBoxColumn,
-            this.branchIdDataGridViewTextBoxColumn,
-            this.actionCommentsDataGridViewTextBoxColumn,
-            this.actionCodeDataGridViewTextBoxColumn,
-            this.scannedSignedDataGridViewImageColumn,
-            this.openRecDataGridViewCheckBoxColumn,
-            this.operatorDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.capturedCardsBindingSource;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle14;
             this.dataGridView1.GridColor = System.Drawing.Color.LightGray;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 12);
+            this.dataGridView1.Location = new System.Drawing.Point(7, 12);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(959, 222);
+            this.dataGridView1.Size = new System.Drawing.Size(653, 486);
             this.dataGridView1.TabIndex = 312;
             this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
-            // 
-            // captNoDataGridViewTextBoxColumn
-            // 
-            this.captNoDataGridViewTextBoxColumn.DataPropertyName = "CaptNo";
-            this.captNoDataGridViewTextBoxColumn.HeaderText = "CaptNo";
-            this.captNoDataGridViewTextBoxColumn.Name = "captNoDataGridViewTextBoxColumn";
-            this.captNoDataGridViewTextBoxColumn.ReadOnly = true;
-            this.captNoDataGridViewTextBoxColumn.Width = 80;
-            // 
-            // atmNoDataGridViewTextBoxColumn
-            // 
-            this.atmNoDataGridViewTextBoxColumn.DataPropertyName = "AtmNo";
-            this.atmNoDataGridViewTextBoxColumn.HeaderText = "AtmNo";
-            this.atmNoDataGridViewTextBoxColumn.Name = "atmNoDataGridViewTextBoxColumn";
-            this.atmNoDataGridViewTextBoxColumn.ReadOnly = true;
-            this.atmNoDataGridViewTextBoxColumn.Width = 80;
-            // 
-            // traceNoDataGridViewTextBoxColumn
-            // 
-            this.traceNoDataGridViewTextBoxColumn.DataPropertyName = "TraceNo";
-            this.traceNoDataGridViewTextBoxColumn.HeaderText = "TraceNo";
-            this.traceNoDataGridViewTextBoxColumn.Name = "traceNoDataGridViewTextBoxColumn";
-            this.traceNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // cardNoDataGridViewTextBoxColumn
-            // 
-            this.cardNoDataGridViewTextBoxColumn.DataPropertyName = "CardNo";
-            this.cardNoDataGridViewTextBoxColumn.HeaderText = "CardNo";
-            this.cardNoDataGridViewTextBoxColumn.Name = "cardNoDataGridViewTextBoxColumn";
-            this.cardNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // captDtTmDataGridViewTextBoxColumn
-            // 
-            this.captDtTmDataGridViewTextBoxColumn.DataPropertyName = "CaptDtTm";
-            this.captDtTmDataGridViewTextBoxColumn.HeaderText = "CaptDtTm";
-            this.captDtTmDataGridViewTextBoxColumn.Name = "captDtTmDataGridViewTextBoxColumn";
-            this.captDtTmDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // captureCdDataGridViewTextBoxColumn
-            // 
-            this.captureCdDataGridViewTextBoxColumn.DataPropertyName = "CaptureCd";
-            this.captureCdDataGridViewTextBoxColumn.HeaderText = "CaptureCd";
-            this.captureCdDataGridViewTextBoxColumn.Name = "captureCdDataGridViewTextBoxColumn";
-            this.captureCdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // reasonDescDataGridViewTextBoxColumn
-            // 
-            this.reasonDescDataGridViewTextBoxColumn.DataPropertyName = "ReasonDesc";
-            this.reasonDescDataGridViewTextBoxColumn.HeaderText = "ReasonDesc";
-            this.reasonDescDataGridViewTextBoxColumn.Name = "reasonDescDataGridViewTextBoxColumn";
-            this.reasonDescDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // actionDtTmDataGridViewTextBoxColumn
-            // 
-            this.actionDtTmDataGridViewTextBoxColumn.DataPropertyName = "ActionDtTm";
-            this.actionDtTmDataGridViewTextBoxColumn.HeaderText = "ActionDtTm";
-            this.actionDtTmDataGridViewTextBoxColumn.Name = "actionDtTmDataGridViewTextBoxColumn";
-            this.actionDtTmDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // customerNmDataGridViewTextBoxColumn
-            // 
-            this.customerNmDataGridViewTextBoxColumn.DataPropertyName = "CustomerNm";
-            this.customerNmDataGridViewTextBoxColumn.HeaderText = "CustomerNm";
-            this.customerNmDataGridViewTextBoxColumn.Name = "customerNmDataGridViewTextBoxColumn";
-            this.customerNmDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // sesNoDataGridViewTextBoxColumn
-            // 
-            this.sesNoDataGridViewTextBoxColumn.DataPropertyName = "SesNo";
-            this.sesNoDataGridViewTextBoxColumn.HeaderText = "SesNo";
-            this.sesNoDataGridViewTextBoxColumn.Name = "sesNoDataGridViewTextBoxColumn";
-            this.sesNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // bankIdDataGridViewTextBoxColumn
-            // 
-            this.bankIdDataGridViewTextBoxColumn.DataPropertyName = "BankId";
-            this.bankIdDataGridViewTextBoxColumn.HeaderText = "BankId";
-            this.bankIdDataGridViewTextBoxColumn.Name = "bankIdDataGridViewTextBoxColumn";
-            this.bankIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // branchIdDataGridViewTextBoxColumn
-            // 
-            this.branchIdDataGridViewTextBoxColumn.DataPropertyName = "BranchId";
-            this.branchIdDataGridViewTextBoxColumn.HeaderText = "BranchId";
-            this.branchIdDataGridViewTextBoxColumn.Name = "branchIdDataGridViewTextBoxColumn";
-            this.branchIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // actionCommentsDataGridViewTextBoxColumn
-            // 
-            this.actionCommentsDataGridViewTextBoxColumn.DataPropertyName = "ActionComments";
-            this.actionCommentsDataGridViewTextBoxColumn.HeaderText = "ActionComments";
-            this.actionCommentsDataGridViewTextBoxColumn.Name = "actionCommentsDataGridViewTextBoxColumn";
-            this.actionCommentsDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // actionCodeDataGridViewTextBoxColumn
-            // 
-            this.actionCodeDataGridViewTextBoxColumn.DataPropertyName = "ActionCode";
-            this.actionCodeDataGridViewTextBoxColumn.HeaderText = "ActionCode";
-            this.actionCodeDataGridViewTextBoxColumn.Name = "actionCodeDataGridViewTextBoxColumn";
-            this.actionCodeDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // scannedSignedDataGridViewImageColumn
-            // 
-            this.scannedSignedDataGridViewImageColumn.DataPropertyName = "ScannedSigned";
-            this.scannedSignedDataGridViewImageColumn.HeaderText = "ScannedSigned";
-            this.scannedSignedDataGridViewImageColumn.Name = "scannedSignedDataGridViewImageColumn";
-            this.scannedSignedDataGridViewImageColumn.ReadOnly = true;
-            // 
-            // openRecDataGridViewCheckBoxColumn
-            // 
-            this.openRecDataGridViewCheckBoxColumn.DataPropertyName = "OpenRec";
-            this.openRecDataGridViewCheckBoxColumn.HeaderText = "OpenRec";
-            this.openRecDataGridViewCheckBoxColumn.Name = "openRecDataGridViewCheckBoxColumn";
-            this.openRecDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // operatorDataGridViewTextBoxColumn
-            // 
-            this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
-            this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
-            this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
-            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // capturedCardsBindingSource
-            // 
-            this.capturedCardsBindingSource.DataMember = "CapturedCards";
-            this.capturedCardsBindingSource.DataSource = this.aTMSDataSet33;
-            // 
-            // aTMSDataSet33
-            // 
-            this.aTMSDataSet33.DataSetName = "ATMSDataSet33";
-            this.aTMSDataSet33.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.label13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label13.Location = new System.Drawing.Point(379, 308);
+            this.label13.Location = new System.Drawing.Point(714, 304);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(163, 18);
+            this.label13.Size = new System.Drawing.Size(173, 18);
             this.label13.TabIndex = 324;
-            this.label13.Text = "ACTION ON CHOSEN ";
+            this.label13.Text = "ACTION ON SELECTED";
             this.label13.Click += new System.EventHandler(this.label13_Click);
             // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
-            this.panel3.Controls.Add(this.button5);
-            this.panel3.Controls.Add(this.button3);
             this.panel3.Controls.Add(this.textBox2);
             this.panel3.Controls.Add(this.label16);
-            this.panel3.Controls.Add(this.button4);
             this.panel3.Controls.Add(this.textBox2Name);
             this.panel3.Controls.Add(this.label8);
             this.panel3.Controls.Add(this.tableLayoutPanel1);
             this.panel3.Controls.Add(this.textBox3usercommentold);
             this.panel3.Controls.Add(this.label6);
             this.panel3.Controls.Add(this.button2);
-            this.panel3.Location = new System.Drawing.Point(377, 332);
+            this.panel3.Location = new System.Drawing.Point(713, 325);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(606, 232);
+            this.panel3.Size = new System.Drawing.Size(480, 277);
             this.panel3.TabIndex = 323;
             // 
             // button5
@@ -424,7 +261,7 @@
             this.button5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button5.Location = new System.Drawing.Point(30, 151);
+            this.button5.Location = new System.Drawing.Point(401, 129);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(71, 24);
             this.button5.TabIndex = 334;
@@ -441,7 +278,7 @@
             this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button3.Location = new System.Drawing.Point(116, 151);
+            this.button3.Location = new System.Drawing.Point(401, 155);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(71, 24);
             this.button3.TabIndex = 333;
@@ -451,8 +288,9 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(275, 74);
+            this.textBox2.Location = new System.Drawing.Point(242, 105);
             this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(229, 20);
             this.textBox2.TabIndex = 330;
             // 
@@ -460,40 +298,24 @@
             // 
             this.label16.AutoSize = true;
             this.label16.ForeColor = System.Drawing.Color.Black;
-            this.label16.Location = new System.Drawing.Point(221, 77);
+            this.label16.Location = new System.Drawing.Point(196, 108);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(48, 13);
             this.label16.TabIndex = 329;
             this.label16.Text = "Full Card";
             // 
-            // button4
-            // 
-            this.button4.BackColor = System.Drawing.Color.White;
-            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button4.FlatAppearance.BorderSize = 2;
-            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button4.Location = new System.Drawing.Point(193, 151);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(120, 24);
-            this.button4.TabIndex = 328;
-            this.button4.Text = "Scan Signed Doc";
-            this.button4.UseVisualStyleBackColor = false;
-            // 
             // textBox2Name
             // 
-            this.textBox2Name.Location = new System.Drawing.Point(71, 113);
+            this.textBox2Name.Location = new System.Drawing.Point(71, 148);
             this.textBox2Name.Name = "textBox2Name";
-            this.textBox2Name.Size = new System.Drawing.Size(433, 20);
+            this.textBox2Name.Size = new System.Drawing.Size(400, 20);
             this.textBox2Name.TabIndex = 328;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.ForeColor = System.Drawing.Color.Black;
-            this.label8.Location = new System.Drawing.Point(27, 116);
+            this.label8.Location = new System.Drawing.Point(27, 151);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(35, 13);
             this.label8.TabIndex = 327;
@@ -503,57 +325,38 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.radioButton7, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.radioButton4, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.radioButton5, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.radioButton6, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.radioButton7, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.radioButton6, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.radioButton5, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.radioButton4, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.radioButtonReceived, 0, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(27, 11);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowCount = 5;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(123, 97);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(123, 118);
             this.tableLayoutPanel1.TabIndex = 302;
             // 
             // radioButton7
             // 
             this.radioButton7.AutoSize = true;
-            this.radioButton7.Location = new System.Drawing.Point(3, 76);
+            this.radioButton7.Location = new System.Drawing.Point(3, 101);
             this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(87, 17);
+            this.radioButton7.Size = new System.Drawing.Size(87, 14);
             this.radioButton7.TabIndex = 3;
             this.radioButton7.TabStop = true;
             this.radioButton7.Text = "Undo Action ";
             this.radioButton7.UseVisualStyleBackColor = true;
             // 
-            // radioButton4
-            // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(3, 3);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(97, 17);
-            this.radioButton4.TabIndex = 0;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "Deliver to Cust.";
-            this.radioButton4.UseVisualStyleBackColor = true;
-            // 
-            // radioButton5
-            // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(3, 27);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(112, 17);
-            this.radioButton5.TabIndex = 1;
-            this.radioButton5.TabStop = true;
-            this.radioButton5.Text = "Send to Cards Dpt";
-            this.radioButton5.UseVisualStyleBackColor = true;
-            // 
             // radioButton6
             // 
             this.radioButton6.AutoSize = true;
-            this.radioButton6.Location = new System.Drawing.Point(3, 51);
+            this.radioButton6.Location = new System.Drawing.Point(3, 78);
             this.radioButton6.Name = "radioButton6";
             this.radioButton6.Size = new System.Drawing.Size(116, 17);
             this.radioButton6.TabIndex = 2;
@@ -561,148 +364,347 @@
             this.radioButton6.Text = "Handled by Branch";
             this.radioButton6.UseVisualStyleBackColor = true;
             // 
-            // label14
+            // radioButton5
             // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label14.Location = new System.Drawing.Point(14, 7);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(227, 18);
-            this.label14.TabIndex = 327;
-            this.label14.Text = "LIST OF CAPTURED CARDS";
+            this.radioButton5.AutoSize = true;
+            this.radioButton5.Location = new System.Drawing.Point(3, 53);
+            this.radioButton5.Name = "radioButton5";
+            this.radioButton5.Size = new System.Drawing.Size(112, 17);
+            this.radioButton5.TabIndex = 1;
+            this.radioButton5.TabStop = true;
+            this.radioButton5.Text = "Send to Cards Dpt";
+            this.radioButton5.UseVisualStyleBackColor = true;
             // 
-            // panel4
+            // radioButton4
             // 
-            this.panel4.BackColor = System.Drawing.Color.White;
-            this.panel4.Controls.Add(this.button6);
-            this.panel4.Controls.Add(this.radioButton3);
-            this.panel4.Controls.Add(this.radioButton2);
-            this.panel4.Controls.Add(this.radioButton1);
-            this.panel4.Controls.Add(this.textBox1);
-            this.panel4.Controls.Add(this.button5Show);
-            this.panel4.Controls.Add(this.label3);
-            this.panel4.Location = new System.Drawing.Point(14, 332);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(357, 232);
-            this.panel4.TabIndex = 329;
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Location = new System.Drawing.Point(3, 28);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(97, 17);
+            this.radioButton4.TabIndex = 0;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Text = "Deliver to Cust.";
+            this.radioButton4.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // radioButtonReceived
             // 
-            this.button6.BackColor = System.Drawing.Color.White;
-            this.button6.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button6.FlatAppearance.BorderSize = 2;
-            this.button6.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button6.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button6.Location = new System.Drawing.Point(216, 105);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(59, 24);
-            this.button6.TabIndex = 319;
-            this.button6.Text = "Show";
-            this.button6.UseVisualStyleBackColor = false;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.radioButtonReceived.AutoSize = true;
+            this.radioButtonReceived.Location = new System.Drawing.Point(3, 3);
+            this.radioButtonReceived.Name = "radioButtonReceived";
+            this.radioButtonReceived.Size = new System.Drawing.Size(96, 17);
+            this.radioButtonReceived.TabIndex = 4;
+            this.radioButtonReceived.TabStop = true;
+            this.radioButtonReceived.Text = "Received Card";
+            this.radioButtonReceived.UseVisualStyleBackColor = true;
             // 
-            // radioButton3
+            // labelNumberNotes2
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(96, 114);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(102, 17);
-            this.radioButton3.TabIndex = 318;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "This Repl Cycle ";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.labelNumberNotes2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelNumberNotes2.AutoSize = true;
+            this.labelNumberNotes2.BackColor = System.Drawing.Color.Gainsboro;
+            this.labelNumberNotes2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelNumberNotes2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelNumberNotes2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(198)))));
+            this.labelNumberNotes2.Location = new System.Drawing.Point(367, 133);
+            this.labelNumberNotes2.Name = "labelNumberNotes2";
+            this.labelNumberNotes2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.labelNumberNotes2.Size = new System.Drawing.Size(15, 15);
+            this.labelNumberNotes2.TabIndex = 398;
+            this.labelNumberNotes2.Text = "2";
             // 
-            // radioButton2
+            // buttonNotes2
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(96, 90);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(91, 17);
-            this.radioButton2.TabIndex = 317;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Include Acted";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.buttonNotes2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonNotes2.BackgroundImage")));
+            this.buttonNotes2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonNotes2.FlatAppearance.BorderColor = System.Drawing.Color.DarkRed;
+            this.buttonNotes2.FlatAppearance.BorderSize = 0;
+            this.buttonNotes2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonNotes2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonNotes2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonNotes2.ForeColor = System.Drawing.Color.Black;
+            this.buttonNotes2.Location = new System.Drawing.Point(327, 131);
+            this.buttonNotes2.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonNotes2.Name = "buttonNotes2";
+            this.buttonNotes2.Size = new System.Drawing.Size(45, 37);
+            this.buttonNotes2.TabIndex = 397;
+            this.buttonNotes2.UseVisualStyleBackColor = true;
+            this.buttonNotes2.Click += new System.EventHandler(this.buttonNotes2_Click);
             // 
-            // radioButton1
+            // label15
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(96, 67);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(121, 17);
-            this.radioButton1.TabIndex = 316;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "All open for this Atm ";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.label15.AutoSize = true;
+            this.label15.ForeColor = System.Drawing.Color.Black;
+            this.label15.Location = new System.Drawing.Point(333, 171);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(67, 26);
+            this.label15.TabIndex = 335;
+            this.label15.Text = "Notes\r\nScaned Doc";
             // 
-            // textBox1
+            // labelListOfCaptureCards
             // 
-            this.textBox1.Location = new System.Drawing.Point(19, 27);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(187, 20);
-            this.textBox1.TabIndex = 315;
-            // 
-            // button5Show
-            // 
-            this.button5Show.BackColor = System.Drawing.Color.White;
-            this.button5Show.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button5Show.FlatAppearance.BorderSize = 2;
-            this.button5Show.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button5Show.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button5Show.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5Show.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button5Show.Location = new System.Drawing.Point(216, 24);
-            this.button5Show.Name = "button5Show";
-            this.button5Show.Size = new System.Drawing.Size(59, 24);
-            this.button5Show.TabIndex = 314;
-            this.button5Show.Text = "Show";
-            this.button5Show.UseVisualStyleBackColor = false;
-            this.button5Show.Click += new System.EventHandler(this.button5Show_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(16, 6);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(105, 18);
-            this.label3.TabIndex = 301;
-            this.label3.Text = "Card Number :";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label1.Location = new System.Drawing.Point(11, 308);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(147, 18);
-            this.label1.TabIndex = 330;
-            this.label1.Text = "OTHER SEARCHES";
+            this.labelListOfCaptureCards.AutoSize = true;
+            this.labelListOfCaptureCards.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelListOfCaptureCards.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.labelListOfCaptureCards.Location = new System.Drawing.Point(18, 7);
+            this.labelListOfCaptureCards.Name = "labelListOfCaptureCards";
+            this.labelListOfCaptureCards.Size = new System.Drawing.Size(597, 18);
+            this.labelListOfCaptureCards.TabIndex = 327;
+            this.labelListOfCaptureCards.Text = "LIST OF CAPTURED CARDS..........................................................." +
+    "...............";
             // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.panel1.Controls.Add(this.label14);
+            this.panel1.Controls.Add(this.checkBoxAddCaptured);
+            this.panel1.Controls.Add(this.labelManualInput);
+            this.panel1.Controls.Add(this.panel5);
+            this.panel1.Controls.Add(this.labelListOfCaptureCards);
             this.panel1.Controls.Add(this.panel2);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.panel4);
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.label13);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.ForeColor = System.Drawing.Color.Black;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1002, 605);
+            this.panel1.Size = new System.Drawing.Size(1202, 605);
             this.panel1.TabIndex = 331;
+            // 
+            // checkBoxAddCaptured
+            // 
+            this.checkBoxAddCaptured.AutoSize = true;
+            this.checkBoxAddCaptured.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxAddCaptured.Location = new System.Drawing.Point(1064, 7);
+            this.checkBoxAddCaptured.Name = "checkBoxAddCaptured";
+            this.checkBoxAddCaptured.Size = new System.Drawing.Size(126, 20);
+            this.checkBoxAddCaptured.TabIndex = 418;
+            this.checkBoxAddCaptured.Text = "ADD Captured";
+            this.checkBoxAddCaptured.UseVisualStyleBackColor = true;
+            this.checkBoxAddCaptured.CheckedChanged += new System.EventHandler(this.checkBoxAddCaptured_CheckedChanged);
+            // 
+            // labelManualInput
+            // 
+            this.labelManualInput.AutoSize = true;
+            this.labelManualInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelManualInput.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.labelManualInput.Location = new System.Drawing.Point(712, 6);
+            this.labelManualInput.Name = "labelManualInput";
+            this.labelManualInput.Size = new System.Drawing.Size(228, 18);
+            this.labelManualInput.TabIndex = 333;
+            this.labelManualInput.Text = "MAINTENANCE ON CAPTURED";
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.White;
+            this.panel5.Controls.Add(this.button3);
+            this.panel5.Controls.Add(this.button5);
+            this.panel5.Controls.Add(this.dateTimePicker1);
+            this.panel5.Controls.Add(this.textBoxBranch);
+            this.panel5.Controls.Add(this.label1);
+            this.panel5.Controls.Add(this.label15);
+            this.panel5.Controls.Add(this.labelNumberNotes2);
+            this.panel5.Controls.Add(this.comboBox2);
+            this.panel5.Controls.Add(this.buttonNotes2);
+            this.panel5.Controls.Add(this.label21);
+            this.panel5.Controls.Add(this.checkBox1);
+            this.panel5.Controls.Add(this.comboBox1);
+            this.panel5.Controls.Add(this.label22);
+            this.panel5.Controls.Add(this.dateTimePickerDateOfCaptured);
+            this.panel5.Controls.Add(this.label20);
+            this.panel5.Controls.Add(this.textBoxAtm);
+            this.panel5.Controls.Add(this.label14);
+            this.panel5.Controls.Add(this.buttonUpdate);
+            this.panel5.Controls.Add(this.buttonAdd);
+            this.panel5.Controls.Add(this.textBoxCardNumber);
+            this.panel5.Controls.Add(this.label19);
+            this.panel5.Location = new System.Drawing.Point(712, 28);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(480, 265);
+            this.panel5.TabIndex = 332;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.CustomFormat = "dd/MM/yyyy";
+            this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker1.Location = new System.Drawing.Point(200, 189);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.ShowUpDown = true;
+            this.dateTimePicker1.Size = new System.Drawing.Size(114, 21);
+            this.dateTimePicker1.TabIndex = 436;
+            // 
+            // textBoxBranch
+            // 
+            this.textBoxBranch.Location = new System.Drawing.Point(127, 73);
+            this.textBoxBranch.Name = "textBoxBranch";
+            this.textBoxBranch.Size = new System.Drawing.Size(187, 20);
+            this.textBoxBranch.TabIndex = 435;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Location = new System.Drawing.Point(21, 72);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(59, 18);
+            this.label1.TabIndex = 434;
+            this.label1.Text = "Branch:";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "Stolen",
+            "Black Listed",
+            "Time out"});
+            this.comboBox2.Location = new System.Drawing.Point(127, 160);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(187, 21);
+            this.comboBox2.TabIndex = 433;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.label21.ForeColor = System.Drawing.Color.Black;
+            this.label21.Location = new System.Drawing.Point(20, 161);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(85, 18);
+            this.label21.TabIndex = 432;
+            this.label21.Text = "Origin(270):";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(130, 193);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(72, 17);
+            this.checkBox1.TabIndex = 431;
+            this.checkBox1.Text = "Received";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Stolen",
+            "Black Listed",
+            "Time out"});
+            this.comboBox1.Location = new System.Drawing.Point(127, 130);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(187, 21);
+            this.comboBox1.TabIndex = 430;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.label22.ForeColor = System.Drawing.Color.Black;
+            this.label22.Location = new System.Drawing.Point(17, 130);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(102, 18);
+            this.label22.TabIndex = 428;
+            this.label22.Text = "Reason(269) :";
+            // 
+            // dateTimePickerDateOfCaptured
+            // 
+            this.dateTimePickerDateOfCaptured.CustomFormat = "dd/MM/yyyy";
+            this.dateTimePickerDateOfCaptured.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePickerDateOfCaptured.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerDateOfCaptured.Location = new System.Drawing.Point(127, 100);
+            this.dateTimePickerDateOfCaptured.Name = "dateTimePickerDateOfCaptured";
+            this.dateTimePickerDateOfCaptured.ShowUpDown = true;
+            this.dateTimePickerDateOfCaptured.Size = new System.Drawing.Size(187, 21);
+            this.dateTimePickerDateOfCaptured.TabIndex = 427;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.label20.ForeColor = System.Drawing.Color.Black;
+            this.label20.Location = new System.Drawing.Point(17, 101);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(111, 18);
+            this.label20.TabIndex = 323;
+            this.label20.Text = "Captured Date :";
+            // 
+            // textBoxAtm
+            // 
+            this.textBoxAtm.Location = new System.Drawing.Point(127, 49);
+            this.textBoxAtm.Name = "textBoxAtm";
+            this.textBoxAtm.Size = new System.Drawing.Size(187, 20);
+            this.textBoxAtm.TabIndex = 322;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.label14.ForeColor = System.Drawing.Color.Black;
+            this.label14.Location = new System.Drawing.Point(20, 48);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(67, 18);
+            this.label14.TabIndex = 321;
+            this.label14.Text = "ATM No:";
+            // 
+            // buttonUpdate
+            // 
+            this.buttonUpdate.BackColor = System.Drawing.Color.White;
+            this.buttonUpdate.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonUpdate.FlatAppearance.BorderSize = 2;
+            this.buttonUpdate.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonUpdate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonUpdate.Location = new System.Drawing.Point(207, 232);
+            this.buttonUpdate.Name = "buttonUpdate";
+            this.buttonUpdate.Size = new System.Drawing.Size(65, 24);
+            this.buttonUpdate.TabIndex = 320;
+            this.buttonUpdate.Text = "UPDATE";
+            this.buttonUpdate.UseVisualStyleBackColor = false;
+            this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
+            // 
+            // buttonAdd
+            // 
+            this.buttonAdd.BackColor = System.Drawing.Color.White;
+            this.buttonAdd.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonAdd.FlatAppearance.BorderSize = 2;
+            this.buttonAdd.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonAdd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAdd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonAdd.Location = new System.Drawing.Point(307, 232);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(65, 24);
+            this.buttonAdd.TabIndex = 319;
+            this.buttonAdd.Text = "ADD";
+            this.buttonAdd.UseVisualStyleBackColor = false;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+            // 
+            // textBoxCardNumber
+            // 
+            this.textBoxCardNumber.Location = new System.Drawing.Point(127, 17);
+            this.textBoxCardNumber.Name = "textBoxCardNumber";
+            this.textBoxCardNumber.Size = new System.Drawing.Size(187, 20);
+            this.textBoxCardNumber.TabIndex = 315;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.label19.ForeColor = System.Drawing.Color.Black;
+            this.label19.Location = new System.Drawing.Point(18, 16);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(105, 18);
+            this.label19.TabIndex = 301;
+            this.label19.Text = "Card Number :";
             // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.pictureBox3);
             this.panel2.Controls.Add(this.label18);
             this.panel2.Controls.Add(this.label17);
             this.panel2.Controls.Add(this.label11);
@@ -712,14 +714,25 @@
             this.panel2.Controls.Add(this.label7);
             this.panel2.Location = new System.Drawing.Point(14, 28);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(969, 265);
+            this.panel2.Size = new System.Drawing.Size(680, 560);
             this.panel2.TabIndex = 331;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
+            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
+            this.pictureBox3.Location = new System.Drawing.Point(616, 504);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(44, 40);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox3.TabIndex = 324;
+            this.pictureBox3.TabStop = false;
             // 
             // label18
             // 
             this.label18.AutoSize = true;
             this.label18.ForeColor = System.Drawing.Color.Black;
-            this.label18.Location = new System.Drawing.Point(629, 243);
+            this.label18.Location = new System.Drawing.Point(545, 516);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(64, 13);
             this.label18.TabIndex = 323;
@@ -729,7 +742,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.ForeColor = System.Drawing.Color.Black;
-            this.label17.Location = new System.Drawing.Point(557, 243);
+            this.label17.Location = new System.Drawing.Point(473, 516);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(66, 13);
             this.label17.TabIndex = 322;
@@ -739,7 +752,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.ForeColor = System.Drawing.Color.Black;
-            this.label11.Location = new System.Drawing.Point(438, 243);
+            this.label11.Location = new System.Drawing.Point(370, 516);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(55, 13);
             this.label11.TabIndex = 321;
@@ -749,7 +762,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.ForeColor = System.Drawing.Color.Black;
-            this.label10.Location = new System.Drawing.Point(323, 243);
+            this.label10.Location = new System.Drawing.Point(255, 516);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(105, 13);
             this.label10.TabIndex = 320;
@@ -765,17 +778,6 @@
             this.label5.Size = new System.Drawing.Size(30, 13);
             this.label5.TabIndex = 250;
             this.label5.Text = "Date";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(2, 23);
-            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 3, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(61, 13);
-            this.label9.TabIndex = 104;
-            this.label9.Text = "Session No";
             // 
             // labelATMno
             // 
@@ -794,7 +796,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 63F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 292F));
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(863, 2);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(1063, 2);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
@@ -804,17 +806,6 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(139, 76);
             this.tableLayoutPanel2.TabIndex = 247;
-            // 
-            // labelSessionNo
-            // 
-            this.labelSessionNo.AutoSize = true;
-            this.labelSessionNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSessionNo.ForeColor = System.Drawing.Color.White;
-            this.labelSessionNo.Location = new System.Drawing.Point(70, 23);
-            this.labelSessionNo.Name = "labelSessionNo";
-            this.labelSessionNo.Size = new System.Drawing.Size(71, 13);
-            this.labelSessionNo.TabIndex = 244;
-            this.labelSessionNo.Text = "Session No";
             // 
             // labelToday
             // 
@@ -845,9 +836,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 67F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 161F));
             this.tableLayoutPanel3.Controls.Add(this.label5, 0, 2);
-            this.tableLayoutPanel3.Controls.Add(this.label9, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.labelATMno, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.labelSessionNo, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.labelToday, 1, 2);
             this.tableLayoutPanel3.Controls.Add(this.label12, 0, 0);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(78, 2);
@@ -890,7 +879,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1004, 36);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1204, 36);
             this.tableLayoutPanel4.TabIndex = 242;
             // 
             // buttonFinish
@@ -900,7 +889,7 @@
             this.buttonFinish.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
             this.buttonFinish.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonFinish.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonFinish.Location = new System.Drawing.Point(923, 2);
+            this.buttonFinish.Location = new System.Drawing.Point(1123, 2);
             this.buttonFinish.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
             this.buttonFinish.Name = "buttonFinish";
             this.buttonFinish.Size = new System.Drawing.Size(71, 32);
@@ -973,7 +962,7 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1008, 651);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1208, 651);
             this.tableLayoutPanelMain.TabIndex = 333;
             // 
             // tableLayoutPanelHeader
@@ -988,7 +977,7 @@
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1008, 79);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1208, 79);
             this.tableLayoutPanelHeader.TabIndex = 334;
             // 
             // tableLayoutPanel6
@@ -1006,19 +995,15 @@
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(1004, 80);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(1204, 80);
             this.tableLayoutPanel6.TabIndex = 249;
-            // 
-            // capturedCardsTableAdapter
-            // 
-            this.capturedCardsTableAdapter.ClearBeforeFill = true;
             // 
             // Form26
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1008, 730);
+            this.ClientSize = new System.Drawing.Size(1208, 730);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.Controls.Add(this.label2);
@@ -1029,18 +1014,17 @@
             this.Text = "Form26";
             this.Load += new System.EventHandler(this.Form26_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.capturedCardsBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet33)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
@@ -1069,21 +1053,13 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button5Show;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelListOfCaptureCards;
         private System.Windows.Forms.TextBox textBox2Name;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label labelATMno;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Label labelSessionNo;
         private System.Windows.Forms.Label labelToday;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
@@ -1098,10 +1074,6 @@
         private System.Windows.Forms.Label labelStep1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.RadioButton radioButton5;
         private System.Windows.Forms.RadioButton radioButton6;
@@ -1112,28 +1084,31 @@
         private System.Windows.Forms.RadioButton radioButton7;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label17;
-        private ATMSDataSet33 aTMSDataSet33;
-        private System.Windows.Forms.BindingSource capturedCardsBindingSource;
-        private ATMSDataSet33TableAdapters.CapturedCardsTableAdapter capturedCardsTableAdapter;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn captNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn atmNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn traceNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cardNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn captDtTmDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn captureCdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn reasonDescDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn actionDtTmDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn customerNmDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sesNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn bankIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn branchIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn actionCommentsDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn actionCodeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewImageColumn scannedSignedDataGridViewImageColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn openRecDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn operatorDataGridViewTextBoxColumn;
         private System.Windows.Forms.Button buttonFinish;
-
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label labelNumberNotes2;
+        private System.Windows.Forms.Button buttonNotes2;
+        private System.Windows.Forms.Label labelManualInput;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox textBoxAtm;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button buttonUpdate;
+        private System.Windows.Forms.Button buttonAdd;
+        private System.Windows.Forms.TextBox textBoxCardNumber;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.RadioButton radioButtonReceived;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.DateTimePicker dateTimePickerDateOfCaptured;
+        private System.Windows.Forms.CheckBox checkBoxAddCaptured;
+        private System.Windows.Forms.TextBox textBoxBranch;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
     }
 }

@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label14 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.controlerMSGsBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -47,19 +47,19 @@
             this.controlerMSGsTableAdapter = new RRDM4ATMsWin.ATMSDataSet11TableAdapters.ControlerMSGsTableAdapter();
             this.ReadMsg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.MesNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ToAllAtms = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.AtmNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FromUser = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToUser = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SeriousMsg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Message = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.readMsgDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.BankId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BranchId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ToAllAtms = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.AtmNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DtTm = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Message = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ExpDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SeriousMsg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.OpenMsg = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.readMsgDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Operator = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlerMSGsBindingSource)).BeginInit();
@@ -89,41 +89,41 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ReadMsg,
             this.MesNo,
-            this.ToAllAtms,
-            this.AtmNo,
             this.FromUser,
             this.ToUser,
+            this.Type,
+            this.SeriousMsg,
+            this.Message,
+            this.readMsgDataGridViewCheckBoxColumn,
             this.BankId,
             this.BranchId,
+            this.ToAllAtms,
+            this.AtmNo,
             this.DtTm,
-            this.Type,
-            this.Message,
             this.ExpDate,
-            this.SeriousMsg,
             this.OpenMsg,
-            this.readMsgDataGridViewCheckBoxColumn,
             this.Operator});
             this.dataGridView1.DataSource = this.controlerMSGsBindingSource;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.GridColor = System.Drawing.Color.LightGray;
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
@@ -160,7 +160,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(62, 24);
             this.button2.TabIndex = 330;
-            this.button2.Text = "Close";
+            this.button2.Text = "Finish";
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -211,25 +211,25 @@
             this.dataGridView2.AllowUserToAddRows = false;
             this.dataGridView2.AllowUserToDeleteRows = false;
             this.dataGridView2.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ReadMsg2});
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView2.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView2.DefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView2.GridColor = System.Drawing.Color.LightGray;
             this.dataGridView2.Location = new System.Drawing.Point(3, 3);
@@ -242,6 +242,7 @@
             this.dataGridView2.TabIndex = 330;
             this.dataGridView2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
             this.dataGridView2.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellDoubleClick);
+            this.dataGridView2.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_RowEnter);
             // 
             // ReadMsg2
             // 
@@ -262,6 +263,7 @@
             this.ReadMsg.Name = "ReadMsg";
             this.ReadMsg.ReadOnly = true;
             this.ReadMsg.Visible = false;
+            this.ReadMsg.Width = 50;
             // 
             // MesNo
             // 
@@ -269,20 +271,7 @@
             this.MesNo.HeaderText = "MesNo";
             this.MesNo.Name = "MesNo";
             this.MesNo.ReadOnly = true;
-            // 
-            // ToAllAtms
-            // 
-            this.ToAllAtms.DataPropertyName = "ToAllAtms";
-            this.ToAllAtms.HeaderText = "ToAllAtms";
-            this.ToAllAtms.Name = "ToAllAtms";
-            this.ToAllAtms.ReadOnly = true;
-            // 
-            // AtmNo
-            // 
-            this.AtmNo.DataPropertyName = "AtmNo";
-            this.AtmNo.HeaderText = "AtmNo";
-            this.AtmNo.Name = "AtmNo";
-            this.AtmNo.ReadOnly = true;
+            this.MesNo.Width = 50;
             // 
             // FromUser
             // 
@@ -290,6 +279,7 @@
             this.FromUser.HeaderText = "FromUser";
             this.FromUser.Name = "FromUser";
             this.FromUser.ReadOnly = true;
+            this.FromUser.Width = 70;
             // 
             // ToUser
             // 
@@ -297,6 +287,38 @@
             this.ToUser.HeaderText = "ToUser";
             this.ToUser.Name = "ToUser";
             this.ToUser.ReadOnly = true;
+            this.ToUser.Width = 70;
+            // 
+            // Type
+            // 
+            this.Type.DataPropertyName = "Type";
+            this.Type.HeaderText = "Type";
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            this.Type.Width = 90;
+            // 
+            // SeriousMsg
+            // 
+            this.SeriousMsg.DataPropertyName = "SeriousMsg";
+            this.SeriousMsg.HeaderText = "SeriousMsg";
+            this.SeriousMsg.Name = "SeriousMsg";
+            this.SeriousMsg.ReadOnly = true;
+            this.SeriousMsg.Width = 65;
+            // 
+            // Message
+            // 
+            this.Message.DataPropertyName = "Message";
+            this.Message.HeaderText = "Message";
+            this.Message.Name = "Message";
+            this.Message.ReadOnly = true;
+            this.Message.Width = 150;
+            // 
+            // readMsgDataGridViewCheckBoxColumn
+            // 
+            this.readMsgDataGridViewCheckBoxColumn.DataPropertyName = "ReadMsg";
+            this.readMsgDataGridViewCheckBoxColumn.HeaderText = "ReadMsg";
+            this.readMsgDataGridViewCheckBoxColumn.Name = "readMsgDataGridViewCheckBoxColumn";
+            this.readMsgDataGridViewCheckBoxColumn.ReadOnly = true;
             // 
             // BankId
             // 
@@ -304,6 +326,7 @@
             this.BankId.HeaderText = "BankId";
             this.BankId.Name = "BankId";
             this.BankId.ReadOnly = true;
+            this.BankId.Visible = false;
             // 
             // BranchId
             // 
@@ -311,6 +334,23 @@
             this.BranchId.HeaderText = "BranchId";
             this.BranchId.Name = "BranchId";
             this.BranchId.ReadOnly = true;
+            this.BranchId.Width = 60;
+            // 
+            // ToAllAtms
+            // 
+            this.ToAllAtms.DataPropertyName = "ToAllAtms";
+            this.ToAllAtms.HeaderText = "ToAllAtms";
+            this.ToAllAtms.Name = "ToAllAtms";
+            this.ToAllAtms.ReadOnly = true;
+            this.ToAllAtms.Width = 60;
+            // 
+            // AtmNo
+            // 
+            this.AtmNo.DataPropertyName = "AtmNo";
+            this.AtmNo.HeaderText = "AtmNo";
+            this.AtmNo.Name = "AtmNo";
+            this.AtmNo.ReadOnly = true;
+            this.AtmNo.Width = 50;
             // 
             // DtTm
             // 
@@ -319,20 +359,6 @@
             this.DtTm.Name = "DtTm";
             this.DtTm.ReadOnly = true;
             // 
-            // Type
-            // 
-            this.Type.DataPropertyName = "Type";
-            this.Type.HeaderText = "Type";
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            // 
-            // Message
-            // 
-            this.Message.DataPropertyName = "Message";
-            this.Message.HeaderText = "Message";
-            this.Message.Name = "Message";
-            this.Message.ReadOnly = true;
-            // 
             // ExpDate
             // 
             this.ExpDate.DataPropertyName = "ExpDate";
@@ -340,26 +366,12 @@
             this.ExpDate.Name = "ExpDate";
             this.ExpDate.ReadOnly = true;
             // 
-            // SeriousMsg
-            // 
-            this.SeriousMsg.DataPropertyName = "SeriousMsg";
-            this.SeriousMsg.HeaderText = "SeriousMsg";
-            this.SeriousMsg.Name = "SeriousMsg";
-            this.SeriousMsg.ReadOnly = true;
-            // 
             // OpenMsg
             // 
             this.OpenMsg.DataPropertyName = "OpenMsg";
             this.OpenMsg.HeaderText = "OpenMsg";
             this.OpenMsg.Name = "OpenMsg";
             this.OpenMsg.ReadOnly = true;
-            // 
-            // readMsgDataGridViewCheckBoxColumn
-            // 
-            this.readMsgDataGridViewCheckBoxColumn.DataPropertyName = "ReadMsg";
-            this.readMsgDataGridViewCheckBoxColumn.HeaderText = "ReadMsg";
-            this.readMsgDataGridViewCheckBoxColumn.Name = "readMsgDataGridViewCheckBoxColumn";
-            this.readMsgDataGridViewCheckBoxColumn.ReadOnly = true;
             // 
             // Operator
             // 
@@ -404,26 +416,25 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn ReadMsg2;
         private ATMSDataSet11 aTMSDataSet11;
         private System.Windows.Forms.BindingSource controlerMSGsBindingSource;
         private ATMSDataSet11TableAdapters.ControlerMSGsTableAdapter controlerMSGsTableAdapter;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ReadMsg2;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ReadMsg;
         private System.Windows.Forms.DataGridViewTextBoxColumn MesNo;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn ToAllAtms;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AtmNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn FromUser;
         private System.Windows.Forms.DataGridViewTextBoxColumn ToUser;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn SeriousMsg;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Message;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn readMsgDataGridViewCheckBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn BankId;
         private System.Windows.Forms.DataGridViewTextBoxColumn BranchId;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ToAllAtms;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AtmNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn DtTm;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Message;
         private System.Windows.Forms.DataGridViewTextBoxColumn ExpDate;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn SeriousMsg;
         private System.Windows.Forms.DataGridViewCheckBoxColumn OpenMsg;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn readMsgDataGridViewCheckBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Operator;
-
     }
 }

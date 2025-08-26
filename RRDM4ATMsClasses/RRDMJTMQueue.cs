@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
@@ -23,25 +18,28 @@ namespace RRDM4ATMs
         public string RequestorMachine;
         public string Command;
         public int Priority;
-        public string BatchID;
+    
         public string AtmNo;
         public string BankID;
         public string BranchNo;
         public string ATMIPAddress;
         public string ATMMachineName;
         public bool ATMWindowsAuth;
+
         public string ATMAccessID;
         public string ATMAccessPassword;
         public string TypeOfJournal;
         public string SourceFileName;
         public string SourceFilePath;
         public string DestnFileName;
+
         public string DestnFilePath;
         public string DestnFileHASH;
         public int Stage;
         public int ResultCode;
         public string ResultMessage;
         public DateTime ProcessStart;
+
         public DateTime FileUploadStart;
         public DateTime FileUploadEnd;
         public DateTime FileParseStart;
@@ -111,30 +109,32 @@ namespace RRDM4ATMs
     {
         //  Commands
         public const string Cmd_FETCH = "FETCH";
-        public const string Cmd_FETCHDEL = "FETCHDEL";
+        // public const string Cmd_FETCHDEL = "FETCHDEL";
         public const string Cmd_ATMSTATUS = "ATMSTATUS";
     }
 
-    public class RRDMJTMQueue
+    public class RRDMJTMQueue : Logger
     {
+        public RRDMJTMQueue() : base() { }
+
         public JTMQueueStruct QueueRec = new JTMQueueStruct();
 
         #region Properies
+
         public int MsgID;
         public DateTime MsgDateTime;
         public string RequestorID;
         public string RequestorMachine;
         public string Command;
         public int Priority;
-        public string BatchID;
-
+    
         public string AtmNo;
         public string BankID;
         public string BranchNo;
         public string ATMIPAddress;
         public string ATMMachineName;
-
         public bool ATMWindowsAuth;
+
         public string ATMAccessID;
         public string ATMAccessPassword;
 
@@ -145,7 +145,6 @@ namespace RRDM4ATMs
         public string DestnFilePath;
         public string DestnFileHASH;
         public int Stage;
-
 
         public int ResultCode;
         public string ResultMessage;
@@ -162,6 +161,9 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput;
         #endregion
+
+        // Define the data table 
+        public DataTable QueueJournalTable = new DataTable();
 
         string connectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
 
@@ -200,7 +202,7 @@ namespace RRDM4ATMs
                             QueueRec.RequestorMachine = RequestorMachine = (string)rdr["RequestorMachine"];
                             QueueRec.Command = Command = (string)rdr["Command"];
                             QueueRec.Priority = Priority = (int)rdr["Priority"];
-                            QueueRec.BatchID = BatchID = (string)rdr["BatchID"];
+                       
                             QueueRec.AtmNo = AtmNo = (string)rdr["AtmNo"];
                             QueueRec.BankID = BankID = (string)rdr["BankID"];
                             QueueRec.BranchNo = BranchNo = (string)rdr["BranchNo"];
@@ -237,8 +239,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReadSingleJTMQueueByPriority().... " + ex.Message;
+
+                    CatchDetails(ex); 
                 }
         }
 
@@ -276,7 +278,7 @@ namespace RRDM4ATMs
                             QueueRec.RequestorMachine = RequestorMachine = (string)rdr["RequestorMachine"];
                             QueueRec.Command = Command = (string)rdr["Command"];
                             QueueRec.Priority = Priority = (int)rdr["Priority"];
-                            QueueRec.BatchID = BatchID = (string)rdr["BatchID"];
+                         
                             QueueRec.AtmNo = AtmNo = (string)rdr["AtmNo"];
                             QueueRec.BankID = BankID = (string)rdr["BankID"];
                             QueueRec.BranchNo = BranchNo = (string)rdr["BranchNo"];
@@ -313,8 +315,135 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured ReadJTMQueueByMsgID(int InMsgID)......... " + ex.Message;
+
+                    CatchDetails(ex);
+                }
+        }
+
+        // READ JTMQueue by ATM and Fill Table 
+        public void ReadJTMQueueByATMAndFillTable(string  InAtmNo)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            QueueJournalTable = new DataTable();
+            QueueJournalTable.Clear();
+
+            // DATA TABLE ROWS DEFINITION 
+            QueueJournalTable.Columns.Add("MsgID", typeof(int));
+            QueueJournalTable.Columns.Add("ATMNo", typeof(string));
+            QueueJournalTable.Columns.Add("MsgDateTime", typeof(DateTime));
+
+            QueueJournalTable.Columns.Add("RequestorID", typeof(string));
+            QueueJournalTable.Columns.Add("Command", typeof(string));
+            QueueJournalTable.Columns.Add("TypeOfJournal", typeof(string));
+
+            QueueJournalTable.Columns.Add("Stage", typeof(int));
+            QueueJournalTable.Columns.Add("ResultCode", typeof(int));
+            QueueJournalTable.Columns.Add("ResultMessage", typeof(string));
+
+            QueueJournalTable.Columns.Add("ProcessStart", typeof(DateTime));
+            QueueJournalTable.Columns.Add("FileUploadStart", typeof(DateTime));
+            QueueJournalTable.Columns.Add("FileUploadEnd", typeof(DateTime));
+            QueueJournalTable.Columns.Add("FileParseStart", typeof(DateTime));
+            QueueJournalTable.Columns.Add("FileParseEnd", typeof(DateTime));
+            QueueJournalTable.Columns.Add("ProcessEnd", typeof(DateTime));
+
+            string SqlString = "SELECT *"
+                  + " FROM [dbo].[JTMQueue] "
+                  + " WHERE AtmNo = @AtmNo"
+                  + " Order By MsgID DESC";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+
+                            // Read record Details (fill in both the QueueRec structure and the free standing properties)
+                            MsgID = (int)rdr["MsgID"];
+                            MsgDateTime = (DateTime)rdr["MsgDateTime"];
+                            RequestorID = (string)rdr["RequestorID"];
+                            RequestorMachine = (string)rdr["RequestorMachine"];
+                            Command = (string)rdr["Command"];
+                            Priority = (int)rdr["Priority"];
+                            AtmNo = (string)rdr["AtmNo"];
+                            BankID = (string)rdr["BankID"];
+                            BranchNo = (string)rdr["BranchNo"];
+                            ATMIPAddress = (string)rdr["ATMIPAddress"];
+                            ATMMachineName = (string)rdr["ATMMachineName"];
+                            ATMWindowsAuth = (bool)rdr["ATMWindowsAuth"];
+                            ATMAccessID = (string)rdr["ATMAccessID"];
+                            ATMAccessPassword = (string)rdr["ATMAccessPassword"];
+                            TypeOfJournal = (string)rdr["TypeOfJournal"];
+                            SourceFileName = (string)rdr["SourceFileName"];
+                            SourceFilePath = (string)rdr["SourceFilePath"];
+                            DestnFileName = (string)rdr["DestnFileName"];
+                            DestnFilePath = (string)rdr["DestnFilePath"];
+                            DestnFileHASH = (string)rdr["DestnFileHASH"];
+                            Stage = (int)rdr["Stage"];
+                            ResultCode = (int)rdr["ResultCode"];
+                            ResultMessage = (string)rdr["ResultMessage"];
+                            ProcessStart = (DateTime)rdr["ProcessStart"];
+                            FileUploadStart = (DateTime)rdr["FileUploadStart"];
+                            FileUploadEnd = (DateTime)rdr["FileUploadEnd"];
+                            FileParseStart = (DateTime)rdr["FileParseStart"];
+                            FileParseEnd = (DateTime)rdr["FileParseEnd"];
+                            ProcessEnd = (DateTime)rdr["ProcessEnd"];
+                            Operator = (string)rdr["Operator"];
+
+                            //
+                            // Fill In Table
+                            //
+                            DataRow RowSelected = QueueJournalTable.NewRow();
+                            
+                            RowSelected["MsgID"] = MsgID;
+                            RowSelected["ATMNo"] = AtmNo;
+                            RowSelected["MsgDateTime"] = MsgDateTime;
+
+                            RowSelected["RequestorID"] = RequestorID;
+                            RowSelected["Command"] = Command;
+                            RowSelected["TypeOfJournal"] = TypeOfJournal;
+
+                            RowSelected["Stage"] = Stage;
+                            RowSelected["ResultCode"] = ResultCode;
+                            RowSelected["ResultMessage"] = ResultMessage;
+
+                            RowSelected["ProcessStart"] = ProcessStart;
+                            RowSelected["FileUploadStart"] = FileUploadStart;
+                            RowSelected["FileUploadEnd"] = FileUploadEnd;
+
+                            RowSelected["FileParseStart"] = FileParseStart;
+                            RowSelected["FileParseEnd"] = FileParseEnd;
+                            RowSelected["ProcessEnd"] = ProcessEnd;
+
+                            // ADD ROW
+                            QueueJournalTable.Rows.Add(RowSelected);
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -327,7 +456,7 @@ namespace RRDM4ATMs
             RequestorMachine = QueueRec.RequestorMachine = JTMQRec.RequestorMachine;
             Command = QueueRec.Command = JTMQRec.Command;
             Priority = QueueRec.Priority = JTMQRec.Priority;
-            BatchID = QueueRec.BatchID = JTMQRec.BatchID;
+         
             AtmNo = QueueRec.AtmNo = JTMQRec.AtmNo;
             BankID = QueueRec.BankID = JTMQRec.BankID;
             BranchNo = QueueRec.BranchNo = JTMQRec.BranchNo;
@@ -359,24 +488,22 @@ namespace RRDM4ATMs
         // Insert NEW Record in JTMQueue
         public int InsertNewRecordInJTMQueue()
         {
-
+          
             ErrorFound = false;
             ErrorOutput = "";
 
             string cmdinsert = "INSERT INTO [dbo].[JTMQueue]"
                 + " ([MsgDateTime],[RequestorID],[RequestorMachine],[Command],[Priority],"
-                + " [BatchID],"
                 + "[AtmNo], [BankID], [BranchNo], [ATMIPAddress],"
                 + "[ATMMachineName],[ATMWindowsAuth],[ATMAccessID],[ATMAccessPassword], "
                 + "[TypeOfJournal],[SourceFileName],[SourceFilePath],[DestnFilePath], "
                 + "[Operator] )"
                 + " VALUES"
                 + " (@MsgDateTime,@RequestorID,@RequestorMachine,@Command,@Priority,"
-                + "@BatchID,"
                 + "@AtmNo ,@BankID, @BranchNo, @ATMIPAddress,"
                 + "@ATMMachineName,@ATMWindowsAuth,@ATMAccessID,@ATMAccessPassword, "
                 + "@TypeOfJournal,@SourceFileName,@SourceFilePath,@DestnFilePath, "
-                + " @Operator )"
+                + " @Operator ) ;"
                 + " SELECT CAST(SCOPE_IDENTITY() AS int)";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -391,8 +518,7 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@RequestorMachine", RequestorMachine);
                         cmd.Parameters.AddWithValue("@Command", Command);
                         cmd.Parameters.AddWithValue("@Priority", Priority);
-                        cmd.Parameters.AddWithValue("@BatchID", BatchID);
-
+                   
                         cmd.Parameters.AddWithValue("@AtmNo", AtmNo);
                         cmd.Parameters.AddWithValue("@BankID", BankID);
                         cmd.Parameters.AddWithValue("@BranchNo", BranchNo);
@@ -410,32 +536,22 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@Operator", Operator);
 
                         //rows number of record got updated
-
-                        // MsgID = (int)cmd.ExecuteScalar();
-                        int rows = cmd.ExecuteNonQuery();
-
-                        if (rows > 0)
-                        {
-                            ErrorFound = false;
-                            ErrorOutput = "";
-                        }
-                        else
-                        {
-                            ErrorFound = true;
-                            ErrorOutput = "An error occured while INSERTING in [RRDMJTMQueue]... ";
-                        }
+                        MsgID = (int)cmd.ExecuteScalar();
+                     
                     }
                     // Close conn
                     conn.Close();
                 }
                 catch (Exception ex)
                 {
-                    MsgID = 0;
                     conn.Close();
+
                     ErrorFound = true;
-                    ErrorOutput = "An error occured in InsertNewRecordInJTMQueue()............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
-            return (MsgID);
+
+            return MsgID;
         }
 
         // UPDATE Update Record In JTMQueue Using Struct
@@ -447,7 +563,7 @@ namespace RRDM4ATMs
             RequestorMachine = QueueRec.RequestorMachine = JTMQRec.RequestorMachine;
             Command = QueueRec.Command = JTMQRec.Command;
             Priority = QueueRec.Priority = JTMQRec.Priority;
-            BatchID = QueueRec.BatchID = JTMQRec.BatchID;
+         
             AtmNo = QueueRec.AtmNo = JTMQRec.AtmNo;
             BankID = QueueRec.BankID = JTMQRec.BankID;
             BranchNo = QueueRec.BranchNo = JTMQRec.BranchNo;
@@ -491,7 +607,6 @@ namespace RRDM4ATMs
                     using (SqlCommand cmd = new SqlCommand("UPDATE dbo.JTMQueue SET "
                              + " MsgDateTime = @MsgDateTime, RequestorID = @RequestorID, RequestorMachine = @RequestorMachine,"
                              + "Command = @Command, Priority = @Priority,"
-                             + "BatchID = @BatchID,"
                              + "AtmNo = @AtmNo, BankID = @BankID, BranchNo = @BranchNo, ATMIPAddress = @ATMIPAddress,"
                              + "ATMMachineName = @ATMMachineName, ATMWindowsAuth = @ATMWindowsAuth, "
                              + "ATMAccessID = @ATMAccessID, ATMAccessPassword = @ATMAccessPassword, "
@@ -511,8 +626,7 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@Command", Command);
                         cmd.Parameters.AddWithValue("@Priority", Priority);
-                        cmd.Parameters.AddWithValue("@BatchID", BatchID);
-
+                     
                         cmd.Parameters.AddWithValue("@AtmNo", AtmNo);
                         cmd.Parameters.AddWithValue("@BankID", BankID);
                         cmd.Parameters.AddWithValue("@BranchNo", BranchNo);
@@ -542,8 +656,7 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@Operator", Operator);
 
-                        //rows number of record got updated
-                        int rows = cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
                     }
                     // Close conn
                     conn.Close();
@@ -551,8 +664,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UpdateRecordInJTMQueueUsingByMsgID()..... " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -574,13 +687,9 @@ namespace RRDM4ATMs
                             + " WHERE MsgID = @MsgID ", conn))
                     {
                         cmd.Parameters.AddWithValue("@MsgID", InMsgID);
-
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
-
+                                      
+                        cmd.ExecuteNonQuery();
+                       
                     }
                     // Close conn
                     conn.Close();
@@ -588,28 +697,85 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in DeleteRecordInJTMQueueByMsgID(int InMsgID............. " + ex.Message;
+                    CatchDetails(ex); 
                 }
             }
         }
+
+        ///// <summary> InvokeStoredProcedure 
+        ///// 
+        ///// </summary>
+        ///// <param name="SPName"></param>
+        ///// <param name="BnkID"></param>
+        ///// <param name="Atm"></param>
+        ///// <param name="Branch"></param>
+        ///// <param name="FullName"></param>
+        ///// <returns></returns>
+        //public int InvokeStoredProcedure(string SPName, string BnkID, string Atm, string Branch, string FullName)
+        //{
+        //    int rc = -1;
+        //    ErrorFound = false;
+        //    ErrorOutput = "";
+        //    int ReturnCode = -1;
+        //    string connectionString = ConfigurationManager.ConnectionStrings["ATMSJournalsConnectionString"].ConnectionString;
+
+        //    using (SqlConnection conn = new SqlConnection(connectionString))
+        //    {
+        //        try
+        //        {
+        //            conn.Open();
+
+        //            SqlCommand cmd = new SqlCommand(SPName, conn);
+
+        //            cmd.CommandType = CommandType.StoredProcedure;
+
+        //            cmd.Parameters.Add(new SqlParameter("@BankID", BnkID));
+        //            cmd.Parameters.Add(new SqlParameter("@AtmNo", Atm));
+        //            cmd.Parameters.Add(new SqlParameter("@BranchNo", Branch));
+        //            cmd.Parameters.Add(new SqlParameter("@FullPath", FullName));
+
+        //            SqlParameter retCode = new SqlParameter("@ReturnCode", ReturnCode);
+        //            retCode.Direction = ParameterDirection.Output;
+        //            retCode.SqlDbType = SqlDbType.Int;
+        //            cmd.Parameters.Add(retCode);
+
+        //            // execute the command
+        //            cmd.ExecuteNonQuery(); // errors will be caught in CATCH
+        //            rc = (int)cmd.Parameters["@ReturnCode"].Value;
+
+        //            conn.Close();
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            rc = -1;
+        //            ErrorFound = true;
+        //            ErrorOutput = ex.Message;
+        //            conn.Close();
+
+        //            CatchDetails(ex); 
+        //        }
+        //    }
+
+        //    return (rc);
+        //}
 
         /// <summary> InvokeStoredProcedure 
         /// 
         /// </summary>
         /// <param name="SPName"></param>
+        /// <param name='JournalType'></param>
         /// <param name="BnkID"></param>
         /// <param name="Atm"></param>
-        /// <param name="Branch"></param>
         /// <param name="FullName"></param>
         /// <returns></returns>
-        public int InvokeStoredProcedure(string SPName, string BnkID, string Atm, string Branch, string FullName)
+        public int InvokeStoredProcedure(string SPName, string JournalType, string BnkID, string Atm, string FullName)
         {
             int rc = -1;
             ErrorFound = false;
             ErrorOutput = "";
             int ReturnCode = -1;
-            string connectionString = ConfigurationManager.ConnectionStrings["ATMSJournalsConnectionString"].ConnectionString;
+            connectionString = ConfigurationManager.ConnectionStrings["ATMSJournalsConnectionString"].ConnectionString;
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -621,9 +787,9 @@ namespace RRDM4ATMs
 
                     cmd.CommandType = CommandType.StoredProcedure;
 
+                    cmd.Parameters.Add(new SqlParameter("@JournalType", JournalType));
                     cmd.Parameters.Add(new SqlParameter("@BankID", BnkID));
                     cmd.Parameters.Add(new SqlParameter("@AtmNo", Atm));
-                    cmd.Parameters.Add(new SqlParameter("@BranchNo", Branch));
                     cmd.Parameters.Add(new SqlParameter("@FullPath", FullName));
 
                     SqlParameter retCode = new SqlParameter("@ReturnCode", ReturnCode);
@@ -635,15 +801,20 @@ namespace RRDM4ATMs
                     cmd.ExecuteNonQuery(); // errors will be caught in CATCH
                     rc = (int)cmd.Parameters["@ReturnCode"].Value;
 
+                    conn.Close();
+
                 }
                 catch (Exception ex)
                 {
                     rc = -1;
-                    conn.Close();
                     ErrorFound = true;
-                    ErrorOutput = "An error occured in RRDMJTMQueue:InvokeStoredProcedure! The error message reads:\n" + ex.Message;
+                    ErrorOutput = ex.Message;
+                    conn.Close();
+
+                    CatchDetails(ex);
                 }
             }
+
             return (rc);
         }
 
@@ -670,12 +841,123 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in DeleteAllRecordsInJTMQueue()... " + ex.Message;
+
+                    CatchDetails(ex);
                 }
             return (rows);
         }
 
-    }
 
+        public int TotalRecords ;
+        public int TotalInserted;
+        //
+        // Method called from Application or Choreographer for Inserting Records in Queue for E-Journal reading
+        //
+
+        public void InsertRecordsInJTMQueue(string InRequestor, string InCommand, string InMode, 
+                                                  int InPriority, string InAtmNo)
+        {
+            // InCommand : GET
+            //           : DELETE
+            // InMode    : SingleAtm
+            //           : AllReadyForLoading
+
+            RRDMJTMIdentificationDetailsClass Jd = new RRDMJTMIdentificationDetailsClass();
+            RRDMAtmsClass Ac = new RRDMAtmsClass();
+
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            TotalInserted = 0; 
+
+            try
+            {
+                Jd.ReadJTMIdentificationDetailsToFillFullTable(InMode, InAtmNo);
+
+                if (Jd.RecordFound == true)
+                {
+                    RecordFound = true;
+
+                    TotalRecords = Jd.ATMsJournalDetailsTable.Rows.Count;
+                    // Read all records of created Table and insert in Queque 
+
+                    int I = 0;
+
+                    while (I <= (Jd.ATMsJournalDetailsTable.Rows.Count - 1))
+                    {
+
+                        MsgDateTime = DateTime.Now;
+                        RequestorID = InRequestor;
+                        RequestorMachine = "Panicos Machine";
+
+                        Command = InCommand;
+
+                        Priority = InPriority;
+
+                        AtmNo = (string)Jd.ATMsJournalDetailsTable.Rows[I]["AtmNo"];
+
+                        Ac.ReadAtm(AtmNo);
+
+                        BankID = Ac.BankId;
+                        BranchNo = Ac.Branch; 
+
+                        ATMIPAddress = (string)Jd.ATMsJournalDetailsTable.Rows[I]["ATMIPAddress"];
+
+                        ATMMachineName = (string)Jd.ATMsJournalDetailsTable.Rows[I]["ATMMachineName"];
+                        ATMWindowsAuth = (bool)Jd.ATMsJournalDetailsTable.Rows[I]["ATMWindowsAuth"];
+                        ATMAccessID = (string)Jd.ATMsJournalDetailsTable.Rows[I]["ATMAccessID"];
+
+                        ATMAccessPassword = (string)Jd.ATMsJournalDetailsTable.Rows[I]["ATMAccessPassword"];
+                        TypeOfJournal = (string)Jd.ATMsJournalDetailsTable.Rows[I]["TypeOfJournal"];
+                        SourceFileName = (string)Jd.ATMsJournalDetailsTable.Rows[I]["SourceFileName"];
+
+                        SourceFilePath = (string)Jd.ATMsJournalDetailsTable.Rows[I]["SourceFilePath"];
+                        DestnFilePath = (string)Jd.ATMsJournalDetailsTable.Rows[I]["DestnFilePath"];
+                        Operator = (string)Jd.ATMsJournalDetailsTable.Rows[I]["Operator"];
+
+                        int WQueueRecId = InsertNewRecordInJTMQueue();
+
+                        if (ErrorFound ==true)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            TotalInserted = TotalInserted + 1 ; 
+                        }
+
+                        Jd.ReadJTMIdentificationDetailsByAtmNo(AtmNo);
+                        Jd.QueueRecId = WQueueRecId;
+                        Jd.FileUploadRequestDt = MsgDateTime;
+                        Jd.ResultCode = -1;
+                        Jd.ResultMessage = "Waiting for processing";
+
+                        Jd.UpdateRecordInJTMIdentificationDetailsByAtmNo(AtmNo);
+                        if (Jd.ErrorFound == true)
+                        {
+                            ErrorFound = true;
+                            break;
+                        }
+
+                        I++;
+                    }
+                }
+                else
+                {
+                    RecordFound = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ErrorFound = true;
+                ErrorOutput = ex.Message;
+                RecordFound = false;
+                CatchDetails(ex);
+            }
+        }
+
+      
+    }
 }

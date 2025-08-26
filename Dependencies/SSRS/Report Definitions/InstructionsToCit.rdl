@@ -187,11 +187,11 @@
             </Style>
           </Textbox>
           <Image Name="EWBLogo">
-            <Source>Embedded</Source>
-            <Value>EastWest</Value>
+            <Source>External</Source>
+            <Value>file:///C:/VBoxShared/BankLogo/Logo.png</Value>
             <Sizing>FitProportional</Sizing>
             <Left>0.35985cm</Left>
-            <Height>1.10312cm</Height>
+            <Height>1.76099cm</Height>
             <Width>4.73859cm</Width>
             <ZIndex>6</ZIndex>
             <Style>

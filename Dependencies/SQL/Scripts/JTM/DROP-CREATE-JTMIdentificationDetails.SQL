@@ -27,6 +27,7 @@ CREATE TABLE [dbo].[JTMIdentificationDetails](
 	[SourceFileName] [nvarchar](300) NOT NULL CONSTRAINT [DF_JTMIdentificationDetails_SourceFileName]  DEFAULT (''),
 	[SourceFilePath] [nvarchar](300) NOT NULL CONSTRAINT [DF_JTMIdentificationDetails_SourceFilePath]  DEFAULT (''),
 	[DestnFilePath] [nvarchar](300) NOT NULL CONSTRAINT [DF_JTMIdentificationDetails_DestnFilePath]  DEFAULT (''),
+	[QueueRecId] [int] NOT NULL CONSTRAINT [DF_JTMIdentificationDetails_QueueRecId]  DEFAULT ((0)),
 	[FileUploadRequestDt] [datetime] NOT NULL CONSTRAINT [DF_JTMIdentificationDetails_FileUploadStart]  DEFAULT ('1900-01-01'),
 	[FileParseEnd] [datetime] NOT NULL CONSTRAINT [DF_JTMIdentificationDetails_FileParseEnd]  DEFAULT ('1900-01-01'),
 	[ResultCode] [int] NOT NULL CONSTRAINT [DF_JTMIdentificationDetails_ResultCode]  DEFAULT ((0)),

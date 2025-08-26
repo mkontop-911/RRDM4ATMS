@@ -14,10 +14,10 @@ public partial class WebForm48a : System.Web.UI.Page
     int WProcessMode;
 
     RRDMUpdateGrids Ug = new RRDMUpdateGrids();
-    RRDMNotesBalances Na = new RRDMNotesBalances();
-    RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate();
-   
-    RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+    RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
+    RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
+
+    RRDMUserSignedInRecords Us = new RRDMUserSignedInRecords();
     RRDMErrorsClassWithActions Ec = new RRDMErrorsClassWithActions();
 
     string WUserBankId;
@@ -25,14 +25,17 @@ public partial class WebForm48a : System.Web.UI.Page
     int WSesNo;
 
     // string MsgFilter;
+    string WOrigin ;
 
-    string WSignedId;
-    int WSignRecordNo;
-    string WOperator;
+    string WSignedId ;
+    int WSignRecordNo ;
+    string WOperator ;
 
     string WAtmNo;
-    DateTime WDtFrom;
-    DateTime WDtTo;
+
+    DateTime WDtFrom ;
+    DateTime WDtTo ;
+
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -40,18 +43,18 @@ public partial class WebForm48a : System.Web.UI.Page
         {
             if (!Page.IsPostBack)
             {
-                string WOrigin = (string)Session["WOrigin"];
+                WOrigin = (string)Session["WOrigin"];
 
-                string WSignedId = (string)Session["WSignedId"];
-                int WSignRecordNo = (int)Session["WSignRecordNo"];
-                string WOperator = (string)Session["WOperator"];
+                WSignedId = (string)Session["WSignedId"];
+                WSignRecordNo = (int)Session["WSignRecordNo"];
+                WOperator = (string)Session["WOperator"];
 
-                string WAtmNo = (string)Session["WAtmNo"];
+                WAtmNo = (string)Session["WAtmNo"];
 
-                DateTime WDtFrom = (DateTime)Session["WDtFrom"];
-                DateTime WDtTo = (DateTime)Session["WDtTo"];
+                WDtFrom = (DateTime)Session["WDtFrom"];
+                WDtTo = (DateTime)Session["WDtTo"];
 
-                Ta.ReadReplCyclesForFromToDate(WOperator, WAtmNo, WDtFrom, WDtTo);
+               // Ta.ReadReplCyclesForFromToDate(WOperator, WAtmNo, WDtFrom, WDtTo);
 
                 GridView1.DataSource = Ta.ATMsReplCyclesSelectedPeriod.DefaultView;
                 GridView1.DataBind();

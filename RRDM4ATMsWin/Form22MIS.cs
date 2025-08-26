@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 using System.Data.SqlClient;
 using System.Configuration;
 //multilingual
@@ -24,8 +19,6 @@ namespace RRDM4ATMsWin
         int CurrentSesNo;
        
 
-     //   int AtmsReplGroup;
-    //    int AtmsReconcGroup;
         string CitId;
 
         string AuthUser;
@@ -33,18 +26,13 @@ namespace RRDM4ATMsWin
 
         bool UnderRepl;
         DateTime LastReplDt;
-      //  int TypeOfRepl;
 
         // NULL Values 
         DateTime NextReplDt;
 
-    
-
-     //   int TotNotRepl;
         int TotRepl;
         int result1;
-    //    int result2; 
-
+  
         int I; 
 
         string connectionString = ConfigurationManager.ConnectionStrings
@@ -53,13 +41,13 @@ namespace RRDM4ATMsWin
         DataTable MISRepl1 = new DataTable();
 
         RRDMUsersAccessToAtms Uaa = new RRDMUsersAccessToAtms(); 
-        RRDMUsersAndSignedRecord Ua = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Ua = new RRDMUsersRecords();
 
         RRDMReplStatsClass Rs = new RRDMReplStatsClass();
 
-        RRDMNotesBalances Na = new RRDMNotesBalances();
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
 
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate();
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
 
         RRDMAtmsClass Ac = new RRDMAtmsClass();
 
@@ -72,15 +60,13 @@ namespace RRDM4ATMsWin
         //multilingual
         CultureInfo culture;
 
-        RRDMUsersAndSignedRecord Xa = new RRDMUsersAndSignedRecord(); // Make class availble 
+        RRDMUsersRecords Xa = new RRDMUsersRecords(); // Make class availble 
 
         ResourceManager LocRM = new ResourceManager("RRDM4ATMsWin.appRes", typeof(Form40).Assembly);
    //
         string WSignedId;
         int WSignRecordNo;
-     //   int WSecLevel;
-     
-     //   bool WPrive;
+    
         string WUserId;
         DateTime WDtTm;
 
@@ -99,7 +85,7 @@ namespace RRDM4ATMsWin
             WSignedId = InSignedNo;
             WSignRecordNo = SignRecordNo;
             WOperator = InOperator;
-         //   WPrive = InPrive;
+       
             WUserId = InUserId;
             WDtTm = InDtTm;
           
@@ -137,13 +123,14 @@ namespace RRDM4ATMsWin
 
        private void Form22MIS_Load(object sender, EventArgs e)
        {
-           Xa.ReadSignedActivityByKey(WSignRecordNo);
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-           if (Xa.Culture == "English")
+           if (Usi.Culture == "English")
            {
                culture = CultureInfo.CreateSpecificCulture("el-GR");
            }
-           if (Xa.Culture == "Français")
+           if (Usi.Culture == "Français")
            {
                culture = CultureInfo.CreateSpecificCulture("fr-FR");
            }
@@ -356,7 +343,7 @@ namespace RRDM4ATMsWin
 
                                                string EmailBody = "User: " + AuthUser + " is Replenishing the two ATMs at the same time";
 
-                                               Em.SendEmail(WOperator, Recipient, Subject, EmailBody);
+                                               //Em.SendEmail(WOperator, Recipient, Subject, EmailBody);
                                                //      if (Em.MessageSent == true) MessageBox.Show("Email to:" + Recipient + " Has been sent");
 
                                            }
@@ -684,8 +671,9 @@ namespace RRDM4ATMsWin
                    "SELECT  ReplDate, AtmNo, ReplMinutes,"
            + " ErrorsAtm,ErrorsHost,TotErr = (ErrorsAtm + ErrorsHost), "
            + "  AbsDiff = DiffPlus + DiffMinus,"
-            + "InMoneyLast As InMoney, MoneyUsed = InMoneyLast-RemainMoney,"
-           + " CashUtil=((InMoneyLast-RemainMoney)/InMoneyLast), NotReconc, UserName"
+           + "InMoneyLast As InMoney, MoneyUsed = InMoneyLast-RemainMoney,"
+  //         + " CashUtil=((InMoneyLast-RemainMoney)/InMoneyLast), "
+           + " NotReconc, UserName"
            + " FROM [ATMS].[dbo].[ReplStatsTable]"
            + " WHERE UserId = @UserId AND Operator = @Operator "
            + " ORDER BY ReplDate DESC ";
@@ -723,21 +711,50 @@ namespace RRDM4ATMsWin
 
                    }
 
-               //  MessageBox.Show(" Number of ATMS = " + I);
+                //  MessageBox.Show(" Number of ATMS = " + I);
 
-               dataGridView1.Columns[0].Width = 65; // 
-               dataGridView1.Columns[1].Width = 65; // 
-               dataGridView1.Columns[2].Width = 65; // 
-               dataGridView1.Columns[3].Width = 65; //
-               dataGridView1.Columns[4].Width = 65; // 
-               dataGridView1.Columns[5].Width = 65; // 
-               dataGridView1.Columns[6].Width = 65; // 
-               dataGridView1.Columns[7].Width = 65; // 
-               dataGridView1.Columns[8].Width = 65; // 
-               dataGridView1.Columns[9].Width = 65; // 
-               dataGridView1.Columns[10].Width = 65; // 
-               dataGridView1.Columns[11].Width = 100; // 
+                DataGridViewCellStyle style = new DataGridViewCellStyle();
+                style.Format = "N2";
 
+                dataGridView1.Columns[0].Width = 70; // ReplDate
+                dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+                dataGridView1.Columns[1].Width = 60; //AtmNo
+                dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+                dataGridView1.Columns[2].Width = 65; //  ReplMinutes
+                dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[3].Width = 65; // ErrorsAtm
+                dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[4].Width = 65; // ErrorsHost
+                dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[5].Width = 65; // TotErr
+                dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[6].Width = 65; // AbsDiff
+                dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[7].Width = 70; // InMoney
+                dataGridView1.Columns[7].DefaultCellStyle = style;
+                dataGridView1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                dataGridView1.Columns[8].Width = 75; // MoneyUsed
+                dataGridView1.Columns[8].DefaultCellStyle = style;
+                dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                //dataGridView1.Columns[9].Width = 70; //CashUtil
+                //dataGridView1.Columns[9].DefaultCellStyle = style;
+                //dataGridView1.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                dataGridView1.Columns[9].Width = 70; //NotReconc
+                dataGridView1.Columns[9].DefaultCellStyle = style;
+                dataGridView1.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                dataGridView1.Columns[10].Width = 140; //UserName
+                dataGridView1.Columns[10].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
                //     dataGridView1.Columns[0].HeaderText = LocRM.GetString("Form67Grd1Cl0", culture);
                //     dataGridView1.Columns[1].HeaderText = LocRM.GetString("Form67Grd1Cl01", culture);
@@ -798,19 +815,28 @@ namespace RRDM4ATMsWin
 
                    }
 
-               dataGridView1.Columns[0].Width = 75; // 
-               dataGridView1.Columns[1].Width = 75; // 
-               dataGridView1.Columns[2].Width = 75; // 
-               dataGridView1.Columns[3].Width = 75; //
-               dataGridView1.Columns[4].Width = 75; // 
+                DataGridViewCellStyle style = new DataGridViewCellStyle();
+                style.Format = "N2";
 
+                dataGridView1.Columns[0].Width = 70; // AtmNo
+                dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-               //     dataGridView1.Columns[0].HeaderText = LocRM.GetString("Form67Grd1Cl0", culture);
-               //     dataGridView1.Columns[1].HeaderText = LocRM.GetString("Form67Grd1Cl01", culture);
-               //     dataGridView1.Columns[2].HeaderText = LocRM.GetString("Form67Grd1Cl02", culture);
+                dataGridView1.Columns[1].Width = 70; //DR_TRANS
+                dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
+                dataGridView1.Columns[2].Width = 85; //  DR_Amount
+                dataGridView1.Columns[2].DefaultCellStyle = style;
+                dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-               dataGridView1.Show();
+                dataGridView1.Columns[3].Width = 70; // CR_TRANS
+                dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[4].Width = 85; // CR_Amount
+                dataGridView1.Columns[4].DefaultCellStyle = style;
+                dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+               
+                dataGridView1.Show();
 
            }
 
@@ -833,7 +859,8 @@ namespace RRDM4ATMsWin
                  "SELECT AtmNo, SUM(ReplMinutes) AS TotRepMin, Avg(ReplMinutes) AS Avg_Repl,"
         + " SUM(ErrorsAtm) As ErrATM,SUM(ErrorsHost) AS ErrHost, TotErr = SUM(ErrorsAtm + ErrorsHost), "
         + "  AbsDiff = SUM(DiffPlus + DiffMinus),"
-        + " CashUtil=(Sum(RemainMoney)/Sum(InMoneyLast)), SUM(NotReconc) As NotReconc"
+        //+ " CashUtil=(Sum(RemainMoney)/Sum(InMoneyLast)), "
+        + " SUM(NotReconc) As NotReconc"
         + " FROM [ATMS].[dbo].[ReplStatsTable] "
         + " WHERE Operator=@Operator AND CitId = @CitId"
         + " GROUP BY AtmNo"
@@ -880,10 +907,10 @@ namespace RRDM4ATMsWin
                dataGridView1.Columns[2].Width = 75; // Avg_Repl
                dataGridView1.Columns[3].Width = 75; // ErrATM
                dataGridView1.Columns[4].Width = 75; // ErrHost
-               dataGridView1.Columns[1].Width = 75; // TotErr
-               dataGridView1.Columns[2].Width = 75; // AbsDiff
-               dataGridView1.Columns[3].Width = 75; // CashUtil
-               dataGridView1.Columns[4].Width = 75; // NotReconc 
+               dataGridView1.Columns[5].Width = 75; // TotErr
+               dataGridView1.Columns[6].Width = 75; // AbsDiff
+               //dataGridView1.Columns[7].Width = 75; // CashUtil
+               dataGridView1.Columns[7].Width = 75; // NotReconc 
 
                //     dataGridView1.Columns[0].HeaderText = LocRM.GetString("Form67Grd1Cl0", culture);
                //     dataGridView1.Columns[1].HeaderText = LocRM.GetString("Form67Grd1Cl01", culture);
@@ -955,7 +982,7 @@ namespace RRDM4ATMsWin
                dataGridView1.Columns[7].Width = 75; // 
                dataGridView1.Columns[8].Width = 75; //
                dataGridView1.Columns[9].Width = 75; // 
-               dataGridView1.Columns[10].Width = 75; // 
+               //dataGridView1.Columns[10].Width = 75; // 
 
                //     dataGridView1.Columns[0].HeaderText = LocRM.GetString("Form67Grd1Cl0", culture);
                //     dataGridView1.Columns[1].HeaderText = LocRM.GetString("Form67Grd1Cl01", culture);
@@ -1038,7 +1065,7 @@ namespace RRDM4ATMsWin
                dataGridView1.Columns[7].Width = 75; // 
                dataGridView1.Columns[8].Width = 75; //
                dataGridView1.Columns[9].Width = 75; // 
-               dataGridView1.Columns[10].Width = 75; // 
+               //dataGridView1.Columns[10].Width = 75; // 
 
                //     dataGridView1.Columns[0].HeaderText = LocRM.GetString("Form67Grd1Cl0", culture);
                //     dataGridView1.Columns[1].HeaderText = LocRM.GetString("Form67Grd1Cl01", culture);

@@ -28,30 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.groupNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.descriptionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.moreThanOneBankDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.statsDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.replenishmentDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.reconciliationDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dtTmCreatedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bankIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.inactiveDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.aTMSDataSet52 = new RRDM4ATMsWin.ATMSDataSet52();
-            this.textBox8 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanelHeader = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -68,10 +54,9 @@
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.textBoxMsgBoard = new System.Windows.Forms.TextBox();
-            this.groupsTableAdapter = new RRDM4ATMsWin.ATMSDataSet52TableAdapters.GroupsTableAdapter();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.groupsBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet52)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanelHeader.SuspendLayout();
@@ -99,23 +84,10 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.groupNoDataGridViewTextBoxColumn,
-            this.descriptionDataGridViewTextBoxColumn,
-            this.moreThanOneBankDataGridViewCheckBoxColumn,
-            this.statsDataGridViewCheckBoxColumn,
-            this.replenishmentDataGridViewCheckBoxColumn,
-            this.reconciliationDataGridViewCheckBoxColumn,
-            this.dtTmCreatedDataGridViewTextBoxColumn,
-            this.bankIdDataGridViewTextBoxColumn,
-            this.inactiveDataGridViewCheckBoxColumn,
-            this.operatorDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.groupsBindingSource;
             this.dataGridView1.GridColor = System.Drawing.Color.LightGray;
-            this.dataGridView1.Location = new System.Drawing.Point(8, 41);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 38);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
@@ -125,95 +97,6 @@
             this.dataGridView1.TabIndex = 270;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
-            // 
-            // groupNoDataGridViewTextBoxColumn
-            // 
-            this.groupNoDataGridViewTextBoxColumn.DataPropertyName = "GroupNo";
-            this.groupNoDataGridViewTextBoxColumn.HeaderText = "GroupNo";
-            this.groupNoDataGridViewTextBoxColumn.Name = "groupNoDataGridViewTextBoxColumn";
-            this.groupNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // descriptionDataGridViewTextBoxColumn
-            // 
-            this.descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
-            this.descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
-            this.descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
-            this.descriptionDataGridViewTextBoxColumn.ReadOnly = true;
-            this.descriptionDataGridViewTextBoxColumn.Width = 130;
-            // 
-            // moreThanOneBankDataGridViewCheckBoxColumn
-            // 
-            this.moreThanOneBankDataGridViewCheckBoxColumn.DataPropertyName = "MoreThanOneBank";
-            this.moreThanOneBankDataGridViewCheckBoxColumn.HeaderText = "MoreThanOneBank";
-            this.moreThanOneBankDataGridViewCheckBoxColumn.Name = "moreThanOneBankDataGridViewCheckBoxColumn";
-            this.moreThanOneBankDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // statsDataGridViewCheckBoxColumn
-            // 
-            this.statsDataGridViewCheckBoxColumn.DataPropertyName = "Stats";
-            this.statsDataGridViewCheckBoxColumn.HeaderText = "Stats";
-            this.statsDataGridViewCheckBoxColumn.Name = "statsDataGridViewCheckBoxColumn";
-            this.statsDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // replenishmentDataGridViewCheckBoxColumn
-            // 
-            this.replenishmentDataGridViewCheckBoxColumn.DataPropertyName = "Replenishment";
-            this.replenishmentDataGridViewCheckBoxColumn.HeaderText = "Replenishment";
-            this.replenishmentDataGridViewCheckBoxColumn.Name = "replenishmentDataGridViewCheckBoxColumn";
-            this.replenishmentDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // reconciliationDataGridViewCheckBoxColumn
-            // 
-            this.reconciliationDataGridViewCheckBoxColumn.DataPropertyName = "Reconciliation";
-            this.reconciliationDataGridViewCheckBoxColumn.HeaderText = "Reconciliation";
-            this.reconciliationDataGridViewCheckBoxColumn.Name = "reconciliationDataGridViewCheckBoxColumn";
-            this.reconciliationDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // dtTmCreatedDataGridViewTextBoxColumn
-            // 
-            this.dtTmCreatedDataGridViewTextBoxColumn.DataPropertyName = "DtTmCreated";
-            this.dtTmCreatedDataGridViewTextBoxColumn.HeaderText = "DtTmCreated";
-            this.dtTmCreatedDataGridViewTextBoxColumn.Name = "dtTmCreatedDataGridViewTextBoxColumn";
-            this.dtTmCreatedDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // bankIdDataGridViewTextBoxColumn
-            // 
-            this.bankIdDataGridViewTextBoxColumn.DataPropertyName = "BankId";
-            this.bankIdDataGridViewTextBoxColumn.HeaderText = "BankId";
-            this.bankIdDataGridViewTextBoxColumn.Name = "bankIdDataGridViewTextBoxColumn";
-            this.bankIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // inactiveDataGridViewCheckBoxColumn
-            // 
-            this.inactiveDataGridViewCheckBoxColumn.DataPropertyName = "Inactive";
-            this.inactiveDataGridViewCheckBoxColumn.HeaderText = "Inactive";
-            this.inactiveDataGridViewCheckBoxColumn.Name = "inactiveDataGridViewCheckBoxColumn";
-            this.inactiveDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // operatorDataGridViewTextBoxColumn
-            // 
-            this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
-            this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
-            this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
-            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // groupsBindingSource
-            // 
-            this.groupsBindingSource.DataMember = "Groups";
-            this.groupsBindingSource.DataSource = this.aTMSDataSet52;
-            // 
-            // aTMSDataSet52
-            // 
-            this.aTMSDataSet52.DataSetName = "ATMSDataSet52";
-            this.aTMSDataSet52.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // textBox8
-            // 
-            this.textBox8.Location = new System.Drawing.Point(5, 364);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(99, 20);
-            this.textBox8.TabIndex = 271;
-            this.textBox8.Text = "Chosen Group No";
             // 
             // textBox9
             // 
@@ -244,13 +127,13 @@
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.button1.FlatAppearance.BorderSize = 2;
             this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
             this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(711, 3);
+            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button1.Location = new System.Drawing.Point(708, 545);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(62, 24);
             this.button1.TabIndex = 281;
@@ -262,6 +145,9 @@
             // 
             this.panel1.AutoScroll = true;
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.button7);
+            this.panel1.Controls.Add(this.button6);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -271,29 +157,16 @@
             this.panel1.Size = new System.Drawing.Size(955, 588);
             this.panel1.TabIndex = 283;
             // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Controls.Add(this.textBox1);
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.textBox9);
-            this.panel2.Controls.Add(this.textBox8);
-            this.panel2.Controls.Add(this.dataGridView1);
-            this.panel2.Location = new System.Drawing.Point(10, 41);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(936, 516);
-            this.panel2.TabIndex = 283;
-            // 
             // button7
             // 
             this.button7.BackColor = System.Drawing.Color.Transparent;
-            this.button7.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button7.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.button7.FlatAppearance.BorderSize = 2;
             this.button7.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
             this.button7.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button7.ForeColor = System.Drawing.Color.White;
-            this.button7.Location = new System.Drawing.Point(877, 3);
+            this.button7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button7.Location = new System.Drawing.Point(866, 545);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(62, 24);
             this.button7.TabIndex = 284;
@@ -304,19 +177,32 @@
             // button6
             // 
             this.button6.BackColor = System.Drawing.Color.Transparent;
-            this.button6.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button6.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.button6.FlatAppearance.BorderSize = 2;
             this.button6.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
             this.button6.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button6.ForeColor = System.Drawing.Color.White;
-            this.button6.Location = new System.Drawing.Point(794, 3);
+            this.button6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button6.Location = new System.Drawing.Point(784, 545);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(62, 24);
             this.button6.TabIndex = 283;
             this.button6.Text = "Update";
             this.button6.UseVisualStyleBackColor = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.label3);
+            this.panel2.Controls.Add(this.textBox1);
+            this.panel2.Controls.Add(this.label1);
+            this.panel2.Controls.Add(this.textBox9);
+            this.panel2.Controls.Add(this.dataGridView1);
+            this.panel2.Location = new System.Drawing.Point(10, 41);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(936, 489);
+            this.panel2.TabIndex = 283;
             // 
             // tableLayoutPanelHeader
             // 
@@ -371,9 +257,9 @@
             this.labelStep1.Location = new System.Drawing.Point(2, 0);
             this.labelStep1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelStep1.Name = "labelStep1";
-            this.labelStep1.Size = new System.Drawing.Size(294, 36);
+            this.labelStep1.Size = new System.Drawing.Size(386, 36);
             this.labelStep1.TabIndex = 242;
-            this.labelStep1.Text = "Group Maintenance";
+            this.labelStep1.Text = "ATMs Group Maintenance";
             // 
             // label5
             // 
@@ -381,12 +267,11 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(300, 8);
+            this.label5.Location = new System.Drawing.Point(392, 8);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(27, 20);
+            this.label5.Size = new System.Drawing.Size(0, 20);
             this.label5.TabIndex = 245;
-            this.label5.Text = ">>";
             // 
             // label4
             // 
@@ -394,12 +279,11 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(331, 8);
+            this.label4.Location = new System.Drawing.Point(396, 8);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(27, 20);
+            this.label4.Size = new System.Drawing.Size(0, 20);
             this.label4.TabIndex = 246;
-            this.label4.Text = ">>";
             // 
             // tableLayoutPanel1
             // 
@@ -515,10 +399,8 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
-            this.tableLayoutPanel2.Controls.Add(this.button1, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.textBoxMsgBoard, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.button6, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.button7, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.button5, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 596);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
@@ -544,9 +426,31 @@
             this.textBoxMsgBoard.TabIndex = 242;
             this.textBoxMsgBoard.Text = "No guidance information available.";
             // 
-            // groupsTableAdapter
+            // button5
             // 
-            this.groupsTableAdapter.ClearBeforeFill = true;
+            this.button5.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button5.FlatAppearance.BorderSize = 2;
+            this.button5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.ForeColor = System.Drawing.Color.White;
+            this.button5.Location = new System.Drawing.Point(876, 2);
+            this.button5.Margin = new System.Windows.Forms.Padding(2);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(76, 25);
+            this.button5.TabIndex = 248;
+            this.button5.Text = "Finish";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(8, 367);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(75, 13);
+            this.label3.TabIndex = 280;
+            this.label3.Text = "Chosen Group";
             // 
             // Form45
             // 
@@ -562,8 +466,6 @@
             this.Text = "Form45";
             this.Load += new System.EventHandler(this.Form45_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.groupsBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet52)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -587,7 +489,6 @@
 
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
@@ -611,20 +512,8 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button6;
-        private ATMSDataSet52 aTMSDataSet52;
-        private System.Windows.Forms.BindingSource groupsBindingSource;
-        private ATMSDataSet52TableAdapters.GroupsTableAdapter groupsTableAdapter;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn groupNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn moreThanOneBankDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn statsDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn replenishmentDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn reconciliationDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dtTmCreatedDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn bankIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn inactiveDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn operatorDataGridViewTextBoxColumn;
-
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label3;
     }
 }

@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
-using System.Drawing.Printing;
 using System.Configuration;
-using System.Web; 
 
 //24-04-2015 Alecos
 using System.Diagnostics;
 
 //multilingual
-using System.Resources;
-using System.Globalization;
 using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
@@ -26,7 +17,7 @@ namespace RRDM4ATMsWin
     {
         public EventHandler LoggingOut;
 
-        FormMainScreen NFormMainScreen; 
+      //  FormMainScreen NFormMainScreen; 
 
         Form108 NForm108;
         Form8 NForm8;
@@ -40,7 +31,7 @@ namespace RRDM4ATMsWin
         Form5 NForm5;
         Form3 NForm3;
       
-        Form116 NForm116; // Dispute pre investigation 
+        //Form116XXX NForm116; // Dispute pre investigation 
 
         Form18 NForm18; // CIT Providers  
 
@@ -65,7 +56,7 @@ namespace RRDM4ATMsWin
         Form55 NForm55;
     //    MessageBoxCustom NMessageBoxCustom;
         Form63 NForm63;
-        Form64 NForm64;
+     
         Form78 NForm78;
         Form81 NForm81;
      
@@ -90,7 +81,7 @@ namespace RRDM4ATMsWin
         string MsgFilter;
 
         RRDMUsersAccessToAtms Ba = new RRDMUsersAccessToAtms();
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
         RRDMGasParameters Gp = new RRDMGasParameters();
         RRDMControllerMsgClass Cm = new RRDMControllerMsgClass();
         RRDMCaseNotes Cn = new RRDMCaseNotes();
@@ -106,10 +97,10 @@ namespace RRDM4ATMsWin
 
         string WSignedId;
         int WSignRecordNo;
-        int WSecLevel;
+        string WSecLevel;
         string WOperator; 
         
-        public FormMainScreenCIT(string InSignedId, int SignRecordNo, int InSecLevel, string InOperator)
+        public FormMainScreenCIT(string InSignedId, int SignRecordNo, string InSecLevel, string InOperator)
         {
             WSignedId = InSignedId;
             WSignRecordNo = SignRecordNo;
@@ -119,9 +110,9 @@ namespace RRDM4ATMsWin
             InitializeComponent();
 
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
-
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            pictureBox1.BackgroundImage = appResImg.logo2;
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
             if (WSignedId == "7777" ) 
             {
@@ -131,7 +122,7 @@ namespace RRDM4ATMsWin
                     {
                         string Temp = c.Name.Substring(6, 2);
                         //  MessageBox.Show(c.Name);
-
+                        MessageBox.Show("Update this 804 parameter");
                         Gp.ReadParametersSpecificId(WOperator, "804", Temp, "803", WSecLevel.ToString());
 
                         if (Gp.RecordFound == true)
@@ -192,7 +183,7 @@ namespace RRDM4ATMsWin
                 + " OR (ReadMsg = 0 AND ToUser='" + WSignedId + "')" ;
              
         
-            Cm.ReadControlerMSGs(MsgFilter);
+            Cm.ReadControlerMSGsSerious(MsgFilter);
             
             if (Cm.SerMsgCount > 0)
             {
@@ -565,7 +556,7 @@ namespace RRDM4ATMsWin
         private void button53_Click(object sender, EventArgs e)
         { 
             //TEST
-            if (WSecLevel == 6 || WSignedId == "1005" || WSignedId == "SERVE31" || WSignedId == "500")
+            if (WSecLevel == "06" || WSignedId == "1005" || WSignedId == "SERVE31" || WSignedId == "500")
             {
                 NForm108 = new Form108(WSignedId, WSignRecordNo, WOperator);
                 NForm108.ShowDialog(); ;
@@ -594,7 +585,7 @@ namespace RRDM4ATMsWin
             }
              */
             // Sixth which is zero is CitId
-            NForm13 = new Form13(WSignedId, WSignRecordNo,WOperator ,"1000");
+            NForm13 = new Form13(WSignedId, WSignRecordNo,WOperator ,"1000", 1);
             NForm13.ShowDialog(); ;
         }
              
@@ -608,7 +599,7 @@ namespace RRDM4ATMsWin
         // 5 Normal Group belonging to Bank . 
         private void button57_Click(object sender, EventArgs e)
         {
-            Ba.ReadUsersAccessAtmTable(WSignedId); // READ ALL TABLE ENTRIES TO SEE IF ONE TO ONE 
+            Ba.ReadUserAccessToAtms(WSignedId); // READ ALL TABLE ENTRIES TO SEE IF ONE TO ONE 
 
             if (Ba.NoOfAtmsRepl == 0 & Ba.NoOfGroupsRepl == 0)
             {
@@ -633,7 +624,7 @@ namespace RRDM4ATMsWin
 
         private void button58_Click(object sender, EventArgs e)
         {
-            Ba.ReadUsersAccessAtmTable(WSignedId); // READ TO SEE GROUP OR ATM 
+            Ba.ReadUserAccessToAtms(WSignedId); // READ TO SEE GROUP OR ATM 
 
             if (Ba.NoOfAtmsReconc == 0 & Ba.NoOfGroupsReconc == 0)
             {
@@ -741,8 +732,8 @@ namespace RRDM4ATMsWin
         // Dispute Pre Investigation 
         private void button67_Click(object sender, EventArgs e)
         {
-            NForm116 = new Form116(WSignedId, WSignRecordNo, WOperator);
-            NForm116.ShowDialog(); ;
+            //NForm116 = new Form116XXX(WSignedId, WSignRecordNo, WOperator);
+            //NForm116.ShowDialog(); ;
         }   
       
         // DISPUTE REGISTRATION  
@@ -754,13 +745,13 @@ namespace RRDM4ATMsWin
         }
          
         // MANAGE DISPUTES 
-        private void button69_Click(object sender, EventArgs e)
-        {
-            NForm3 = new Form3(WSignedId, WSignRecordNo, WOperator);
+        //private void button69_Click(object sender, EventArgs e)
+        //{
+        //    NForm3 = new Form3(WSignedId, WSignRecordNo, WOperator,"",Nul);
 
 
-            NForm3.ShowDialog();
-        }
+        //    NForm3.ShowDialog();
+        //}
 
         // AUthorize Dispute Decisions 
       
@@ -770,7 +761,7 @@ namespace RRDM4ATMsWin
             int TempSesNo = 0;
             int WDisputeNo = 0;
             int WDisputeTranNo = 0;
-            NForm112 = new Form112(WSignedId, WSignRecordNo, WOperator, "Normal", TempAtmNo, TempSesNo, WDisputeNo, WDisputeTranNo);
+            NForm112 = new Form112(WSignedId, WSignRecordNo, WOperator, "Normal", TempAtmNo, TempSesNo, WDisputeNo, WDisputeTranNo, "", 0);
             NForm112.ShowDialog();
         }
                        
@@ -793,8 +784,11 @@ namespace RRDM4ATMsWin
         private void button14_Click(object sender, EventArgs e)
         {
             // READ DETAILS OF ACCESS RIGHTS AND GO TO FORM1 
-            NFormMainScreen = new FormMainScreen(WSignedId, WSignRecordNo, Us.SecLevel, WOperator);  
-            NFormMainScreen.ShowDialog();
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo); 
+            //
+            //NFormMainScreen = new FormMainScreen(WSignedId, WSignRecordNo, Usi.SecLevel, WOperator);  
+            //NFormMainScreen.ShowDialog();
           
         }
         //
@@ -802,11 +796,11 @@ namespace RRDM4ATMsWin
         //
         private void button15_Click(object sender, EventArgs e)
         {
-            if (WSecLevel > 4)
-            {
-                MessageBox.Show(" THIS BUTTON IS ONLY FOR OPERATIONAL OFFICERS");
-                return;
-            }
+            //if (WSecLevel > 4)
+            //{
+            //    MessageBox.Show(" THIS BUTTON IS ONLY FOR OPERATIONAL OFFICERS");
+            //    return;
+            //}
 
             WAction = 1; // Show INFO FOR ATMS 
             NForm47 = new Form47(WSignedId, WSignRecordNo, WOperator ,"",  WAction);
@@ -821,11 +815,11 @@ namespace RRDM4ATMsWin
         private void button25_Click(object sender, EventArgs e)
         {
 
-            if (WSecLevel > 4)
-            {
-                MessageBox.Show(" THIS BUTTON IS ONLY FOR OPERATIONAL OFFICERS");
-                return;
-            }
+            //if (WSecLevel > 4)
+            //{
+            //    MessageBox.Show(" THIS BUTTON IS ONLY FOR OPERATIONAL OFFICERS");
+            //    return;
+            //}
 
 
             WAction = 2; // Show INFO FOR ATMS 
@@ -881,11 +875,11 @@ namespace RRDM4ATMsWin
         //
         private void button60_Click(object sender, EventArgs e)
         {
-            if (WSecLevel > 4)
-            {
-                MessageBox.Show(" THIS BUTTON IS ONLY FOR OPERATIONAL OFFICERS - Sec Level 3 and 4");
-                return;
-            }
+            //if (WSecLevel > 4)
+            //{
+            //    MessageBox.Show(" THIS BUTTON IS ONLY FOR OPERATIONAL OFFICERS - Sec Level 3 and 4");
+            //    return;
+            //}
 
             NForm50 = new Form50(WSignedId, WSignRecordNo, WOperator);
             NForm50.ShowDialog(); ;
@@ -921,7 +915,7 @@ namespace RRDM4ATMsWin
                + " OR (ReadMsg = 0 AND ToUser='" + WSignedId + "')";
 
            
-            Cm.ReadControlerMSGs(MsgFilter);
+            Cm.ReadControlerMSGsSerious(MsgFilter);
 
             if (Cm.SerMsgCount > 0)
             {
@@ -1160,12 +1154,7 @@ namespace RRDM4ATMsWin
             
         }
 
-        // Read the ejournal 
-        private void button71_Click(object sender, EventArgs e)
-        {
-            NForm64 = new Form64();
-            NForm64.ShowDialog(); ;
-        }
+     
         
         private void button23_Click(object sender, EventArgs e)
         {
@@ -1204,22 +1193,7 @@ namespace RRDM4ATMsWin
             NForm12 = new Form12(WSignedId, WSignRecordNo, WSecLevel, WOperator, WAction);
             NForm12.ShowDialog(); ;
         }
-        //HOLIDDAYS AND SPECIAL DAYS
-        private void button28_Click(object sender, EventArgs e)
-        {
-            /*
-            ClassHolidays Ch = new ClassHolidays();
-
-            string BankA = "ModelBak";
-            string BankB = "ServeUk";
-
-            Ch.CopyHolidays(BankA, BankB, DateTime.Now.Year);
-             */
-
-            WAction = 1;
-            NForm15 = new Form15(WSignedId, WSignRecordNo, WSecLevel, WOperator, WAction);
-            NForm15.ShowDialog(); ;
-        }
+      
         // ATMs Migration 
         private void button30_Click(object sender, EventArgs e)
         {
@@ -1388,7 +1362,7 @@ namespace RRDM4ATMsWin
         {
             WAction = 1;
 
-            NForm8 = new Form8(WSignedId, WSignRecordNo, WSecLevel, WOperator, WAction);
+            NForm8 = new Form8(WSignedId, WOperator, "", WAction);
             NForm8.ShowDialog(); ;
 
         }
@@ -1496,7 +1470,7 @@ namespace RRDM4ATMsWin
         {
             Form197 NForm197;
             string WParameter3 = ""; 
-            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, WParameter3, WParameter4,"Update", WSearchP4);
+            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, "", WParameter3, WParameter4,"Update", WSearchP4);
             NForm197.FormClosed += NForm197_FormClosed;
             NForm197.ShowDialog();
         }
@@ -1606,7 +1580,14 @@ namespace RRDM4ATMsWin
 // Start Reporting Services 
         private void button4_Click_1(object sender, EventArgs e)
         {
-            Form56R11 AtmsBasic = new Form56R11(WOperator);
+            string P1 = "ATMs Basic Information ";
+
+            string P2 = "";
+            string P3 = "";
+            string P4 = WOperator;
+            string P5 = WSignedId;
+
+            Form56R11 AtmsBasic = new Form56R11(P1, P2, P3, P4, P5);
             AtmsBasic.Show();
         }
 // Check Internet 

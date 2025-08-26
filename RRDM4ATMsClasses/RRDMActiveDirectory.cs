@@ -1,31 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
-using System.Configuration;
-
-using System.DirectoryServices;
-
-using System.DirectoryServices.AccountManagement;
-using RRDM4ATMs;
+using System.Windows.Forms;
 
 namespace RRDM4ATMs
 {
-    public class RRDMActiveDirectory
+    public class RRDMActiveDirectory : Logger
     {
+        public RRDMActiveDirectory() : base() { }
         ////      
         ////ACTIVE DIRECTORY CLASS
         //// 
         public string AdDomainName;
         public string AdGroup;
 
-        public string UserId;
-        public string UserName;
+        public bool UserFoundInRRDM; 
+
+        public string AdUserId;
+        public string AdUserName;
         public string UserPhone;
         public string UserMail;
 
@@ -36,7 +27,7 @@ namespace RRDM4ATMs
 
         public bool DomainFound;
         public bool ValidDomain; // Searching in Banks
-        public bool AdRRDMYes; // It was defined in Parameters that Active Directory was needed 
+        //public bool AdRRDMYes; // It was defined in Parameters that Active Directory was needed 
         public bool UserInGroup; // User was checked and belongs to active directory group. 
 
         public bool NameFromActive; // Name is from ACTIVe and not from RRDM
@@ -60,8 +51,10 @@ namespace RRDM4ATMs
         {
             DomainFound = false;
             ValidDomain = false;
-            AdRRDMYes = false;
+            //AdRRDMYes = false;
             UserInGroup = false;
+
+            UserFoundInRRDM = false; 
 
             NameFromActive = false;
             MobileFromActive = false;
@@ -84,79 +77,79 @@ namespace RRDM4ATMs
                 CallResponseSuccess = Ad2.getLoggedOnUserDetails();
                 if (CallResponseSuccess == true)
                 {
+                    
                     if (Ad2.usrContextType == "Machine")
                     {
+                        string Msg;
+                        Msg = Ad2.usrContextType;
+                        Msg = Msg + Environment.NewLine + Ad2.usrIdentity + "..Domain not found";
+                        MessageBox.Show(Msg);
+                        //ErrorFound = true;
                         DomainFound = false;
                         return;
                     }
 
                     if (Ad2.usrContextType == "Domain")
                     {
-
+                        //if (Ad.DomainFound & Ad.ValidDomain & Ad.UserInGroup & Ad.UserFoundInRRDM)
+                        //{
+                        //    WActiveDirectory = true;
+                        //}
                         DomainFound = true;
-
                         AdDomainName = Ad2.usrDomainName;
+                        AdUserId = Ad2.usrLogonName.Trim();
 
                         // ===========================================
                         //  Check if this domain is in Banks
                         //*********************************************                
-                        Ba.ReadBankActiveDirectory(AdDomainName);
+                        Ba.ReadBankActiveDirectory(Ad2.usrDomainName);
                         if (Ba.RecordFound == true)
                         {
                             // It is valid
                             ValidDomain = true;
                             AdGroup = Ba.AdGroup;
-                            BankSwiftId = Ba.BankSwiftId;
-                            Operator = Ba.Operator;
+                            if (Ad2.isMemberOfGroup(AdGroup) == true)
+                            {
+                                UserInGroup = true; 
+                            }
+                            else
+                            {
+                                UserInGroup = false;
+                            }
+                            Operator = Ba.Operator; 
                         }
                         else
                         {
                             // Not valid domain
+                            MessageBox.Show("Domain is wrong");
                             ValidDomain = false;
                             return;
                         }
 
-                        // ===========================================
-                        // Check if define in Parameters ACCess control on Active Directory 
-                        //*********************************************
-                        ParId = "264";
-                        OccurId = "1";
-                        Gp.ReadParametersSpecificId(Operator, ParId, OccurId, "", "");
-                        if (Gp.OccuranceNm == "YES") // Active is yes 
+                        //
+                        RRDMUsersRecords Us = new RRDMUsersRecords();
+                        Us.ReadUsersRecord(Ad2.usrLogonName.Trim());
+                        if (Us.RecordFound == true)
                         {
-                            AdRRDMYes = true;
+                            UserFoundInRRDM = true;
                         }
                         else
                         {
-                            AdRRDMYes = false;
-                            return;
+                            UserFoundInRRDM = false;
                         }
 
-                        // ===========================================
-                        // Find Group and find if User in Group 
-                        //*********************************************
-                        ParId = "264";
-                        OccurId = "10";
-                        Gp.ReadParametersSpecificId(Operator, ParId, OccurId, "", "");
-                        if (Gp.OccuranceNm == "NoGroup") // THERE IS NO GROUP
-                        {
-                            UserInGroup = true;
-                            return;
-                        }
-                        else
-                        {
-                            // Check Group 
-                            if (Ad2.isDirectMemberOfGroup(Gp.OccuranceNm) == true)
-                            {
-                                // User is in group 
-                                UserInGroup = true;
-                            }
-                            else
-                            {
-                                // User is not in group 
-                                UserInGroup = false;
-                            }
-                        }
+                       
+                        string Msg;
+                        
+                        Msg = Ad2.usrContextType;
+                        Msg = Msg + Environment.NewLine + "Logon Id.." + Ad2.usrIdentity;
+                        Msg = Msg + Environment.NewLine + "Domain Name.." + Ad2.usrDomainName;
+                        Msg = Msg + Environment.NewLine +"Logon_Name.."+ Ad2.usrLogonName;
+                        Msg = Msg + Environment.NewLine + "Is in group? ..=" + Ad2.isMemberOfGroup(AdGroup).ToString();
+                        Msg = Msg + Environment.NewLine + "Is in RRDM ? ..=" + UserFoundInRRDM;
+                        Msg = Msg + Environment.NewLine + "Logon_Display Name.." + Ad2.usrDisplayName;
+
+                        MessageBox.Show(Msg);
 
                         // ===========================================
                         // Check if name is defined in Parameters to be changed 
@@ -193,8 +186,10 @@ namespace RRDM4ATMs
                             EmailFromActive = true;
 
                         }
-
-                        ReadParticularUserDetailsFromActive(Ad2.usrIdentity, AdDomainName);
+                        //
+                        // GET USER AND OTHER DETAILS
+                        //
+                       ReadParticularUserDetailsFromActive(Ad2.usrIdentity, AdDomainName);
                     }
                 }
                 else // Error 
@@ -207,8 +202,29 @@ namespace RRDM4ATMs
 
             catch (Exception ex)
             {
-                ErrorFound = true;
-                ErrorOutput = "An error occured in Active Directory ........ " + ex.Message;
+       
+                RRDMLog4Net Log = new RRDMLog4Net();
+
+                StringBuilder WParameters = new StringBuilder();
+
+                WParameters.Append("User : ");
+                WParameters.Append("NotAssignYet");
+                WParameters.Append(Environment.NewLine);
+
+                WParameters.Append("ATMNo : ");
+                WParameters.Append("NotDefinedYet");
+                WParameters.Append(Environment.NewLine);
+
+                string Logger = "RRDM4Atms";
+                string Parameters = WParameters.ToString();
+
+                Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+                if (Environment.UserInteractive)
+                {
+                    System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                                                             + " . Application will be aborted! Call controller to take care. ");
+                }
             }
         }
 
@@ -227,26 +243,44 @@ namespace RRDM4ATMs
 
             try
             {
-                UserId = Ad2.usrIdentity;
-                UserId = "1005";
+               
+                AdUserId = Ad2.usrLogonName;
 
-                UserName = Ad2.usrDisplayName;
-                UserName = "Nicos Ioannou";
-
+                AdUserName = Ad2.usrDisplayName;
+                
                 UserPhone = Ad2.usrMobilePhone;
-                UserPhone = "0035799622248";
-
+              
                 UserMail = Ad2.usrEmailAddress;
-                UserMail = "panicos.michael@cablenet.com.cy";
-
+               
                 UserFound = true;
 
             }
 
             catch (Exception ex)
             {
-                ErrorFound = true;
-                ErrorOutput = "An error occured in Active Directory ........ " + ex.Message;
+
+                RRDMLog4Net Log = new RRDMLog4Net();
+
+                StringBuilder WParameters = new StringBuilder();
+
+                WParameters.Append("User : ");
+                WParameters.Append("NotAssignYet");
+                WParameters.Append(Environment.NewLine);
+
+                WParameters.Append("ATMNo : ");
+                WParameters.Append("NotDefinedYet");
+                WParameters.Append(Environment.NewLine);
+
+                string Logger = "RRDM4Atms";
+                string Parameters = WParameters.ToString();
+
+                Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+                if (Environment.UserInteractive)
+                {
+                    System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                                                             + " . Application will be aborted! Call controller to take care. ");
+                }
             }
         }
 

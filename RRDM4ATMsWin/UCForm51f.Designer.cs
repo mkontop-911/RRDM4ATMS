@@ -34,6 +34,9 @@
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.buttonAuthor = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonAllActions = new System.Windows.Forms.Button();
+            this.buttonGLTxns = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.labelNumberNotes2 = new System.Windows.Forms.Label();
             this.buttonNotes2 = new System.Windows.Forms.Button();
             this.textBox4 = new System.Windows.Forms.TextBox();
@@ -49,6 +52,7 @@
             this.labelDtAuthRequest = new System.Windows.Forms.Label();
             this.labelRequestor = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panelAuthor.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,20 +61,22 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label1.Location = new System.Drawing.Point(182, 41);
+            this.label1.Location = new System.Drawing.Point(243, 50);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(73, 18);
+            this.label1.Size = new System.Drawing.Size(223, 24);
             this.label1.TabIndex = 411;
-            this.label1.Text = "RESULT";
+            this.label1.Text = "REQUESTOR RESULT";
             // 
             // labelAuthHeading
             // 
             this.labelAuthHeading.AutoSize = true;
             this.labelAuthHeading.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.labelAuthHeading.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.labelAuthHeading.Location = new System.Drawing.Point(182, 313);
+            this.labelAuthHeading.Location = new System.Drawing.Point(243, 385);
+            this.labelAuthHeading.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelAuthHeading.Name = "labelAuthHeading";
-            this.labelAuthHeading.Size = new System.Drawing.Size(193, 18);
+            this.labelAuthHeading.Size = new System.Drawing.Size(238, 24);
             this.labelAuthHeading.TabIndex = 410;
             this.labelAuthHeading.Text = "AUTHORISER SECTION";
             this.labelAuthHeading.Visible = false;
@@ -85,9 +91,10 @@
             this.buttonRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.buttonRefresh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonRefresh.Location = new System.Drawing.Point(709, 338);
+            this.buttonRefresh.Location = new System.Drawing.Point(977, 416);
+            this.buttonRefresh.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Size = new System.Drawing.Size(85, 28);
+            this.buttonRefresh.Size = new System.Drawing.Size(113, 34);
             this.buttonRefresh.TabIndex = 408;
             this.buttonRefresh.Text = "Refresh";
             this.buttonRefresh.UseVisualStyleBackColor = false;
@@ -103,9 +110,10 @@
             this.buttonAuthor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAuthor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.buttonAuthor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonAuthor.Location = new System.Drawing.Point(709, 263);
+            this.buttonAuthor.Location = new System.Drawing.Point(977, 324);
+            this.buttonAuthor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonAuthor.Name = "buttonAuthor";
-            this.buttonAuthor.Size = new System.Drawing.Size(85, 29);
+            this.buttonAuthor.Size = new System.Drawing.Size(113, 36);
             this.buttonAuthor.TabIndex = 407;
             this.buttonAuthor.Text = "Authorise";
             this.buttonAuthor.UseVisualStyleBackColor = false;
@@ -114,14 +122,65 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.panel1.Controls.Add(this.buttonAllActions);
+            this.panel1.Controls.Add(this.buttonGLTxns);
+            this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.labelNumberNotes2);
             this.panel1.Controls.Add(this.buttonNotes2);
             this.panel1.Controls.Add(this.textBox4);
             this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Location = new System.Drawing.Point(185, 65);
+            this.panel1.Location = new System.Drawing.Point(247, 80);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(518, 227);
+            this.panel1.Size = new System.Drawing.Size(723, 279);
             this.panel1.TabIndex = 406;
+            // 
+            // buttonAllActions
+            // 
+            this.buttonAllActions.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonAllActions.FlatAppearance.BorderSize = 2;
+            this.buttonAllActions.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonAllActions.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonAllActions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAllActions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonAllActions.Location = new System.Drawing.Point(577, 133);
+            this.buttonAllActions.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.buttonAllActions.Name = "buttonAllActions";
+            this.buttonAllActions.Size = new System.Drawing.Size(135, 33);
+            this.buttonAllActions.TabIndex = 439;
+            this.buttonAllActions.Text = "All Actions";
+            this.buttonAllActions.UseVisualStyleBackColor = true;
+            this.buttonAllActions.Click += new System.EventHandler(this.buttonAllActions_Click);
+            // 
+            // buttonGLTxns
+            // 
+            this.buttonGLTxns.BackColor = System.Drawing.Color.Transparent;
+            this.buttonGLTxns.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonGLTxns.FlatAppearance.BorderSize = 2;
+            this.buttonGLTxns.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonGLTxns.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonGLTxns.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonGLTxns.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonGLTxns.Location = new System.Drawing.Point(577, 171);
+            this.buttonGLTxns.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonGLTxns.Name = "buttonGLTxns";
+            this.buttonGLTxns.Size = new System.Drawing.Size(135, 41);
+            this.buttonGLTxns.TabIndex = 398;
+            this.buttonGLTxns.Text = "All Accounting";
+            this.buttonGLTxns.UseVisualStyleBackColor = false;
+            this.buttonGLTxns.Click += new System.EventHandler(this.buttonGLTxns_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::RRDM4ATMsWin.Properties.Resources.RED_LIGHT_Repl;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.Location = new System.Drawing.Point(468, 228);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(100, 37);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 397;
+            this.pictureBox1.TabStop = false;
             // 
             // labelNumberNotes2
             // 
@@ -131,10 +190,11 @@
             this.labelNumberNotes2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelNumberNotes2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.labelNumberNotes2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(198)))));
-            this.labelNumberNotes2.Location = new System.Drawing.Point(481, 28);
+            this.labelNumberNotes2.Location = new System.Drawing.Point(646, 41);
+            this.labelNumberNotes2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelNumberNotes2.Name = "labelNumberNotes2";
             this.labelNumberNotes2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.labelNumberNotes2.Size = new System.Drawing.Size(15, 15);
+            this.labelNumberNotes2.Size = new System.Drawing.Size(17, 18);
             this.labelNumberNotes2.TabIndex = 396;
             this.labelNumberNotes2.Text = "2";
             // 
@@ -148,10 +208,10 @@
             this.buttonNotes2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonNotes2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonNotes2.ForeColor = System.Drawing.Color.Black;
-            this.buttonNotes2.Location = new System.Drawing.Point(431, 25);
-            this.buttonNotes2.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonNotes2.Location = new System.Drawing.Point(575, 31);
+            this.buttonNotes2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonNotes2.Name = "buttonNotes2";
-            this.buttonNotes2.Size = new System.Drawing.Size(56, 52);
+            this.buttonNotes2.Size = new System.Drawing.Size(75, 64);
             this.buttonNotes2.TabIndex = 395;
             this.buttonNotes2.UseVisualStyleBackColor = true;
             this.buttonNotes2.Click += new System.EventHandler(this.buttonNotes2_Click);
@@ -161,10 +221,11 @@
             this.textBox4.BackColor = System.Drawing.Color.White;
             this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.textBox4.ForeColor = System.Drawing.Color.Black;
-            this.textBox4.Location = new System.Drawing.Point(56, 21);
+            this.textBox4.Location = new System.Drawing.Point(75, 26);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox4.Multiline = true;
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(370, 158);
+            this.textBox4.Size = new System.Drawing.Size(492, 194);
             this.textBox4.TabIndex = 255;
             this.textBox4.Text = "YOU HAVE FINISHED REPLENISHMENT WITH OUTSTANDING  ITEMS. \r\n\r\n\r\nTHE RESPONSIBLE OF" +
     "FICER WILL AUTHORISE OR REJECT YOUR DECISIONS/ACTIONS. ";
@@ -174,10 +235,11 @@
             this.textBox1.BackColor = System.Drawing.Color.White;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.textBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.textBox1.Location = new System.Drawing.Point(35, 21);
+            this.textBox1.Location = new System.Drawing.Point(47, 26);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(349, 143);
+            this.textBox1.Size = new System.Drawing.Size(464, 175);
             this.textBox1.TabIndex = 250;
             this.textBox1.Text = "YOU HAVE NOW FINISHED REPLENISHMENT. \r\n\r\n\r\nTHE RESPONSIBLE OFFICER WILL AUTHORISE" +
     " OR REJECT YOUR DECISIONS/ACTIONS. ";
@@ -194,9 +256,10 @@
             this.panelAuthor.Controls.Add(this.labelAuthoriser);
             this.panelAuthor.Controls.Add(this.labelDtAuthRequest);
             this.panelAuthor.Controls.Add(this.labelRequestor);
-            this.panelAuthor.Location = new System.Drawing.Point(185, 334);
+            this.panelAuthor.Location = new System.Drawing.Point(247, 411);
+            this.panelAuthor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panelAuthor.Name = "panelAuthor";
-            this.panelAuthor.Size = new System.Drawing.Size(518, 234);
+            this.panelAuthor.Size = new System.Drawing.Size(723, 288);
             this.panelAuthor.TabIndex = 412;
             // 
             // buttonAuthHistory
@@ -207,9 +270,10 @@
             this.buttonAuthHistory.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonAuthHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAuthHistory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonAuthHistory.Location = new System.Drawing.Point(405, 183);
+            this.buttonAuthHistory.Location = new System.Drawing.Point(540, 225);
+            this.buttonAuthHistory.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonAuthHistory.Name = "buttonAuthHistory";
-            this.buttonAuthHistory.Size = new System.Drawing.Size(64, 24);
+            this.buttonAuthHistory.Size = new System.Drawing.Size(85, 30);
             this.buttonAuthHistory.TabIndex = 364;
             this.buttonAuthHistory.Text = "History";
             this.buttonAuthHistory.UseVisualStyleBackColor = true;
@@ -223,9 +287,10 @@
             this.buttonAuthorise.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonAuthorise.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAuthorise.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonAuthorise.Location = new System.Drawing.Point(405, 121);
+            this.buttonAuthorise.Location = new System.Drawing.Point(540, 149);
+            this.buttonAuthorise.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonAuthorise.Name = "buttonAuthorise";
-            this.buttonAuthorise.Size = new System.Drawing.Size(64, 24);
+            this.buttonAuthorise.Size = new System.Drawing.Size(85, 30);
             this.buttonAuthorise.TabIndex = 363;
             this.buttonAuthorise.Text = "Authorise ";
             this.buttonAuthorise.UseVisualStyleBackColor = true;
@@ -239,9 +304,10 @@
             this.buttonReject.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonReject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonReject.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonReject.Location = new System.Drawing.Point(405, 152);
+            this.buttonReject.Location = new System.Drawing.Point(540, 187);
+            this.buttonReject.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonReject.Name = "buttonReject";
-            this.buttonReject.Size = new System.Drawing.Size(64, 24);
+            this.buttonReject.Size = new System.Drawing.Size(85, 30);
             this.buttonReject.TabIndex = 362;
             this.buttonReject.Text = "Reject";
             this.buttonReject.UseVisualStyleBackColor = true;
@@ -253,30 +319,31 @@
             this.labelAuthComm.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.labelAuthComm.ForeColor = System.Drawing.Color.Black;
             this.labelAuthComm.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.labelAuthComm.Location = new System.Drawing.Point(16, 104);
-            this.labelAuthComm.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelAuthComm.Location = new System.Drawing.Point(21, 128);
             this.labelAuthComm.Name = "labelAuthComm";
-            this.labelAuthComm.Size = new System.Drawing.Size(123, 13);
+            this.labelAuthComm.Size = new System.Drawing.Size(159, 17);
             this.labelAuthComm.TabIndex = 361;
             this.labelAuthComm.Text = "Authoriser Comment ";
             // 
             // textBoxComment
             // 
             this.textBoxComment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.textBoxComment.Location = new System.Drawing.Point(12, 121);
+            this.textBoxComment.Location = new System.Drawing.Point(16, 149);
+            this.textBoxComment.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxComment.Multiline = true;
             this.textBoxComment.Name = "textBoxComment";
-            this.textBoxComment.Size = new System.Drawing.Size(376, 86);
+            this.textBoxComment.Size = new System.Drawing.Size(500, 105);
             this.textBoxComment.TabIndex = 360;
             // 
             // labelAuthStatus
             // 
             this.labelAuthStatus.AutoSize = true;
             this.labelAuthStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.labelAuthStatus.ForeColor = System.Drawing.Color.Red;
-            this.labelAuthStatus.Location = new System.Drawing.Point(9, 71);
+            this.labelAuthStatus.ForeColor = System.Drawing.Color.MediumSeaGreen;
+            this.labelAuthStatus.Location = new System.Drawing.Point(12, 87);
+            this.labelAuthStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelAuthStatus.Name = "labelAuthStatus";
-            this.labelAuthStatus.Size = new System.Drawing.Size(76, 18);
+            this.labelAuthStatus.Size = new System.Drawing.Size(90, 24);
             this.labelAuthStatus.TabIndex = 359;
             this.labelAuthStatus.Text = "Status  : ";
             // 
@@ -284,9 +351,10 @@
             // 
             this.labelAuthoriser.AutoSize = true;
             this.labelAuthoriser.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.labelAuthoriser.Location = new System.Drawing.Point(9, 33);
+            this.labelAuthoriser.Location = new System.Drawing.Point(12, 41);
+            this.labelAuthoriser.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelAuthoriser.Name = "labelAuthoriser";
-            this.labelAuthoriser.Size = new System.Drawing.Size(76, 13);
+            this.labelAuthoriser.Size = new System.Drawing.Size(98, 17);
             this.labelAuthoriser.TabIndex = 358;
             this.labelAuthoriser.Text = "Authoriser : ";
             // 
@@ -294,9 +362,10 @@
             // 
             this.labelDtAuthRequest.AutoSize = true;
             this.labelDtAuthRequest.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.labelDtAuthRequest.Location = new System.Drawing.Point(9, 53);
+            this.labelDtAuthRequest.Location = new System.Drawing.Point(12, 65);
+            this.labelDtAuthRequest.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelDtAuthRequest.Name = "labelDtAuthRequest";
-            this.labelDtAuthRequest.Size = new System.Drawing.Size(112, 13);
+            this.labelDtAuthRequest.Size = new System.Drawing.Size(141, 17);
             this.labelDtAuthRequest.TabIndex = 357;
             this.labelDtAuthRequest.Text = "Date of Request : ";
             // 
@@ -304,16 +373,18 @@
             // 
             this.labelRequestor.AutoSize = true;
             this.labelRequestor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.labelRequestor.Location = new System.Drawing.Point(9, 12);
+            this.labelRequestor.Location = new System.Drawing.Point(12, 15);
+            this.labelRequestor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelRequestor.Name = "labelRequestor";
-            this.labelRequestor.Size = new System.Drawing.Size(77, 13);
+            this.labelRequestor.Size = new System.Drawing.Size(98, 17);
             this.labelRequestor.TabIndex = 356;
             this.labelRequestor.Text = "Requestor : ";
             // 
             // UCForm51f
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.Controls.Add(this.panelAuthor);
             this.Controls.Add(this.label1);
@@ -321,10 +392,12 @@
             this.Controls.Add(this.buttonRefresh);
             this.Controls.Add(this.buttonAuthor);
             this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "UCForm51f";
-            this.Size = new System.Drawing.Size(977, 581);
+            this.Size = new System.Drawing.Size(1600, 715);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panelAuthor.ResumeLayout(false);
             this.panelAuthor.PerformLayout();
             this.ResumeLayout(false);
@@ -353,5 +426,8 @@
         private System.Windows.Forms.Label labelAuthoriser;
         private System.Windows.Forms.Label labelDtAuthRequest;
         private System.Windows.Forms.Label labelRequestor;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button buttonGLTxns;
+        private System.Windows.Forms.Button buttonAllActions;
     }
 }

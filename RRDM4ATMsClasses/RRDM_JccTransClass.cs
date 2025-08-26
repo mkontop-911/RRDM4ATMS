@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDM_JccTransClass
+    public class RRDM_JccTransClass : Logger
     {
+        public RRDM_JccTransClass() : base() { }
+
         // Fields for both InPool and Trans to be posted 
 
         // Fields for InPool Trans
@@ -200,11 +197,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in TransAndPosted Class............. " + ex.Message;
-                    //  log4net.Config.XmlConfigurator.Configure();
-                    //  RRDM4ATMsWin.Log.ProcessException(ex, "TransClass.cs",
-                    //                                              "ReadTranSpecific");
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -296,12 +290,20 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in TransAndPosted Class............. " + ex.Message;
-                    //  log4net.Config.XmlConfigurator.Configure();
-                    //  RRDM4ATMsWin.Log.ProcessException(ex, "TransClass.cs",
-                    //                                              "ReadTranSpecific");
+
+                    CatchDetails(ex);
                 }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+           if (disposing) JCC_TransSelected.Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this); 
         }
     }
 }

@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
 using System.Configuration;
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 namespace RRDM4ATMsWin
 {
@@ -24,11 +13,10 @@ namespace RRDM4ATMsWin
         string WSignedId;
         int WSignRecordNo;
         string WOperator;
-     //   bool WPrive;
+     
         DataTable WTable = new DataTable();
         string WHeading;
         int WAction;
-
 
         public Form35(string InSignedId, int InSignRecordNo, string InOperator,  
             DataTable  InTable, string InHeading, int InAction )
@@ -36,7 +24,7 @@ namespace RRDM4ATMsWin
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
             WOperator = InOperator;
-       //     WPrive = InPrive;
+       
             WTable = InTable;
             WHeading = InHeading; 
             WAction = InAction;

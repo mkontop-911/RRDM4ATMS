@@ -11,4 +11,9 @@ public partial class inputCountedFiqures : System.Web.UI.Page
     {
 
     }
+    // Back
+    protected void ButtonBack_Click(object sender, EventArgs e)
+    {
+
+    }
 }

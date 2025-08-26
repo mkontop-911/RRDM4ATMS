@@ -118,39 +118,39 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label1_User_ID.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="label1_User_ID.Location" type="System.Drawing.Point, System.Drawing">
     <value>105, 78</value>
   </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label1_User_ID.Size" type="System.Drawing.Size, System.Drawing">
     <value>51, 13</value>
   </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+  <data name="label1_User_ID.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
+  <data name="label1_User_ID.Text" xml:space="preserve">
     <value>USER ID</value>
   </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
+  <data name="&gt;&gt;label1_User_ID.Name" xml:space="preserve">
+    <value>label1_User_ID</value>
   </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;label1_User_ID.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;label1_User_ID.Parent" xml:space="preserve">
     <value>panel2</value>
   </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="&gt;&gt;label1_User_ID.ZOrder" xml:space="preserve">
+    <value>12</value>
   </data>
   <data name="txtBoxPassword.Location" type="System.Drawing.Point, System.Drawing">
-    <value>196, 114</value>
+    <value>187, 114</value>
   </data>
   <data name="txtBoxPassword.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 20</value>
+    <value>130, 20</value>
   </data>
   <data name="txtBoxPassword.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -165,34 +165,554 @@
     <value>panel2</value>
   </data>
   <data name="&gt;&gt;txtBoxPassword.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>9</value>
   </data>
-  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label_password.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="label_password.Location" type="System.Drawing.Point, System.Drawing">
     <value>105, 117</value>
   </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label_password.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 13</value>
   </data>
-  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+  <data name="label_password.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="label2.Text" xml:space="preserve">
+  <data name="label_password.Text" xml:space="preserve">
     <value>PASSWORD</value>
   </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
+  <data name="&gt;&gt;label_password.Name" xml:space="preserve">
+    <value>label_password</value>
   </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+  <data name="&gt;&gt;label_password.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;label_password.Parent" xml:space="preserve">
     <value>panel2</value>
   </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;label_password.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="radioButton_T24.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="radioButton_T24.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="radioButton_T24.Location" type="System.Drawing.Point, System.Drawing">
+    <value>517, 86</value>
+  </data>
+  <data name="radioButton_T24.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 17</value>
+  </data>
+  <data name="radioButton_T24.TabIndex" type="System.Int32, mscorlib">
+    <value>258</value>
+  </data>
+  <data name="radioButton_T24.Text" xml:space="preserve">
+    <value>T24</value>
+  </data>
+  <data name="&gt;&gt;radioButton_T24.Name" xml:space="preserve">
+    <value>radioButton_T24</value>
+  </data>
+  <data name="&gt;&gt;radioButton_T24.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButton_T24.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;radioButton_T24.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="radioButtonIPL.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonIPL.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="radioButtonIPL.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 45</value>
+  </data>
+  <data name="radioButtonIPL.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 17</value>
+  </data>
+  <data name="radioButtonIPL.TabIndex" type="System.Int32, mscorlib">
+    <value>253</value>
+  </data>
+  <data name="radioButtonIPL.Text" xml:space="preserve">
+    <value>IPN</value>
+  </data>
+  <data name="&gt;&gt;radioButtonIPL.Name" xml:space="preserve">
+    <value>radioButtonIPL</value>
+  </data>
+  <data name="&gt;&gt;radioButtonIPL.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonIPL.Parent" xml:space="preserve">
+    <value>panelMobileApl</value>
+  </data>
+  <data name="&gt;&gt;radioButtonIPL.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="radioButtonQAH.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonQAH.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="radioButtonQAH.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 25</value>
+  </data>
+  <data name="radioButtonQAH.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 17</value>
+  </data>
+  <data name="radioButtonQAH.TabIndex" type="System.Int32, mscorlib">
+    <value>252</value>
+  </data>
+  <data name="radioButtonQAH.Text" xml:space="preserve">
+    <value>QAHERA</value>
+  </data>
+  <data name="&gt;&gt;radioButtonQAH.Name" xml:space="preserve">
+    <value>radioButtonQAH</value>
+  </data>
+  <data name="&gt;&gt;radioButtonQAH.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonQAH.Parent" xml:space="preserve">
+    <value>panelMobileApl</value>
+  </data>
+  <data name="&gt;&gt;radioButtonQAH.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="radioButtonETI.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonETI.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="radioButtonETI.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 4</value>
+  </data>
+  <data name="radioButtonETI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 17</value>
+  </data>
+  <data name="radioButtonETI.TabIndex" type="System.Int32, mscorlib">
+    <value>251</value>
+  </data>
+  <data name="radioButtonETI.Text" xml:space="preserve">
+    <value>ETISALAT</value>
+  </data>
+  <data name="&gt;&gt;radioButtonETI.Name" xml:space="preserve">
+    <value>radioButtonETI</value>
+  </data>
+  <data name="&gt;&gt;radioButtonETI.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonETI.Parent" xml:space="preserve">
+    <value>panelMobileApl</value>
+  </data>
+  <data name="&gt;&gt;radioButtonETI.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="panelMobileApl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>455, 14</value>
+  </data>
+  <data name="panelMobileApl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>141, 62</value>
+  </data>
+  <data name="panelMobileApl.TabIndex" type="System.Int32, mscorlib">
+    <value>257</value>
+  </data>
+  <data name="panelMobileApl.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;panelMobileApl.Name" xml:space="preserve">
+    <value>panelMobileApl</value>
+  </data>
+  <data name="&gt;&gt;panelMobileApl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelMobileApl.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;panelMobileApl.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="textBoxVersion.Location" type="System.Drawing.Point, System.Drawing">
+    <value>439, 150</value>
+  </data>
+  <data name="textBoxVersion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 20</value>
+  </data>
+  <data name="textBoxVersion.TabIndex" type="System.Int32, mscorlib">
+    <value>256</value>
+  </data>
+  <data name="&gt;&gt;textBoxVersion.Name" xml:space="preserve">
+    <value>textBoxVersion</value>
+  </data>
+  <data name="&gt;&gt;textBoxVersion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxVersion.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;textBoxVersion.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="labelVersion.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelVersion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labelVersion.Location" type="System.Drawing.Point, System.Drawing">
+    <value>392, 154</value>
+  </data>
+  <data name="labelVersion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>42, 13</value>
+  </data>
+  <data name="labelVersion.TabIndex" type="System.Int32, mscorlib">
+    <value>255</value>
+  </data>
+  <data name="labelVersion.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="&gt;&gt;labelVersion.Name" xml:space="preserve">
+    <value>labelVersion</value>
+  </data>
+  <data name="&gt;&gt;labelVersion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelVersion.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;labelVersion.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="radioButtonNOSTRO.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonNOSTRO.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="radioButtonNOSTRO.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 45</value>
+  </data>
+  <data name="radioButtonNOSTRO.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 17</value>
+  </data>
+  <data name="radioButtonNOSTRO.TabIndex" type="System.Int32, mscorlib">
+    <value>253</value>
+  </data>
+  <data name="radioButtonNOSTRO.Text" xml:space="preserve">
+    <value>NOSTRO</value>
+  </data>
+  <data name="&gt;&gt;radioButtonNOSTRO.Name" xml:space="preserve">
+    <value>radioButtonNOSTRO</value>
+  </data>
+  <data name="&gt;&gt;radioButtonNOSTRO.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonNOSTRO.Parent" xml:space="preserve">
+    <value>panelAplications</value>
+  </data>
+  <data name="&gt;&gt;radioButtonNOSTRO.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="radioButton_e_MOBILE.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButton_e_MOBILE.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="radioButton_e_MOBILE.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 25</value>
+  </data>
+  <data name="radioButton_e_MOBILE.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 17</value>
+  </data>
+  <data name="radioButton_e_MOBILE.TabIndex" type="System.Int32, mscorlib">
+    <value>252</value>
+  </data>
+  <data name="radioButton_e_MOBILE.Text" xml:space="preserve">
+    <value>e_MOBILE</value>
+  </data>
+  <data name="&gt;&gt;radioButton_e_MOBILE.Name" xml:space="preserve">
+    <value>radioButton_e_MOBILE</value>
+  </data>
+  <data name="&gt;&gt;radioButton_e_MOBILE.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButton_e_MOBILE.Parent" xml:space="preserve">
+    <value>panelAplications</value>
+  </data>
+  <data name="&gt;&gt;radioButton_e_MOBILE.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="radioButtonATMS_CARDS.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonATMS_CARDS.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="radioButtonATMS_CARDS.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 4</value>
+  </data>
+  <data name="radioButtonATMS_CARDS.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 17</value>
+  </data>
+  <data name="radioButtonATMS_CARDS.TabIndex" type="System.Int32, mscorlib">
+    <value>251</value>
+  </data>
+  <data name="radioButtonATMS_CARDS.Text" xml:space="preserve">
+    <value>ATMS/CARDS</value>
+  </data>
+  <data name="&gt;&gt;radioButtonATMS_CARDS.Name" xml:space="preserve">
+    <value>radioButtonATMS_CARDS</value>
+  </data>
+  <data name="&gt;&gt;radioButtonATMS_CARDS.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonATMS_CARDS.Parent" xml:space="preserve">
+    <value>panelAplications</value>
+  </data>
+  <data name="&gt;&gt;radioButtonATMS_CARDS.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="panelAplications.Location" type="System.Drawing.Point, System.Drawing">
+    <value>333, 14</value>
+  </data>
+  <data name="panelAplications.Size" type="System.Drawing.Size, System.Drawing">
+    <value>116, 62</value>
+  </data>
+  <data name="panelAplications.TabIndex" type="System.Int32, mscorlib">
+    <value>254</value>
+  </data>
+  <data name="&gt;&gt;panelAplications.Name" xml:space="preserve">
+    <value>panelAplications</value>
+  </data>
+  <data name="&gt;&gt;panelAplications.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelAplications.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;panelAplications.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="radioButtonAdmin.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonAdmin.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="radioButtonAdmin.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 4</value>
+  </data>
+  <data name="radioButtonAdmin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 17</value>
+  </data>
+  <data name="radioButtonAdmin.TabIndex" type="System.Int32, mscorlib">
+    <value>255</value>
+  </data>
+  <data name="radioButtonAdmin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAdmin.Name" xml:space="preserve">
+    <value>radioButtonAdmin</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAdmin.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAdmin.Parent" xml:space="preserve">
+    <value>panelRole</value>
+  </data>
+  <data name="&gt;&gt;radioButtonAdmin.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="radioButtonReconciliator.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonReconciliator.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="radioButtonReconciliator.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 41</value>
+  </data>
+  <data name="radioButtonReconciliator.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 17</value>
+  </data>
+  <data name="radioButtonReconciliator.TabIndex" type="System.Int32, mscorlib">
+    <value>254</value>
+  </data>
+  <data name="radioButtonReconciliator.Text" xml:space="preserve">
+    <value>RECONCILIATOR</value>
+  </data>
+  <data name="&gt;&gt;radioButtonReconciliator.Name" xml:space="preserve">
+    <value>radioButtonReconciliator</value>
+  </data>
+  <data name="&gt;&gt;radioButtonReconciliator.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonReconciliator.Parent" xml:space="preserve">
+    <value>panelRole</value>
+  </data>
+  <data name="&gt;&gt;radioButtonReconciliator.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="radioButtonController.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="radioButtonController.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="radioButtonController.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 24</value>
+  </data>
+  <data name="radioButtonController.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 17</value>
+  </data>
+  <data name="radioButtonController.TabIndex" type="System.Int32, mscorlib">
+    <value>253</value>
+  </data>
+  <data name="radioButtonController.Text" xml:space="preserve">
+    <value>CONTROLLER</value>
+  </data>
+  <data name="&gt;&gt;radioButtonController.Name" xml:space="preserve">
+    <value>radioButtonController</value>
+  </data>
+  <data name="&gt;&gt;radioButtonController.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButtonController.Parent" xml:space="preserve">
+    <value>panelRole</value>
+  </data>
+  <data name="&gt;&gt;radioButtonController.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="panelRole.Location" type="System.Drawing.Point, System.Drawing">
+    <value>332, 82</value>
+  </data>
+  <data name="panelRole.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 64</value>
+  </data>
+  <data name="panelRole.TabIndex" type="System.Int32, mscorlib">
+    <value>253</value>
+  </data>
+  <data name="&gt;&gt;panelRole.Name" xml:space="preserve">
+    <value>panelRole</value>
+  </data>
+  <data name="&gt;&gt;panelRole.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelRole.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;panelRole.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="textBoxAD_User.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 12</value>
+  </data>
+  <data name="textBoxAD_User.Size" type="System.Drawing.Size, System.Drawing">
+    <value>259, 20</value>
+  </data>
+  <data name="textBoxAD_User.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="textBoxAD_User.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;textBoxAD_User.Name" xml:space="preserve">
+    <value>textBoxAD_User</value>
+  </data>
+  <data name="&gt;&gt;textBoxAD_User.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxAD_User.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;textBoxAD_User.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="comboBoxUser.Location" type="System.Drawing.Point, System.Drawing">
+    <value>187, 75</value>
+  </data>
+  <data name="comboBoxUser.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 21</value>
+  </data>
+  <data name="comboBoxUser.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;comboBoxUser.Name" xml:space="preserve">
+    <value>comboBoxUser</value>
+  </data>
+  <data name="&gt;&gt;comboBoxUser.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboBoxUser.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;comboBoxUser.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="label_Prompt_to_Login.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label_Prompt_to_Login.Location" type="System.Drawing.Point, System.Drawing">
+    <value>107, 35</value>
+  </data>
+  <data name="label_Prompt_to_Login.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="label_Prompt_to_Login.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 13</value>
+  </data>
+  <data name="label_Prompt_to_Login.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="label_Prompt_to_Login.Text" xml:space="preserve">
+    <value>Please login to the system.</value>
+  </data>
+  <data name="&gt;&gt;label_Prompt_to_Login.Name" xml:space="preserve">
+    <value>label_Prompt_to_Login</value>
+  </data>
+  <data name="&gt;&gt;label_Prompt_to_Login.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_Prompt_to_Login.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;label_Prompt_to_Login.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="checkBoxShowPassword.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBoxShowPassword.Location" type="System.Drawing.Point, System.Drawing">
+    <value>196, 140</value>
+  </data>
+  <data name="checkBoxShowPassword.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 17</value>
+  </data>
+  <data name="checkBoxShowPassword.TabIndex" type="System.Int32, mscorlib">
+    <value>250</value>
+  </data>
+  <data name="checkBoxShowPassword.Text" xml:space="preserve">
+    <value>ShowPassword</value>
+  </data>
+  <data name="&gt;&gt;checkBoxShowPassword.Name" xml:space="preserve">
+    <value>checkBoxShowPassword</value>
+  </data>
+  <data name="&gt;&gt;checkBoxShowPassword.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxShowPassword.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;checkBoxShowPassword.ZOrder" xml:space="preserve">
+    <value>10</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -200,12 +720,11 @@
   <data name="label7.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 11.25pt, style=Bold, Italic</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="label7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 107</value>
+    <value>7, 90</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>194, 18</value>
@@ -223,43 +742,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label7.Parent" xml:space="preserve">
-    <value>panel1</value>
+    <value>panel_AD</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="labelName.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelName.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 11.25pt, style=Bold, Italic</value>
-  </data>
-  <data name="labelName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="labelName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 10</value>
-  </data>
-  <data name="labelName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>57, 18</value>
-  </data>
-  <data name="labelName.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="labelName.Text" xml:space="preserve">
-    <value>Name </value>
-  </data>
-  <data name="&gt;&gt;labelName.Name" xml:space="preserve">
-    <value>labelName</value>
-  </data>
-  <data name="&gt;&gt;labelName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelName.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;labelName.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -271,7 +757,7 @@
     <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>40, 85</value>
+    <value>40, 68</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>132, 18</value>
@@ -289,10 +775,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>panel1</value>
+    <value>panel_AD</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -304,7 +790,7 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 64</value>
+    <value>9, 44</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>197, 18</value>
@@ -322,10 +808,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>panel1</value>
+    <value>panel_AD</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -334,7 +820,7 @@
     <value>Microsoft Sans Serif, 11.25pt, style=Bold, Italic</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 41</value>
+    <value>9, 15</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>88, 18</value>
@@ -352,88 +838,37 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>panel1</value>
+    <value>panel_AD</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
-  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>233, 35</value>
+  <data name="panel_AD.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 38</value>
   </data>
-  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 134</value>
+  <data name="panel_AD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>298, 118</value>
   </data>
-  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+  <data name="panel_AD.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
-    <value>panel1</value>
+  <data name="&gt;&gt;panel_AD.Name" xml:space="preserve">
+    <value>panel_AD</value>
   </data>
-  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
+  <data name="&gt;&gt;panel_AD.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;panel_AD.Parent" xml:space="preserve">
     <value>panel2</value>
   </data>
-  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="comboBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>196, 75</value>
-  </data>
-  <data name="comboBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 21</value>
-  </data>
-  <data name="comboBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;comboBox2.Name" xml:space="preserve">
-    <value>comboBox2</value>
-  </data>
-  <data name="&gt;&gt;comboBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;comboBox2.Parent" xml:space="preserve">
-    <value>panel2</value>
-  </data>
-  <data name="&gt;&gt;comboBox2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>107, 35</value>
-  </data>
-  <data name="label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 13</value>
-  </data>
-  <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>Please login to the system.</value>
-  </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
-  </data>
-  <data name="&gt;&gt;label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>panel2</value>
-  </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;panel_AD.ZOrder" xml:space="preserve">
+    <value>13</value>
   </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>-7, 87</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>504, 172</value>
+    <value>601, 172</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -448,7 +883,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="labelStep1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -511,37 +946,37 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;buttonLogin.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
-  <data name="comboBox1.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="comboBoxLanguage.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
   </data>
-  <data name="comboBox1.Items" xml:space="preserve">
+  <data name="comboBoxLanguage.Items" xml:space="preserve">
     <value>English</value>
   </data>
-  <data name="comboBox1.Items1" xml:space="preserve">
+  <data name="comboBoxLanguage.Items1" xml:space="preserve">
     <value>Français</value>
   </data>
-  <data name="comboBox1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="comboBoxLanguage.Location" type="System.Drawing.Point, System.Drawing">
     <value>364, 32</value>
   </data>
-  <data name="comboBox1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="comboBoxLanguage.Size" type="System.Drawing.Size, System.Drawing">
     <value>121, 21</value>
   </data>
-  <data name="comboBox1.TabIndex" type="System.Int32, mscorlib">
+  <data name="comboBoxLanguage.TabIndex" type="System.Int32, mscorlib">
     <value>247</value>
   </data>
-  <data name="&gt;&gt;comboBox1.Name" xml:space="preserve">
-    <value>comboBox1</value>
+  <data name="&gt;&gt;comboBoxLanguage.Name" xml:space="preserve">
+    <value>comboBoxLanguage</value>
   </data>
-  <data name="&gt;&gt;comboBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;comboBoxLanguage.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;comboBox1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;comboBoxLanguage.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;comboBox1.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;comboBoxLanguage.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="pictureBox1.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
@@ -551,6 +986,9 @@
   </data>
   <data name="pictureBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>82, 75</value>
+  </data>
+  <data name="pictureBox1.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
   </data>
   <data name="pictureBox1.TabIndex" type="System.Int32, mscorlib">
     <value>248</value>
@@ -565,7 +1003,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="buttonChange.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
@@ -598,7 +1036,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;buttonChange.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -607,7 +1045,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>497, 309</value>
+    <value>601, 309</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>

@@ -1,69 +1,122 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
     public partial class Form54 : Form
     {
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         RRDMControllerMsgClass Cm = new RRDMControllerMsgClass();
 
-        string WWSignedId;
+        bool IsController;
+        string ControlerId;
+
+        string WSignedId;
         int WSignRecordNo;
         string WOperator;
-     
-        public Form54(string InWSignedId, int SignRecordNo, string InOperator)
+
+        public Form54(string InSignedId, int SignRecordNo, string InOperator)
         {
-            WWSignedId = InWSignedId;
+            WSignedId = InSignedId;
             WSignRecordNo = SignRecordNo;
             WOperator = InOperator;
-       
+
             InitializeComponent();
-             
-      //      InsertAtm.SetToolTip(TextBox2, "Check messages from controller.");
-      //      InsertAtm.ShowAlways = true;
 
-            string Role = "ATMs Controller(4)";
-            Us.ReadRoleRecord(InOperator, Role);
-            label2.Text = Us.UserId + " " + Us.UserName;
-            textBox10.Text = Us.MobileNo;
-            textBox9.Text = Us.email; 
-        }
+            string Application = WSignedId.Substring(0, 4);
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            this.Dispose();
-        }
-        // WE CREATE MESSAGE to CONTROLLER 
-        private void button1_Click(object sender, EventArgs e)
-        {
-                Cm.ToAllAtms = false;
-                if (textBox2.Text.Length > 0)
+            if (Application == "NOST")
+            {
+                //string Role = "ATMs Controller(4)";
+                //Us.ReadRoleRecord(InOperator, Role);
+                ControlerId = "NOSTROAuther";
+                Us.ReadUsersRecord(ControlerId);
+                label2.Text = Us.UserId + " " + Us.UserName;
+                textBox10.Text = Us.MobileNo;
+                textBox9.Text = Us.email;
+            }
+            else
+            {
+                if (Application == "ITMX")
                 {
-                    Cm.AtmNo = textBox2.Text;
+                    //string Role = "ATMs Controller(4)";
+                    //Us.ReadRoleRecord(InOperator, Role);
+                    ControlerId = "ITMXUser3";
+                    Us.ReadUsersRecord(ControlerId);
+
+                    label2.Text = Us.UserId + " " + Us.UserName;
+                    textBox10.Text = Us.MobileNo;
+                    textBox9.Text = Us.email;
                 }
                 else
                 {
-                    Cm.AtmNo = "";
+                    //string Role = "ATMs Controller(4)";
+                    //Us.ReadRoleRecord(InOperator, Role);
+                    ControlerId = "487116";
+                    Us.ReadUsersRecord(ControlerId);
+
+                    label2.Text = Us.UserId + " " + Us.UserName;
+                    textBox10.Text = Us.MobileNo;
+                    textBox9.Text = Us.email;
                 }
-                Cm.FromUser= WWSignedId;
-                Cm.ToUser = Us.UserId;
-                Cm.BankId = WOperator; 
-     
-                Cm.BranchId = "";
-                Cm.Type = ""; 
-                Cm.Message = textBox1.Text ; 
-                Cm.SeriousMsg = true ;
-                Cm.Operator = WOperator; 
+            }
+
+            if (WSignedId == Us.UserId)
+            {
+                IsController = true;
+                // Get Users if you are a controller 
+                comboBoxUsers.DataSource = Us.GetUsersList(WOperator, WSignedId);
+                comboBoxUsers.DisplayMember = "DisplayValue";
+                tabPage1.Enabled = false;
+                tabPage2.Enabled = true;
+            }
+            else
+            {
+                IsController = false;
+                tabPage1.Enabled = true;
+                tabPage2.Enabled = false;
+            }
+
+        }
+
+        // WE CREATE MESSAGE to CONTROLLER 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (IsController == true)
+            {
+                MessageBox.Show(" You are not allowed this function. You are the controller!");
+                return;
+            }
+            Cm.ToAllAtms = false;
+            if (textBox2.Text.Length > 0)
+            {
+                Cm.AtmNo = textBox2.Text;
+            }
+            else
+            {
+                Cm.AtmNo = "";
+            }
+            Cm.FromUser = WSignedId;
+            Cm.ToUser = ControlerId;
+            Cm.BankId = WOperator;
+
+            Cm.BranchId = Us.Branch;
+            Cm.Type = "Msg To Controller";
+            Cm.Message = textBox1.Text;
+
+            if (checkBox1.Checked == true)
+            {
+                Cm.SeriousMsg = true;
+            }
+            else
+            {
+                Cm.SeriousMsg = false;
+            }
+
+            Cm.Operator = WOperator;
 
             Cm.InsertMSg();
 
@@ -71,23 +124,23 @@ namespace RRDM4ATMsWin
 
             textBox2.Text = "";
             textBox1.Text = "";
-
         }
-
+        // Message From controller 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (WWSignedId != Us.UserId)
+            if (IsController == false)
             {
                 MessageBox.Show(" You are not allowed this function. You are not the controller!");
-                return; 
+                return;
             }
+
             Cm.ToAllAtms = false;
 
-            Cm.FromUser = WWSignedId;
+            Cm.FromUser = WSignedId;
 
-            if (textBox6.Text.Length > 0)
+            if (comboBoxUsers.Text.Length > 0)
             {
-                Cm.ToUser = textBox6.Text;
+                Cm.ToUser = comboBoxUsers.Text;
             }
             else
             {
@@ -102,25 +155,42 @@ namespace RRDM4ATMsWin
             {
                 Cm.AtmNo = "";
             }
-                   
+
             Cm.BankId = WOperator;
 
-            Cm.BranchId = "";
-            Cm.Type = "";
+            Cm.BranchId = Us.Branch;
+            Cm.Type = "Controlers Msg";
             Cm.Message = textBox4.Text;
-            Cm.SeriousMsg = true;
+            if (checkBox2.Checked == true)
+            {
+                Cm.SeriousMsg = true;
+            }
+            else
+            {
+                Cm.SeriousMsg = false;
+            }
             Cm.Operator = WOperator;
 
             Cm.InsertMSg();
 
             MessageBox.Show(" MSG WAS ADDED");
 
-            textBox6.Text = "";
+            //textBox6.Text = "";
             textBox3.Text = "";
             textBox4.Text = "";
 
-         //   MessageBox.Show(" Not available functionality yet");
-         //   return;
+            //   MessageBox.Show(" Not available functionality yet");
+            //   return;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
+        // Finish 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Dispose(); 
         }
     }
 }

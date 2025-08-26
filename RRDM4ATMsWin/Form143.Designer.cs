@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanelHeader = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -44,27 +43,14 @@
             this.textBoxMsgBoard = new System.Windows.Forms.TextBox();
             this.buttonUpdate = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.buttonDelete = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.bankSwiftIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bankNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bankCountryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.basicCurNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dtTmCreatedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.usingGASDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.cultureDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.globalCultureDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.logoDataGridViewImageColumn = new System.Windows.Forms.DataGridViewImageColumn();
-            this.lastMatchingDtTmDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bANKSBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.aTMSDataSet32 = new RRDM4ATMsWin.ATMSDataSet32();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.bANKSTableAdapter = new RRDM4ATMsWin.ATMSDataSet32TableAdapters.BANKSTableAdapter();
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -73,10 +59,9 @@
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bANKSBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet32)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanelMain.SuspendLayout();
             this.SuspendLayout();
@@ -233,13 +218,13 @@
             // 
             // buttonAdd
             // 
-            this.buttonAdd.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.buttonAdd.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.buttonAdd.FlatAppearance.BorderSize = 2;
             this.buttonAdd.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
             this.buttonAdd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonAdd.ForeColor = System.Drawing.Color.White;
-            this.buttonAdd.Location = new System.Drawing.Point(895, 2);
+            this.buttonAdd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonAdd.Location = new System.Drawing.Point(887, 457);
             this.buttonAdd.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(71, 27);
@@ -252,7 +237,7 @@
             // 
             this.textBoxMsgBoard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.textBoxMsgBoard.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxMsgBoard.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxMsgBoard.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxMsgBoard.ForeColor = System.Drawing.Color.White;
             this.textBoxMsgBoard.Location = new System.Drawing.Point(10, 2);
             this.textBoxMsgBoard.Margin = new System.Windows.Forms.Padding(10, 2, 2, 2);
@@ -266,13 +251,13 @@
             // 
             // buttonUpdate
             // 
-            this.buttonUpdate.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.buttonUpdate.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.buttonUpdate.FlatAppearance.BorderSize = 2;
             this.buttonUpdate.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
             this.buttonUpdate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonUpdate.ForeColor = System.Drawing.Color.White;
-            this.buttonUpdate.Location = new System.Drawing.Point(816, 2);
+            this.buttonUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonUpdate.Location = new System.Drawing.Point(178, 432);
             this.buttonUpdate.Margin = new System.Windows.Forms.Padding(2);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(75, 27);
@@ -285,13 +270,43 @@
             // 
             this.panel1.AutoScroll = true;
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.panel1.Controls.Add(this.pictureBox2);
+            this.panel1.Controls.Add(this.buttonDelete);
+            this.panel1.Controls.Add(this.buttonAdd);
+            this.panel1.Controls.Add(this.buttonUpdate);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(974, 474);
+            this.panel1.Size = new System.Drawing.Size(974, 502);
             this.panel1.TabIndex = 243;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Location = new System.Drawing.Point(48, 414);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(100, 84);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 273;
+            this.pictureBox2.TabStop = false;
+            // 
+            // buttonDelete
+            // 
+            this.buttonDelete.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonDelete.FlatAppearance.BorderSize = 2;
+            this.buttonDelete.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonDelete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonDelete.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonDelete.Location = new System.Drawing.Point(178, 463);
+            this.buttonDelete.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(75, 27);
+            this.buttonDelete.TabIndex = 247;
+            this.buttonDelete.Text = "Delete";
+            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.Click += new System.EventHandler(this.button1_Click);
             // 
             // label2
             // 
@@ -311,30 +326,15 @@
             this.panel2.Controls.Add(this.dataGridView1);
             this.panel2.Location = new System.Drawing.Point(30, 138);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(932, 320);
+            this.panel2.Size = new System.Drawing.Size(932, 270);
             this.panel2.TabIndex = 0;
             // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.bankSwiftIdDataGridViewTextBoxColumn,
-            this.bankNameDataGridViewTextBoxColumn,
-            this.bankCountryDataGridViewTextBoxColumn,
-            this.groupNameDataGridViewTextBoxColumn,
-            this.basicCurNameDataGridViewTextBoxColumn,
-            this.dtTmCreatedDataGridViewTextBoxColumn,
-            this.usingGASDataGridViewCheckBoxColumn,
-            this.cultureDataGridViewTextBoxColumn,
-            this.globalCultureDataGridViewCheckBoxColumn,
-            this.logoDataGridViewImageColumn,
-            this.lastMatchingDtTmDataGridViewTextBoxColumn,
-            this.operatorDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.bANKSBindingSource;
             this.dataGridView1.GridColor = System.Drawing.Color.LightGray;
             this.dataGridView1.Location = new System.Drawing.Point(16, 17);
             this.dataGridView1.MultiSelect = false;
@@ -342,103 +342,9 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(901, 285);
+            this.dataGridView1.Size = new System.Drawing.Size(901, 236);
             this.dataGridView1.TabIndex = 257;
             this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
-            // 
-            // bankSwiftIdDataGridViewTextBoxColumn
-            // 
-            this.bankSwiftIdDataGridViewTextBoxColumn.DataPropertyName = "BankSwiftId";
-            this.bankSwiftIdDataGridViewTextBoxColumn.HeaderText = "BankSwiftId";
-            this.bankSwiftIdDataGridViewTextBoxColumn.Name = "bankSwiftIdDataGridViewTextBoxColumn";
-            this.bankSwiftIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // bankNameDataGridViewTextBoxColumn
-            // 
-            this.bankNameDataGridViewTextBoxColumn.DataPropertyName = "BankName";
-            this.bankNameDataGridViewTextBoxColumn.HeaderText = "BankName";
-            this.bankNameDataGridViewTextBoxColumn.Name = "bankNameDataGridViewTextBoxColumn";
-            this.bankNameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // bankCountryDataGridViewTextBoxColumn
-            // 
-            this.bankCountryDataGridViewTextBoxColumn.DataPropertyName = "BankCountry";
-            this.bankCountryDataGridViewTextBoxColumn.HeaderText = "BankCountry";
-            this.bankCountryDataGridViewTextBoxColumn.Name = "bankCountryDataGridViewTextBoxColumn";
-            this.bankCountryDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // groupNameDataGridViewTextBoxColumn
-            // 
-            this.groupNameDataGridViewTextBoxColumn.DataPropertyName = "GroupName";
-            this.groupNameDataGridViewTextBoxColumn.HeaderText = "GroupName";
-            this.groupNameDataGridViewTextBoxColumn.Name = "groupNameDataGridViewTextBoxColumn";
-            this.groupNameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // basicCurNameDataGridViewTextBoxColumn
-            // 
-            this.basicCurNameDataGridViewTextBoxColumn.DataPropertyName = "BasicCurName";
-            this.basicCurNameDataGridViewTextBoxColumn.HeaderText = "BasicCurName";
-            this.basicCurNameDataGridViewTextBoxColumn.Name = "basicCurNameDataGridViewTextBoxColumn";
-            this.basicCurNameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // dtTmCreatedDataGridViewTextBoxColumn
-            // 
-            this.dtTmCreatedDataGridViewTextBoxColumn.DataPropertyName = "DtTmCreated";
-            this.dtTmCreatedDataGridViewTextBoxColumn.HeaderText = "DtTmCreated";
-            this.dtTmCreatedDataGridViewTextBoxColumn.Name = "dtTmCreatedDataGridViewTextBoxColumn";
-            this.dtTmCreatedDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // usingGASDataGridViewCheckBoxColumn
-            // 
-            this.usingGASDataGridViewCheckBoxColumn.DataPropertyName = "UsingGAS";
-            this.usingGASDataGridViewCheckBoxColumn.HeaderText = "UsingGAS";
-            this.usingGASDataGridViewCheckBoxColumn.Name = "usingGASDataGridViewCheckBoxColumn";
-            this.usingGASDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // cultureDataGridViewTextBoxColumn
-            // 
-            this.cultureDataGridViewTextBoxColumn.DataPropertyName = "Culture";
-            this.cultureDataGridViewTextBoxColumn.HeaderText = "Culture";
-            this.cultureDataGridViewTextBoxColumn.Name = "cultureDataGridViewTextBoxColumn";
-            this.cultureDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // globalCultureDataGridViewCheckBoxColumn
-            // 
-            this.globalCultureDataGridViewCheckBoxColumn.DataPropertyName = "GlobalCulture";
-            this.globalCultureDataGridViewCheckBoxColumn.HeaderText = "GlobalCulture";
-            this.globalCultureDataGridViewCheckBoxColumn.Name = "globalCultureDataGridViewCheckBoxColumn";
-            this.globalCultureDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // logoDataGridViewImageColumn
-            // 
-            this.logoDataGridViewImageColumn.DataPropertyName = "Logo";
-            this.logoDataGridViewImageColumn.HeaderText = "Logo";
-            this.logoDataGridViewImageColumn.Name = "logoDataGridViewImageColumn";
-            this.logoDataGridViewImageColumn.ReadOnly = true;
-            // 
-            // lastMatchingDtTmDataGridViewTextBoxColumn
-            // 
-            this.lastMatchingDtTmDataGridViewTextBoxColumn.DataPropertyName = "LastMatchingDtTm";
-            this.lastMatchingDtTmDataGridViewTextBoxColumn.HeaderText = "LastMatchingDtTm";
-            this.lastMatchingDtTmDataGridViewTextBoxColumn.Name = "lastMatchingDtTmDataGridViewTextBoxColumn";
-            this.lastMatchingDtTmDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // operatorDataGridViewTextBoxColumn
-            // 
-            this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
-            this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
-            this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
-            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // bANKSBindingSource
-            // 
-            this.bANKSBindingSource.DataMember = "BANKS";
-            this.bANKSBindingSource.DataSource = this.aTMSDataSet32;
-            // 
-            // aTMSDataSet32
-            // 
-            this.aTMSDataSet32.DataSetName = "ATMSDataSet32";
-            this.aTMSDataSet32.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // tableLayoutPanel2
             // 
@@ -447,36 +353,34 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 87F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 79F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
-            this.tableLayoutPanel2.Controls.Add(this.button1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.textBoxMsgBoard, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.buttonUpdate, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.buttonAdd, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.button3, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tableLayoutPanel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 482);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 510);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(976, 36);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
-            // button1
+            // button3
             // 
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.BorderSize = 2;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(729, 2);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(67, 27);
-            this.button1.TabIndex = 247;
-            this.button1.Text = "Delete";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button3.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button3.FlatAppearance.BorderSize = 2;
+            this.button3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.ForeColor = System.Drawing.Color.White;
+            this.button3.Location = new System.Drawing.Point(896, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(61, 27);
+            this.button3.TabIndex = 246;
+            this.button3.Text = "Finish";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // tableLayoutPanelMain
             // 
@@ -493,19 +397,15 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(980, 520);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(980, 548);
             this.tableLayoutPanelMain.TabIndex = 266;
-            // 
-            // bANKSTableAdapter
-            // 
-            this.bANKSTableAdapter.ClearBeforeFill = true;
             // 
             // Form143
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(980, 520);
+            this.ClientSize = new System.Drawing.Size(980, 548);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.ForeColor = System.Drawing.Color.White;
@@ -523,10 +423,9 @@
             this.tableLayoutPanel6.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bANKSBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet32)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanelMain.ResumeLayout(false);
@@ -555,22 +454,9 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
-        private ATMSDataSet32 aTMSDataSet32;
-        private System.Windows.Forms.BindingSource bANKSBindingSource;
-        private ATMSDataSet32TableAdapters.BANKSTableAdapter bANKSTableAdapter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn bankSwiftIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn bankNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn bankCountryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn groupNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn basicCurNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dtTmCreatedDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn usingGASDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cultureDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn globalCultureDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewImageColumn logoDataGridViewImageColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastMatchingDtTmDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn operatorDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }

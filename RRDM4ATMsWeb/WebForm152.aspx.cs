@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using RRDM4ATMs;
 
 namespace RRDM4ATMsWeb
@@ -127,9 +123,9 @@ namespace RRDM4ATMsWeb
         protected void ZeroData()
         {
 
-            RRDMNotesBalances Na = new RRDMNotesBalances(); // Activate Class 
+            RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances(); // Activate Class 
 
-            RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate();
+            RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
 
             int WFunction = 2;
             string WAtmNo = (string)Session["WAtmNo"];
@@ -185,17 +181,17 @@ namespace RRDM4ATMsWeb
 
    //         }
             // Update Physical Data
-            Na.ReadSessionsNotesAndValues3PhyCheck(WAtmNo, WSesNo);
+            //Na.ReadSessionsNotesAndValues3PhyCheck(WAtmNo, WSesNo);
 
-            Na.PhysicalCheck1.NoChips = false;
-            Na.PhysicalCheck1.NoCameras = false;
-            Na.PhysicalCheck1.NoSuspCards = false;
-            Na.PhysicalCheck1.NoGlue = false;
-            Na.PhysicalCheck1.NoOtherSusp = false;
+            //Na.PhysicalCheck1.NoChips = false;
+            //Na.PhysicalCheck1.NoCameras = false;
+            //Na.PhysicalCheck1.NoSuspCards = false;
+            //Na.PhysicalCheck1.NoGlue = false;
+            //Na.PhysicalCheck1.NoOtherSusp = false;
 
-            Na.PhysicalCheck1.OtherSuspComm = "";
+            //Na.PhysicalCheck1.OtherSuspComm = "";
 
-            Na.UpdateSessionsNotesAndValues3PhyCheck(WAtmNo, WSesNo);
+            //Na.UpdateSessionsNotesAndValues3PhyCheck(WAtmNo, WSesNo);
 
             // CASSETTES COUNT AND CAPTURED CARDS 
             Na.ReadSessionsNotesAndValues(WAtmNo, WSesNo, 2);

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMsWin;
 
 namespace RRDM4ATMsWin
 {
@@ -15,6 +12,7 @@ namespace RRDM4ATMsWin
         [STAThread]
         static void Main()
         {
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form40());

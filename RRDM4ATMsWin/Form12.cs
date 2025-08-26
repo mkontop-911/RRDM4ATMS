@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
+using RRDM4ATMs;
 using System.Configuration;
 //multilingual
 using System.Resources;
@@ -18,13 +12,13 @@ namespace RRDM4ATMsWin
 {
     public partial class Form12 : Form
     {
-      
+
         string connectionString = ConfigurationManager.ConnectionStrings
            ["ATMSConnectionString"].ConnectionString;
 
 
         Bitmap SCREENinitial;
- 
+
 
         DataTable NextReplTable10 = new DataTable();
 
@@ -42,55 +36,70 @@ namespace RRDM4ATMsWin
         RRDMMatchedDates Cm = new RRDMMatchedDates();
 
         RRDMGasParameters Gp = new RRDMGasParameters();
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         //multilingual
         CultureInfo culture;
 
-        RRDMUsersAndSignedRecord Xa = new RRDMUsersAndSignedRecord(); // Make class availble 
+        RRDMUsersRecords Xa = new RRDMUsersRecords(); // Make class availble 
 
         ResourceManager LocRM = new ResourceManager("RRDM4ATMsWin.appRes", typeof(Form40).Assembly);
 
-        string WHolidaysVersion; 
+        string WHolidaysVersion;
 
-        DateTime NextDate ;
+        DateTime NextDate;
         string NMonth;
-        string NDay ;
-        string NType ;
+        string NDay;
+        string NType;
 
-        DateTime SameAs ;
-        string SMonth ;
-        string SDay ;
-        string SType ;
+        DateTime SameAs;
+        string SMonth;
+        string SDay;
+        string SType;
 
-        string WMatchDatesCateg; 
+        string WMatchDatesCateg;
+
+        int WPrevious_Month_OR_Year;
 
         int WNextRow;
 
         string WSignedId;
         int WSignRecordNo;
-        int WSecLevel;
+        string WSecLevel;
         string WOperator;
-    
+
         int WAction;
 
-        public Form12(string InSignedId, int SignRecordNo, int InSecLevel, string InOperator, int InAction)
+        public Form12(string InSignedId, int SignRecordNo, string InSecLevel, string InOperator, int InAction)
         {
             WSignedId = InSignedId;
             WSignRecordNo = SignRecordNo;
             WSecLevel = InSecLevel;
             WOperator = InOperator;
-            WAction = InAction;  // 1 = Show ATM Next Replenishement dates and define matching , 
+            WAction = InAction;  // 1 = Show Matched Dates Based On Previous MONTH
+                                 // 2 = Show Matched Dates Based On Previous YEAR
+
 
             InitializeComponent();
+
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             label7.Text = WOperator;
 
+            if (WAction == 1)
+            {
+                WPrevious_Month_OR_Year = 1;
+                labelStep1.Text = "Create Matched Days For Previous MONTH";
+            }
+            if (WAction == 2)
+            {
+                WPrevious_Month_OR_Year = 2;
+                labelStep1.Text = "Create Matched Days For Previous YEAR";
+            }
+
             //TEST
-            dateTimePicker1.Value = new DateTime(2014, 02, 28);
-            dateTimePicker3.Value = new DateTime(2014, 03, 20);
 
             // MATCHED DATES TYPES 
 
@@ -99,8 +108,20 @@ namespace RRDM4ATMsWin
             comboBox1.DisplayMember = "DisplayValue";
 
             //TEST
-            comboBox1.Text = "Touristic";
 
+            if (WOperator == "CRBAGRAA")
+            {
+                dateTimePickerStart.Value = new DateTime(2014, 02, 28);
+                dateTimePickerEnd.Value = new DateTime(2014, 03, 20);
+                comboBox1.Text = "Touristic";
+            }
+            // TEST ETHNIKI AND AUDI
+            if (WOperator == "ETHNCY2N")
+            {
+                dateTimePickerStart.Value = new DateTime(2018, 03, 14);
+                dateTimePickerEnd.Value = new DateTime(2018, 03, 28);
+                comboBox1.Text = "Town Area";
+            }
             // MATCHED DATES TYPES 
 
             Gp.ParamId = "215";
@@ -113,7 +134,7 @@ namespace RRDM4ATMsWin
             label12.Hide();
             panel3.Hide();
             panel4.Hide();
-            ButtonFinish.Hide(); 
+            ButtonUpdateAll.Hide();
         }
 
         // FORM LOAD 
@@ -126,21 +147,20 @@ namespace RRDM4ATMsWin
             tableLayoutPanelMain.DrawToBitmap(memoryImage, tableLayoutPanelMain.ClientRectangle);
             SCREENinitial = memoryImage;
         }
-       
 
         // Show Analysis
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            WHolidaysVersion = comboBox2.Text; 
+            WHolidaysVersion = comboBox2.Text;
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            Xa.ReadSignedActivityByKey(WSignRecordNo);
-
-            if (Xa.Culture == "English")
+            if (Usi.Culture == "English")
             {
                 culture = CultureInfo.CreateSpecificCulture("el-GR");
             }
-            if (Xa.Culture == "Français")
+            if (Usi.Culture == "Français")
             {
                 culture = CultureInfo.CreateSpecificCulture("fr-FR");
             }
@@ -148,14 +168,14 @@ namespace RRDM4ATMsWin
             //      if (WMode == 1) label14.Text = LocRM.GetString("Form67label14a", culture);
             //      if (WMode == 2) label14.Text = LocRM.GetString("Form67label14b", culture);
 
-           
-            WMatchDatesCateg = comboBox1.Text; 
 
-            Cm.ReadMatchedLastDate(WOperator, WMatchDatesCateg);
+            WMatchDatesCateg = comboBox1.Text;
+
+            Cm.ReadMatchedLastDate(WOperator, WMatchDatesCateg, WPrevious_Month_OR_Year);
 
             if (Cm.RecordFound == true) // Warning 
             {
-                MessageBox.Show(" Warning: Last date matched:" + Cm.NextDate); 
+                MessageBox.Show(" Warning: Last date matched:" + Cm.NextDate);
             }
 
             label11.Show();
@@ -164,176 +184,195 @@ namespace RRDM4ATMsWin
             label12.Show();
             panel3.Show();
             panel4.Show();
-            ButtonFinish.Show();
+            ButtonUpdateAll.Show();
 
-     
             DateTime StartDt;
             DateTime FinishDt;
             DateTime StartMinus30;
 
-            StartDt = dateTimePicker1.Value.Date;
-            FinishDt = dateTimePicker3.Value.Date;
+            StartDt = dateTimePickerStart.Value.Date;
+            FinishDt = dateTimePickerEnd.Value.Date;
             StartMinus30 = StartDt.AddDays(-30);
 
             TimeSpan Remain = FinishDt - StartDt;
             label18.Text = (Remain.Days + 1).ToString();
 
-
             NextReplTable10 = new DataTable();
             NextReplTable10.Clear();
 
+            // Get next dates with the corresponding past ones 
 
-            if (WAction == 1) // find next dates
+            //
+            // a) If Holiday = 
+            // b) If Weekend = last month same day
+            // c) If Normal = Previous working day 
+
+            if (WAction == 1)
             {
-                
-             // Get next dates with the corresponding past ones 
-
-                //
-                // a) If Holiday = last year holiday 
-                // b) If Weekend = last month same day
-                // c) If Normal = Previous working day 
                 int Request = 2; // Give Matching dates for period 
-                Rc.GiveMeDataTableOfMatchedDatesOnly(WOperator, StartDt, FinishDt, WMatchDatesCateg, WHolidaysVersion,  Request);  
-          
-                labelStep1.Text = "Create Matched dates for ATM Group : " + WMatchDatesCateg.ToString();
+                Rc.GiveMeDataTableOfMatchedDatesOnly_Previous_MONTH(WOperator, StartDt, FinishDt, WMatchDatesCateg, WHolidaysVersion, Request);
+            }
+            if (WAction == 2)
+            {
+                int Request = 2; // Give Matching dates for period 
+                Rc.GiveMeDataTableOfMatchedDatesOnly_Previous_YEAR(WOperator, StartDt, FinishDt, WMatchDatesCateg, WHolidaysVersion, Request);
+            }
 
-                NextReplTable10.Columns.Add("Index", typeof(int));
 
-                NextReplTable10.Columns.Add("NextDate", typeof(DateTime));
-                NextReplTable10.Columns.Add("NMonth", typeof(string));
-                NextReplTable10.Columns.Add("NDay", typeof(string));
-                NextReplTable10.Columns.Add("NType", typeof(string));
+            labelStep1.Text = "Create Matched dates for ATM Group : " + WMatchDatesCateg.ToString();
 
-                NextReplTable10.Columns.Add("SameAs", typeof(DateTime));
-                NextReplTable10.Columns.Add("SMonth", typeof(string));
-                NextReplTable10.Columns.Add("SDay", typeof(string));
-                NextReplTable10.Columns.Add("SType", typeof(string));
-                NextReplTable10.Columns.Add("CreatedDt", typeof(DateTime));
+            NextReplTable10.Columns.Add("Index", typeof(int));
 
-                DateTime TempDtTm = StartDt;
-                // Fill IN GRIDDAYS BASED ON PUBLIC TABLE dtRDays of RC Class 
-                //   DataRow RowGrid = GridDays.NewRow();
-                bool WorkingDay;
-                bool Weekend;
-                bool Holiday;
+            NextReplTable10.Columns.Add("NextDate", typeof(DateTime));
+            NextReplTable10.Columns.Add("NMonth", typeof(string));
+            NextReplTable10.Columns.Add("NDay", typeof(string));
+            NextReplTable10.Columns.Add("NType", typeof(string));
 
-                int I = 0;
+            NextReplTable10.Columns.Add("SameAs", typeof(DateTime));
+            NextReplTable10.Columns.Add("SMonth", typeof(string));
+            NextReplTable10.Columns.Add("SDay", typeof(string));
+            NextReplTable10.Columns.Add("SType", typeof(string));
+            NextReplTable10.Columns.Add("CreatedDt", typeof(DateTime));
 
-                while (I < (Rc.dtRDays.Rows.Count))
+            DateTime TempDtTm = StartDt;
+            // Fill IN GRIDDAYS BASED ON PUBLIC TABLE dtRDays of RC Class 
+            //   DataRow RowGrid = GridDays.NewRow();
+            bool WorkingDay;
+            bool Weekend;
+            bool Holiday;
+
+            int I = 0;
+
+            while (I < (Rc.dtRDays.Rows.Count))
+            {
+
+                DataRow RowTable = NextReplTable10.NewRow();
+
+                RowTable["Index"] = I + 1;
+
+                TempDtTm = (DateTime)Rc.dtRDays.Rows[I]["Date"];
+
+                RowTable["NextDate"] = TempDtTm.Date;
+                RowTable["NMonth"] = TempDtTm.ToString("MMM");
+                RowTable["NDay"] = TempDtTm.Date.DayOfWeek;
+
+                WorkingDay = (bool)Rc.dtRDays.Rows[I]["Normal"];
+                Weekend = (bool)Rc.dtRDays.Rows[I]["Weekend"];
+                Holiday = (bool)Rc.dtRDays.Rows[I]["Special"];
+
+                if (WorkingDay == true) RowTable["NType"] = "WorkingDay";
+                if (Weekend == true) RowTable["NType"] = "Weekend";
+                if (Holiday == true) RowTable["NType"] = "Holiday";
+
+                // See if is already matched 
+                if (WAction == 1)
                 {
-                   
-                    DataRow RowTable = NextReplTable10.NewRow();
-
-                    RowTable["Index"] = I + 1;
-
-                    TempDtTm = (DateTime)Rc.dtRDays.Rows[I]["Date"];
-
-
-                    RowTable["NextDate"] = TempDtTm.Date;
-                    RowTable["NMonth"] = TempDtTm.ToString("MMM");
-                    RowTable["NDay"] = TempDtTm.Date.DayOfWeek;
-                   
-                    WorkingDay = (bool)Rc.dtRDays.Rows[I]["Normal"];
-                    Weekend = (bool)Rc.dtRDays.Rows[I]["Weekend"];
-                    Holiday = (bool)Rc.dtRDays.Rows[I]["Special"];
-
-                    if (WorkingDay == true) RowTable["NType"] = "WorkingDay";
-                    if (Weekend == true) RowTable["NType"] = "Weekend";
-                    if (Holiday == true) RowTable["NType"] = "Holiday";
-
-                    // See if is already matched 
-                    Cm.ReadNextDate(WOperator, WMatchDatesCateg, TempDtTm);
-                    if (Cm.RecordFound == true)
-                    {
-                        RowTable["SameAs"] = Cm.SameAs;
-                        RowTable["SMonth"] = Cm.SMonth;
-                        RowTable["SDay"] = Cm.SDay;
-                        RowTable["SType"] = Cm.SType;
-                        RowTable["CreatedDt"] = Cm.DateInsert;
-                    }
-                    else
-                    {
-                        TempDtTm = (DateTime)Rc.dtRDays.Rows[I]["SameAsDate"];
-                        RowTable["SameAs"] = TempDtTm.Date;
-                        RowTable["SMonth"] = TempDtTm.ToString("MMM");
-                        RowTable["SDay"] = TempDtTm.Date.DayOfWeek;
-
-                        WorkingDay = (bool)Rc.dtRDays.Rows[I]["SameNormal"];
-                        Weekend = (bool)Rc.dtRDays.Rows[I]["SameWeekend"];
-                        Holiday = (bool)Rc.dtRDays.Rows[I]["SameSpecial"];
-
-                        if (WorkingDay == true) RowTable["SType"] = "WorkingDay";
-                        if (Weekend == true) RowTable["SType"] = "Weekend";
-                        if (Holiday == true) RowTable["SType"] = "Holiday";
-                    }
-
-                   
-
-                    // THIS FOR DEBUGGING 
-                   // string X1 = Rc.dtRDays.Rows[I]["Date"].ToString();
-                 //   string X2 = Rc.dtRDays.Rows[I]["RecDispensed"].ToString();
-
-                    //      TotalRepl = TotalRepl + (decimal)Rc.dtRDays.Rows[I]["RecDispensed"];
-
-                    NextReplTable10.Rows.Add(RowTable);
-
-                    I++;
+                    Cm.ReadNextDatePrevious_MONTH(WOperator, WMatchDatesCateg, TempDtTm);
+                }
+                if (WAction == 2)
+                {
+                    Cm.ReadNextDatePrevious_YEAR(WOperator, WMatchDatesCateg, TempDtTm);
                 }
 
+                if (Cm.RecordFound == true)
+                {
+                    RowTable["SameAs"] = Cm.SameAs;
+                    RowTable["SMonth"] = Cm.SMonth;
+                    RowTable["SDay"] = Cm.SDay;
+                    RowTable["SType"] = Cm.SType;
+                    RowTable["CreatedDt"] = Cm.DateInsert;
+                }
+                else
+                {
+                    TempDtTm = (DateTime)Rc.dtRDays.Rows[I]["SameAsDate"];
+                    RowTable["SameAs"] = TempDtTm.Date;
+                    RowTable["SMonth"] = TempDtTm.ToString("MMM");
+                    RowTable["SDay"] = TempDtTm.Date.DayOfWeek;
 
-                // ASSIGN AND SHOW GRID
+                    WorkingDay = (bool)Rc.dtRDays.Rows[I]["SameNormal"];
+                    Weekend = (bool)Rc.dtRDays.Rows[I]["SameWeekend"];
+                    Holiday = (bool)Rc.dtRDays.Rows[I]["SameSpecial"];
 
-                dataGridView1.DataSource = NextReplTable10.DefaultView;
+                    if (WorkingDay == true) RowTable["SType"] = "WorkingDay";
+                    if (Weekend == true) RowTable["SType"] = "Weekend";
+                    if (Holiday == true) RowTable["SType"] = "Holiday";
+                }
 
-                dataGridView1.Columns[0].Name = "Index";
+                // THIS FOR DEBUGGING 
+                // string X1 = Rc.dtRDays.Rows[I]["Date"].ToString();
+                //   string X2 = Rc.dtRDays.Rows[I]["RecDispensed"].ToString();
 
-                dataGridView1.Columns[1].Name = "NextDate";
-                dataGridView1.Columns[2].Name = "NMonth";
-                dataGridView1.Columns[3].Name = "NDay";
-                dataGridView1.Columns[4].Name = "NType";
+                //      TotalRepl = TotalRepl + (decimal)Rc.dtRDays.Rows[I]["RecDispensed"];
 
-                dataGridView1.Columns[5].Name = "SameAs";
-                dataGridView1.Columns[6].Name = "SMonth";
-                dataGridView1.Columns[7].Name = "SDay";
-                dataGridView1.Columns[8].Name = "SType";
-                dataGridView1.Columns[9].Name = "CreatedDt";
+                NextReplTable10.Rows.Add(RowTable);
 
-                // SIZE
-                dataGridView1.Columns["Index"].Width = 40; //
-                dataGridView1.Columns["NextDate"].Width = 70;
-                dataGridView1.Columns["NMonth"].Width = 70;
-                dataGridView1.Columns["NDay"].Width = 60;
-                dataGridView1.Columns["NType"].Width = 70;
-                dataGridView1.Columns["SameAs"].Width = 70;
-                dataGridView1.Columns["SMonth"].Width = 70;
-                dataGridView1.Columns["SDay"].Width = 60;
-                dataGridView1.Columns["SType"].Width = 70;
-                dataGridView1.Columns["CreatedDt"].Width = 70;
-           
+                I++;
             }
+
+            // ASSIGN AND SHOW GRID
+
+            dataGridView1.DataSource = NextReplTable10.DefaultView;
+
+            dataGridView1.Columns[0].Name = "Index";
+
+            dataGridView1.Columns[1].Name = "NextDate";
+            dataGridView1.Columns[2].Name = "NMonth";
+            dataGridView1.Columns[3].Name = "NDay";
+            dataGridView1.Columns[4].Name = "NType";
+
+            dataGridView1.Columns[5].Name = "SameAs";
+            dataGridView1.Columns[6].Name = "SMonth";
+            dataGridView1.Columns[7].Name = "SDay";
+            dataGridView1.Columns[8].Name = "SType";
+            dataGridView1.Columns[9].Name = "CreatedDt";
+
+            // SIZE
+            dataGridView1.Columns["Index"].Width = 40; //
+            dataGridView1.Columns["NextDate"].Width = 80;
+            dataGridView1.Columns["NMonth"].Width = 70;
+            dataGridView1.Columns["NDay"].Width = 70;
+            dataGridView1.Columns["NType"].Width = 90;
+            dataGridView1.Columns["SameAs"].Width = 80;
+            dataGridView1.Columns["SMonth"].Width = 70;
+            dataGridView1.Columns["SDay"].Width = 70;
+            dataGridView1.Columns["SType"].Width = 90;
+            dataGridView1.Columns["CreatedDt"].Width = 95;
+
         }
-      
 
         // A ROW IS SELECTED ASSIGN VALUES 
         // ON ROW ENTER DO
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
-        
-                      WNextRow = (int)rowSelected.Cells[0].Value;
-                      WDtTm = (DateTime)rowSelected.Cells[1].Value;
-                       textBox4.Text = WDtTm.ToShortDateString();
-                       WDtTm = (DateTime)rowSelected.Cells[5].Value;
-                       textBox3.Text = WDtTm.ToShortDateString();
 
-                       dateTimePicker2.Value = WDtTm; 
-            
+            WNextRow = (int)rowSelected.Cells[0].Value;
+            WDtTm = (DateTime)rowSelected.Cells[1].Value;
+            textBoxThisDate.Text = WDtTm.ToShortDateString();
+
+            Ch.ReadSpecificDate(WOperator, WDtTm, WHolidaysVersion); // Check the TYPE through Holidays Class
+            if (Ch.IsNormal == true & Ch.IsHoliday == false) textBoxThisDateType.Text = "WorkingDay";
+            if (Ch.IsWeekend == true & Ch.IsHoliday == false) textBoxThisDateType.Text = "Weekend";
+            if (Ch.IsHoliday == true) textBoxThisDateType.Text = "Holiday";
+
+            WDtTm = (DateTime)rowSelected.Cells[5].Value;
+            textBoxSameAs.Text = WDtTm.ToShortDateString();
+
+            Ch.ReadSpecificDate(WOperator, WDtTm, WHolidaysVersion); // Check the TYPE through Holidays Class
+            if (Ch.IsNormal == true & Ch.IsHoliday == false) textBoxSameAsType.Text = "WorkingDay";
+            if (Ch.IsWeekend == true & Ch.IsHoliday == false) textBoxSameAsType.Text = "Weekend";
+            if (Ch.IsHoliday == true) textBoxSameAsType.Text = "Holiday";
+
+            dateTimePicker2.Value = WDtTm;
+
         }
 
         // UPON DATE CHANGE 
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
         {
             WDtTm = dateTimePicker2.Value;
+            textBoxSameAs.Text = WDtTm.ToShortDateString();
+
             NextReplTable10.Rows[WNextRow - 1]["SameAs"] = WDtTm.Date;
 
             NextReplTable10.Rows[WNextRow - 1]["SMonth"] = WDtTm.ToString("MMM");
@@ -341,85 +380,31 @@ namespace RRDM4ATMsWin
 
             Ch.ReadSpecificDate(WOperator, WDtTm, WHolidaysVersion); // Check the TYPE through Holidays Class
 
-            if (Ch.IsNormal == true & Ch.IsHoliday == false) NextReplTable10.Rows[WNextRow - 1]["SType"] = "WorkingDay";
+            if (Ch.IsNormal == true & Ch.IsHoliday == false)
+            {
+                NextReplTable10.Rows[WNextRow - 1]["SType"] = "WorkingDay";
+                textBoxSameAsType.Text = "WorkingDay";
+            }
 
-            if (Ch.IsWeekend == true & Ch.IsHoliday == false) NextReplTable10.Rows[WNextRow - 1]["SType"] = "Weekend";
 
-            if (Ch.IsHoliday == true) NextReplTable10.Rows[WNextRow - 1]["SType"] = "Holiday";
+            if (Ch.IsWeekend == true & Ch.IsHoliday == false)
+            {
+                NextReplTable10.Rows[WNextRow - 1]["SType"] = "Weekend";
+                textBoxSameAsType.Text = "Weekend";
+            }
+
+
+            if (Ch.IsHoliday == true)
+            {
+                NextReplTable10.Rows[WNextRow - 1]["SType"] = "Holiday";
+                textBoxSameAsType.Text = "Holiday";
+            }
 
             dataGridView1.DataSource = NextReplTable10.DefaultView;
 
         }
 
-        // Upon Button Finish Update Data Bases 
-        private void ButtonFinish_Click(object sender, EventArgs e)
-        {
-           
-            for (int rows = 0; rows < (dataGridView1.Rows.Count - 1); rows++)
-            {
-
-                NextDate = (DateTime)dataGridView1.Rows[rows].Cells["NextDate"].Value;
-                NMonth = (string)dataGridView1.Rows[rows].Cells["NMonth"].Value;
-                NDay = (string)dataGridView1.Rows[rows].Cells["NDay"].Value;
-                NType = (string)dataGridView1.Rows[rows].Cells["NType"].Value;
-
-                SameAs = (DateTime)dataGridView1.Rows[rows].Cells["SameAs"].Value;
-                SMonth = (string)dataGridView1.Rows[rows].Cells["SMonth"].Value;
-                SDay = (string)dataGridView1.Rows[rows].Cells["SDay"].Value;
-                SType = (string)dataGridView1.Rows[rows].Cells["SType"].Value;
-
-                // ASSIGN VALUES
-
-                Cm.BankId = WOperator;
-                Cm.MatchDatesCateg = WMatchDatesCateg; 
-                Cm.NextDate = NextDate;
-            //    Cm.Prive = WWPrive;
-
-                Cm.ReadNextDate(WOperator, WMatchDatesCateg, NextDate);
-                if (Cm.RecordFound == true)
-                {
-                    Cm.NMonth = NMonth;
-                    Cm.NDay = NDay;
-                    Cm.NType = NType;
-
-                    Cm.SameAs = SameAs;
-                    Cm.SMonth = SMonth;
-                    Cm.SDay = SDay;
-                    Cm.SType = SType;
-
-                    Cm.DateInsert = DateTime.Today; 
-
-                    Cm.UpdateNextDate(WOperator, WMatchDatesCateg, NextDate);
-                }
-                else
-                {
-
-                Cm.NMonth = NMonth; 
-                Cm.NDay = NDay;
-                Cm.NType = NType; 
-
-                Cm.SameAs = SameAs; 
-                Cm.SMonth = SMonth; 
-                Cm.SDay = SDay;
-                Cm.SType = SType; 
-
-                Cm.DateInsert = DateTime.Today;
-
-                Cm.Operator = WOperator;
-
-                Cm.InsertNextDate(WOperator, WMatchDatesCateg, NextDate);
-                }
-
-            }
-
-            MessageBox.Show("Matched Entries Inserted or Updated");
-
-            textBoxMsgBoard.Text = "All Entries Updated! ";
-        }
-
         // Bank Name 
-        
-      
 
         //AUDIT TRAIL : GET IMAGE AND INSERT IT IN AUDIT TRAIL 
         private void GetMainBodyImageAndStoreIt(string InCategory, string InSubCategory, string InTypeOfChange, int InUser)
@@ -434,15 +419,97 @@ namespace RRDM4ATMsWin
             //        At.InsertRecord(InCategory, InSubCategory, InTypeOfChange, InUser, SCREENa);
         }
 
-       
-
-        private void chart1_Click(object sender, EventArgs e)
+        // Go Back 
+        private void buttonBack_Click(object sender, EventArgs e)
         {
-
+            this.Dispose();
         }
 
-       
-       
+        private void ButtonUpdateAll_Click(object sender, EventArgs e)
+        {
+            int K = 0;
+
+            while (K <= (dataGridView1.Rows.Count - 1))
+            {
+                NextDate = (DateTime)dataGridView1.Rows[K].Cells["NextDate"].Value;
+                NMonth = (string)dataGridView1.Rows[K].Cells["NMonth"].Value;
+                NDay = (string)dataGridView1.Rows[K].Cells["NDay"].Value;
+                NType = (string)dataGridView1.Rows[K].Cells["NType"].Value;
+
+                SameAs = (DateTime)dataGridView1.Rows[K].Cells["SameAs"].Value;
+                SMonth = (string)dataGridView1.Rows[K].Cells["SMonth"].Value;
+                SDay = (string)dataGridView1.Rows[K].Cells["SDay"].Value;
+                SType = (string)dataGridView1.Rows[K].Cells["SType"].Value;
+
+                NextReplTable10.Rows[K]["CreatedDt"] = DateTime.Now;
+
+                // ASSIGN VALUES
+
+                Cm.BankId = WOperator;
+                Cm.MatchDatesCateg = WMatchDatesCateg;
+                Cm.NextDate = NextDate;
+
+                if (WAction == 1)
+                {
+                    Cm.ReadNextDatePrevious_MONTH(WOperator, WMatchDatesCateg, NextDate);
+                }
+                if (WAction == 2)
+                {
+                    Cm.ReadNextDatePrevious_YEAR(WOperator, WMatchDatesCateg, NextDate);
+                }
+
+                if (Cm.RecordFound == true)
+                {
+                    Cm.NMonth = NMonth;
+                    Cm.NDay = NDay;
+                    Cm.NType = NType;
+
+                    Cm.SameAs = SameAs;
+                    Cm.SMonth = SMonth;
+                    Cm.SDay = SDay;
+                    Cm.SType = SType;
+
+                    Cm.DateInsert = DateTime.Today;
+
+                    Cm.Previous_Month_OR_Year = WPrevious_Month_OR_Year; // 1 for Month 
+                                                                         // 2 for Year 
+
+                    Cm.UpdateNextDate(WOperator, WMatchDatesCateg, NextDate);
+
+                }
+                else
+                {
+                    Cm.NMonth = NMonth;
+                    Cm.NDay = NDay;
+                    Cm.NType = NType;
+
+                    Cm.SameAs = SameAs;
+                    Cm.SMonth = SMonth;
+                    Cm.SDay = SDay;
+                    Cm.SType = SType;
+
+                    Cm.DateInsert = DateTime.Today;
+
+                    Cm.Previous_Month_OR_Year = 1;
+
+                    Cm.Operator = WOperator;
+
+                    Cm.Previous_Month_OR_Year = WPrevious_Month_OR_Year; // 1 for Month 
+                                                                         // 2 for Year 
+
+                    Cm.InsertNextDate(WOperator, WMatchDatesCateg, NextDate);
+                }
+
+                K++; // Read Next entry of the table 
+            }
+
+            // Show Update Grid 
+            dataGridView1.DataSource = NextReplTable10.DefaultView;
+
+            MessageBox.Show("Matched Entries Inserted or Updated");
+
+            textBoxMsgBoard.Text = "All Entries Updated! ";
+        }
     }
 }
 

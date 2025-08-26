@@ -1,27 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Transactions;
 
 namespace RRDM4ATMs
 {
-    public class RRDMJTMIdentificationDetailsClass
+    public class RRDMJTMIdentificationDetailsClass : Logger
     {
+        public RRDMJTMIdentificationDetailsClass() : base() { }
 
         public int SeqNo;
         public string AtmNo;
         public DateTime DateLastUpdated;
         public string UserId;
      
-        public string BatchID;
-       
+        public string LoadingScheduleID;
+        
         public string ATMIPAddress;
 
         public string ATMMachineName;
@@ -36,12 +33,26 @@ namespace RRDM4ATMs
         
         public string DestnFilePath;
 
+        public int QueueRecId; 
+
         public DateTime FileUploadRequestDt;
    
         public DateTime FileParseEnd;
 
+        public DateTime LoadingCompleted;    
+
         public int ResultCode;
+                    // -1 Waiting for processing 
+                    //  0 E-Journal Loaded by Alecos in SQL tables 
+                    //  1 E-Journal updated to RRDM  
         public string ResultMessage;
+
+        public DateTime NextLoadingDtTm;
+
+        public string SWDCategory;
+        public string SWVersion;
+        public DateTime SWDate;
+        public int TypeOfSWD;
 
         public string Operator;
 
@@ -52,7 +63,7 @@ namespace RRDM4ATMs
         string SqlString; 
 
         // Define the data table 
-        public DataTable ATMsJournalDetailsSelected = new DataTable();
+        public DataTable ATMsJournalDetailsTable ;
 
         public int TotalSelected; 
 
@@ -60,40 +71,67 @@ namespace RRDM4ATMs
 
         RRDMAtmsClass Ac = new RRDMAtmsClass();
 
-        // READ JTMIdentificationDetails to fill table 
-
-        public void ReadJTMIdentificationDetailsToFillTable(string InMode, string InBatchID, string InAtmNo)
+        //
+        // Read Reader fields 
+        //
+        private void ReaderFields(SqlDataReader rdr)
         {
-            RecordFound = false;
-            ErrorFound = false;
-            ErrorOutput = "";
+            SeqNo = (int)rdr["SeqNo"];
+            AtmNo = (string)rdr["AtmNo"];
 
-            // InMode = "SingleAtm"
-            // InMode = "AllAtms"
-            // InMode = "Batch"
+            DateLastUpdated = (DateTime)rdr["DateLastUpdated"];
+            UserId = (string)rdr["UserId"];
 
-            ATMsJournalDetailsSelected = new DataTable();
-            ATMsJournalDetailsSelected.Clear();
+            LoadingScheduleID = (string)rdr["LoadingScheduleID"];
 
+            ATMIPAddress = (string)rdr["ATMIPAddress"];
+
+            ATMMachineName = (string)rdr["ATMMachineName"];
+
+            ATMWindowsAuth = (bool)rdr["ATMWindowsAuth"];
+
+            ATMAccessID = (string)rdr["ATMAccessID"];
+            ATMAccessPassword = (string)rdr["ATMAccessPassword"];
+
+            TypeOfJournal = (string)rdr["TypeOfJournal"];
+            SourceFileName = (string)rdr["SourceFileName"];
+            SourceFilePath = (string)rdr["SourceFilePath"];
+
+            DestnFilePath = (string)rdr["DestnFilePath"];
+
+            QueueRecId = (int)rdr["QueueRecId"];
+
+            FileUploadRequestDt = (DateTime)rdr["FileUploadRequestDt"];
+
+            FileParseEnd = (DateTime)rdr["FileParseEnd"];
+
+            LoadingCompleted = (DateTime)rdr["LoadingCompleted"];
+
+            ResultCode = (int)rdr["ResultCode"];
+            ResultMessage = (string)rdr["ResultMessage"];
+
+            NextLoadingDtTm = (DateTime)rdr["NextLoadingDtTm"];
+
+            SWDCategory = (string)rdr["SWDCategory"];
+            SWVersion = (string)rdr["SWVersion"];
+            SWDate = (DateTime)rdr["SWDate"];
+            TypeOfSWD = (int)rdr["TypeOfSWD"]; // 1: Preproduction, 2:Pilot, 3:Production, 4: Single Atm
+      
+            Operator = (string)rdr["Operator"];
+        
+        }
+
+        // READ JTMIdentificationDetails to fill FULL table 
+
+        public void ReadJTMIdentificationDetailsToFillFullTable(string InMode, string InAtmNo)
+        {
+
+            ATMsJournalDetailsTable = new DataTable();
+            ATMsJournalDetailsTable.Clear();
             TotalSelected = 0;
 
-
-            // DATA TABLE ROWS DEFINITION 
-            ATMsJournalDetailsSelected.Columns.Add("AtmNo", typeof(string));
-            ATMsJournalDetailsSelected.Columns.Add("BankID", typeof(string));
-            ATMsJournalDetailsSelected.Columns.Add("ATMIPAddress", typeof(string));
-
-            ATMsJournalDetailsSelected.Columns.Add("ATMMachineName", typeof(string));
-            ATMsJournalDetailsSelected.Columns.Add("ATMWindowsAuth", typeof(bool));
-            ATMsJournalDetailsSelected.Columns.Add("ATMAccessID", typeof(string));
-
-            ATMsJournalDetailsSelected.Columns.Add("ATMAccessPassword", typeof(string));
-            ATMsJournalDetailsSelected.Columns.Add("TypeOfJournal", typeof(string));
-            ATMsJournalDetailsSelected.Columns.Add("SourceFileName", typeof(string));
-
-            ATMsJournalDetailsSelected.Columns.Add("SourceFilePath", typeof(string));
-            ATMsJournalDetailsSelected.Columns.Add("DestnFilePath", typeof(string));
-            ATMsJournalDetailsSelected.Columns.Add("Operator", typeof(string));
+            // InMode    : SingleAtm
+            //           : AllReadyForLoading
 
             if (InMode == "SingleAtm")
             {
@@ -102,39 +140,118 @@ namespace RRDM4ATMs
                  + " WHERE AtmNo = @AtmNo";
             }
 
-            if (InMode == "AllAtms")
+            if (InMode == "AllReadyForLoading")
             {
                 SqlString = "SELECT *"
-                 + " FROM [dbo].[JTMIdentificationDetails] ";
-            }
-
-            if (InMode == "Batch")
-            {
-               SqlString = "SELECT *"
                  + " FROM [dbo].[JTMIdentificationDetails] "
-                 + " WHERE BatchID = @BatchID";
+                 + " WHERE NextLoadingDtTm <= @CurrentDtTm And ResultCode = 1";
             }
 
-           
+            if (InMode == "GetAllLoaded")
+            {
+                SqlString = "SELECT *"
+                 + " FROM [dbo].[JTMIdentificationDetails] "
+                 + " WHERE ResultCode = 0";
+            }
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn =
+                new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    using (SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString, conn))
+                    {
+                      
+                        if (InMode == "SingleAtm")
+                        {
+                            sqlAdapt.SelectCommand.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                        }
+                        if (InMode == "AllReadyForLoading")
+                        {
+                            sqlAdapt.SelectCommand.Parameters.AddWithValue("@CurrentDtTm", DateTime.Now);
+                        }
+
+                        //Create a datatable that will be filled with the data retrieved from the command
+
+                        sqlAdapt.Fill(ATMsJournalDetailsTable);
+
+                        // Close conn
+                        conn.Close();
+
+                    
+                        RecordFound = false;
+                        ErrorFound = false;
+
+                        if (ATMsJournalDetailsTable.Rows.Count > 0)
+                        {
+                            RecordFound = true;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorFound = true ;
+
+                    conn.Close();
+
+                    CatchDetails(ex);                
+
+                }
+        }
+
+        //
+        // READ JTMIdentificationDetails to fill partial table 
+        //
+
+        public void ReadJTMIdentificationDetailsToFillPartialTable(string InSelectionCriteria, int inMode, DateTime InDate)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            // inMode = 1 without date 
+            // inMode = 2 with date 
+
+            ATMsJournalDetailsTable = new DataTable();
+            ATMsJournalDetailsTable.Clear();
+            TotalSelected = 0;
+
+            // DATA TABLE ROWS DEFINITION 
+            ATMsJournalDetailsTable.Columns.Add("ATMNo", typeof(string));
+            ATMsJournalDetailsTable.Columns.Add("LoadingScheduleID", typeof(string));
+
+            ATMsJournalDetailsTable.Columns.Add("QueueRecId", typeof(string));  
+            ATMsJournalDetailsTable.Columns.Add("FileUploadRequestDt", typeof(DateTime));
+            ATMsJournalDetailsTable.Columns.Add("FileParseEnd", typeof(DateTime));
+            ATMsJournalDetailsTable.Columns.Add("LoadingCompleted", typeof(DateTime));
+                  
+            ATMsJournalDetailsTable.Columns.Add("ResultCode", typeof(int));
+            ATMsJournalDetailsTable.Columns.Add("ResultMessage", typeof(string));     
+            ATMsJournalDetailsTable.Columns.Add("NextLoadingDtTm", typeof(DateTime));
+            ATMsJournalDetailsTable.Columns.Add("SWDCategory", typeof(string));
+            ATMsJournalDetailsTable.Columns.Add("SWVersion", typeof(string));
+            ATMsJournalDetailsTable.Columns.Add("SWDate", typeof(DateTime));
+            ATMsJournalDetailsTable.Columns.Add("TypeOfSWD", typeof(int));
+            ATMsJournalDetailsTable.Columns.Add("TypeName", typeof(string));
+
+            SqlString = "SELECT *"
+                             + " FROM [dbo].[JTMIdentificationDetails] "
+                             + InSelectionCriteria;
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
                 try
                 {
                     conn.Open();
                     using (SqlCommand cmd =
                         new SqlCommand(SqlString, conn))
                     {
-                        if (InMode == "SingleAtm")
+                        if (inMode == 2)
                         {
-                            cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                            cmd.Parameters.AddWithValue("@Date", InDate);
                         }
-
-                       
-                        if (InMode == "Batch")
-                        {
-                            cmd.Parameters.AddWithValue("@BatchID", InBatchID);
-                        }
-                        
 
                         // Read table 
 
@@ -144,64 +261,34 @@ namespace RRDM4ATMs
                         {
                             RecordFound = true;
 
-                            TotalSelected = TotalSelected + 1; 
+                            // Read ATMs Journal fields 
 
-                            AtmNo = (string)rdr["AtmNo"];
+                            ReaderFields(rdr);
+                            //
+                            // Fill In Table
+                            //
+                            DataRow RowSelected = ATMsJournalDetailsTable.NewRow();
+                         
+                            RowSelected["ATMNo"] = AtmNo;
+                            RowSelected["LoadingScheduleID"] = LoadingScheduleID;
 
-                            DateLastUpdated = (DateTime)rdr["DateLastUpdated"];
-                            UserId = (string)rdr["UserId"];
-
-                            BatchID = (string)rdr["BatchID"];
-
-                            ATMIPAddress = (string)rdr["ATMIPAddress"];
-
-                            ATMMachineName = (string)rdr["ATMMachineName"];
-
-                            ATMWindowsAuth = (bool)rdr["ATMWindowsAuth"];
-
-                            ATMAccessID = (string)rdr["ATMAccessID"];
-                            ATMAccessPassword = (string)rdr["ATMAccessPassword"];
-
-                            TypeOfJournal = (string)rdr["TypeOfJournal"];
-                            SourceFileName = (string)rdr["SourceFileName"];
-                            SourceFilePath = (string)rdr["SourceFilePath"];
-
-                            DestnFilePath = (string)rdr["DestnFilePath"];
-
-                            FileUploadRequestDt = (DateTime)rdr["FileUploadRequestDt"];
-
-                            FileParseEnd = (DateTime)rdr["FileParseEnd"];
-
-                            ResultCode = (int)rdr["ResultCode"];
-                            ResultMessage = (string)rdr["ResultMessage"];
-
-                            Operator = (string)rdr["Operator"];
-
-                            Ac.ReadAtm(AtmNo);
-
-                            if (Ac.ActiveAtm == true)
-                            {
-                                DataRow RowSelected = ATMsJournalDetailsSelected.NewRow();
-
-                                RowSelected["AtmNo"] = AtmNo;
-                                RowSelected["BankID"] = Ac.BankId;
-                                RowSelected["ATMIPAddress"] = ATMIPAddress;
-
-                                RowSelected["ATMMachineName"] = ATMMachineName;
-                                RowSelected["ATMWindowsAuth"] = ATMWindowsAuth;
-                                RowSelected["ATMAccessID"] = ATMAccessID;
-
-                                RowSelected["ATMAccessPassword"] = ATMAccessPassword;
-                                RowSelected["TypeOfJournal"] = TypeOfJournal;
-                                RowSelected["SourceFileName"] = SourceFileName;
-
-                                RowSelected["SourceFilePath"] = SourceFilePath;
-                                RowSelected["DestnFilePath"] = DestnFilePath;
-                                RowSelected["Operator"] = Operator;
-
-                                // ADD ROW
-                                ATMsJournalDetailsSelected.Rows.Add(RowSelected);
-                            }
+                            RowSelected["QueueRecId"] = QueueRecId;
+                            RowSelected["FileUploadRequestDt"] = FileUploadRequestDt;
+                            RowSelected["FileParseEnd"] = FileParseEnd;
+                            RowSelected["LoadingCompleted"] = LoadingCompleted;
+                           
+                            RowSelected["ResultCode"] = ResultCode;
+                            RowSelected["ResultMessage"] = ResultMessage;
+                            RowSelected["NextLoadingDtTm"] = NextLoadingDtTm;
+                            RowSelected["SWDCategory"] = SWDCategory;
+                            RowSelected["SWVersion"] = SWVersion;
+                            RowSelected["SWDate"] = SWDate;
+                            RowSelected["TypeOfSWD"] = TypeOfSWD;
+                            if (TypeOfSWD == 1) RowSelected["TypeName"] = "Pre-Production";
+                            if (TypeOfSWD == 2) RowSelected["TypeName"] = "Pilot";
+                            if (TypeOfSWD == 3) RowSelected["TypeName"] = "Production";
+                            // ADD ROW
+                            ATMsJournalDetailsTable.Rows.Add(RowSelected);
 
                         }
 
@@ -216,8 +303,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured ReadJTMIdentificationDetailsByAtmNo(string InAtmNo)........ " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -230,7 +317,7 @@ namespace RRDM4ATMs
             ErrorFound = false;
             ErrorOutput = "";
 
-            string SqlString = "SELECT *"
+            SqlString = "SELECT *"
                   + " FROM [dbo].[JTMIdentificationDetails] "
                   + " WHERE AtmNo = @AtmNo";
             using (SqlConnection conn =
@@ -246,42 +333,75 @@ namespace RRDM4ATMs
                         // Read table 
 
                         SqlDataReader rdr = cmd.ExecuteReader();
+                        
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+                            ReaderFields(rdr);
+                        }
+                        ErrorFound = false;
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    ErrorFound = true;
+                    ErrorOutput = ex.Message;
+                    RecordFound = false;
+                    conn.Close();
+                    // Alecos
+                    // CatchDetails(ex);
+
+                }
+        }
+
+        // READ JTMIdentificationDetails by SWD Category and Version
+        public int TotalSameSWVersion;
+        public int TotalNoSameSWVersion; 
+        public void ReadJTMIdentificationDetailsForSWTotals(string InSWDCategory, string InSWVersion)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            TotalSameSWVersion = 0;
+            TotalNoSameSWVersion = 0;
+
+            SqlString = "SELECT *"
+                  + " FROM [dbo].[JTMIdentificationDetails] "
+                  + " WHERE SWDCategory = @SWDCategory ";
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@SWDCategory", InSWDCategory);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
 
                         while (rdr.Read())
                         {
                             RecordFound = true;
 
-                            SeqNo = (int)rdr["SeqNo"];
-                            AtmNo = (string)rdr["AtmNo"];
-                           
-                            DateLastUpdated = (DateTime)rdr["DateLastUpdated"];
-                            UserId = (string)rdr["UserId"];
+                            ReaderFields(rdr);
 
-                            BatchID = (string)rdr["BatchID"];
-
-                            ATMIPAddress = (string)rdr["ATMIPAddress"];
-
-                            ATMMachineName = (string)rdr["ATMMachineName"];
-
-                            ATMWindowsAuth = (bool)rdr["ATMWindowsAuth"];
-
-                            ATMAccessID = (string)rdr["ATMAccessID"];
-                            ATMAccessPassword = (string)rdr["ATMAccessPassword"];
-
-                            TypeOfJournal = (string)rdr["TypeOfJournal"];
-                            SourceFileName = (string)rdr["SourceFileName"];
-                            SourceFilePath = (string)rdr["SourceFilePath"];
-                          
-                            DestnFilePath = (string)rdr["DestnFilePath"];
-
-                            FileUploadRequestDt = (DateTime)rdr["FileUploadRequestDt"];
-                           
-                            FileParseEnd = (DateTime)rdr["FileParseEnd"];
-
-                            ResultCode = (int)rdr["ResultCode"];
-                            ResultMessage = (string)rdr["ResultMessage"];
-
-                            Operator = (string)rdr["Operator"];
+                            if(SWVersion == InSWVersion)
+                            {
+                                TotalSameSWVersion = TotalSameSWVersion + 1;                                
+                            }
+                            else
+                            {
+                                TotalNoSameSWVersion = TotalNoSameSWVersion + 1;
+                            }
                         }
 
                         // Close Reader
@@ -295,15 +415,15 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured ReadJTMIdentificationDetailsByAtmNo(string InAtmNo)........ " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
 
-
         // Insert NEW Record in JTMIdentificationDetails
         //
+        int rows; 
         public void InsertNewRecordInJTMIdentificationDetails()
         {
 
@@ -312,20 +432,22 @@ namespace RRDM4ATMs
 
             string cmdinsert = "INSERT INTO [dbo].[JTMIdentificationDetails]"
                 + " ([AtmNo], [UserId], "
-                + " [BatchID],"
+                + " [LoadingScheduleID],"
                 + "[ATMIPAddress],"
                 + "[ATMMachineName],[ATMWindowsAuth],[ATMAccessID],[ATMAccessPassword], "
                 + "[TypeOfJournal],[SourceFileName],[SourceFilePath], [DestnFilePath], "
+                + "[NextLoadingDtTm], "
                 + "[Operator] )"
                 + " VALUES"
                 + " ( @AtmNo, @UserId,"
-                + "@BatchID,"
+                + "@LoadingScheduleID,"
                 + "@ATMIPAddress,"
                 + "@ATMMachineName,@ATMWindowsAuth,@ATMAccessID,@ATMAccessPassword, "
                 + "@TypeOfJournal,@SourceFileName,@SourceFilePath, @DestnFilePath,"
+                + "@NextLoadingDtTm ,"
                 + " @Operator )";
-                //+ " SELECT CAST(SCOPE_IDENTITY() AS int)";
-
+            //+ " SELECT CAST(SCOPE_IDENTITY() AS int)";
+           
             using (SqlConnection conn =
                 new SqlConnection(connectionString))
                 try
@@ -339,7 +461,7 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@UserId", UserId);
 
-                        cmd.Parameters.AddWithValue("@BatchID", BatchID);
+                        cmd.Parameters.AddWithValue("@LoadingScheduleID", LoadingScheduleID);
 
                         cmd.Parameters.AddWithValue("@ATMIPAddress", ATMIPAddress);
 
@@ -355,21 +477,28 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@DestnFilePath", DestnFilePath);
 
+                        cmd.Parameters.AddWithValue("@NextLoadingDtTm", NextLoadingDtTm);
+
                         cmd.Parameters.AddWithValue("@Operator", Operator);
 
                         //rows number of record got updated
 
-                        int rows = cmd.ExecuteNonQuery();
-
+                        rows = cmd.ExecuteNonQuery();
+                        if (rows < 1)
+                        { 
+                            ErrorFound = true;
+                            ErrorOutput = string.Format("Record not Inserted! AtmNo = [{0}]", AtmNo);
+                        }
                     }
                     // Close conn
                     conn.Close();
                 }
                 catch (Exception ex)
                 {
-                    conn.Close();
                     ErrorFound = true;
-                    ErrorOutput = "An error occured in InsertNewRecordInJTMIdentificationDetails().......... " + ex.Message;
+                    ErrorOutput = ex.Message;
+                    conn.Close();
+                    CatchDetails(ex);    
                 }
         }
 
@@ -389,17 +518,24 @@ namespace RRDM4ATMs
                     conn.Open();
                     using (SqlCommand cmd =
                         new SqlCommand("UPDATE dbo.JTMIdentificationDetails SET "
-                            + " DateLastUpdated = @DateLastUpdated, UserId = @UserId, "
-                             + "BatchID = @BatchID,"
-                             + "AtmNo = @AtmNo, ATMIPAddress = @ATMIPAddress,"
-                             + "ATMMachineName = @ATMMachineName, ATMWindowsAuth = @ATMWindowsAuth, "
-                             + "ATMAccessID = @ATMAccessID, ATMAccessPassword = @ATMAccessPassword, "
-                             + "TypeOfJournal = @TypeOfJournal, SourceFileName = @SourceFileName, SourceFilePath = @SourceFilePath,"
+                             + " DateLastUpdated = @DateLastUpdated, UserId = @UserId, "
+                             + " LoadingScheduleID = @LoadingScheduleID,"
+                             + " AtmNo = @AtmNo, ATMIPAddress = @ATMIPAddress,"
+                             + " ATMMachineName = @ATMMachineName, ATMWindowsAuth = @ATMWindowsAuth, "
+                             + " ATMAccessID = @ATMAccessID, ATMAccessPassword = @ATMAccessPassword, "
+                             + " TypeOfJournal = @TypeOfJournal, SourceFileName = @SourceFileName, SourceFilePath = @SourceFilePath,"
                              + " DestnFilePath = @DestnFilePath, "
                              + " ResultCode = @ResultCode, "
-                             + "ResultMessage = @ResultMessage, "
-                             + "FileUploadRequestDt = @FileUploadRequestDt, "
-                             + "  FileParseEnd = @FileParseEnd, Operator = @Operator  "
+                             + " ResultMessage = @ResultMessage, "
+                             + " QueueRecId = @QueueRecId, "                         
+                             + " FileUploadRequestDt = @FileUploadRequestDt, "
+                             + " FileParseEnd = @FileParseEnd, LoadingCompleted = @LoadingCompleted,"
+                             + " NextLoadingDtTm = @NextLoadingDtTm, "
+                             + " SWDCategory = @SWDCategory, "
+                             + " SWVersion = @SWVersion, "
+                             + " SWDate = @SWDate, "
+                             + " TypeOfSWD = @TypeOfSWD, "
+                             + " Operator = @Operator  "
                              + " WHERE AtmNo = @AtmNo", conn))
                     {
 
@@ -409,7 +545,7 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@UserId", UserId);
               
-                        cmd.Parameters.AddWithValue("@BatchID", BatchID);
+                        cmd.Parameters.AddWithValue("@LoadingScheduleID", LoadingScheduleID);
                      
                         cmd.Parameters.AddWithValue("@ATMIPAddress", ATMIPAddress);
 
@@ -425,21 +561,29 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@SourceFilePath", SourceFilePath);
 
                         cmd.Parameters.AddWithValue("@DestnFilePath", DestnFilePath);
-                      
+
+                        cmd.Parameters.AddWithValue("@QueueRecId", QueueRecId);
+
                         cmd.Parameters.AddWithValue("@ResultCode", ResultCode);
                         cmd.Parameters.AddWithValue("@ResultMessage", ResultMessage);
 
                         cmd.Parameters.AddWithValue("@FileUploadRequestDt", FileUploadRequestDt);
                     
                         cmd.Parameters.AddWithValue("@FileParseEnd", FileParseEnd);
+                        cmd.Parameters.AddWithValue("@LoadingCompleted", LoadingCompleted);
+
+                        cmd.Parameters.AddWithValue("@NextLoadingDtTm", NextLoadingDtTm);
+
+                        cmd.Parameters.AddWithValue("@SWDCategory", SWDCategory);
+                        cmd.Parameters.AddWithValue("@SWVersion", SWVersion);
+                        cmd.Parameters.AddWithValue("@SWDate", SWDate);
+                        cmd.Parameters.AddWithValue("@TypeOfSWD", TypeOfSWD);
 
                         cmd.Parameters.AddWithValue("@Operator", Operator);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                     
+                        cmd.ExecuteNonQuery();
+                     
 
                     }
                     // Close conn
@@ -447,15 +591,30 @@ namespace RRDM4ATMs
                 }
                 catch (Exception ex)
                 {
-                    conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured UpdateRecordInJTMIdentificationDetailsByAtmNo(string InAtmNo)......... " + ex.Message;
+                  
+                    using (var scope2 = new System.Transactions.TransactionScope(TransactionScopeOption.RequiresNew))
+                        try
+                        {
+                            ErrorFound = true;
 
+                            CatchDetails(ex);
+
+                            scope2.Complete();
+                   
+                        }
+                        catch (Exception )
+                        {
+                            
+                        }
+                        finally
+                        {
+                            scope2.Dispose();
+                        }
                 }
         }
 
 
-        // UPDATE Update Record In JTMIdentificationDetails by ATm no 
+        // UPDATE Update Record In JTMIdentificationDetails by seq no
         // 
         public void UpdateRecordInJTMIdentificationDetailsByID(int InSeqNo)
         {
@@ -471,7 +630,7 @@ namespace RRDM4ATMs
                     using (SqlCommand cmd =
                         new SqlCommand("UPDATE dbo.JTMIdentificationDetails SET "
                             + " DateLastUpdated = @DateLastUpdated, UserId = @UserId, "
-                             + "BatchID = @BatchID,"
+                             + "LoadingScheduleID = @LoadingScheduleID,"
                              + "AtmNo = @AtmNo, ATMIPAddress = @ATMIPAddress,"
                              + "ATMMachineName = @ATMMachineName, ATMWindowsAuth = @ATMWindowsAuth, "
                              + "ATMAccessID = @ATMAccessID, ATMAccessPassword = @ATMAccessPassword, "
@@ -480,8 +639,13 @@ namespace RRDM4ATMs
                              + " ResultCode = @ResultCode, "
                              + "ResultMessage = @ResultMessage, "
                              + "FileUploadRequestDt = @FileUploadRequestDt, "
-                             + "  FileParseEnd = @FileParseEnd, Operator = @Operator  "
-                             + " WHERE SeqNo = @SeqNo", conn))
+                             + "QueueRecId = @QueueRecId, "  
+                             + "FileParseEnd = @FileParseEnd, "
+                             + "LoadingCompleted = @LoadingCompleted, "
+                             + " SWDCategory = @SWDCategory, "
+                             + " SWVersion = @SWVersion, "
+                             + "Operator = @Operator  "
+                             + "WHERE SeqNo = @SeqNo", conn))
                     {
 
                         cmd.Parameters.AddWithValue("@SeqNo", InSeqNo);
@@ -492,7 +656,7 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@UserId", UserId);
 
-                        cmd.Parameters.AddWithValue("@BatchID", BatchID);
+                        cmd.Parameters.AddWithValue("@LoadingScheduleID", LoadingScheduleID);
 
                         cmd.Parameters.AddWithValue("@ATMIPAddress", ATMIPAddress);
 
@@ -514,15 +678,20 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@FileUploadRequestDt", FileUploadRequestDt);
 
+                        cmd.Parameters.AddWithValue("@QueueRecId", QueueRecId);
+
                         cmd.Parameters.AddWithValue("@FileParseEnd", FileParseEnd);
+
+                        cmd.Parameters.AddWithValue("@LoadingCompleted", LoadingCompleted);
+
+                        cmd.Parameters.AddWithValue("@SWVersion", SWVersion);
+
+                        cmd.Parameters.AddWithValue("@SWDCategory", SWDCategory);
 
                         cmd.Parameters.AddWithValue("@Operator", Operator);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                     
+                        cmd.ExecuteNonQuery();
 
                     }
                     // Close conn
@@ -530,15 +699,12 @@ namespace RRDM4ATMs
                 }
                 catch (Exception ex)
                 {
-                    conn.Close();
                     ErrorFound = true;
-                    ErrorOutput = "An error occured UpdateRecordInJTMIdentificationDetailsByID()..\nThe error reads:\n" + ex.Message;
-
+                    ErrorOutput = ex.Message;
+                    conn.Close();
+                    CatchDetails(ex);
                 }
         }
-
-
-
 
         //
         // DELETE Record In JTMIdentificationDetails by ATM No
@@ -560,11 +726,9 @@ namespace RRDM4ATMs
                     {
                         cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                      
+                        cmd.ExecuteNonQuery();
+                       
 
                     }
                     // Close conn
@@ -573,10 +737,12 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in DeleteRecordInJTMIdentificationDetailsByAtmNo(string InAtmNo) ............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
+
+       
     }
 }

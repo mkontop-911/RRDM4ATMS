@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <startup>
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5" />
+  </startup>
+
+  <appSettings>
+    <add key="SQLRelativeFilePoolPath" value="C:\RRDM\FilePool\Atms_Journals_Txns"/>
+    <!--
+    For remote SQL server use:
+    <add key="SQLRelativeFilePoolPath" value="\\Ledra-FS\c$\RRDM\FilePool\Atms_Journals_Txns" />
+    or similar ...
+    -->
+  </appSettings>
+
+  <connectionStrings>
+    <!-- 
+    <add name="ATMSConnectionString" connectionString="Server=localhost;Database=ATMS;User ID=ATMUser" providerName="System.Data.SqlClient" />
+    <add name="ReconConnectionString" connectionString="Server=localhost;Database=RRDM_Reconciliation;User ID=ATMUser" providerName="System.Data.SqlClient" />
+    -->
+    <add name="ATMSConnectionString" connectionString="Data Source=localhost;Initial Catalog=ATMS;Integrated Security=True;Connect Timeout=0" providerName="System.Data.SqlClient" />
+    <add name="ReconConnectionString" connectionString="Data Source=localhost;Initial Catalog=RRDM_Reconciliation_ITMX;Integrated Security=True;Connect Timeout=0" providerName="System.Data.SqlClient" />
+    <add name="ReconcRawImportConnectionString" connectionString="Data Source=localhost;Initial Catalog=ATM_MT_Journals_AUDI;Integrated Security=True;Connect Timeout=0" providerName="System.Data.SqlClient" />
+
+
+  </connectionStrings>
+  <system.web>
+    <membership defaultProvider="ClientAuthenticationMembershipProvider">
+      <providers>
+        <add name="ClientAuthenticationMembershipProvider" type="System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider, System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" serviceUri="" />
+      </providers>
+    </membership>
+    <roleManager defaultProvider="ClientRoleProvider" enabled="true">
+      <providers>
+        <add name="ClientRoleProvider" type="System.Web.ClientServices.Providers.ClientRoleProvider, System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" serviceUri="" cacheTimeout="86400" />
+      </providers>
+    </roleManager>
+  </system.web>
+</configuration>

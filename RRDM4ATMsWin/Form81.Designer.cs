@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonNext = new System.Windows.Forms.Button();
+            this.buttonFinish = new System.Windows.Forms.Button();
             this.textBoxMsgBoard = new System.Windows.Forms.TextBox();
             this.buttonBack = new System.Windows.Forms.Button();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
@@ -64,11 +64,11 @@
             this.labelStep1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
             this.labelToday = new System.Windows.Forms.Label();
             this.tableLayoutPanelHeader = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanelMain.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -82,9 +82,9 @@
             this.tableLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanelHeader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel2
@@ -94,7 +94,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
-            this.tableLayoutPanel2.Controls.Add(this.buttonNext, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.buttonFinish, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.textBoxMsgBoard, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonBack, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -106,21 +106,21 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1004, 36);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
-            // buttonNext
+            // buttonFinish
             // 
-            this.buttonNext.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.buttonNext.FlatAppearance.BorderSize = 2;
-            this.buttonNext.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonNext.Location = new System.Drawing.Point(923, 2);
-            this.buttonNext.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
-            this.buttonNext.Name = "buttonNext";
-            this.buttonNext.Size = new System.Drawing.Size(71, 27);
-            this.buttonNext.TabIndex = 244;
-            this.buttonNext.Text = "Next >";
-            this.buttonNext.UseVisualStyleBackColor = true;
-            this.buttonNext.Visible = false;
+            this.buttonFinish.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.buttonFinish.FlatAppearance.BorderSize = 2;
+            this.buttonFinish.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonFinish.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonFinish.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonFinish.Location = new System.Drawing.Point(923, 2);
+            this.buttonFinish.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
+            this.buttonFinish.Name = "buttonFinish";
+            this.buttonFinish.Size = new System.Drawing.Size(71, 27);
+            this.buttonFinish.TabIndex = 244;
+            this.buttonFinish.Text = "Finish";
+            this.buttonFinish.UseVisualStyleBackColor = true;
+            this.buttonFinish.Click += new System.EventHandler(this.buttonFinish_Click);
             // 
             // textBoxMsgBoard
             // 
@@ -534,6 +534,18 @@
             this.tableLayoutPanel5.Size = new System.Drawing.Size(288, 67);
             this.tableLayoutPanel5.TabIndex = 251;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(72, 63);
+            this.pictureBox1.TabIndex = 251;
+            this.pictureBox1.TabStop = false;
+            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 2;
@@ -589,18 +601,6 @@
             this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1008, 88);
             this.tableLayoutPanelHeader.TabIndex = 258;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(2, 2);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(72, 63);
-            this.pictureBox1.TabIndex = 251;
-            this.pictureBox1.TabStop = false;
-            // 
             // Form81
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -631,10 +631,10 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanelHeader.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -642,7 +642,7 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Button buttonNext;
+        private System.Windows.Forms.Button buttonFinish;
         private System.Windows.Forms.Button buttonBack;
         private System.Windows.Forms.TextBox textBoxMsgBoard;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;

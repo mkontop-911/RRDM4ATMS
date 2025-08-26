@@ -54,6 +54,8 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -97,6 +99,7 @@
             this.textBox11.Size = new System.Drawing.Size(90, 20);
             this.textBox11.TabIndex = 91;
             this.textBox11.TabStop = false;
+            this.textBox11.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // checkBox1
             // 
@@ -300,7 +303,7 @@
             this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button1.Location = new System.Drawing.Point(678, 194);
+            this.button1.Location = new System.Drawing.Point(678, 220);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(58, 24);
             this.button1.TabIndex = 333;
@@ -311,13 +314,15 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.White;
+            this.panel4.Controls.Add(this.checkBox5);
+            this.panel4.Controls.Add(this.checkBox6);
             this.panel4.Controls.Add(this.checkBox1);
             this.panel4.Controls.Add(this.checkBox2);
             this.panel4.Controls.Add(this.checkBox3);
             this.panel4.Controls.Add(this.checkBox4);
             this.panel4.Location = new System.Drawing.Point(534, 36);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(202, 138);
+            this.panel4.Size = new System.Drawing.Size(202, 152);
             this.panel4.TabIndex = 2;
             // 
             // panel3
@@ -327,7 +332,7 @@
             this.panel3.Controls.Add(this.radioButton2);
             this.panel3.Location = new System.Drawing.Point(324, 36);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(202, 138);
+            this.panel3.Size = new System.Drawing.Size(202, 152);
             this.panel3.TabIndex = 1;
             // 
             // panel2
@@ -343,7 +348,7 @@
             this.panel2.Controls.Add(this.textBox15);
             this.panel2.Location = new System.Drawing.Point(13, 36);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(305, 137);
+            this.panel2.Size = new System.Drawing.Size(305, 152);
             this.panel2.TabIndex = 0;
             // 
             // button2
@@ -362,6 +367,30 @@
             this.button2.Text = "Cancel";
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.BackColor = System.Drawing.Color.White;
+            this.checkBox5.Enabled = false;
+            this.checkBox5.Location = new System.Drawing.Point(20, 107);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(116, 17);
+            this.checkBox5.TabIndex = 260;
+            this.checkBox5.Text = "DR Profit And Loss";
+            this.checkBox5.UseVisualStyleBackColor = false;
+            // 
+            // checkBox6
+            // 
+            this.checkBox6.AutoSize = true;
+            this.checkBox6.BackColor = System.Drawing.Color.White;
+            this.checkBox6.Enabled = false;
+            this.checkBox6.Location = new System.Drawing.Point(20, 131);
+            this.checkBox6.Name = "checkBox6";
+            this.checkBox6.Size = new System.Drawing.Size(114, 17);
+            this.checkBox6.TabIndex = 261;
+            this.checkBox6.Text = "CR Profit and Loss";
+            this.checkBox6.UseVisualStyleBackColor = false;
             // 
             // Form14a
             // 
@@ -417,5 +446,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.CheckBox checkBox6;
     }
 }

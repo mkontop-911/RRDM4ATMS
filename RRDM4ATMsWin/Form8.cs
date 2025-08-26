@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Configuration;
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 namespace RRDM4ATMsWin
 {
@@ -24,149 +17,108 @@ namespace RRDM4ATMsWin
           ["ATMSConnectionString"].ConnectionString;    
 
         RRDMGasParameters Gp = new RRDMGasParameters();
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
-    //    string WOperator;
+        RRDMPerformanceTraceClass Pt = new RRDMPerformanceTraceClass();
 
-        string ModelAtm; 
-        string WCriticalProcess;
-        string ParCriticalProcess;
+        //string ParCriticalProcess;
         DateTime WDtTm;
 
         string WSignedId;
-        int WSignRecordNo;
-        int WSecLevel;
+        string WCriticalProcess; 
         string WOperator;
-  //      bool WPrive;
-
+  
         int WAction;
 
-        public Form8(string InSignedId, int SignRecordNo, int InSecLevel, string InOperator, int InAction)
+        public Form8(string InSignedId, string InOperator,string InCriticalProcess, int InAction)
         {
             WSignedId = InSignedId;
-            WSignRecordNo = SignRecordNo;
-            WSecLevel = InSecLevel;
+          
             WOperator = InOperator;
-          //  WPrive = InPrive;
+
+            WCriticalProcess = InCriticalProcess; 
 
             WAction = InAction;  // 1 = System Performance 
            
             InitializeComponent();
 
+            // Set Working Date 
+             
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
 
-            labelStep1.Text = "System Performance is based on Model ATM and Critical Process.";
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
-            // Model ATMS 
-            Gp.ParamId = "350"; 
-            comboBox1.DataSource = Gp.GetParamOccurancesNm(WOperator);
-            comboBox1.DisplayMember = "DisplayValue";
-
-            comboBox1.Text = "AB104"; 
+            dateTimePicker1.Value = DateTime.Now.AddDays(-10);
 
             // Critical Process 
             Gp.ParamId = "351"; 
             comboBox2.DataSource = Gp.GetParamOccurancesNm(WOperator);
             comboBox2.DisplayMember = "DisplayValue";
 
-            comboBox2.Text = "KontoLoadJournal"; 
+            textBoxMsgBoard.Text = " Make your selection ";
 
-            textBoxMsgBoard.Text = " Make you selection and press button Show";
+            if (WCriticalProcess !="")
+            {
+                comboBox2.Text = WCriticalProcess;
+                textBoxMsgBoard.Text = " Make dates selection ";
+                labelStep1.Text = "Performance analysis for :.." + comboBox2.Text;
+            }
 
-            label1.Hide();
+            labelHeader.Hide();
             panel2.Hide(); 
 
         }
         // On Load form 
         private void Form8_Load(object sender, EventArgs e)
         {
-           
+           // Not needed for now 
+           // we are using SHOW
         }
         // SHOW 
         private void button2_Click(object sender, EventArgs e)
         {
-            DataTable PerformanceTbl = new DataTable();
+            if (dateTimePicker1.Value > dateTimePicker2.Value)
+            {
+                MessageBox.Show("Select valid dates.");
+                return; 
+            }
+            labelStep1.Text = "Performance analysis for :.." + comboBox2.Text;
 
-            PerformanceTbl.Clear();
+            labelHeader.Text = "ANALYSIS PER CUT OFF CYCLE"; 
 
-            WCriticalProcess = comboBox2.Text; 
+            WCriticalProcess = comboBox2.Text;
+
+            Pt.ReadPerformanceTraceAndFillTableForPerformance_2(WOperator, comboBox2.Text
+                , dateTimePicker1.Value, dateTimePicker2.Value);
+
+            if (Pt.TablePerformance.Rows.Count == 0)
+            {
+                MessageBox.Show("No data to show.");
+                return;
+            }
+            dataGridView1.DataSource = Pt.TablePerformance.DefaultView;
 
             // System performance For Model ATM AB104
             // 
             if (WAction == 1) //  
             {
-                label1.Show();
+                labelHeader.Show();
                 panel2.Show();
-                       
-                ModelAtm = comboBox1.Text;
 
-                label1.Text = "System Performance for ATM : " + ModelAtm + " And Critical Process: " + WCriticalProcess ;
-
-                ParCriticalProcess = "%" + WCriticalProcess + "%"; 
-
-                string SqlString2 =
-                    " SELECT "
-                    + " CAST(StartDT AS Date) As Entry_Date, "
-                     + " Sum(Duration) As TotalDuration,"
-                    + " Max(Duration) AS Max_Duration, Sum(Counter) As Counter, (Sum(Counter)/Sum(Duration)) As PerSec "
-                    + " FROM [ATMS].[dbo].[PerformanceTrace] "
-                    + " WHERE AtmNo = @AtmNo AND ProcessNm LIKE @ProcessNm"
-                    + " GROUP BY CAST(StartDT AS Date) "
-                    + " ORDER BY CAST(StartDT AS Date) DESC ";
-
-                using (SqlConnection conn =
-                            new SqlConnection(connectionString))
-                    try
-                    {
-                        conn.Open();
-
-                        //Create an Sql Adapter that holds the connection and the command
-                        SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString2, conn);
-
-                  //      sqlAdapt.SelectCommand.Parameters.AddWithValue("@BankId", WBankId);
-                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@AtmNo", ModelAtm);
-                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@ProcessNm", ParCriticalProcess);
-
-                        //Create a datatable that will be filled with the data retrieved from the command
-                        //    DataSet MISds = new DataSet();
-                        sqlAdapt.Fill(PerformanceTbl);
-
-                        //Fill the dataGrid that will be displayed with the dataset
-                        dataGridView1.DataSource = PerformanceTbl.DefaultView;
-
-                        // Close conn
-                        conn.Close();
-
-                    }
-
-                    catch (Exception ex)
-                    {
-
-                        string exception = ex.ToString();
-                        MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
-
-                    }
-
-                dataGridView1.Columns[0].Width = 85; // 
-                dataGridView1.Columns[1].Width = 85; // 
-
-                //     dataGridView1.Columns[0].HeaderText = LocRM.GetString("Form67Grd1Cl0", culture);
-                //     dataGridView1.Columns[1].HeaderText = LocRM.GetString("Form67Grd1Cl01", culture);
-                //     dataGridView1.Columns[2].HeaderText = LocRM.GetString("Form67Grd1Cl02", culture);
-
-                dataGridView1.Show();
+                ShowGrid(); 
 
                 // Set chart data source  
-                chart1.DataSource = PerformanceTbl.DefaultView;
-                chart1.Series[0].Name = "Per Second Efficinecy by Date";
+                chart1.DataSource = Pt.TablePerformance.DefaultView;
+                chart1.Series[0].Name = "Per Minute Efficiency by Date";
 
                 // Set series members names for the X and Y values  
-                chart1.Series[0].XValueMember = "Entry_Date";
-                chart1.Series[0].YValueMembers = "PerSec";
+                chart1.Series[0].XValueMember = "RMCycleNo";
+                chart1.Series[0].YValueMembers = "Duration_Min";
 
                 // Data bind to the selected data source  
                 chart1.DataBind();
+
+
 
             }
 
@@ -176,21 +128,77 @@ namespace RRDM4ATMsWin
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
-            WDtTm = (DateTime)rowSelected.Cells[0].Value;
+            //WDtTm = (DateTime)rowSelected.Cells[0].Value;
+        }
+
+        // Show Grid 2
+        private void ShowGrid()
+        {
+            
+            dataGridView1.Show();
+
+            if (dataGridView1.Rows.Count == 0)
+            {
+                Form2 MessageForm = new Form2("No Data to show.");
+                MessageForm.ShowDialog();
+
+                this.Dispose();
+                return;
+            }
+            //" SELECT RMCycleNo, Details , "
+            //           + " CAST( EndDT AS Date) As Entry_Date, "
+            //          + " CAST(Duration_Sec as Decimal(12, 2))/ 60 As Duration_Min "
+
+            dataGridView1.Columns[0].Width = 60; // RMCycleNo
+            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            //dataGridViewMyATMS.Columns[0].Visible = false;
+
+            dataGridView1.Columns[1].Width = 190; // Details
+            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[2].Width = 80; // Entry_Date
+            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[3].Width = 90; // Duration_Min
+            dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+
+            //dataGridViewMyATMS.Columns[0].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
+            //dataGridViewMyATMS.Columns[4].DefaultCellStyle.ForeColor = Color.LightSlateGray;
+
         }
 
         // Double Click on Row - EXPAND LINE
         private void dataGridView1_DoubleClick(object sender, EventArgs e)
         {
-            NForm16 = new Form16(ModelAtm, WCriticalProcess, WDtTm);
+            NForm16 = new Form16("", WCriticalProcess, WDtTm);
             NForm16.Show();
 
         }
         // EXPAND LINE 
         private void button1_Click(object sender, EventArgs e)
         {
-            NForm16 = new Form16(ModelAtm, WCriticalProcess, WDtTm);
+            NForm16 = new Form16("", WCriticalProcess, WDtTm);
             NForm16.Show();
+        }
+
+        // Create Excel
+        private void buttonExcel_Click(object sender, EventArgs e)
+        {
+            RRDM_EXCEL_AND_Directories XL = new RRDM_EXCEL_AND_Directories();
+            string Id = "";
+            string ExcelPath = "";
+            string WorkingDir = "C:\\RRDM\\Working\\";
+           
+                Id = "Performance_"+comboBox2.Text+"_"+ DateTime.Now.Date.ToString("yyyyMMdd");
+                ExcelPath = "C:\\RRDM\\Working\\" + Id + ".xlsx";
+                XL.ExportToExcel(Pt.TablePerformance, WorkingDir, ExcelPath);
+           
+        }
+        // Finish 
+        private void buttonFinish_Click(object sender, EventArgs e)
+        {
+            this.Dispose(); 
         }
 
     }

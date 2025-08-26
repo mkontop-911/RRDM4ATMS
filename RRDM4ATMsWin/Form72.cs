@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -18,9 +11,9 @@ namespace RRDM4ATMsWin
         // THIS FORM IS USED TO FALITATE NEEDS OF FORM 71
       
 
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); 
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); 
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         
 
@@ -45,9 +38,10 @@ namespace RRDM4ATMsWin
  
         private void Form72_Load(object sender, EventArgs e)
         {
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            if (Us.ProcessNo == 11) // With 11 Go to UCForm51b = Notes 
+            if (Usi.ProcessNo == 11) // With 11 Go to UCForm51b = Notes 
             {
                 label1.Text = "Repl Cycle Notes Status"; 
                 label1.Font = new Font(label1.Font.FontFamily, 22, FontStyle.Bold);
@@ -59,7 +53,7 @@ namespace RRDM4ATMsWin
             }
 
 
-            if (Us.ProcessNo == 12) // With 12 Go to UCForm51c = Deposits 
+            if (Usi.ProcessNo == 12) // With 12 Go to UCForm51c = Deposits 
             {
                 label1.Text = "Repl Cycle Deposits Status";
                 label1.Font = new Font(label1.Font.FontFamily, 22, FontStyle.Bold);
@@ -69,7 +63,7 @@ namespace RRDM4ATMsWin
                 Step51c.UCForm51cPar(WSignedId, WSignRecordNo, WOperator, WAtmNo, WSesNo);
             }
 
-            if (Us.ProcessNo == 13) // With 13 Go to UCForm51a = Physical Check  
+            if (Usi.ProcessNo == 13) // With 13 Go to UCForm51a = Physical Check  
             {
                 label1.Text = "Repl Cycle Physical Check Status";
                 label1.Font = new Font(label1.Font.FontFamily, 22, FontStyle.Bold);

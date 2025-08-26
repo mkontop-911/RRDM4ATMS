@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using RRDM4ATMs; 
+﻿using System.Windows.Forms;
 
 namespace RRDM4ATMsWin
 {
@@ -17,7 +8,9 @@ namespace RRDM4ATMsWin
         {
             InitializeComponent();
 
-            labelRouteDescription.Text = InDescription ; 
+            labelRouteDescription.Text = InDescription ;
+
+            pictureBox1.BackgroundImage = appResImg.Pafos_Route; 
 
         }
     }

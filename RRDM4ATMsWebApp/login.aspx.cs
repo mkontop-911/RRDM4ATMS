@@ -10,13 +10,22 @@ public partial class login : System.Web.UI.Page
 {
     RRDMBanks Ba = new RRDMBanks();
 
-    RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord(); // Make class availble 
-
     RRDMGasParameters Gp = new RRDMGasParameters();
+
+    RRDMUsersRecords Us = new RRDMUsersRecords(); // Make class availble 
+
+    RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+
+    RRDMUsers_Applications_Roles Usr = new RRDMUsers_Applications_Roles();
+
+    RRDMEncryptPasswordOrField En = new RRDMEncryptPasswordOrField();
+    RRDMActiveDirectory Ad = new RRDMActiveDirectory();
+
+    RRDMImages Ri = new RRDMImages();
 
     string WOperator;
 
-    int WSecLevel;
+    string WSecLevel;
 
     string WSignedId;
     int WSignRecordNo;
@@ -27,7 +36,7 @@ public partial class login : System.Web.UI.Page
 
         if (!Page.IsPostBack)
         {
-            if (DropDownListUsers.SelectedValue == "1005")
+            if (DropDownListUsers.SelectedValue == "PILOT_001")
             {
                 TextBoxPassWord.Text = "12345678";
             }
@@ -38,7 +47,9 @@ public partial class login : System.Web.UI.Page
             //  MessageBox.Text = " This is a PostBack";
         }
     }
-  
+    // LOGIN
+    string W_Application = "";
+
     protected void ButtonLogin_Click(object sender, EventArgs e)
     {
         // Check data not to be empty 
@@ -65,47 +76,104 @@ public partial class login : System.Web.UI.Page
             // =============================================
             Us.ReadUsersRecord(WSignedId); // Read USER record for the signed user
 
-            // ===========================================
-            if (Us.RecordFound == false)
-            {
+           
+
+                // =============================================
+
+                try
+                {
+                    Us.ReadUsersRecord(WSignedId); // Read USER record for the signed user
+
+                    if (Us.ErrorFound == true)
+                    {
+                    MessageBox.Text = "System Problem. Most likely SQL Not loaded yet" + Environment.NewLine
+                                           + "Wait for few seconds and retry to login"
+                                            ;
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                  //CatchDetails(ex);
+                    return;
+                }
+
+
+                // ===========================================
+                if (Us.RecordFound == false)
+                {
+                //    MSG = LocRM.GetString("Form40MSG002", culture);
+                //    MessageBox.Show(comboBox2.Text, MSG);
+                ////   MessageBox.Show(" User Not Found ");
                 MessageBox.Text = " User Not Found ";
-                return;
-            }
-            else if (WPassword != Us.PassWord)
-            {
-                MessageBox.Text = " Wrong User or Password ";
-                return;
-            }
+                    return;
+                }
+                else
+                {
+                    bool PasswordMatched = En.CheckPassword(WPassword, Us.PassWord);
 
-            Gp.ReadParametersSpecificId(Us.Operator, "451", "2", "", "");
-            int Temp = ((int)Gp.Amount);
+                    if (PasswordMatched == false)
+                    {
+                       
+                    MessageBox.Text = " Wrong User or Password ";
+                    return;
+                    }
 
-            if (DateTime.Now > Us.DtToBeChanged)
-            {
+
+                }
+
+                Gp.ReadParametersSpecificId(Us.Operator, "451", "2", "", "");
+                int Temp = ((int)Gp.Amount);
+
+                if (DateTime.Now > Us.DtToBeChanged)
+                {
+                // Your Password has expired
                 MessageBox.Text = "Your Password has expired";
-                return;
-            }
+                    return;
+                }
 
-            if (DateTime.Now > Us.DtToBeChanged.AddDays(-Temp))
-            {
-                int TempRem = Convert.ToInt32((Us.DtToBeChanged - DateTime.Now).TotalDays);
+                if (DateTime.Now > Us.DtToBeChanged.AddDays(-Temp))
+                {
+                    // Your Password will expire in so many days
+                    int TempRem = Convert.ToInt32((Us.DtToBeChanged - DateTime.Now).TotalDays);
                 MessageBox.Text = "Days reamaining to change your password : " + TempRem.ToString();
-            }
+                }
 
-            if (Us.ForceChangePassword == true)
-            {
+                if (Us.ForceChangePassword == true)
+                {
+                // Your Password must change 
                 MessageBox.Text = "Please Change password";
-                return;
-            }
+                    return;
+                }
 
-            Us.DtChanged = DateTime.Now;
+                Us.DtChanged = DateTime.Now;
             Us.DtToBeChanged = DateTime.Now.AddDays(Temp);
             Us.ForceChangePassword = true;
 
             WOperator = Us.Operator;
-            WSecLevel = Us.SecLevel;
 
-            if (WSecLevel == 7 & Us.PassWord == "123")
+            //if (radioButtonATMS_CARDS.Checked == true) W_Application = "ATMS/CARDS";
+            //if (radioButtonNOSTRO.Checked == true) W_Application = "NOSTRO";
+            //if (radioButtonVISA_SETTLEMENT.Checked == true) W_Application = "VISA SETTLEMENT";
+            //if (radioButtonE_FINANCE_RECONCILIATION.Checked == true) W_Application = "E_FINANCE RECONCILIATION";
+            //if (radioButtonFAWRY_RECONCILIATION.Checked == true) W_Application = "FAWRY RECONCILIATION";
+
+            W_Application = "ATMS/CARDS";
+
+            Usr.ReadUsersVsApplicationsVsRolesByApplication(Us.UserId, W_Application);
+            if (Usr.RecordFound == true)
+            {
+                WSecLevel = Usr.SecLevel;
+            }
+            else
+            {
+                MessageBox.Text = "This user cannot access this application :.." + W_Application;
+                return;
+            }
+           
+
+            if (WSecLevel == "07" & Us.PassWord == "123")
             {
                 // MessageBox.Show("Change your password please");
 
@@ -120,23 +188,79 @@ public partial class login : System.Web.UI.Page
                 return;
             }
 
-            Ba.ReadBank(WOperator);
+            //Ba.ReadBank(WOperator);
 
-            Us.UserId = WSignedId;
+            //Us.UserId = WSignedId;
 
-            Us.Culture = DropDownListUsers.SelectedValue;
+            //Us.Culture = DropDownListUsers.SelectedValue;
 
-            Us.DtTmIn = DateTime.Now;
-            Us.DtTmOut = DateTime.Now;
-            Us.Replenishment = false;
-            Us.Reconciliation = false;
-            Us.OtherActivity = true;
+            //Us.DtTmIn = DateTime.Now;
+            //Us.DtTmOut = DateTime.Now;
+            //Us.Replenishment = false;
+            //Us.Reconciliation = false;
+            //Us.OtherActivity = true;
 
-            Us.InsertSignedActivity(WSignedId);
+            //Us.InsertSignedActivity(WSignedId);
 
-            Us.ReadSignedActivity(WSignedId); // Read to get key of record 
+            //Us.ReadSignedActivity(WSignedId); // Read to get key of record 
 
-            WSignRecordNo = Us.SignRecordNo;
+            //WSignRecordNo = Us.SignRecordNo;
+            Usi.ReadSignedActivity(WSignedId); // Read to check if user is already signed in 
+            //if (Usi.RecordFound == true & Usi.SignInStatus == true)
+            //{
+            //    if (MessageBox.Show("Our records show that you are already loged in the system. Do you want to force new login?", "Message",
+            //                         MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            //                                         == DialogResult.Yes)
+            //    {
+            //        // Leave process to continue 
+            //    }
+            //    else
+            //    {
+            //        return;
+            //    }
+            //}
+
+            Usi.UserId = WSignedId;
+
+            Usi.UserName = Us.UserName;
+
+            Usi.SecLevel = WSecLevel;
+
+            Usi.Culture = "" ;
+
+            Usi.SignInStatus = true;
+
+            Usi.SignInApplication = W_Application;
+
+            Usi.DtTmIn = DateTime.Now;
+            Usi.DtTmOut = DateTime.Now;
+
+            // INITIALISE 
+            Usi.ATMS_Reconciliation = false;
+            Usi.CARDS_Settlement = false;
+            Usi.NOSTRO_Reconciliation = false;
+            Usi.SWITCH_Reconciliation = false;
+
+            // SET
+            //if (radioButtonATMS_CARDS.Checked == true)
+                Usi.ATMS_Reconciliation = true;
+            //if (radioButtonNOSTRO.Checked == true)
+            //    Usi.CARDS_Settlement = true;
+
+            //if (radioButtonFAWRY_RECONCILIATION.Checked == true)
+            //    Usi.E_FIN_Reconciliation = true;
+
+            //if (radioButtonVISA_SETTLEMENT.Checked == true)
+            //    Usi.NOSTRO_Reconciliation = true;
+            //if (radioButtonE_FINANCE_RECONCILIATION.Checked == true)
+            //    Usi.SWITCH_Reconciliation = true;
+
+            Usi.Replenishment = false;
+            Usi.Reconciliation = false;
+            Usi.OtherActivity = true;
+
+            WSignRecordNo = Usi.InsertSignedActivity(WSignedId);
+
 
             // Prepare Session and Go to FORM1
 
@@ -146,7 +270,7 @@ public partial class login : System.Web.UI.Page
 
             Session["WSignRecordNo"] = WSignRecordNo;
 
-            Session["WSecLevel"] = Us.SecLevel;
+            Session["WSecLevel"] = WSecLevel;
 
             Session["WOperator"] = WOperator;
 

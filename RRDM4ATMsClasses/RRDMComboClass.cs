@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Collections;
-using System.IO;
 
 namespace RRDM4ATMs
 {
-    public class RRDMComboClass
+    public class RRDMComboClass : Logger
     {
-        public string BankSwiftId;
+        public RRDMComboClass() : base() { }
+
+        public string BankId;
         public string UserId;
         public string UserType;
         public string CurrNm; 
@@ -58,8 +56,8 @@ namespace RRDM4ATMs
                         while (rdr.Read())
                         {
                             RecordFound = true;
-                            BankSwiftId = (string)rdr["BankSwiftId"];
-                            BanksIdsList.Add(BankSwiftId);
+                            BankId = (string)rdr["BankId"];
+                            BanksIdsList.Add(BankId);
                         }
 
                         // Close Reader
@@ -73,8 +71,7 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ComboClass............. " + ex.Message;
+                    CatchDetails(ex);
 
                 }
 
@@ -82,7 +79,8 @@ namespace RRDM4ATMs
         }
 
 
-// Get Cit Ids 
+
+        // Get Cit Ids 
         public ArrayList GetCitIds(string InOperator)
         {
             ArrayList CitNosList = new ArrayList();
@@ -127,8 +125,61 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ComboClass............. " + ex.Message;
+
+                    CatchDetails(ex);
+
+                }
+
+            return CitNosList;
+        }
+
+        // Get Cit Ids 
+        public ArrayList GetCitIds_2(string InOperator)
+        {
+            ArrayList CitNosList = new ArrayList();
+            CitNosList.Add("Select");
+
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            string SqlString = "SELECT * FROM [dbo].[UsersTable] WHERE Operator = @Operator "
+                               + " AND (UserType = 'CIT Company' OR UserType = 'Operator Entity') "
+                                + " ORDER BY  UserId";
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+                        // Read table 
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+                            UserId = (string)rdr["UserId"];
+                            CitNosList.Add(UserId);
+                            UserType = rdr["UserType"].ToString();
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+                    CatchDetails(ex);
 
                 }
 
@@ -178,8 +229,7 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ComboClass............. " + ex.Message;
+                    CatchDetails(ex);
 
                 }
 
@@ -230,8 +280,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ComboClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
 
@@ -282,8 +332,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ComboClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
 
@@ -334,8 +384,7 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ComboClass............. " + ex.Message;
+                    CatchDetails(ex);
 
                 }
 
@@ -352,7 +401,7 @@ namespace RRDM4ATMs
             ErrorFound = false;
             ErrorOutput = ""; 
 
-            string SqlString = "SELECT * FROM [ATMS].[dbo].[Groups] WHERE Operator = @Operator AND Stats = 1 ";
+            string SqlString = "SELECT * FROM [ATMS].[dbo].[Groups] WHERE Operator = @Operator AND Stats = 1 AND Operator = @Operator ";
             using (SqlConnection conn =
                           new SqlConnection(connectionString))
                 try
@@ -385,8 +434,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ComboClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
 
@@ -404,7 +453,7 @@ namespace RRDM4ATMs
             ErrorFound = false;
             ErrorOutput = ""; 
 
-            string SqlString = "SELECT * FROM [ATMS].[dbo].[Groups] WHERE Replenishment = 1 ";
+            string SqlString = "SELECT * FROM [ATMS].[dbo].[Groups] WHERE Replenishment = 1 AND Operator = @Operator ";
             using (SqlConnection conn =
                           new SqlConnection(connectionString))
                 try
@@ -436,8 +485,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ComboClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
 
@@ -455,7 +504,9 @@ namespace RRDM4ATMs
             ErrorFound = false;
             ErrorOutput = ""; 
 
-            string SqlString = "SELECT * FROM [ATMS].[dbo].[Groups] WHERE Reconciliation = 1 ";
+            string SqlString = "SELECT * FROM [ATMS].[dbo].[Groups] " 
+                + " WHERE Reconciliation = 1 AND Operator = @Operator ";
+
             using (SqlConnection conn =
                           new SqlConnection(connectionString))
                 try
@@ -487,12 +538,14 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ComboClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
 
             return AtmsReconcGroupsList;
         }
+
+       
     }
 }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using RRDM4ATMs;
 
 namespace RRDM4ATMsWeb
@@ -13,7 +9,7 @@ namespace RRDM4ATMsWeb
 
         RRDMBanks Ba = new RRDMBanks();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord(); // Make class availble 
+        RRDMUsersRecords Us = new RRDMUsersRecords(); // Make class availble 
 
         RRDMGasParameters Gp = new RRDMGasParameters();
 
@@ -34,9 +30,9 @@ namespace RRDM4ATMsWeb
         {
             // Prepare Session and Go to FORM47
 
-            int WSecLevel = (int)Session["WSecLevel"];
+            string WSecLevel = (string)Session["WSecLevel"];
 
-            if (WSecLevel > 4)
+            if (WSecLevel != "02")
             {
                 //   MessageBox.Text = "THIS BUTTON IS ONLY FOR OPERATIONAL OFFICERS";
                 return;

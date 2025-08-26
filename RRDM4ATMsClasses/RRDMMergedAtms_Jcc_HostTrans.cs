@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMMergedAtms_Jcc_HostTrans
+    public class RRDMMergedAtms_Jcc_HostTrans : Logger
     {
-        
+        public RRDMMergedAtms_Jcc_HostTrans() : base() { }
+
         public int TranNo;
         public string BankId;
 
@@ -172,8 +167,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in class MergeAtmsHostTrans ............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -187,7 +182,7 @@ namespace RRDM4ATMs
             ErrorFound = false;
             ErrorOutput = ""; 
 
-            string SqlString = "SELECT *"
+            SqlString = "SELECT *"
                + " FROM [ATMS].[dbo].[MergeAtmsHostTransFile]"
                + " WHERE Operator=@Operator AND TranNo=@TranNo ";
 
@@ -251,8 +246,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in class MergeAtmsHostTrans ............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -266,7 +261,7 @@ namespace RRDM4ATMs
             ErrorFound = false;
             ErrorOutput = ""; 
 
-            string SqlString = "SELECT *"
+            SqlString = "SELECT *"
                + " FROM [ATMS].[dbo].[MergeAtmsHostTransFile]"
                + " WHERE Operator=@Operator AND AtmNo =@AtmNo AND AtmTraceNo=@AtmTraceNo ";
 
@@ -330,8 +325,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in class MergeAtmsHostTrans ............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }

@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-//using System.Windows.Forms;
+////using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMUserVsAuthorizers
+    public class RRDMUserVsAuthorizers : Logger
     {
+        public RRDMUserVsAuthorizers() : base() { }
         // Class of User and his Authorizers 
 
         public int SeqNumber;
@@ -34,9 +30,200 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput;
 
+        public DataTable UsersToAuthorDataTable = new DataTable();
+
+        public int TotalSelected;
+        string SqlString; // Do not delete
+
         string connectionString = ConfigurationManager.ConnectionStrings
            ["ATMSConnectionString"].ConnectionString;
+        //
+        // READ UserVsAuthorisation and FILL Table
+        // CALLED FROM FORM13
+        //
+        public void ReadUserVsAuthorizersFillDataTable(string InFilter)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
 
+            UsersToAuthorDataTable = new DataTable();
+            UsersToAuthorDataTable.Clear();
+
+            TotalSelected = 0;
+
+            // DATA TABLE ROWS DEFINITION 
+            UsersToAuthorDataTable.Columns.Add("SeqNo", typeof(int));
+            UsersToAuthorDataTable.Columns.Add("UserId", typeof(string));
+            UsersToAuthorDataTable.Columns.Add("AuthorId", typeof(string));
+            UsersToAuthorDataTable.Columns.Add("AuthoriserName", typeof(string));
+            UsersToAuthorDataTable.Columns.Add("TypeOfAuthor", typeof(int));
+            UsersToAuthorDataTable.Columns.Add("DateOfInsert", typeof(string));
+
+            SqlString = "SELECT *"
+                          + " FROM [ATMS].[dbo].[UserVsAuthorizers]"
+                         + " WHERE " + InFilter
+                          + " Order by UserId ASC ";
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        //cmd.Parameters.AddWithValue("@SeqNumber", InSeqNumber);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+
+                            RecordFound = true;
+
+                            SeqNumber = (int)rdr["SeqNumber"];
+
+                            UserId = (string)rdr["UserId"];
+                            Authoriser = (string)rdr["Authoriser"];
+
+                            AuthorName = (string)rdr["AuthorName"];
+                            TypeOfAuth = (int)rdr["TypeOfAuth"];
+
+                            DateOfInsert = (DateTime)rdr["DateOfInsert"];
+                            DateOfClose = (DateTime)rdr["DateOfClose"];
+
+                            OpenRecord = (bool)rdr["OpenRecord"];
+                            Operator = (string)rdr["Operator"];
+
+                            //
+                            //FILL IN TABLE
+                            //
+
+                            DataRow RowSelected = UsersToAuthorDataTable.NewRow();
+
+                            RowSelected["SeqNo"] = SeqNumber;
+
+                            RowSelected["UserId"] = UserId;
+                            RowSelected["AuthorId"] = Authoriser;
+                            RowSelected["AuthoriserName"] = AuthorName;
+                            RowSelected["TypeOfAuthor"] = TypeOfAuth;
+                            RowSelected["DateOfInsert"] = DateOfInsert.ToString();
+
+                            // ADD ROW
+                            UsersToAuthorDataTable.Rows.Add(RowSelected);
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+        }
+        //
+        // READ UserVsAuthorisation and FILL Table
+        // CALLED FROM AUTHORISATION PROCESS
+        //
+        public void ReadUserVsAuthorizersFillDataTable2(string InFilter)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            UsersToAuthorDataTable = new DataTable();
+            UsersToAuthorDataTable.Clear();
+
+            TotalSelected = 0;
+
+            // DATA TABLE ROWS DEFINITION 
+            UsersToAuthorDataTable.Columns.Add("AuthId", typeof(string));
+            UsersToAuthorDataTable.Columns.Add("Authoriser Name", typeof(string));
+            UsersToAuthorDataTable.Columns.Add("Type Of Author", typeof(string));
+            UsersToAuthorDataTable.Columns.Add("Openning Date", typeof(string));
+
+            SqlString = "SELECT *"
+                          + " FROM [ATMS].[dbo].[UserVsAuthorizers]"
+                         + " WHERE " + InFilter
+                          + " Order by UserId ASC ";
+
+            //string SqlString = "SELECT *"
+            //   + " FROM [ATMS].[dbo].[UserVsAuthorizers]"
+            //   + " WHERE SeqNumber = @SeqNumber";
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        //cmd.Parameters.AddWithValue("@SeqNumber", InSeqNumber);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+
+                            RecordFound = true;
+
+                            SeqNumber = (int)rdr["SeqNumber"];
+
+                            UserId = (string)rdr["UserId"];
+                            Authoriser = (string)rdr["Authoriser"];
+
+                            AuthorName = (string)rdr["AuthorName"];
+                            TypeOfAuth = (int)rdr["TypeOfAuth"];
+
+                            DateOfInsert = (DateTime)rdr["DateOfInsert"];
+                            DateOfClose = (DateTime)rdr["DateOfClose"];
+
+                            OpenRecord = (bool)rdr["OpenRecord"];
+                            Operator = (string)rdr["Operator"];
+
+                            //
+                            //FILL IN TABLE
+                            //
+
+                            DataRow RowSelected = UsersToAuthorDataTable.NewRow();
+                         
+                            RowSelected["AuthId"] = Authoriser;
+                            RowSelected["Authoriser Name"] = AuthorName;
+                            RowSelected["Type Of Author"] = TypeOfAuth;
+                            RowSelected["Openning Date"] = DateOfInsert.ToString();
+
+                            // ADD ROW
+                            UsersToAuthorDataTable.Rows.Add(RowSelected);
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+        }
         //
         // READ UserVsAuthorisation Record for a SequenceNumber 
         //
@@ -46,7 +233,7 @@ namespace RRDM4ATMs
             ErrorFound = false;
             ErrorOutput = "";
 
-            string SqlString = "SELECT *"
+            SqlString = "SELECT *"
                + " FROM [ATMS].[dbo].[UserVsAuthorizers]"
                + " WHERE SeqNumber = @SeqNumber";
 
@@ -95,8 +282,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UserVsAuthorization Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -109,7 +296,7 @@ namespace RRDM4ATMs
             ErrorFound = false;
             ErrorOutput = "";
 
-            string SqlString = "SELECT *"
+            SqlString = "SELECT *"
                + " FROM [ATMS].[dbo].[UserVsAuthorizers]"
                + " WHERE UserId = @UserId AND Authoriser = @Authoriser ";
 
@@ -159,8 +346,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UserVsAuthorization Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -211,8 +398,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UserVsAuthorization Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
         //
@@ -257,8 +444,9 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UserVsAuthorization Update method Class............. " + ex.Message;
+
+
+                    CatchDetails(ex);
                 }
         }
         //
@@ -297,8 +485,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UserVsAuthorization Update method Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
         //
@@ -336,10 +524,13 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UserVsAuthorization Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
 
         }
+
+
+       
     }
 }

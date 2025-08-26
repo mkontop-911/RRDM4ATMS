@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using RRDM4ATMs;
@@ -13,13 +10,15 @@ namespace RRDM4ATMsWeb
 
         RRDMBanks Ba = new RRDMBanks();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord(); // Make class availble 
+        RRDMUsersRecords Us = new RRDMUsersRecords(); // Make class availble 
+
+        RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
 
         RRDMGasParameters Gp = new RRDMGasParameters();
   
         string WOperator;
 
-        int WSecLevel;
+        string WSecLevel;
 
         string WSignedId;
         int WSignRecordNo;
@@ -28,7 +27,7 @@ namespace RRDM4ATMsWeb
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            if (DropDownListUsers.SelectedValue == "1005")
+            if (DropDownListUsers.SelectedValue == "PILOT_005")
             {
                 //       TextBoxPassword.Text = "12345678";
             }
@@ -66,6 +65,7 @@ namespace RRDM4ATMsWeb
                 Us.ReadUsersRecord(WSignedId); // Read USER record for the signed user
 
                 // ===========================================
+                Us.PassWord = "12345678";
                 if (Us.RecordFound == false)
                 {
                     MessageBox.Text = " User Not Found ";
@@ -103,9 +103,9 @@ namespace RRDM4ATMsWeb
                 Us.ForceChangePassword = true;
 
                 WOperator = Us.Operator;
-                WSecLevel = Us.SecLevel;
+                //WSecLevel = Us.SecLevel;
 
-                if (WSecLevel == 7 & Us.PassWord == "123")
+                if (WSecLevel == "07" & Us.PassWord == "123")
                 {
                     // MessageBox.Show("Change your password please");
 
@@ -122,21 +122,25 @@ namespace RRDM4ATMsWeb
 
                 Ba.ReadBank(WOperator);
 
-                Us.UserId = WSignedId;
+                Usi.UserId = WSignedId;
+                Usi.UserName = Us.UserName;
+                Usi.SecLevel = "02";
+                Usi.SignInApplication = "ATMs/Cards"; 
 
-                Us.Culture = DropDownListUsers.SelectedValue;
+                Usi.Culture = DropDownListUsers.SelectedValue;
 
-                Us.DtTmIn = DateTime.Now;
-                Us.DtTmOut = DateTime.Now;
-                Us.Replenishment = false;
-                Us.Reconciliation = false;
-                Us.OtherActivity = true;
+                Usi.DtTmIn = DateTime.Now;
+                Usi.DtTmOut = DateTime.Now;
+                Usi.Replenishment = false;
+                Usi.Reconciliation = false;
+                Usi.OtherActivity = true;
 
-                Us.InsertSignedActivity(WSignedId);
 
-                Us.ReadSignedActivity(WSignedId); // Read to get key of record 
+                Usi.InsertSignedActivity(WSignedId);
+               
+                Usi.ReadSignedActivity(WSignedId); // Read to get key of record 
 
-                WSignRecordNo = Us.SignRecordNo;
+                WSignRecordNo = Usi.SignRecordNo;
 
                 // Prepare Session and Go to FORM1
 
@@ -146,7 +150,7 @@ namespace RRDM4ATMsWeb
 
                 Session["WSignRecordNo"] = WSignRecordNo;
 
-                Session["WSecLevel"] = Us.SecLevel;
+                Session["WSecLevel"] = Usi.SecLevel;
 
                 Session["WOperator"] = WOperator;
 

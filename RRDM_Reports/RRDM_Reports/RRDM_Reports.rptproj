@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <FullPath>Debug</FullPath>
+    <OutputPath>bin\Debug</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2016</TargetServerVersion>
+    <Platform>Win32</Platform>
+    <TargetReportFolder>RRDM Reports</TargetReportFolder>
+    <TargetDatasetFolder>RRDM Datasets</TargetDatasetFolder>
+    <TargetDatasourceFolder>RRDM Data Sources</TargetDatasourceFolder>
+    <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
+    <TargetServerURL>http://localhost/Reports</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugLocal' ">
+    <FullPath>DebugLocal</FullPath>
+    <OutputPath>bin\DebugLocal</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2016</TargetServerVersion>
+    <Platform>Win32</Platform>
+    <TargetReportFolder>RRDM Reports</TargetReportFolder>
+    <TargetDatasetFolder>Datasets</TargetDatasetFolder>
+    <TargetDatasourceFolder>RRDM Data Sources</TargetDatasourceFolder>
+    <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
+    <TargetServerURL>http://rrdmdemo-pc/Reports</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <FullPath>Release</FullPath>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2016</TargetServerVersion>
+    <Platform>Win32</Platform>
+    <TargetReportFolder>RRDM Reports</TargetReportFolder>
+    <TargetDatasetFolder>Datasets</TargetDatasetFolder>
+    <TargetDatasourceFolder>RRDM Data Sources</TargetDatasourceFolder>
+    <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
+    <TargetServerURL>http://rrdmdemo-pc/Reports</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup>
+    <State>$base64$PFNvdXJjZUNvbnRyb2xJbmZvIHhtbG5zOnhzZD0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEiIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zOmRkbDI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yIiB4bWxuczpkZGwyXzI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yLzIiIHhtbG5zOmRkbDEwMF8xMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDA4L2VuZ2luZS8xMDAvMTAwIiB4bWxuczpkZGwyMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAiIHhtbG5zOmRkbDIwMF8yMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAvMjAwIiB4bWxuczpkZGwzMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDExL2VuZ2luZS8zMDAiIHhtbG5zOmRkbDMwMF8zMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDExL2VuZ2luZS8zMDAvMzAwIiB4bWxuczpkZGw0MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEyL2VuZ2luZS80MDAiIHhtbG5zOmRkbDQwMF80MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEyL2VuZ2luZS80MDAvNDAwIiB4bWxuczpkZGw1MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEzL2VuZ2luZS81MDAiIHhtbG5zOmRkbDUwMF81MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEzL2VuZ2luZS81MDAvNTAwIiB4bWxuczpkd2Q9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vRGF0YVdhcmVob3VzZS9EZXNpZ25lci8xLjAiPg0KICA8RW5hYmxlZD5mYWxzZTwvRW5hYmxlZD4NCiAgPFByb2plY3ROYW1lPjwvUHJvamVjdE5hbWU+DQogIDxBdXhQYXRoPjwvQXV4UGF0aD4NCiAgPExvY2FsUGF0aD48L0xvY2FsUGF0aD4NCiAgPFByb3ZpZGVyPjwvUHJvdmlkZXI+DQo8L1NvdXJjZUNvbnRyb2xJbmZvPg==</State>
+    <DataSources>@(DataSource)</DataSources>
+    <DataSets>@(DataSet)</DataSets>
+    <Reports>@(Report)</Reports>
+  </PropertyGroup>
+  <ItemGroup>
+    <DataSource Include="ATMsTables.rds" />
+    <DataSource Include="ATM_MT_JOURNALS.rds" />
+    <DataSource Include="RRDM_Reconciliation_ITMX.rds" />
+  </ItemGroup>
+  <ItemGroup>
+    <Report Include="ATMsBasic.rdl" />
+    <Report Include="ATMsBasic_Other_Information.rdl" />
+    <Report Include="ATMsParameters.rdl" />
+    <Report Include="ATMSReplenishmentOrders.rdl" />
+    <Report Include="ATMSView54.rdl" />
+    <Report Include="ATMSView55.rdl" />
+    <Report Include="ATMSView55_2.rdl" />
+    <Report Include="ATMSView55_2_Auditors.rdl" />
+    <Report Include="ATMSView55_2_SubReport.rdl" />
+    <Report Include="ATMSView55_2_SubReport_Auditors.rdl" />
+    <Report Include="ATMSView55_3_Reversals.rdl" />
+    <Report Include="ATMSView56.rdl" />
+    <Report Include="ATMSView57.rdl" />
+    <Report Include="ATMSView58.rdl" />
+    <Report Include="ATMSView59AccessRights.rdl" />
+    <Report Include="ATMSView60ActionsForLoading.rdl" />
+    <Report Include="ATMSView61.rdl" />
+    <Report Include="ATMSView67.rdl" />
+    <Report Include="ATMSView68.rdl" />
+    <Report Include="ATMSView70.rdl" />
+    <Report Include="ATMSView72.rdl" />
+    <Report Include="ATMSView73.rdl" />
+    <Report Include="ATMSView74.rdl" />
+    <Report Include="ATMSView79.rdl" />
+    <Report Include="ATMSView80.rdl" />
+    <Report Include="ATMSView82.rdl" />
+    <Report Include="ATMSViewReplCycles.rdl" />
+    <Report Include="ATMSViewReplCyclesVsG4S.rdl" />
+    <Report Include="ATMSViewReplCycles_2.rdl" />
+    <Report Include="ATMSViewReplCycles_Audi.rdl" />
+    <Report Include="ATMSViewReplCycles_Bank.rdl" />
+    <Report Include="ATMSViewReplCycles_V02.rdl" />
+    <Report Include="ATMSView_In_File_Fields_Mapping.rdl" />
+    <Report Include="ATMSView_OutputFileFieldsMappingDefinition.rdl" />
+    <Report Include="ATMSView_Working_General_Table.rdl" />
+    <Report Include="ATMSView_Working_Pool_Table.rdl" />
+    <Report Include="ATMS_Cycle_Last_Traces.rdl" />
+    <Report Include="ATMS_Txns_From_Cut_To_Repl.rdl" />
+    <Report Include="AtmTransactions.rdl" />
+    <Report Include="AtmTransactions_Deposits.rdl" />
+    <Report Include="BranchesView76.rdl" />
+    <Report Include="CapturedCard.rdl" />
+    <Report Include="Copy (2) of NOSTROView64.rdl" />
+    <Report Include="Copy of ATMSView74.rdl" />
+    <Report Include="Copy of NOSTROView64.rdl" />
+    <Report Include="CurrentAtmsStatus.rdl" />
+    <Report Include="Dispute01.rdl" />
+    <Report Include="Disputes_List.rdl" />
+    <Report Include="EWBankTrans.rdl" />
+    <Report Include="EWBankTransMatched.rdl" />
+    <Report Include="EWBankTransUnMatched.rdl" />
+    <Report Include="E_FINANCE_Branch_Totals.rdl" />
+    <Report Include="InstructionsToCit.rdl" />
+    <Report Include="IntblBankingTxns.rdl" />
+    <Report Include="IntblSwitch_IST_Txns.rdl" />
+    <Report Include="ITMXReport30.rdl" />
+    <Report Include="ITMXReport42.rdl" />
+    <Report Include="ITMXReport43.rdl" />
+    <Report Include="ITMXReport44.rdl" />
+    <Report Include="ITMXReport45.rdl" />
+    <Report Include="ITMXSettlement31.rdl" />
+    <Report Include="ITMXSettlement32.rdl" />
+    <Report Include="ITMXSettlement33.rdl" />
+    <Report Include="ITMXSettlement41.rdl" />
+    <Report Include="ITMXTransactionsForBankAVsBankB.rdl" />
+    <Report Include="ITMXTransUnMatched.rdl" />
+    <Report Include="ITMXView34.rdl" />
+    <Report Include="LoadedFilesPrinting_ALL.rdl" />
+    <Report Include="MatchingPrinting_ALL.rdl" />
+    <Report Include="MerchantDetails.rdl" />
+    <Report Include="NOSTROView64.rdl" />
+    <Report Include="NOSTROView65.rdl" />
+    <Report Include="NotesPrinting_ALL.rdl" />
+    <Report Include="RATES.rdl" />
+    <Report Include="ReplCycleJournalPrinting.rdl" />
+    <Report Include="ReplenishementReport.rdl" />
+    <Report Include="ReplenishmentReport.rdl" />
+    <Report Include="Report3.rdl" />
+    <Report Include="TestingCapturedCard.rdl" />
+    <Report Include="TraceJournalPrinting.rdl" />
+    <Report Include="TraceJournalPrinting_BDC.rdl" />
+    <Report Include="TransactionsToBePosted.rdl" />
+    <Report Include="TransactionsToBePostedITMX.rdl" />
+    <Report Include="TransactionsToBePostedNEW.rdl" />
+    <Report Include="UsersView78.rdl" />
+    <Report Include="VISAView66.rdl" />
+    <Report Include="XXX_ATMSView55_2_Auditors_New.rdl" />
+    <Report Include="XXX_ATMSView55_2_SubReport_Auditors_New.rdl" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Reporting Services\Microsoft.ReportingServices.MSBuilder.targets" />
+</Project>

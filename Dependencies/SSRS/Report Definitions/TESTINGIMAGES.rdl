@@ -1,6 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
   <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="TestImages">
+      <DataSourceReference>/TESTImages</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>d28e00d3-86ad-4144-b2ef-ae0eaa8ee9a8</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="Imagestable">
+      <Query>
+        <DataSourceName>TestImages</DataSourceName>
+        <CommandText>SELECT
+  Images.ImageID
+  ,Images.ImageDescription
+  ,Images.ImageStream
+FROM
+  Images</CommandText>
+        <rd:DesignerState><QueryDefinition xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational"><SelectedColumns><ColumnExpression ColumnOwner="Images" ColumnName="ImageID" /><ColumnExpression ColumnOwner="Images" ColumnName="ImageDescription" /><ColumnExpression ColumnOwner="Images" ColumnName="ImageStream" /></SelectedColumns><Filters><Filter Operator="="><ColumnExpression ColumnOwner="Images" ColumnName="ImageID" /><FilterValue>101</FilterValue></Filter></Filters></QueryDefinition></rd:DesignerState>
+      </Query>
+      <Fields>
+        <Field Name="ImageID">
+          <DataField>ImageID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ImageDescription">
+          <DataField>ImageDescription</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ImageStream">
+          <DataField>ImageStream</DataField>
+          <rd:TypeName>System.Byte[]</rd:TypeName>
+        </Field>
+      </Fields>
+      <Filters>
+        <Filter>
+          <FilterExpression>=Fields!ImageID.Value</FilterExpression>
+          <Operator>Equal</Operator>
+          <FilterValues>
+            <FilterValue DataType="Integer">=Parameters!ImageIdPar.Value</FilterValue>
+          </FilterValues>
+        </Filter>
+      </Filters>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -37,14 +81,32 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Image Name="Repl1">
-            <Source>External</Source>
-            <Value>=Parameters!Repl1.Value</Value>
-            <Top>21.91819mm</Top>
-            <Left>0mm</Left>
-            <Height>70.03333mm</Height>
-            <Width>231.16457mm</Width>
+          <Image Name="Image1">
+            <Source>Database</Source>
+            <Value>=Fields!ImageStream.Value</Value>
+            <MIMEType>image/jpeg</MIMEType>
+            <Sizing>FitProportional</Sizing>
+            <Top>27.35792mm</Top>
+            <Left>19.84375mm</Left>
+            <Height>39.60625mm</Height>
+            <Width>52.83542mm</Width>
             <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
+          <Image Name="Image2">
+            <Source>Database</Source>
+            <Value>=First(Fields!ImageStream.Value, "Imagestable")</Value>
+            <MIMEType>image/jpeg</MIMEType>
+            <Sizing>FitProportional</Sizing>
+            <Top>27.35792mm</Top>
+            <Left>121.33792mm</Left>
+            <Height>21.87917mm</Height>
+            <Width>25.05417mm</Width>
+            <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -104,23 +166,24 @@
             </Border>
           </Style>
         </PageFooter>
-        <PageHeight>29.7cm</PageHeight>
-        <PageWidth>21cm</PageWidth>
-        <LeftMargin>2cm</LeftMargin>
-        <RightMargin>2cm</RightMargin>
-        <TopMargin>2cm</TopMargin>
-        <BottomMargin>2cm</BottomMargin>
+        <PageHeight>297.00001mm</PageHeight>
+        <PageWidth>210mm</PageWidth>
+        <LeftMargin>20mm</LeftMargin>
+        <RightMargin>20mm</RightMargin>
+        <TopMargin>20mm</TopMargin>
+        <BottomMargin>20mm</BottomMargin>
         <ColumnSpacing>0.13cm</ColumnSpacing>
         <Style />
       </Page>
     </ReportSection>
   </ReportSections>
   <ReportParameters>
-    <ReportParameter Name="Repl1">
-      <DataType>String</DataType>
-      <Prompt>Repl1</Prompt>
+    <ReportParameter Name="ImageIdPar">
+      <DataType>Integer</DataType>
+      <Prompt>ImageIdPar</Prompt>
     </ReportParameter>
   </ReportParameters>
   <rd:ReportUnitType>Mm</rd:ReportUnitType>
+  <rd:ReportServerUrl>http://rrdmdemo-pc/ReportServer</rd:ReportServerUrl>
   <rd:ReportID>120152d5-eb84-4509-a2a7-49a5dfdbfea0</rd:ReportID>
 </Report>

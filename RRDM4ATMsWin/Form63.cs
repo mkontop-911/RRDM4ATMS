@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
+using RRDM4ATMs;
 // using GASClassLib; 
 
 namespace RRDM4ATMsWin
@@ -29,7 +23,7 @@ namespace RRDM4ATMsWin
         DataTable dtAtmsMain = new DataTable();
     //    SqlDataAdapter daAtmsMain;
 
-        RRDMNotesBalances Na = new RRDMNotesBalances(); // Class Notes 
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances(); // Class Notes 
 
         RRDMAtmsMainClass Am = new RRDMAtmsMainClass(); // ATM MAIN CLASS TO UPDATE NEXT REPLENISHMENT DATE
 
@@ -39,13 +33,13 @@ namespace RRDM4ATMsWin
 
         RRDMUsersAccessToAtms Uaa = new RRDMUsersAccessToAtms(); 
 
-        RRDMUsersAndSignedRecord Ua = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Ua = new RRDMUsersRecords();
 
-        RRDMReplActionsClass Ra = new RRDMReplActionsClass(); 
+        RRDMReplOrdersClass Ra = new RRDMReplOrdersClass(); 
 
         RRDMUpdateGrids Ug = new RRDMUpdateGrids();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         RRDMComboClass Cc = new RRDMComboClass(); 
 
@@ -78,7 +72,7 @@ namespace RRDM4ATMsWin
             //buttonNext.Hide();
 
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             comboBox1.DataSource = Cc.GetCitIds(WOperator);
             comboBox1.DisplayMember = "DisplayValue";
@@ -86,19 +80,19 @@ namespace RRDM4ATMsWin
             //TEST
             comboBox1.Text = "2000"; 
 
-            textBoxMsgBoard.Text = "Take the appropriate action for the ATMs in Need"; 
+            textBoxMsgBoard.Text = "Take the appropriate action for the ATMs in Need";
 
-            
+
             // Read USER and ATM Table 
             //WAction = 1; // Update Main record AuthUser field with User Applies to single or group of ATMs 
+            //RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            //Usi.ReadSignedActivityByKey(WSignRecordNo); // REad Access level 
 
-            Ua.ReadSignedActivityByKey(WSignRecordNo); // REad Access level 
-
-            if (Ua.SecLevel == 3)
-            {
-                Ug.ReadUsersAccessAtmAndUpdateReplActions(WSignedId, 2); // Zero , Initialiase Authorize User
-                Ug.ReadUsersAccessAtmAndUpdateReplActions(WSignedId, 1); // Assign Authorize User
-            }        
+            //if (Usi.SecLevel == "03")
+            //{
+            //    Ug.ReadUsersAccessAtmAndUpdateReplActions(WSignedId, 2); // Zero , Initialiase Authorize User
+            //    Ug.ReadUsersAccessAtmAndUpdateReplActions(WSignedId, 1); // Assign Authorize User
+            //}        
 
 /*
              if (Ua.SecLevel == 3)
@@ -131,19 +125,21 @@ namespace RRDM4ATMsWin
         {
             // Security level 3 
             //
-            if (Ua.SecLevel == 3)
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
+            if (Usi.SecLevel == "03")
             {
-                Tablefilter = "Operator ='" + WOperator + "' AND AuthUser = '" + WSignedId + "' AND AuthorisedRecord =0 AND ReplActNo > 25 " ;
+                Tablefilter = "Operator ='" + WOperator + "' AND AuthUser = '" + WSignedId + "' AND AuthorisedRecord =0  " ;
             }
           
             //TEST
-            Ua.SecLevel = 4; 
+            Usi.SecLevel = "04"; 
 
             // Security level 4
             //
-            if (Ua.SecLevel == 4)
+            if (Usi.SecLevel == "04")
             {
-                Tablefilter = "Operator ='" + WOperator + "'" + " AND AuthorisedRecord =0 AND ReplActNo > 25 ";
+                Tablefilter = "Operator ='" + WOperator + "'" + " AND AuthorisedRecord =0  ";
             }
 
             DateTime WDtFrom = NullPastDate;
@@ -151,7 +147,7 @@ namespace RRDM4ATMsWin
 
             // Read Table
 
-            Ra.ReadReplActionsAndFillTable(WOperator, Tablefilter, WDtFrom, WDtTo);
+            Ra.ReadReplActionsAndFillTable(WOperator, Tablefilter, WDtFrom, WDtTo, 2);
 
             ShowGrid();
             if (dataGridView1.Rows.Count != 0)
@@ -167,7 +163,7 @@ namespace RRDM4ATMsWin
 // Show Grid 
         public void ShowGrid()
         {
-            dataGridView1.DataSource = Ra.TableReplActions.DefaultView;
+            dataGridView1.DataSource = Ra.TableReplOrders.DefaultView;
 
             dataGridView1.Columns[0].Width = 40; // ActNo
             dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -255,11 +251,22 @@ namespace RRDM4ATMsWin
                 {
                     textBoxNeedType.Text = " Inform CIT " + Ac.CitId + " to replenish ";
 
-                    textBoxRecomAction.Text = "A Replenishment Action with Id : " + Ra.ReplActNo.ToString() + " is suggested " + Environment.NewLine
+                    textBoxRecomAction.Text = "A Replenishment Action with Id : " + Ra.ReplOrderNo.ToString() + " is suggested " + Environment.NewLine
                         + "Next Replenishment : " + Ra.NewEstReplDt.Date.ToShortDateString() + Environment.NewLine
                         + "Amount for Replenihsment : " + Ra.NewAmount.ToString("#,##0.00") + Environment.NewLine
                         + "An email and report will be sent to  " + Environment.NewLine
                         + "CIT provider and responsible departments with instructions. ";
+
+                }
+                if (Am.NeedType == 13 & Ac.CitId == "1000" & Ra.RecordFound == true)
+                {
+                    textBoxNeedType.Text = "Bank ATM Operator was alerted to replenish ";
+
+                    textBoxRecomAction.Text = " A alert Replenishment Action with Id : " + Ra.ReplOrderNo.ToString() + " is suggested " + Environment.NewLine
+                                   + " Next Replenishment : " + Ra.NewEstReplDt.Date.ToShortDateString() + Environment.NewLine
+                                   + " Amount for Replenihsment : " + Ra.NewAmount.ToString("#,##0.00") + Environment.NewLine
+                                   + " An Alerting SMS and email was sent to ATM owner at this email:  " + Environment.NewLine
+                                   + " " + Ac.AtmReplUserEmail;
 
                 }
              
@@ -318,8 +325,8 @@ namespace RRDM4ATMsWin
         private void button2_Click_1(object sender, EventArgs e)
         {
             // THIS FUNCTION IS FOR SECURITY LEVEL 4
-
-            Ua.ReadSignedActivityByKey(WSignRecordNo); // REad Access level 
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo); // REad Access level 
             //TEST 
       /*      if (Ua.SecLevel != 4)
             {
@@ -365,7 +372,7 @@ namespace RRDM4ATMsWin
             DateTime WDtFrom = NullPastDate;
             DateTime WDtTo = NullPastDate;
 // Read Table 
-            Ra.ReadReplActionsAndFillTable(WOperator, Tablefilter, WDtFrom, WDtTo);
+            Ra.ReadReplActionsAndFillTable(WOperator, Tablefilter, WDtFrom, WDtTo, 2);
 
             ShowGrid(); 
         }
@@ -385,7 +392,8 @@ namespace RRDM4ATMsWin
                 //TEST
                 // Read all actions creater than 25 
                 // WE HAVE CHANGED METHOD IN Ra.Read....
-                Ra.ReadReplActionsForCITAndUpdate(WCitId, WOperator, WSignedId, Function);
+                int WOrdersCycle = 0;  
+                Ra.ReadReplActionsForCITAndUpdate(WCitId, WOrdersCycle, WOperator, WSignedId);
 
                 if (Ra.RecordFound == true)
                 {
@@ -394,7 +402,8 @@ namespace RRDM4ATMsWin
                     //InstructionsToCit.Show(); 
 
                     // Email 
-                    NForm2_EMailContent = new Form2_EMailContent(WSignedId, WSignRecordNo, WOperator, WCitId, Ra.PublicCitString);
+                 
+                    NForm2_EMailContent = new Form2_EMailContent(WSignedId,  WSignRecordNo, WOperator, WCitId, WOrdersCycle, Ra.PublicCitString);
                     //NForm2_EMailContent.FormClosed += NForm2_EMailContent_FormClosed;
                     NForm2_EMailContent.ShowDialog();
 
@@ -522,6 +531,5 @@ namespace RRDM4ATMsWin
                 textBoxComment.Hide(); 
             }
         }
-       
     }
 }

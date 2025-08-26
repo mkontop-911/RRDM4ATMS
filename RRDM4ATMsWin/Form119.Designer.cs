@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanelHeader = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
             this.labelToday = new System.Windows.Forms.Label();
@@ -43,55 +43,32 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.userIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.atmNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupOfAtmsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bankIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.useOfGroupDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.replenishmentDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.reconciliationDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dateOfInsertDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.usersAtmTableBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.aTMSDataSet23 = new RRDM4ATMsWin.ATMSDataSet23();
-            this.button4 = new System.Windows.Forms.Button();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.buttonUpdate = new System.Windows.Forms.Button();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.textBoxAtmNo = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonNext = new System.Windows.Forms.Button();
-            this.usersAtmTableTableAdapter = new RRDM4ATMsWin.ATMSDataSet23TableAdapters.UsersAtmTableTableAdapter();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.usersAtmTableBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet23)).BeginInit();
-            this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanelMain.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanelHeader
@@ -101,12 +78,12 @@
             this.tableLayoutPanelHeader.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tableLayoutPanelHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanelHeader.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanelHeader.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanelHeader.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tableLayoutPanelHeader.Name = "tableLayoutPanelHeader";
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(929, 80);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(693, 80);
             this.tableLayoutPanelHeader.TabIndex = 267;
             // 
             // tableLayoutPanel4
@@ -120,11 +97,11 @@
             this.tableLayoutPanel4.Controls.Add(this.flowLayoutPanel1, 1, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(2, 2);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(925, 80);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(689, 80);
             this.tableLayoutPanel4.TabIndex = 249;
             // 
             // tableLayoutPanel1
@@ -133,8 +110,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(784, 2);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(548, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -150,12 +127,24 @@
             this.tableLayoutPanel5.Controls.Add(this.pictureBox1, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel3, 1, 0);
             this.tableLayoutPanel5.Location = new System.Drawing.Point(2, 2);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 67F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(246, 67);
             this.tableLayoutPanel5.TabIndex = 251;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(72, 63);
+            this.pictureBox1.TabIndex = 251;
+            this.pictureBox1.TabStop = false;
             // 
             // tableLayoutPanel3
             // 
@@ -165,7 +154,7 @@
             this.tableLayoutPanel3.Controls.Add(this.label8, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.labelToday, 1, 0);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(78, 2);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
@@ -202,7 +191,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(252, 6);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 6, 2, 2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(509, 71);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(288, 71);
             this.flowLayoutPanel1.TabIndex = 243;
             // 
             // tableLayoutPanel6
@@ -230,7 +219,7 @@
             this.labelStep1.Name = "labelStep1";
             this.labelStep1.Size = new System.Drawing.Size(536, 68);
             this.labelStep1.TabIndex = 242;
-            this.labelStep1.Text = "Access to Atms and Groups";
+            this.labelStep1.Text = "Access to Atms";
             // 
             // textBoxMsgBoard
             // 
@@ -244,7 +233,7 @@
             this.textBoxMsgBoard.Multiline = true;
             this.textBoxMsgBoard.Name = "textBoxMsgBoard";
             this.textBoxMsgBoard.ReadOnly = true;
-            this.textBoxMsgBoard.Size = new System.Drawing.Size(664, 32);
+            this.textBoxMsgBoard.Size = new System.Drawing.Size(428, 32);
             this.textBoxMsgBoard.TabIndex = 242;
             this.textBoxMsgBoard.Text = "No guidance information available.";
             // 
@@ -255,144 +244,39 @@
             this.panel1.Controls.Add(this.panel4);
             this.panel1.Controls.Add(this.textBox8);
             this.panel1.Controls.Add(this.textBox9);
-            this.panel1.Controls.Add(this.textBox3);
-            this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(923, 561);
+            this.panel1.Size = new System.Drawing.Size(687, 572);
             this.panel1.TabIndex = 243;
             // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.White;
             this.panel4.Controls.Add(this.dataGridView1);
-            this.panel4.Controls.Add(this.button4);
             this.panel4.ForeColor = System.Drawing.Color.Black;
             this.panel4.Location = new System.Drawing.Point(55, 140);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(808, 210);
+            this.panel4.Size = new System.Drawing.Size(578, 210);
             this.panel4.TabIndex = 335;
             // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.userIdDataGridViewTextBoxColumn,
-            this.atmNoDataGridViewTextBoxColumn,
-            this.groupOfAtmsDataGridViewTextBoxColumn,
-            this.bankIdDataGridViewTextBoxColumn,
-            this.useOfGroupDataGridViewCheckBoxColumn,
-            this.replenishmentDataGridViewCheckBoxColumn,
-            this.reconciliationDataGridViewCheckBoxColumn,
-            this.dateOfInsertDataGridViewTextBoxColumn,
-            this.operatorDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.usersAtmTableBindingSource;
             this.dataGridView1.GridColor = System.Drawing.Color.LightGray;
             this.dataGridView1.Location = new System.Drawing.Point(12, 10);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(778, 159);
+            this.dataGridView1.Size = new System.Drawing.Size(542, 159);
             this.dataGridView1.TabIndex = 316;
             this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
-            // 
-            // userIdDataGridViewTextBoxColumn
-            // 
-            this.userIdDataGridViewTextBoxColumn.DataPropertyName = "UserId";
-            this.userIdDataGridViewTextBoxColumn.HeaderText = "UserId";
-            this.userIdDataGridViewTextBoxColumn.Name = "userIdDataGridViewTextBoxColumn";
-            this.userIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // atmNoDataGridViewTextBoxColumn
-            // 
-            this.atmNoDataGridViewTextBoxColumn.DataPropertyName = "AtmNo";
-            this.atmNoDataGridViewTextBoxColumn.HeaderText = "AtmNo";
-            this.atmNoDataGridViewTextBoxColumn.Name = "atmNoDataGridViewTextBoxColumn";
-            this.atmNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // groupOfAtmsDataGridViewTextBoxColumn
-            // 
-            this.groupOfAtmsDataGridViewTextBoxColumn.DataPropertyName = "GroupOfAtms";
-            this.groupOfAtmsDataGridViewTextBoxColumn.HeaderText = "GroupOfAtms";
-            this.groupOfAtmsDataGridViewTextBoxColumn.Name = "groupOfAtmsDataGridViewTextBoxColumn";
-            this.groupOfAtmsDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // bankIdDataGridViewTextBoxColumn
-            // 
-            this.bankIdDataGridViewTextBoxColumn.DataPropertyName = "BankId";
-            this.bankIdDataGridViewTextBoxColumn.HeaderText = "BankId";
-            this.bankIdDataGridViewTextBoxColumn.Name = "bankIdDataGridViewTextBoxColumn";
-            this.bankIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // useOfGroupDataGridViewCheckBoxColumn
-            // 
-            this.useOfGroupDataGridViewCheckBoxColumn.DataPropertyName = "UseOfGroup";
-            this.useOfGroupDataGridViewCheckBoxColumn.HeaderText = "UseOfGroup";
-            this.useOfGroupDataGridViewCheckBoxColumn.Name = "useOfGroupDataGridViewCheckBoxColumn";
-            this.useOfGroupDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // replenishmentDataGridViewCheckBoxColumn
-            // 
-            this.replenishmentDataGridViewCheckBoxColumn.DataPropertyName = "Replenishment";
-            this.replenishmentDataGridViewCheckBoxColumn.HeaderText = "Replenishment";
-            this.replenishmentDataGridViewCheckBoxColumn.Name = "replenishmentDataGridViewCheckBoxColumn";
-            this.replenishmentDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // reconciliationDataGridViewCheckBoxColumn
-            // 
-            this.reconciliationDataGridViewCheckBoxColumn.DataPropertyName = "Reconciliation";
-            this.reconciliationDataGridViewCheckBoxColumn.HeaderText = "Reconciliation";
-            this.reconciliationDataGridViewCheckBoxColumn.Name = "reconciliationDataGridViewCheckBoxColumn";
-            this.reconciliationDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // dateOfInsertDataGridViewTextBoxColumn
-            // 
-            this.dateOfInsertDataGridViewTextBoxColumn.DataPropertyName = "DateOfInsert";
-            this.dateOfInsertDataGridViewTextBoxColumn.HeaderText = "DateOfInsert";
-            this.dateOfInsertDataGridViewTextBoxColumn.Name = "dateOfInsertDataGridViewTextBoxColumn";
-            this.dateOfInsertDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // operatorDataGridViewTextBoxColumn
-            // 
-            this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
-            this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
-            this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
-            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // usersAtmTableBindingSource
-            // 
-            this.usersAtmTableBindingSource.DataMember = "UsersAtmTable";
-            this.usersAtmTableBindingSource.DataSource = this.aTMSDataSet23;
-            // 
-            // aTMSDataSet23
-            // 
-            this.aTMSDataSet23.DataSetName = "ATMSDataSet23";
-            this.aTMSDataSet23.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // button4
-            // 
-            this.button4.BackColor = System.Drawing.Color.White;
-            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button4.FlatAppearance.BorderSize = 2;
-            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button4.Location = new System.Drawing.Point(725, 175);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(61, 32);
-            this.button4.TabIndex = 335;
-            this.button4.Text = "Delete";
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click_1);
             // 
             // textBox8
             // 
@@ -407,7 +291,7 @@
             this.textBox8.ReadOnly = true;
             this.textBox8.Size = new System.Drawing.Size(480, 19);
             this.textBox8.TabIndex = 334;
-            this.textBox8.Text = "USER ACCESS TO ATMs OR GROUPS OF ATMs";
+            this.textBox8.Text = "USER ACCESS TO ATMs";
             // 
             // textBox9
             // 
@@ -422,140 +306,86 @@
             this.textBox9.ReadOnly = true;
             this.textBox9.Size = new System.Drawing.Size(298, 19);
             this.textBox9.TabIndex = 337;
-            this.textBox9.Text = "ADD ATM RELATION\r\n";
-            // 
-            // textBox3
-            // 
-            this.textBox3.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.textBox3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.textBox3.Location = new System.Drawing.Point(505, 366);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(7, 3, 7, 0);
-            this.textBox3.Multiline = true;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(349, 18);
-            this.textBox3.TabIndex = 339;
-            this.textBox3.Text = "ADD GROUP RELATION";
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.White;
-            this.panel3.Controls.Add(this.button2);
-            this.panel3.Controls.Add(this.checkBox1);
-            this.panel3.Controls.Add(this.checkBox2);
-            this.panel3.Controls.Add(this.textBox6);
-            this.panel3.Controls.Add(this.label3);
-            this.panel3.Controls.Add(this.textBox7);
-            this.panel3.Location = new System.Drawing.Point(505, 387);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(357, 140);
-            this.panel3.TabIndex = 338;
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.White;
-            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button2.FlatAppearance.BorderSize = 2;
-            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button2.Location = new System.Drawing.Point(256, 95);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(62, 30);
-            this.button2.TabIndex = 334;
-            this.button2.Text = "Add";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(208, 35);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(121, 17);
-            this.checkBox1.TabIndex = 307;
-            this.checkBox1.Text = "Allow Reconciliation";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(208, 12);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(133, 17);
-            this.checkBox2.TabIndex = 306;
-            this.checkBox2.Text = "Allow Replenishement ";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // textBox6
-            // 
-            this.textBox6.Location = new System.Drawing.Point(105, 9);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(66, 20);
-            this.textBox6.TabIndex = 301;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 12);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(76, 13);
-            this.label3.TabIndex = 302;
-            this.label3.Text = "Group Number";
-            // 
-            // textBox7
-            // 
-            this.textBox7.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox7.ForeColor = System.Drawing.Color.Gray;
-            this.textBox7.Location = new System.Drawing.Point(3, 59);
-            this.textBox7.Multiline = true;
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(326, 30);
-            this.textBox7.TabIndex = 299;
-            this.textBox7.Text = "NOTE: Groups Must be defined in Group Definition ";
+            this.textBox9.Text = "ATM RELATION\r\n";
             // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.buttonUpdate);
             this.panel2.Controls.Add(this.checkBox5);
+            this.panel2.Controls.Add(this.button4);
             this.panel2.Controls.Add(this.checkBox4);
-            this.panel2.Controls.Add(this.textBox11);
+            this.panel2.Controls.Add(this.textBoxAtmNo);
             this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Location = new System.Drawing.Point(55, 387);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(357, 140);
+            this.panel2.Size = new System.Drawing.Size(578, 140);
             this.panel2.TabIndex = 336;
+            // 
+            // buttonUpdate
+            // 
+            this.buttonUpdate.BackColor = System.Drawing.Color.White;
+            this.buttonUpdate.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonUpdate.FlatAppearance.BorderSize = 2;
+            this.buttonUpdate.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonUpdate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonUpdate.Location = new System.Drawing.Point(367, 97);
+            this.buttonUpdate.Name = "buttonUpdate";
+            this.buttonUpdate.Size = new System.Drawing.Size(66, 30);
+            this.buttonUpdate.TabIndex = 336;
+            this.buttonUpdate.Text = "Update";
+            this.buttonUpdate.UseVisualStyleBackColor = false;
+            this.buttonUpdate.Visible = false;
+            this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(204, 34);
+            this.checkBox5.Location = new System.Drawing.Point(213, 34);
             this.checkBox5.Name = "checkBox5";
             this.checkBox5.Size = new System.Drawing.Size(121, 17);
             this.checkBox5.TabIndex = 305;
             this.checkBox5.Text = "Allow Reconciliation";
             this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBox5.Visible = false;
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.White;
+            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button4.FlatAppearance.BorderSize = 2;
+            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button4.Location = new System.Drawing.Point(273, 95);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(61, 32);
+            this.button4.TabIndex = 335;
+            this.button4.Text = "Delete";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click_1);
             // 
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(204, 11);
+            this.checkBox4.Location = new System.Drawing.Point(213, 11);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(127, 17);
             this.checkBox4.TabIndex = 304;
             this.checkBox4.Text = "Allow Replenishment ";
             this.checkBox4.UseVisualStyleBackColor = true;
             // 
-            // textBox11
+            // textBoxAtmNo
             // 
-            this.textBox11.Location = new System.Drawing.Point(100, 8);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(66, 20);
-            this.textBox11.TabIndex = 299;
+            this.textBoxAtmNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxAtmNo.Location = new System.Drawing.Point(78, 8);
+            this.textBoxAtmNo.Name = "textBoxAtmNo";
+            this.textBoxAtmNo.Size = new System.Drawing.Size(114, 22);
+            this.textBoxAtmNo.TabIndex = 299;
             // 
             // label9
             // 
@@ -575,7 +405,7 @@
             this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button1.Location = new System.Drawing.Point(256, 95);
+            this.button1.Location = new System.Drawing.Point(478, 97);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(66, 30);
             this.button1.TabIndex = 333;
@@ -592,13 +422,13 @@
             this.tableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelMain.ForeColor = System.Drawing.Color.Black;
             this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
             this.tableLayoutPanelMain.RowCount = 2;
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(929, 607);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(693, 618);
             this.tableLayoutPanelMain.TabIndex = 266;
             // 
             // tableLayoutPanel2
@@ -611,12 +441,12 @@
             this.tableLayoutPanel2.Controls.Add(this.textBoxMsgBoard, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonNext, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 569);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 580);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(925, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(689, 36);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
             // buttonNext
@@ -627,7 +457,7 @@
             this.buttonNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonNext.ForeColor = System.Drawing.Color.White;
-            this.buttonNext.Location = new System.Drawing.Point(844, 2);
+            this.buttonNext.Location = new System.Drawing.Point(608, 2);
             this.buttonNext.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(71, 27);
@@ -636,28 +466,12 @@
             this.buttonNext.UseVisualStyleBackColor = true;
             this.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
             // 
-            // usersAtmTableTableAdapter
-            // 
-            this.usersAtmTableTableAdapter.ClearBeforeFill = true;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(2, 2);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(72, 63);
-            this.pictureBox1.TabIndex = 251;
-            this.pictureBox1.TabStop = false;
-            // 
             // Form119
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(929, 607);
+            this.ClientSize = new System.Drawing.Size(693, 618);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.ForeColor = System.Drawing.Color.White;
@@ -667,6 +481,7 @@
             this.tableLayoutPanelHeader.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -676,16 +491,11 @@
             this.panel1.PerformLayout();
             this.panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.usersAtmTableBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet23)).EndInit();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -711,33 +521,14 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.TextBox textBoxAtmNo;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button buttonNext;
-        private ATMSDataSet23 aTMSDataSet23;
-        private System.Windows.Forms.BindingSource usersAtmTableBindingSource;
-        private ATMSDataSet23TableAdapters.UsersAtmTableTableAdapter usersAtmTableTableAdapter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn userIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn atmNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn groupOfAtmsDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn bankIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn useOfGroupDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn replenishmentDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn reconciliationDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dateOfInsertDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn operatorDataGridViewTextBoxColumn;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button buttonUpdate;
     }
 }

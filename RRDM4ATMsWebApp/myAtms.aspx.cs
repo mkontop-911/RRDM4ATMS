@@ -12,18 +12,19 @@ using RRDM4ATMs;
 
 public partial class myAtms : System.Web.UI.Page
 {
-   
-    RRDMUpdateGrids Ug = new RRDMUpdateGrids();
-    RRDMNotesBalances Na = new RRDMNotesBalances();
-    RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate();
-    RRDMAtmsMainClass Am = new RRDMAtmsMainClass(); 
 
-    RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+    RRDMUpdateGrids Ug = new RRDMUpdateGrids();
+    RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
+    RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
+    RRDMAtmsMainClass Am = new RRDMAtmsMainClass();
+
+    RRDMUsersRecords Us = new RRDMUsersRecords(); // Make class availble 
+   
     RRDMUsersAccessToAtms Uaa = new RRDMUsersAccessToAtms();
     RRDMErrorsClassWithActions Ec = new RRDMErrorsClassWithActions();
-    RRDMAllowedAtmsAndUpdateFromJournal Aj = new RRDMAllowedAtmsAndUpdateFromJournal();
+    RRDMAllowedAtmsAndUpdateFromJournalΧΧΧΧ Aj = new RRDMAllowedAtmsAndUpdateFromJournalΧΧΧΧ();
 
-    RRDMTempAtmLocation Tl = new RRDMTempAtmLocation();
+    // RRDMAtmsLocation Tl = new RRDMAtmsLocation();
 
     string WAtmNo;
     int WSesNo;
@@ -39,16 +40,22 @@ public partial class myAtms : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        WOperator = (string)Session["WOperator"];
+        WSignedId = (string)Session["WSignedId"];
+
         if (!Page.IsPostBack)
         {
-            string WOperator = (string)Session["WOperator"];
-            string WSignedId = (string)Session["WSignedId"];
 
             //Am.ReadAtmsMainForAuthUserAndFillTable(WOperator, WSignedId, "");
+            WRowIndex = 1;
+
+            Label7.Text = DateTime.Now.ToShortDateString();
+
+            Label5.Text = WOperator;
 
             Am.ReadAtmsMainForAuthUserAndFillTable(WOperator, WSignedId, "");
 
-            GridView1.DataSource = Am.ATMsMainSelected.DefaultView;
+            GridView1.DataSource = Am.TableATMsMainSelected.DefaultView;
             GridView1.DataBind();
 
 
@@ -61,7 +68,7 @@ public partial class myAtms : System.Web.UI.Page
             //GridView1.DataSource = dt;
             //GridView1.DataBind();
             //GridView1.HeaderRow.TableSection = TableRowSection.TableHeader;
-       
+
 
             TextBoxFrom.Text = "02/01/2014";
 
@@ -73,7 +80,7 @@ public partial class myAtms : System.Web.UI.Page
         else
         {
 
-        
+
             //  MessageBox.Text = " This is a PostBack";
         }
 
@@ -82,7 +89,7 @@ public partial class myAtms : System.Web.UI.Page
 
     private void BindGrid()
     {
-
+      //  GridView1.DataBind();
     }
 
     protected void btnFirstPage_Click(object sender, EventArgs e)
@@ -133,18 +140,18 @@ public partial class myAtms : System.Web.UI.Page
 
     protected void GridView1_DataBound(object sender, EventArgs e)
     {
-        int Indx;
+      
         if ((string)Session["WOrigin"] == "WebForm48b")
         {
-            Indx = (int)Session["WIndex"];
+            WRowIndex = (int)Session["WIndex"];
         }
         else
         {
-            Indx = 0;
-            Session["WIndex"] = Indx;
+         //   WRowIndex = 1;
+            Session["WIndex"] = WRowIndex;
         }
 
-        GridView1.SelectedIndex = Indx;
+        GridView1.SelectedIndex = WRowIndex;
         //NewSelectedIndex(sender, e);
 
     }
@@ -152,17 +159,17 @@ public partial class myAtms : System.Web.UI.Page
 
     public void GetRegistrationDateByDealer(int spageno, int snbofrows)
     {
-      
-            string SQL = "SELECT Top " + snbofrows + " * FROM (";
 
-            SQL += "SELECT Fields to return ";
+        string SQL = "SELECT Top " + snbofrows + " * FROM (";
 
-            SQL += " ROW_NUMBER() OVER (ORDER BY LoginName) AS num ";
+        SQL += "SELECT Fields to return ";
 
-            SQL += " FROM VdlPLSCategory ";
+        SQL += " ROW_NUMBER() OVER (ORDER BY LoginName) AS num ";
 
-            SQL += ") AS a ";
-            SQL += " Where num > " + (spageno - 1) * snbofrows;
+        SQL += " FROM VdlPLSCategory ";
+
+        SQL += ") AS a ";
+        SQL += " Where num > " + (spageno - 1) * snbofrows;
     }
 
 
@@ -185,19 +192,25 @@ public partial class myAtms : System.Web.UI.Page
     //        //e.Row.ToolTip = "Click to select this row.";
     //    }
     //}
-   
+
     protected void OnSelectedIndexChanged(object sender, EventArgs e)
     {
         // Get the currently selected row using the SelectedRow property.
         GridViewRow row = GridView1.SelectedRow;
 
-        WAtmNo =  row.Cells[1].Text;
+      
+        WRowIndex = GridView1.SelectedRow.RowIndex;
 
-        Session["WAtmNo"] = WAtmNo ; 
+        WAtmNo = row.Cells[1].Text;
+
+        Session["WAtmNo"] = WAtmNo;
+
+        LabelHeadingRight.Text = "DETAILS FOR THE ATM No..:"+WAtmNo;
+
 
         Am.ReadAtmsMainSpecific(WAtmNo);
 
-        Label1.Text = "CURRENT INFO FOR ATM : " + WAtmNo;
+        Label1.Text = "CURRENT INFO FOR ALL ATMS" ;
 
         // Set up the Bank for this ATM
         WBankId = Am.BankId;
@@ -214,7 +227,7 @@ public partial class myAtms : System.Web.UI.Page
                 //label23.Hide();
                 //panel4.Hide();
 
-                PopUpMessage("This Atm is not active yet"); 
+                PopUpMessage("This Atm is not active yet");
 
             }
             return;
@@ -246,8 +259,16 @@ public partial class myAtms : System.Web.UI.Page
         else
         {
             Uaa.FindUserForRepl(WAtmNo, 0);
+            if (Us.RecordFound == true)
+            {
+                Us.ReadUsersRecord(Uaa.UserId); // Get Info for User 
 
-            Us.ReadUsersRecord(Uaa.UserId); // Get Info for User 
+            }
+            else
+            {
+                Us.ReadUsersRecord(WSignedId);
+                Us.RecordFound = false; // Initialise Record Found 
+            }
 
             TextBoxOwnerUser.Text = Us.UserId;
             TextBoxName.Text = Us.UserName;
@@ -263,23 +284,25 @@ public partial class myAtms : System.Web.UI.Page
         TextBoxDepositedAmnt.Text = Am.CurrentDeposits.ToString("#,##0.00");
 
         TextBoxLastReconcDt.Text = Am.ReconcDt.ToString();
-        if (Am.ReconcDiff == true)
-        {
-            TextBoxReconcDiff.Text = "YES";
+        //if (Am.ReconcDiff == true)
+        //{
+        //    TextBoxReconcDiff.Text = "YES";
 
-        }
-        else
-        {
-            TextBoxReconcDiff.Text = "NO";
+        //}
+        //else
+        //{
 
-        }
+        TextBoxReconcDiff.Text = "NO";
 
-        TextBoxCurrency.Text = Am.CurrNm1;
-        TextBoxAmountInDiff.Text = Am.DiffCurr1.ToString("#,##0.00");
+        //}
+
+        TextBoxCurrency.Text = "";
+        TextBoxAmountInDiff.Text = "";
         TextBoxSessionsInDiff.Text = Am.SessionsInDiff.ToString();
         TextBoxOutstandingErr.Text = Am.ErrOutstanding.ToString();
 
-        Ec.ReadAllErrorsTableForCounters(WBankId,"EWB101" ,WAtmNo);
+        Ec.ReadAllErrorsTableForCounters(WBankId, "EWB101", WAtmNo, 0, "");
+
 
         TextBoxInProcessForAction.Text = Ec.ErrUnderAction.ToString();
 
@@ -302,8 +325,6 @@ public partial class myAtms : System.Web.UI.Page
             //button11.Hide();
         }
         WSesNo = Am.CurrentSesNo;
-
-
 
         if (Am.ProcessMode == -1)
         {
@@ -331,16 +352,19 @@ public partial class myAtms : System.Web.UI.Page
         {
             // READ ALL ERRORS AND SET COUNTER 
 
-            Ec.ReadAllErrorsTableForCounters(WBankId, "EWB101", WAtmNo);
+            Ec.ReadAllErrorsTableForCounters(WBankId, "EWB101", WAtmNo, 0, "");
 
             //textBox18.Text = Ec.NumOfErrors.ToString();
             //textBox17.Text = Ec.ErrUnderAction.ToString();
             //textBox5.Text = Ec.ErrUnderManualAction.ToString();
 
         }
+
+        //BindGrid();
+        //GridView1.HeaderRow.TableSection = TableRowSection.TableHeader;
     }
 
-   
+
     //
     // SHOW 
     //
@@ -362,14 +386,14 @@ public partial class myAtms : System.Web.UI.Page
         //    return;
         //}
 
-        
+
 
         if (RadioButton1.Checked == false & RadioButton2.Checked == false & RadioButton3.Checked == false)
         {
-            
-            PopUpMessage("Please Make your choice"); 
 
-            return; 
+            PopUpMessage("Please Make your choice");
+
+            return;
         }
 
         if (RadioButton1.Checked == true)
@@ -379,7 +403,7 @@ public partial class myAtms : System.Web.UI.Page
             {
                 PopUpMessage("Please Enter A Valid Date for To Date");
 
-                return; 
+                return;
             }
 
             string DateFrom = TextBoxFrom.Text;
@@ -401,9 +425,9 @@ public partial class myAtms : System.Web.UI.Page
             Server.Transfer("replenishmentCyclesForAtm.aspx");
         }
 
-      
 
-        
+
+
 
 
         //string ShowWindow;
@@ -417,13 +441,13 @@ public partial class myAtms : System.Web.UI.Page
 
 
 
-     //   ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "alert('dasdsadsa')", true);
+        //   ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "alert('dasdsadsa')", true);
     }
     private void PopUpMessage(string InMsg)
     {
         string ShowWindow;
         ShowWindow = "showMessage";
-        string smsg = InMsg ;
+        string smsg = InMsg;
 
         ShowWindow = ShowWindow + "('" + smsg + "')";
 
@@ -438,7 +462,7 @@ public partial class myAtms : System.Web.UI.Page
         //Am.ReadAtmsMainForAuthUserAndFillTable(WOperator, WSignedId, WAtmNo);
         Am.ReadAtmsMainForAuthUserAndFillTable(WOperator, WSignedId, WAtmNo);
 
-        GridView1.DataSource = Am.ATMsMainSelected.DefaultView;
+        GridView1.DataSource = Am.TableATMsMainSelected.DefaultView;
         GridView1.DataBind();
 
     }

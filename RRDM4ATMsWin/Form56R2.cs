@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
 using System.Collections;
 using Microsoft.Reporting.WinForms;
 using System.Configuration;
@@ -29,9 +21,10 @@ namespace RRDM4ATMsWin
          string   WR11;
         string    WR12;
         string WR13 ;
+        string WBankIdLogo;
 
         public Form56R2(string R1,string R2,string R3,string R4, string R5,string R6,
-                        string R7,string R8,string R9,string R10, string R11,string R12, string R13)
+                        string R7,string R8,string R9,string R10, string R11,string R12, string R13, string InBankIdLogo)
         {
             WR1 = R1;
             WR2 = R2;
@@ -46,6 +39,7 @@ namespace RRDM4ATMsWin
             WR11 = R11;
             WR12 = R12;
             WR13 = R13;
+            WBankIdLogo = InBankIdLogo; 
 
             InitializeComponent();
         }
@@ -54,7 +48,9 @@ namespace RRDM4ATMsWin
         {
 
             string RSUri = ConfigurationManager.AppSettings["ReportServerUri"];
-            string RSReportName = "/CapturedCard";
+        
+            string RsDir = ConfigurationManager.AppSettings["ReportsDir"];
+            string RSReportName = RsDir + "/CapturedCard";
 
             // Set the processing mode for the ReportViewer to Remote
             reportViewer1.ProcessingMode = ProcessingMode.Remote;
@@ -116,6 +112,7 @@ namespace RRDM4ATMsWin
             arrLstDefaultParam.Add(CreateReportParameter("Action1", WR11));
             arrLstDefaultParam.Add(CreateReportParameter("Action2", WR12));
             arrLstDefaultParam.Add(CreateReportParameter("Action3", WR13));
+            arrLstDefaultParam.Add(CreateReportParameter("InBankIdLogo", WBankIdLogo));
             return arrLstDefaultParam;
         }
         private ReportParameter CreateReportParameter(string paramName, string pramValue)

@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
 using System.Collections;
 using Microsoft.Reporting.WinForms;
 using System.Configuration;
@@ -32,10 +24,10 @@ namespace RRDM4ATMsWin
     //    string WR11;
 
         string WR21; // User Id
-        //  string WR13;
+        string WR22; // BankId
 
         public Form56R4(string R1, string R2, string R3, string R4, string R5, string R6,
-                        string R7, string R8, string R9, string R10, string R15, string R16, string R21)
+                        string R7, string R8, string R9, string R10, string R15, string R16, string R21, string R22)
         {
             WR1 = R1;
             WR2 = R2;
@@ -52,6 +44,7 @@ namespace RRDM4ATMsWin
             WR16 = R16;
 
             WR21 = R21; // User Id 
+            WR22 = R22;
 
             InitializeComponent();
         }
@@ -74,7 +67,9 @@ namespace RRDM4ATMsWin
             try
             {
                 string RSUri = ConfigurationManager.AppSettings["ReportServerUri"];
-                string RSReportName = "/Jcc_Balancing_For_Foreign_Card";
+              
+                string RsDir = ConfigurationManager.AppSettings["ReportsDir"];
+                string RSReportName = RsDir + "/Jcc_Balancing_For_Foreign_Card";
 
                 // Set the processing mode for the ReportViewer to Remote
                 reportViewer1.ProcessingMode = ProcessingMode.Remote;
@@ -128,6 +123,8 @@ namespace RRDM4ATMsWin
             arrLstDefaultParam.Add(CreateReportParameter("Authoriser", WR16));
 
             arrLstDefaultParam.Add(CreateReportParameter("UserNm", WR21));
+
+            arrLstDefaultParam.Add(CreateReportParameter("BankId", WR22));
 
             return arrLstDefaultParam;
         }

@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -26,9 +19,9 @@ namespace RRDM4ATMsWin
     //    bool RecordFound;
     //    bool ExistanceOfDiff;
 
-        RRDMNotesBalances Na = new RRDMNotesBalances(); // Activate Class 
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances(); // Activate Class 
 
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); // Activate Class 
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); // Activate Class 
 
         RRDMDepositsClass Dc = new RRDMDepositsClass();
 
@@ -36,7 +29,7 @@ namespace RRDM4ATMsWin
 
         RRDMErrorsClassWithActions Ec = new RRDMErrorsClassWithActions();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         string WUserBankId;
         string WOperator;
@@ -101,7 +94,7 @@ namespace RRDM4ATMsWin
                 return;
             }
 
-            Na.ReadSessionsNotesAndValues3PhyCheck(WAtmNo, WSesNo); // READ PHYSICAL CHECK
+            //Na.ReadSessionsNotesAndValues3PhyCheck(WAtmNo, WSesNo); // READ PHYSICAL CHECK
 
             // Initialise Existance of Difference 
             //
@@ -129,11 +122,11 @@ namespace RRDM4ATMsWin
                 button4.Show();
             }
 
-            if (Na.PhysicalCheck1.Problem == true)
-            {
-                checkBox4.Checked = true;
-                button6.Show();
-            }
+            //if (Na.PhysicalCheck1.Problem == true)
+            //{
+            //    checkBox4.Checked = true;
+            //    button6.Show();
+            //}
 
             if (Na.NumberOfErrJournal > 0)
             {
@@ -251,9 +244,10 @@ namespace RRDM4ATMsWin
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Us.ReadSignedActivityByKey(WSignRecordNo);
-            Us.ProcessNo = 11; // Enquiry FROM RECONCILIATION 
-            Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ProcessNo = 11; // Enquiry FROM RECONCILIATION 
+            Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
             NForm72 = new Form72(WSignedId, WSignRecordNo, WBankId, WAtmNo, WSesNo);
             NForm72.Show();
@@ -264,9 +258,10 @@ namespace RRDM4ATMsWin
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Us.ReadSignedActivityByKey(WSignRecordNo);
-            Us.ProcessNo = 12; // Enquiry FROM RECONCILIATION 
-            Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ProcessNo = 12; // Enquiry FROM RECONCILIATION 
+            Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
             NForm72 = new Form72(WSignedId, WSignRecordNo, WBankId,  WAtmNo, WSesNo);
             NForm72.Show();
@@ -277,9 +272,10 @@ namespace RRDM4ATMsWin
 
         private void button6_Click_1(object sender, EventArgs e)
         {
-            Us.ReadSignedActivityByKey(WSignRecordNo);
-            Us.ProcessNo = 13; // Enquiry FROM RECONCILIATION 
-            Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ProcessNo = 13; // Enquiry FROM RECONCILIATION 
+            Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
             NForm72 = new Form72(WSignedId, WSignRecordNo, WBankId, WAtmNo, WSesNo);
             NForm72.Show();

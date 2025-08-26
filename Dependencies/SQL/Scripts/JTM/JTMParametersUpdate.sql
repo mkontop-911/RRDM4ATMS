@@ -5,7 +5,7 @@ GO
 -- ----------------------
 
 -- JTM MaxWorkerThreads
-UPDATE [dbo].[GasParameters] SET [Amount]=10 WHERE (ParamId='910'and OccuranceId='1')
+UPDATE [dbo].[GasParameters] SET [Amount]=3 WHERE (ParamId='910'and OccuranceId='1')
 GO
 
 -- JTM FETCHRetries
@@ -59,7 +59,7 @@ WHERE (ParamId='911'and OccuranceId='3')
 GO
 
 -- JTM MaxJournalBackupsATM    
-UPDATE [dbo].[GasParameters] SET [Amount]=3 WHERE (ParamId='911'and OccuranceId='4')
+UPDATE [dbo].[GasParameters] SET [Amount]=5 WHERE (ParamId='911'and OccuranceId='4')
 GO
 
 

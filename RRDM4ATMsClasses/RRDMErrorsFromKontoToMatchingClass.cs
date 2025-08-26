@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMErrorsFromKontoToMatchingClass
+    public class RRDMErrorsFromKontoToMatchingClass : Logger
     {
+        public RRDMErrorsFromKontoToMatchingClass() : base() { }
 
         // Declare fields 
         //
@@ -51,6 +46,7 @@ namespace RRDM4ATMs
         RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass();
         RRDMAtmsMainClass Am = new RRDMAtmsMainClass();
         RRDMAtmsClass Ac = new RRDMAtmsClass();
+        RRDMMatchingTxns_MasterPoolATMs Mpa = new RRDMMatchingTxns_MasterPoolATMs();
 
 
         // READ Sequencially all open errors  
@@ -94,7 +90,7 @@ namespace RRDM4ATMs
                             Tc.ReadTranForTrace(InAtmNo, TraceNo); // Find Tran number FROM ATMS POOL 
                             if (Tc.RecordFound == true)
                             {
-                                Tc.ReadInPoolTransSpecific(Tc.TranNo); // Find details of transaction from in Pool 
+                                Mpa.ReadInPoolTransSpecificUniqueRecordId(Tc.UniqueRecordId,2); // Find details of transaction from in Pool 
 
                                 Am.ReadAtmsMainSpecific(InAtmNo);
 
@@ -102,9 +98,9 @@ namespace RRDM4ATMs
 
                                 Ec.ReadErrorsIDRecord(ErrId, BankId);// FIND DETAILS OF TYPE OF ERROR
 
-                                Ec.CategoryId = "N/A"; 
-                                Ec.RMCycle = 0;
-                                Ec.MaskRecordId = 0; 
+                                Ec.CategoryId = Tc.RMCateg; 
+                                Ec.RMCycle = Tc.RMCategCycle;
+                                Ec.UniqueRecordId = Tc.UniqueRecordId; 
 
                                 Ec.AtmNo = InAtmNo;
                                 Ec.SesNo = Tc.SesNo;
@@ -121,7 +117,7 @@ namespace RRDM4ATMs
                                 Ec.TraceNo = Tc.AtmTraceNo;
                                 Ec.CardNo = Tc.CardNo;
                                 Ec.CustAccNo = Tc.AccNo;
-                                Ec.TransNo = Tc.TranNo;
+                               
                                 Ec.TransType = Tc.TransType;
                                 Ec.TransDescr = Tc.TransDesc;
 
@@ -145,11 +141,7 @@ namespace RRDM4ATMs
                             }
                             else
                             {
-                                //MessageBox.Show("Error in Matched Errors table." 
-                                //    + " Registered error trace number: " + TraceNo.ToString ()
-                                //    +" doesnot exist in ATMs Pool of transactions");
-                                ErrorFound = true;
-                                ErrorOutput = "An error occured in ErrorsMatchingClass............. ";
+                                System.Windows.Forms.MessageBox.Show("An error occured in ErrorsMatchingClass............. ");
                             }
 
                         }
@@ -164,8 +156,7 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ErrorsMatchingClass............. " + ex.Message;
+                    CatchDetails(ex);
                 }
         }
 
@@ -197,9 +188,7 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@OpenRecord", OpenRecord);
 
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
+                       cmd.ExecuteNonQuery();
 
                     }
                     // Close conn
@@ -209,8 +198,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ErrorsMatchingClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }

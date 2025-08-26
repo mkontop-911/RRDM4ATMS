@@ -32,10 +32,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.button1 = new System.Windows.Forms.Button();
             this.buttonPrintTrace = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxTraceNo = new System.Windows.Forms.TextBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -47,9 +48,9 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.label14);
             this.panel1.Controls.Add(this.panel2);
-            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Location = new System.Drawing.Point(4, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(887, 638);
+            this.panel1.Size = new System.Drawing.Size(1192, 705);
             this.panel1.TabIndex = 0;
             // 
             // label1
@@ -77,25 +78,32 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.buttonPrintTrace);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.textBoxTraceNo);
             this.panel2.Controls.Add(this.dataGridView1);
-            this.panel2.Location = new System.Drawing.Point(14, 39);
+            this.panel2.Location = new System.Drawing.Point(3, 39);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(859, 587);
+            this.panel2.Size = new System.Drawing.Size(1175, 653);
             this.panel2.TabIndex = 0;
             // 
-            // dataGridView1
+            // button1
             // 
-            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.GridColor = System.Drawing.Color.LightGray;
-            this.dataGridView1.Location = new System.Drawing.Point(17, 15);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(827, 530);
-            this.dataGridView1.TabIndex = 0;
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button1.FlatAppearance.BorderSize = 2;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button1.Location = new System.Drawing.Point(1069, 620);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(91, 24);
+            this.button1.TabIndex = 343;
+            this.button1.Text = "Finish";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // buttonPrintTrace
             // 
@@ -106,11 +114,11 @@
             this.buttonPrintTrace.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonPrintTrace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonPrintTrace.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonPrintTrace.Location = new System.Drawing.Point(222, 556);
+            this.buttonPrintTrace.Location = new System.Drawing.Point(493, 623);
             this.buttonPrintTrace.Name = "buttonPrintTrace";
             this.buttonPrintTrace.Size = new System.Drawing.Size(125, 24);
             this.buttonPrintTrace.TabIndex = 342;
-            this.buttonPrintTrace.Text = "Print Trace Journal";
+            this.buttonPrintTrace.Text = "Print What You See";
             this.buttonPrintTrace.UseVisualStyleBackColor = false;
             this.buttonPrintTrace.Click += new System.EventHandler(this.buttonPrintTrace_Click);
             // 
@@ -118,7 +126,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label2.Location = new System.Drawing.Point(14, 558);
+            this.label2.Location = new System.Drawing.Point(14, 623);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(75, 13);
             this.label2.TabIndex = 341;
@@ -126,10 +134,22 @@
             // 
             // textBoxTraceNo
             // 
-            this.textBoxTraceNo.Location = new System.Drawing.Point(106, 558);
+            this.textBoxTraceNo.Location = new System.Drawing.Point(106, 623);
             this.textBoxTraceNo.Name = "textBoxTraceNo";
             this.textBoxTraceNo.Size = new System.Drawing.Size(100, 20);
             this.textBoxTraceNo.TabIndex = 340;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.GridColor = System.Drawing.Color.LightGray;
+            this.dataGridView1.Location = new System.Drawing.Point(17, 15);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.Size = new System.Drawing.Size(1143, 600);
+            this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
             // 
             // Form67
             // 
@@ -137,7 +157,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(911, 662);
+            this.ClientSize = new System.Drawing.Size(1208, 729);
             this.Controls.Add(this.panel1);
             this.Name = "Form67";
             this.Text = "Form67";
@@ -161,5 +181,6 @@
         private System.Windows.Forms.Button buttonPrintTrace;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxTraceNo;
+        private System.Windows.Forms.Button button1;
     }
 }

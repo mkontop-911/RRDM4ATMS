@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows.Forms;
-using System.Data.SqlClient;
-using System.Configuration;
 using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
@@ -42,6 +35,8 @@ namespace RRDM4ATMsWin
         string WParameter4;
         string WSearchP4;
 
+        bool AudiType; 
+
         //   string connectionString = ConfigurationManager.ConnectionStrings
         //     ["ATMSConnectionString"].ConnectionString;
 
@@ -50,13 +45,17 @@ namespace RRDM4ATMsWin
 
         //RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); // Activate Class 
 
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); 
+
         RRDMGasParameters Gp = new RRDMGasParameters();
 
         RRDMAuthorisationProcess Ap = new RRDMAuthorisationProcess();
 
         //     ErrorsClass Pa = new ErrorsClass(); // Make class availble 
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
+
+        RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
 
         RRDMCaseNotes Cn = new RRDMCaseNotes();
 
@@ -82,24 +81,47 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
-            Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "Replenishment"); //
-
-            if (Ap.RecordFound == true & Ap.Stage < 5 & Ap.OpenRecord == true) // Already exist Repl authorisation 
+            // Find If AUDI Type 
+            // If found and it is 1 is Audi Type If Zero then is normal 
+            //RRDMGasParameters Gp = new RRDMGasParameters();
+            AudiType = false;
+            int IsAmountOneZero;
+            Gp.ReadParametersSpecificId(InOperator, "945", "4", "", ""); // 
+            if (Gp.RecordFound == true)
             {
+                IsAmountOneZero = (int)Gp.Amount;
 
-                WDifStatus = Ap.DifferenceStatus; 
+                if (IsAmountOneZero == 1)
+                {
+                    // Transactions will be done at the end 
+                    AudiType = true;
+
+
+                }
+                else
+                {
+                    AudiType = false;
+                }
             }
             else
             {
-                Us.ReadSignedActivityByKey(WSignRecordNo);
-                WDifStatus = Us.ReconcDifferenceStatus; 
-
+                AudiType = false;
             }
+
+
+            Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtm(WAtmNo, WSesNo, "Replenishment"); //
+        
+                Usi.ReadSignedActivityByKey(WSignRecordNo);
+                WDifStatus = Usi.ReconcDifferenceStatus;
+
+            // if you have reached till here then you have done whats is needed
+                WDifStatus = 1;
 
             if (WDifStatus == 1) // Everything is in Order 
             {
                 textBox1.Show();
                 textBox4.Hide();
+                pictureBox1.Hide();
 
                 guidanceMsg = " Well Done !!! No differences. ";
 
@@ -112,13 +134,15 @@ namespace RRDM4ATMsWin
                 //   textBoxMsg.Text = " THERE IS WORK TO BE DONE! SOME OUTSTANDING ARE REMAINING ";
                 textBox1.Hide();
                 textBox4.Show();
+                pictureBox1.Show();
+                pictureBox1.BackgroundImage = appResImg.RED_LIGHT_Repl;
             }
 
             // Update Step of-running user 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
-            WDifStatus = Us.ReconcDifferenceStatus;
-            Us.StepLevel = 6;
-            Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
+            WDifStatus = Usi.ReconcDifferenceStatus;
+            Usi.StepLevel = 6;
+            Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
             //************************************************************
             //************************************************************
@@ -130,11 +154,11 @@ namespace RRDM4ATMsWin
             WRequestor = false;    // 56 
             NormalProcess = false;
 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            if (Us.ProcessNo == 54) WViewFunction = true;// ViewOnly 
-            if (Us.ProcessNo == 55) WAuthoriser = true;// Authoriser from author management          
-            if (Us.ProcessNo == 56) WRequestor = true; // Requestor
+            if (Usi.ProcessNo == 54) WViewFunction = true;// ViewOnly 
+            if (Usi.ProcessNo == 55) WAuthoriser = true;// Authoriser from author management          
+            if (Usi.ProcessNo == 56) WRequestor = true; // Requestor
 
             if (WViewFunction || WAuthoriser || WRequestor)
             {
@@ -177,7 +201,7 @@ namespace RRDM4ATMsWin
             // ................................
             // Handle View ONLY 
             // ''''''''''''''''''''''''''''''''
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
             if (WViewFunction == true || WAuthoriser == true || WRequestor == true) // THIS is not normal process 
             {
@@ -211,7 +235,7 @@ namespace RRDM4ATMsWin
             {
                 // Check Authorisation 
 
-                Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "Replenishment");
+                Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtm(WAtmNo, WSesNo, "Replenishment");
 
                 if (Ap.RecordFound == true & Ap.OpenRecord == true)
                 {
@@ -221,21 +245,21 @@ namespace RRDM4ATMsWin
                     }
                     if (Ap.Stage == 4 & Ap.AuthDecision == "NO")
                     {
-                        Us.ReadSignedActivityByKey(WSignRecordNo);
-                        Us.ProcessNo = 1; // Return to stage 1 : Replenishment   
-                        Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+                        Usi.ReadSignedActivityByKey(WSignRecordNo);
+                        Usi.ProcessNo = 1; // Return to stage 1 : Replenishment   
+                        Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
                         // Update STEP
 
-                        Us.ReadSignedActivityByKey(WSignRecordNo);
+                        Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-                        Us.ReplStep1_Updated = true;
-                        Us.ReplStep2_Updated = true;
-                        Us.ReplStep3_Updated = true;
-                        Us.ReplStep4_Updated = true;
-                        Us.ReplStep5_Updated = true;
+                        Usi.ReplStep1_Updated = true;
+                        Usi.ReplStep2_Updated = true;
+                        Usi.ReplStep3_Updated = true;
+                        Usi.ReplStep4_Updated = true;
+                        Usi.ReplStep5_Updated = true;
 
-                        Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+                        Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
                         NormalProcess = true; // TURN TO NORMAL TO SHOW WHAT IS NEEDED 
 
@@ -248,8 +272,32 @@ namespace RRDM4ATMsWin
 
             }
 
-            // Show Authorisation record 
-            ShowAuthorisationInfo();       
+            if (AudiType == true)
+            {
+                // Read Traces to get values to display 
+                Ta.ReadSessionsStatusTraces(WAtmNo, WSesNo);
+                if (Ta.LatestBatchNo == 2)
+                {
+                    // This was AUTO reconciled 
+                    panelAuthor.Hide();
+                    buttonRefresh.Hide();
+
+                    buttonAuthor.Hide();
+
+                    labelAuthHeading.Text = "THIS REPLENISHMENT WAS DONE AUTOMATICALLY BY THE SYSTEM.";
+                    labelAuthHeading.Show();
+
+                }
+                else
+                {
+                    ShowAuthorisationInfo();
+                }
+            }
+            else
+            {
+                // Show Authorisation record 
+                ShowAuthorisationInfo();
+            }
 
         }
 
@@ -258,8 +306,17 @@ namespace RRDM4ATMsWin
         //
         private void ShowAuthorisationInfo()
         {
-
-            Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "Replenishment");
+            if (WViewFunction == true)
+            {
+                // Close Record just for viewing 
+                Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtmViewClose(WAtmNo, WSesNo, "Replenishment");
+            }
+            else
+            {
+                // Open Record
+                Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtm(WAtmNo, WSesNo, "Replenishment");
+            }
+           
             if ((Ap.RecordFound == true & Ap.OpenRecord == true)
                    || (Ap.RecordFound == true & Ap.OpenRecord == false & Ap.Stage == 5))
             {
@@ -267,12 +324,12 @@ namespace RRDM4ATMsWin
 
                 if (Ap.Stage == 1) StageDescr = "Authoriser Not Available yet.";
                 if (Ap.Stage == 2) StageDescr = "Authoriser got the message. He will get action.";
-                if (Ap.Stage == 3) StageDescr = "Authoriser took action. Requestor must act. ";
+                if (Ap.Stage == 3) StageDescr = "Authoriser took action. Authoriser to press Finish. ";
                 if (Ap.Stage == 4 & Ap.AuthDecision == "YES")
                 {
                     StageDescr = "Authorization accepted. Ready for Finish";
                 }
-                if (Ap.Stage == 4 & Ap.AuthDecision == "NO")
+                if ((Ap.Stage == 3 || Ap.Stage == 4) & Ap.AuthDecision == "NO")
                 {
                     StageDescr = "Authorization REJECTED. ";
                     Color Red = Color.Red;
@@ -280,6 +337,12 @@ namespace RRDM4ATMsWin
                 }
 
                 if (Ap.Stage == 5) StageDescr = "Authorisation process is completed";
+                if (Ap.Stage == 5 & Ap.AuthDecision == "NO")
+                {
+                    StageDescr = "Authorization REJECTED. ";
+                    Color Red = Color.Red;
+                    labelAuthStatus.ForeColor = Red;
+                }
 
                 labelAuthStatus.Text = "Current Status : " + StageDescr;
 
@@ -389,41 +452,36 @@ namespace RRDM4ATMsWin
         private void buttonAuthor_Click(object sender, EventArgs e)
         {
 
-            // Check if Already in authorization process
 
-            Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "Replenishment");
 
-            if (Ap.RecordFound == true & Ap.OpenRecord == true)
-            {
-                if (Ap.Stage == 4 & Ap.AuthDecision == "NO")
-                {
-                    Ap.Stage = 5;
-                    Ap.OpenRecord = false;
+            //Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtm(WAtmNo, WSesNo, "Replenishment");
 
-                    Ap.UpdateAuthorisationRecord(Ap.SeqNumber);
-                }
-            }
-
-            Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "Replenishment");
-
-            if (Ap.RecordFound == true & Ap.Stage < 5 & Ap.OpenRecord == true) // Already exist Repl authorisation 
-            {
-                MessageBox.Show("This Replenishment Cycle Already has authorization record!" + Environment.NewLine
-                                         + "Go to Pending Authorisations process."
-                                                          );
-                return;
-            }
+            //if (Ap.RecordFound == true & Ap.Stage < 5 & Ap.OpenRecord == true) // Already exist Repl authorisation 
+            //{
+            //    MessageBox.Show("This Replenishment Cycle Already has authorization record!" + Environment.NewLine
+            //                             + "Go to Pending Authorisations process."
+            //                                              );
+            //    return;
+            //}
 
             // Validate input 
             //    InputValidationAndUpdate("Authorisation");
 
             //      if (ErrorReturn == true) return;
+            RRDMReconcJobCycles Rjc = new RRDMReconcJobCycles();
+
+            string WJobCategory = "ATMs";
+            int WReconcCycleNo;
+
+            WReconcCycleNo = Rjc.ReadLastReconcJobCycleATMsAndNostroWithMinusOne(WOperator, WJobCategory);
             int WTranNo = 0;
 
             string WOrigin = "Replenishment";
 
             int AuthorSeqNumber = 0; // This is used >0 when calling from Authorization management 
-            NForm110 = new Form110(WSignedId, WSignRecordNo, WOperator, WOrigin, WTranNo, WAtmNo, WSesNo, AuthorSeqNumber, "Normal");
+            NForm110 = new Form110(WSignedId, WSignRecordNo, WOperator, WOrigin, WTranNo, WAtmNo, WSesNo, AuthorSeqNumber,
+                 0, "", WReconcCycleNo
+                , "Normal");
             NForm110.FormClosed += NForm110_FormClosed;
             NForm110.ShowDialog();
 
@@ -442,21 +500,44 @@ namespace RRDM4ATMsWin
             WRequestor = false;
             NormalProcess = false;
 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            if (Us.ProcessNo == 56) 
+            if (Usi.ProcessNo == 56) 
             {
                 WRequestor = true; // Requestor
                 ViewWorkFlow = true;
             }
             else NormalProcess = true;
 
-            Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "Replenishment");
+            Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtm(WAtmNo, WSesNo, "Replenishment");
 
             if (WRequestor == true & Ap.Stage == 1)
             {
                 guidanceMsg = "Message was sent to authoriser. Refresh for progress ";
                 ChangeBoardMessage(this, e);
+
+                // Check if CIT excel is operational do the following 
+                RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
+                string WFileName = "CIT_EXCEL_TO_BANK";
+                string TargetDB = "[RRDM_Reconciliation_ITMX]";
+                Cv.ReadTableToSeeIfExist(TargetDB, WFileName);
+
+                if (Cv.RecordFound == true)
+                {
+                    // File Exist
+                    RRDM_CIT_EXCEL_TO_BANK Ce = new RRDM_CIT_EXCEL_TO_BANK();
+                    string SelectionCriteria = " WHERE AtmNo='" + WAtmNo + "' AND ReplCycle =" + WSesNo;
+                    Ce.Read_CIT_Excel_Table_BySelectionCriteria(SelectionCriteria);
+                    if (Ce.RecordFound == true)
+                    {
+                        Ce.STATUS = "02"; // Under Authorization Status
+                        Ce.UpdateAtmDuringMatchingOfCitExcel(Ce.SeqNo);
+
+                        Ta.ReadSessionsStatusTraces(WAtmNo, WSesNo);
+                        Ta.Stats1.NoOfCheques = 1;
+                        Ta.UpdateSessionsStatusTraces(WAtmNo, WSesNo);
+                    }
+                }
             }
 
             if (WRequestor == true & Ap.Stage == 4)
@@ -477,6 +558,14 @@ namespace RRDM4ATMsWin
         // REFRESH 
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
+            Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtm(WAtmNo, WSesNo, "Replenishment");
+
+            if (Ap.Stage < 3)
+            {
+                MessageBox.Show("Authoriser didn't take action yet.");
+                return;
+            }
+
             ShowAuthorisationInfo();
         }
 
@@ -547,7 +636,7 @@ namespace RRDM4ATMsWin
         {
             int WDisputeNo = 0;
             int WDisputeTranNo = 0;
-            NForm112 = new Form112(WSignedId, WSignRecordNo, WOperator, "History", WAtmNo, WSesNo, WDisputeNo, WDisputeTranNo);
+            NForm112 = new Form112(WSignedId, WSignRecordNo, WOperator, "History", WAtmNo, WSesNo, WDisputeNo, WDisputeTranNo, "",0);
             NForm112.ShowDialog();
         }
 
@@ -560,10 +649,64 @@ namespace RRDM4ATMsWin
             string SearchP4 = "";
             if (ViewWorkFlow == true) WMode = "Read";
             else WMode = "Update";
-            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, WParameter3, WParameter4, WMode, SearchP4);
+            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, "", WParameter3, WParameter4, WMode, SearchP4);
             NForm197.ShowDialog();
             SetScreen();
         }
+// GL Txns 
+        private void buttonGLTxns_Click(object sender, EventArgs e)
+        {
+            RRDMActions_Occurances Aoc = new RRDMActions_Occurances();
 
+            string WSelectionCriteria = "WHERE AtmNo ='" + WAtmNo + "' AND ReplCycle =" + WSesNo
+                  + " AND (OriginWorkFlow ='Replenishment' OR OriginWorkFlow ='Dispute') ";
+            Aoc.ReadActionsOccurancesAndFillTable_Big(WSelectionCriteria);
+
+            Aoc.ClearTableTxnsTableFromAction();
+
+            int I = 0;
+
+            while (I <= (Aoc.TableActionOccurances_Big.Rows.Count - 1))
+            {
+
+                int WSeqNo = (int)Aoc.TableActionOccurances_Big.Rows[I]["SeqNo"];
+
+                Aoc.ReadActionsOccuarnceBySeqNo(WSeqNo);
+
+                int WMode2 = 1; // 
+
+                Aoc.ReadActionsTxnsCreateTableByUniqueKey(Aoc.UniqueKeyOrigin, Aoc.UniqueKey, Aoc.ActionId, Aoc.Occurance
+                                                             , Aoc.OriginWorkFlow, WMode2);
+                I = I + 1;
+            }
+
+            DataTable TempTxnsTableFromAction;
+            TempTxnsTableFromAction = Aoc.TxnsTableFromAction;
+
+            Form14b_All_Actions NForm14b_All_Actions;
+
+            NForm14b_All_Actions = new Form14b_All_Actions(WSignedId, WOperator, TempTxnsTableFromAction, 1);
+            NForm14b_All_Actions.ShowDialog();
+
+        }
+        // All Actions Taken 
+        private void buttonAllActions_Click(object sender, EventArgs e)
+        {
+            RRDMActions_Occurances Aoc = new RRDMActions_Occurances();
+            string WSelectionCriteria;
+            
+            WSelectionCriteria = "WHERE AtmNo ='" + WAtmNo + "' AND ReplCycle =" + WSesNo
+               + " AND (OriginWorkFlow ='Replenishment' OR OriginWorkFlow ='Dispute') ";
+
+            Aoc.ReadActionsOccurancesAndFillTable_Small(WSelectionCriteria);
+
+            //string WUniqueRecordIdOrigin = "Master_Pool";
+
+            Form14b_All_Actions NForm14b_All_Actions;
+            int WMode = 3; // Actions 
+            NForm14b_All_Actions = new Form14b_All_Actions(WSignedId, WOperator, Aoc.TableActionOccurances_Small, WMode);
+            NForm14b_All_Actions.ShowDialog();
+
+        }
     }
 }

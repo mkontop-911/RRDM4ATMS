@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Collections;
@@ -10,7 +6,7 @@ using System.IO;
 
 namespace RRDM4ATMsWin
 {
-    class AuditTrailClass
+    public class AuditTrailClass
     {
         string connectionString = ConfigurationManager.ConnectionStrings
            ["ATMSConnectionString"].ConnectionString;
@@ -23,7 +19,8 @@ namespace RRDM4ATMsWin
 
             string UniqueId = Guid.NewGuid().ToString();
 
-            string cmdinsert = "INSERT INTO [dbo].[AuditTrail] ([UniqueID], [DateTime], [Category], [SubCategory], [TypeOfChange], [UserID], [Screenshot],[ScreenshotPriorChange],[Message]) VALUES (@UniqueID, @DateTime, @Category, @SubCategory, @TypeOfChange, @UserID, @Screenshot,@ScreenshotPriorChange,@Message)";
+            string cmdinsert = "INSERT INTO [dbo].[AuditTrail] ([UniqueID], [DateTime], [Category], [SubCategory], [TypeOfChange], [UserID], [Screenshot],[ScreenshotPriorChange],[Message]) "
+                + "VALUES (@UniqueID, @DateTime, @Category, @SubCategory, @TypeOfChange, @UserID, @Screenshot,@ScreenshotPriorChange,@Message)";
 
             using (SqlConnection conn =
                 new SqlConnection(connectionString))

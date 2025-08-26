@@ -1,15 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Data;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Timers;
 using System.Threading;
 using System.Diagnostics;
-
-using System.Data.SqlClient;
 using System.Configuration;
 
 using RRDM4ATMs;
@@ -45,7 +37,7 @@ namespace RRDMJTMClasses
             string ValMsgFmt = @"ParamId:{0}, OccuranceId:{1} --> {2}";
             // From ATMs parameter tables
             int JTM_MaxThreadNumber;
-            int JTM_FETCH_Timeout;
+            int JTM_FETCH_RetryWaitTime;
             int JTM_FETCH_Retries;
             int JTM_SleepWaitNewRequest;
             int JTM_SleepWaitEmptyThreadSlot;
@@ -58,17 +50,20 @@ namespace RRDMJTMClasses
             string JTM_ArchiveRoot = "";
             string JTM_ParserSP = "";
             int JTM_MaxJournalBackups;
+            string JTM_PSExecPath = "";
+            string JTM_InitEJPath = "";
 
-
-            #region Get AppSettings["JTMOperator"]
+            #region Get AppSettings["JTMOperator", "SQLRelativeFilePoolPath"]
             string Operator = null;
+            string SQLRelativeFilePoolPath = null;
             try
             {
                 Operator = ConfigurationManager.AppSettings["JTMOperator"];
+                SQLRelativeFilePoolPath = ConfigurationManager.AppSettings["SQLRelativeFilePoolPath"];
             }
             catch (ConfigurationErrorsException ex)
             {
-                msg = string.Format("Terminating because of a configuration file error while reading AppSettings['JTMOperator'] value from the configuration file. The error reads:\n{0}", ex.Message);
+                msg = string.Format("Terminating because of a configuration file error while reading AppSettings values. The error reads:\n{0}", ex.Message);
                 EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
                 // the ConsoleDisplay thread is not started yet, so we display the message ourselves
                 if (Environment.UserInteractive)
@@ -116,8 +111,8 @@ namespace RRDMJTMClasses
 
             // How much to wait between fetch retries
             Gp.ReadParametersSpecificId(Operator, "910", "3", "", "");
-            JTM_FETCH_Timeout = (int)Gp.Amount;
-            if (JTM_FETCH_Timeout < 0)
+            JTM_FETCH_RetryWaitTime = (int)Gp.Amount;
+            if (JTM_FETCH_RetryWaitTime < 0)
                 ValMsg = ValMsg + string.Format(ValMsgFmt, "910", "3", "Invalid FetchTimeout!\n");
 
             // How long to wait for an available thread slot
@@ -174,12 +169,40 @@ namespace RRDMJTMClasses
             if (string.IsNullOrEmpty(JTM_ParserSP))
                 ValMsg = ValMsg + string.Format(ValMsgFmt, "911", "3", "Invalid name of Parser Stored Procedure!\n");
 
-            // Stored Procedure for Parsing
+            // Max backups to keep on the ATM
             Gp.ReadParametersSpecificId(Operator, "911", "4", "", "");
             JTM_MaxJournalBackups = (int)Gp.Amount;
-            if (JTM_MaxJournalBackups < 0)
+            if (JTM_MaxJournalBackups < 1)
                 ValMsg = ValMsg + string.Format(ValMsgFmt, "911", "4", "Invalid MaxJournalBackups!\n");
 
+
+            // Path of PSExec program on machine running JTM .. should exist in the same directory as .this
+            string val = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            JTM_PSExecPath = Path.Combine(val, "PSExec.exe");
+            if (!File.Exists(JTM_PSExecPath))
+            {
+                ValMsg = ValMsg + string.Format("Could not locate PSEXEC [{0}]!\n", JTM_PSExecPath);
+            }
+
+            //Gp.ReadParametersSpecificId(Operator, "911", "5", "", "");
+            //JTM_PSExecPath = Gp.OccuranceNm;
+            //if (string.IsNullOrEmpty(JTM_PSExecPath))
+            //{
+            //    ValMsg = ValMsg + string.Format(ValMsgFmt, "911", "5", "Invalid path for the PSEXEC.EXE program!\n");
+            //}
+            //else if (!File.Exists(JTM_PSExecPath))
+            //{
+            //    ValMsg = ValMsg + string.Format(ValMsgFmt, "911", "5", "Could not locate PSEXEC [{0}]!\n", JTM_PSExecPath);
+            //}
+
+            // Case of InitEJ - Uncomment 911,6
+            //// Path of InitEJ.EXE program on ATMs
+            //Gp.ReadParametersSpecificId(Operator, "911", "6", "", "");
+            //JTM_InitEJPath = Gp.OccuranceNm;
+            //if (string.IsNullOrEmpty(JTM_ParserSP))
+            //    ValMsg = ValMsg + string.Format(ValMsgFmt, "911", "6", "Invalid path for the InitEJ.EXE program!\n");
+
+            // Check if any of the above caused an error...
             if (!string.IsNullOrEmpty(ValMsg))
             {
                 msg = string.Format("The program terminates because of invalid parameters. Details:\n{0}", ValMsg);
@@ -194,7 +217,7 @@ namespace RRDMJTMClasses
             string fstr = "JTM stared with the following parameters:\n" +
                           "MaxThreads:{0}\n" +
                           "FETCH_Retries:{1}\n" +
-                          "FETCH_RetryTimeout:{2}\n" +
+                          "FETCH_RetryWaitTime:{2}\n" +
                           "SleepWaitNewRequest:{3}ms\n" +
                           "SleepWaitEmptyThreadSlot:{4}ms\n" +
                           "ThreadStartTimeout:{5}ms\n" +
@@ -204,11 +227,15 @@ namespace RRDMJTMClasses
                           "FilePoolRoot:{9}\n" +
                           "ArchiveRoot:{10}\n" +
                           "Max Journal Backup files at ATM:{11}\n" +
-                          "Stored Procedure for Parsing:{12}";
+                          "Stored Procedure for Parsing:{12}\n" +
+                          "Path to PSEXEC.EXE:{13}\n" +
+                          // "Path to INITEJ.EXE on ATMs:{14}\n" +
+                          "FilePoolRoot Relative to SQL:{15}"
+                          ;
 
             msg = string.Format(fstr, JTM_MaxThreadNumber,
                                       JTM_FETCH_Retries,
-                                      JTM_FETCH_Timeout,
+                                      JTM_FETCH_RetryWaitTime,
                                       JTM_SleepWaitNewRequest,
                                       JTM_SleepWaitEmptyThreadSlot,
                                       JTM_StartThreadTimeout,
@@ -218,7 +245,10 @@ namespace RRDMJTMClasses
                                       JTM_FilePoolRoot,
                                       JTM_ArchiveRoot,
                                       JTM_MaxJournalBackups,
-                                      JTM_ParserSP);
+                                      JTM_ParserSP,
+                                      JTM_PSExecPath,
+                                      JTM_InitEJPath,
+                                      SQLRelativeFilePoolPath);
             EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Information);
 
             #endregion
@@ -228,7 +258,7 @@ namespace RRDMJTMClasses
             JTMThreadRegistry ThrRegistry = new JTMThreadRegistry(
                                                 JTM_MaxThreadNumber,
                                                 JTM_FETCH_Retries,
-                                                JTM_FETCH_Timeout,
+                                                JTM_FETCH_RetryWaitTime,
                                                 JTM_SleepWaitNewRequest,
                                                 JTM_SleepWaitEmptyThreadSlot,
                                                 JTM_StartThreadTimeout,
@@ -238,7 +268,10 @@ namespace RRDMJTMClasses
                                                 JTM_FilePoolRoot,
                                                 JTM_ArchiveRoot,
                                                 JTM_MaxJournalBackups,
-                                                JTM_ParserSP);
+                                                JTM_ParserSP,
+                                                JTM_PSExecPath,
+                                                JTM_InitEJPath,
+                                                SQLRelativeFilePoolPath);
             #endregion
 
             // Register ourselves
@@ -286,13 +319,22 @@ namespace RRDMJTMClasses
                     if (JtmQ.RecordFound)
                     {
                         #region Process the request
+                        // Avoid concurrent operations on the same ATM
+                        if (JTMThreadRegistry.ATM_HasRequestInProgress(JtmQ.AtmNo))
+                        {
+                            msg = string.Format("Request [{0}] for ATM [{1}] is postponed! Another request is already in progress!" , JtmQ.Command, JtmQ.AtmNo);
+                            EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Warning);
+                            Thread.Sleep(JTM_SleepWaitNewRequest);
+                            continue;
+                        }
+
                         switch (JtmQ.Command)
                         {
                             case JTMQueueCommand.Cmd_FETCH:
-                            case JTMQueueCommand.Cmd_FETCHDEL:
+                            // case JTMQueueCommand.Cmd_FETCHDEL:
                             case JTMQueueCommand.Cmd_ATMSTATUS:
                                 {
-                                    #region FETCH/FETCHDEL/STATUS
+                                    #region FETCH / ATMSTATUS
 
                                     // Get an empty slot in the ThreaArray
                                     Indx = JTMThreadRegistry.GetEmptySlot();
@@ -311,7 +353,7 @@ namespace RRDMJTMClasses
                                     JTMThreadRegistry.ThreadArray[Indx].IdentClass = IdentDetClass;
                                     JTMThreadRegistry.ThreadArray[Indx].IdentClass.ReadJTMIdentificationDetailsByAtmNo(JtmQ.AtmNo);
 
-                                    if (JTMThreadRegistry.ThreadArray[Indx].IdentClass.ErrorFound == true)
+                                    if (!JTMThreadRegistry.ThreadArray[Indx].IdentClass.RecordFound)
                                     {
                                         // stop here, do not start a new thread
                                         msg = string.Format("Error while reading the ATM record (ReadJTMIdentificationDetailsByAtmNo)!\n The ATM is {0}\nThe error message reads:\n{1}",
@@ -323,10 +365,17 @@ namespace RRDMJTMClasses
                                         JTMThreadRegistry.ThreadArray[Indx].Req.Stage = JTMQueueStage.Const_Aborted;
                                         JTMThreadRegistry.ThreadArray[Indx].Req.ResultCode = JTMQueueResult.Failure;
                                         JTMThreadRegistry.ThreadArray[Indx].Req.ResultMessage = msg;
+                                        JtmQ.Stage = JTMQueueStage.Const_Aborted;
+                                        JtmQ.ResultCode = JTMQueueResult.Failure;
+                                        if (!JTMThreadRegistry.ThreadArray[Indx].IdentClass.ErrorFound)
+                                        {
+                                            msg = string.Format("ATM [{0}] not found in JTMIdentificationDetails!", JtmQ.AtmNo);
+                                        }
+                                        JtmQ.ResultMessage = msg;
                                         JtmQ.UpdateRecordInJTMQueueByMsgID(JtmQ.MsgID);
 
                                         // Mark the slot for release
-                                        JTMThreadRegistry.ThreadArray[Indx].Status = StatusOfThread.Aborting;
+                                        JTMThreadRegistry.ThreadArray[Indx].Status = StatusOfThread.Canceled;
 
                                         break;
                                     }
@@ -578,7 +627,7 @@ namespace RRDMJTMClasses
             JTMThreadRegistry.ThreadArray[Indx].Req.RequestorMachine = JtmQ.RequestorMachine;
             JTMThreadRegistry.ThreadArray[Indx].Req.Command = JtmQ.Command;
             JTMThreadRegistry.ThreadArray[Indx].Req.Priority = JtmQ.Priority;
-            JTMThreadRegistry.ThreadArray[Indx].Req.BatchID = JtmQ.BatchID;
+            // JTMThreadRegistry.ThreadArray[Indx].Req.BatchID = JtmQ.BatchID;
             JTMThreadRegistry.ThreadArray[Indx].Req.AtmNo = JtmQ.AtmNo;
             JTMThreadRegistry.ThreadArray[Indx].Req.BankID = JtmQ.BankID;
             JTMThreadRegistry.ThreadArray[Indx].Req.BranchNo = JtmQ.BranchNo;

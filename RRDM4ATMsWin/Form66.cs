@@ -1,20 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using RRDM4ATMs;
-using System.Data.SqlClient;
-using System.Drawing.Printing;
-using System.Configuration;
 
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 namespace RRDM4ATMsWin
 {
@@ -43,8 +32,11 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
+            // Set Working Date 
+          
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
             UserId.Text = InSignedId;
 
             // Banks available for the seed bank 
@@ -68,6 +60,7 @@ namespace RRDM4ATMsWin
             comboBox1.Items.Add("5 : Created by user Errors");
             comboBox1.Items.Add("6 : UnSpecified"); 
             comboBox1.Items.Add("7 : Created System Errors");
+            comboBox1.Items.Add("8 : ITMX Origin");
 
             comboBox1.Text = "0 : Select";
 
@@ -87,15 +80,13 @@ namespace RRDM4ATMsWin
 
             dataGridView1.Columns[1].Width = 80; // Bank 
             dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            dataGridView1.Columns[2].Width = 140; // Descr
+            dataGridView1.Columns[1].Visible = false; 
+            dataGridView1.Columns[2].Width = 260; // Descr
             dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
             dataGridView1.Columns[3].Width = 70; // Action 
 
-            dataGridView1.Columns[4].Width = 70; // Express 
-
-           
+            dataGridView1.Columns[4].Width = 70; // Express     
 
         }
 
@@ -265,7 +256,7 @@ namespace RRDM4ATMsWin
                 string WParameter4 = "Notes For " + "Error Id : " + WErrId.ToString() ;
                 string SearchP4 = "";
                 string WMode = "Update";
-                NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, WParameter3, WParameter4, WMode, SearchP4);
+                NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, "", WParameter3, WParameter4, WMode, SearchP4);
                 NForm197.FormClosed += NForm197_FormClosed;
                 NForm197.ShowDialog();
         

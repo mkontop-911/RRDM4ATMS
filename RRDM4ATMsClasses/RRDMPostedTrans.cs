@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMPostedTrans
+    public class RRDMPostedTrans : Logger
     {
+        public RRDMPostedTrans() : base() { }
         // POSTED TRANSACTIONS 
         // THESE COME FROM TRANACTIONS TO BE POSTED 
         // Which are created from 
@@ -40,18 +36,18 @@ namespace RRDM4ATMs
         public DateTime ValueDate; 
         public bool OpenRecord;
         public string Operator;
+        public int RMCycle; 
 
         public decimal TotalDebit12; 
         public decimal TotalCredit22; 
 
         DateTime NullPastDate = new DateTime(1900, 01, 01);
-
-        string connectionString = ConfigurationManager.ConnectionStrings
+        readonly string connectionString = ConfigurationManager.ConnectionStrings
            ["ATMSConnectionString"].ConnectionString;
 
-        string WhatFile = "[ATMS].[dbo].[PostedTrans]";
+        //string WhatFile = "[ATMS].[dbo].[PostedTrans]";
 
-        decimal TotNewAmount;
+        //decimal TotNewAmount;
 
         // Define the data table 
         public DataTable TablePostedTrans = new DataTable();
@@ -69,14 +65,17 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput; 
         //
-        // READ ALL TRANSACTIONS AND FILL THE TABLE   
+        // READ ALL TRANSACTIONS AND FILL THE TABLE  STATEMENT    
         //
-        public void ReadPostedTransAndFillTheTable(string InOperator, string InFilter,
+        public void ReadPostedTransAndFillTheTable(string InOperator, string InAtmNo, string InAccNo, string InCurrDesc,
                                                    DateTime InFromDt, DateTime InToDt, int InFunction)
         {
             RecordFound = false;
             ErrorFound = false;
             ErrorOutput = "";
+            //WFilter = " OpenRecord = 1 "; (3)
+            //WFilter = " WHERE AccNo = @AccNo AND CurrDesc = @CurrDesc AND OpenRecord = 1 "; (1)
+            //    WFilter = " WHERE AtmNo = @AtmNo AND AccNo = @AccNo AND CurrDesc = @CurrDesc AND OpenRecord = 1 "; (2)
 
             LineBal = 0;
             OldLineBal = 0;
@@ -95,6 +94,8 @@ namespace RRDM4ATMs
            
             TablePostedTrans.Columns.Add("TranDtTime", typeof(DateTime));
             TablePostedTrans.Columns.Add("TransType", typeof(int));
+            TablePostedTrans.Columns.Add("AccNo", typeof(string));
+           
             TablePostedTrans.Columns.Add("TransDesc", typeof(string));
 
             TablePostedTrans.Columns.Add("CurrDesc", typeof(string));
@@ -111,11 +112,27 @@ namespace RRDM4ATMs
             TablePostedTrans.Columns.Add("ReplCycle", typeof(int));
             TablePostedTrans.Columns.Add("BalDecimal", typeof(decimal));
  
+            if (InFunction == 1)
+            {
                 SqlString = "SELECT *"
-                  + " FROM " + WhatFile
-                  + " WHERE " + InFilter
-                  + " ORDER BY TranNo ASC ";
-         
+                 + " FROM [ATMS].[dbo].[PostedTrans]"
+                 + " WHERE AccNo = @AccNo AND CurrDesc = @CurrDesc AND OpenRecord = 1 "
+                 + " ORDER BY TranNo ASC ";
+            }
+            if (InFunction == 2)
+            {
+                SqlString = "SELECT *"
+                 + " FROM [ATMS].[dbo].[PostedTrans]"
+                 + " WHERE AtmNo = @AtmNo AND AccNo = @AccNo AND CurrDesc = @CurrDesc AND OpenRecord = 1 "
+                 + " ORDER BY TranNo ASC ";
+            }
+            if (InFunction == 3)
+            {
+                SqlString = "SELECT *"
+                 + " FROM [ATMS].[dbo].[PostedTrans]"
+                 + " WHERE  OpenRecord = 1 " // DATES AS WELL IN BODY OF THE METHOD
+                 + " ORDER BY TranNo ASC ";
+            }
 
             using (SqlConnection conn =
                           new SqlConnection(connectionString))
@@ -125,7 +142,22 @@ namespace RRDM4ATMs
                     using (SqlCommand cmd =
                         new SqlCommand(SqlString, conn))
                     {
-                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+                        if (InFunction == 1)
+                        {
+                            cmd.Parameters.AddWithValue("@AccNo", InAccNo);
+                            cmd.Parameters.AddWithValue("@CurrDesc", InCurrDesc);
+                        }
+                        if (InFunction == 2)
+                        {
+                            cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                            cmd.Parameters.AddWithValue("@AccNo", InAccNo);
+                            cmd.Parameters.AddWithValue("@CurrDesc", InCurrDesc);
+                        }
+                        if (InFunction == 3)
+                        {
+                         
+                        }
+
                         //if (InFromDt != NullPastDate)
                         //{
                         //    cmd.Parameters.AddWithValue("@FromDt", InFromDt);
@@ -140,6 +172,7 @@ namespace RRDM4ATMs
                         {
                             TranNo = (int)rdr["TranNo"];
                             TransType = (int)rdr["TransType"];
+                            AccNo = (string)rdr["AccNo"];
                             TranAmount = (decimal)rdr["TranAmount"];
 
                             OldLineBal = LineBal;
@@ -161,13 +194,13 @@ namespace RRDM4ATMs
                             // After Opening Balance is calculated we continue 
                             // with the transactions of In Days. 
 
-                            if (TranDtTime.Date >= InFromDt.Date & TranDtTime.Date <= InToDt.Date)
+                            if ((TranDtTime.Date >= InFromDt.Date & TranDtTime.Date <= InToDt.Date) 
+                                || InFunction == 3)
                             {
                                 RecordFound = true;
 
                                 if (FirstTime == true & InFunction == 1)
                                 {
-
                                     FirstTime = false;
                                     DataRow RowWa = TablePostedTrans.NewRow();
                                     //RowWa["TranNo"] = TranNo;
@@ -179,12 +212,12 @@ namespace RRDM4ATMs
 
                                 }
 
-                                if (TransType == 21)
+                                if (TransType == 21 || TransType == 22)
                                 {
                                     TotalCr = TotalCr + TranAmount;
                                 }
 
-                                if (TransType == 11)
+                                if (TransType == 11 || TransType == 12)
                                 {
                                     TotalDr = TotalDr + TranAmount;
                                 }
@@ -195,6 +228,8 @@ namespace RRDM4ATMs
                                 Row["TranDtTime"] = TranDtTime.Date;
                                 //RowW["TranDtTime"] = (DateTime)rdr["TranDtTime"];
                                 Row["TransType"] = TransType;
+                                Row["AccNo"] = AccNo;
+                                
                                 string TempDescr = (string)rdr["TransDesc"];
                                 if (TransType == 12 || TransType == 22)
                                 {
@@ -240,8 +275,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in PostedTrans Class............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -277,33 +312,7 @@ namespace RRDM4ATMs
 
                             RecordFound = true;
 
-                            TranNo = (int)rdr["TranNo"];
-
-                            TranToBePostedKey = (int)rdr["TranToBePostedKey"];
-
-                            Origin = (string)rdr["Origin"];
-                            UserId = (string)rdr["UserId"];
-
-                            AccNo = (string)rdr["AccNo"];
-
-                            AtmNo = (string)rdr["AtmNo"];
-                            ReplCycle = (int)rdr["ReplCycle"];
-                            BankId = (string)rdr["BankId"];
-
-
-                            TranDtTime = (DateTime)rdr["TranDtTime"];
-                            TransType = (int)rdr["TransType"]; // 11 for debit 21 for credit
-                            TransDesc = (string)rdr["TransDesc"];
-
-                            CurrDesc = (string)rdr["CurrDesc"];
-
-                            TranAmount = (decimal)rdr["TranAmount"];
-
-                            ValueDate = (DateTime)rdr["ValueDate"];
-
-                            OpenRecord = (bool)rdr["OpenRecord"];
-
-                            Operator = (string)rdr["Operator"];
+                            ReadRecordFields(rdr);
                         }
 
                         // Close Reader
@@ -316,10 +325,43 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in PostedTrans Class............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
+        }
+//
+// Read Record Fields
+//
+        private void ReadRecordFields(SqlDataReader rdr)
+        {
+            TranNo = (int)rdr["TranNo"];
+
+            TranToBePostedKey = (int)rdr["TranToBePostedKey"];
+
+            Origin = (string)rdr["Origin"];
+            UserId = (string)rdr["UserId"];
+
+            AccNo = (string)rdr["AccNo"];
+
+            AtmNo = (string)rdr["AtmNo"];
+            ReplCycle = (int)rdr["ReplCycle"];
+            BankId = (string)rdr["BankId"];
+
+
+            TranDtTime = (DateTime)rdr["TranDtTime"];
+            TransType = (int)rdr["TransType"]; // 11 for debit 21 for credit
+            TransDesc = (string)rdr["TransDesc"];
+
+            CurrDesc = (string)rdr["CurrDesc"];
+
+            TranAmount = (decimal)rdr["TranAmount"];
+
+            ValueDate = (DateTime)rdr["ValueDate"];
+
+            OpenRecord = (bool)rdr["OpenRecord"];
+
+            Operator = (string)rdr["Operator"];
         }
 
         //
@@ -355,33 +397,7 @@ namespace RRDM4ATMs
                             
                             RecordFound = true;
 
-                            TranNo = (int)rdr["TranNo"];
-
-                            TranToBePostedKey = (int)rdr["TranToBePostedKey"];
-
-                            Origin = (string)rdr["Origin"];
-
-                            UserId = (string)rdr["UserId"];
-
-                            AccNo = (string)rdr["AccNo"];
-
-                            AtmNo = (string)rdr["AtmNo"];
-                            ReplCycle = (int)rdr["ReplCycle"];
-                            BankId = (string)rdr["BankId"];
-                 
-                            TranDtTime = (DateTime)rdr["TranDtTime"]; 
-                            TransType = (int)rdr["TransType"]; // 11 for debit 21 for credit
-                            TransDesc = (string)rdr["TransDesc"];
-                          
-                            CurrDesc = (string)rdr["CurrDesc"];
-
-                            TranAmount = (decimal)rdr["TranAmount"];
-
-                            ValueDate = (DateTime)rdr["ValueDate"];
-
-                            OpenRecord = (bool)rdr["OpenRecord"];
-
-                            Operator = (string)rdr["Operator"];
+                            ReadRecordFields(rdr);
                         }
 
                         // Close Reader
@@ -394,13 +410,14 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in PostedTrans Class............. " + ex.Message;
+                    CatchDetails(ex);
 
                 }
         }
         //
         // READ TRANSACTIONs AND Find Totals per In Account and ATM 
+        //
+        // READ By Notes Balance in order to Adjust Host Balance 
         //
         public void ReadTransForAccountTotals(string InAtmNo, string InAccNo, DateTime InTranDtTime)
         {
@@ -436,33 +453,7 @@ namespace RRDM4ATMs
 
                             RecordFound = true;
 
-                            TranNo = (int)rdr["TranNo"];
-
-                            TranToBePostedKey = (int)rdr["TranToBePostedKey"];
-
-                            Origin = (string)rdr["Origin"];
-
-                            UserId = (string)rdr["UserId"];
-
-                            AccNo = (string)rdr["AccNo"];
-
-                            AtmNo = (string)rdr["AtmNo"];
-                            ReplCycle = (int)rdr["ReplCycle"];
-                            BankId = (string)rdr["BankId"];
-
-                            TranDtTime = (DateTime)rdr["TranDtTime"];
-                            TransType = (int)rdr["TransType"]; // 11 for debit 21 for credit
-                            TransDesc = (string)rdr["TransDesc"];
-
-                            CurrDesc = (string)rdr["CurrDesc"];
-
-                            TranAmount = (decimal)rdr["TranAmount"];
-
-                            ValueDate = (DateTime)rdr["ValueDate"];
-
-                            OpenRecord = (bool)rdr["OpenRecord"];
-
-                            Operator = (string)rdr["Operator"];
+                            ReadRecordFields(rdr);
 
                             if (TransType == 12)
                             {
@@ -484,8 +475,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in PostedTrans Class............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }  
@@ -500,9 +491,9 @@ namespace RRDM4ATMs
 
             string cmdinsert = "INSERT INTO [dbo].[PostedTrans] "
                        + "([TranToBePostedKey],[Origin], [UserId], [AccNo], [AtmNo], [ReplCycle], [BankId], "
-                       + " [TranDtTime], [TransType], [TransDesc],  [CurrDesc], [TranAmount], [ValueDate], [OpenRecord],[Operator] )"
+                       + " [TranDtTime], [TransType], [TransDesc],  [CurrDesc], [TranAmount], [ValueDate], [OpenRecord],[Operator],[RMCycle] )"
                        + " VALUES (@TranToBePostedKey, @Origin, @UserId, @AccNo, @AtmNo, @ReplCycle, @BankId, "
-                       + " @TranDtTime, @TransType, @TransDesc, @CurrDesc, @TranAmount, @ValueDate, @OpenRecord, @Operator)";
+                       + " @TranDtTime, @TransType, @TransDesc, @CurrDesc, @TranAmount, @ValueDate, @OpenRecord, @Operator , @RMCycle)";
 
 
             using (SqlConnection conn =
@@ -523,7 +514,6 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@ReplCycle", ReplCycle);
                         cmd.Parameters.AddWithValue("@BankId", BankId);
 
-
                         cmd.Parameters.AddWithValue("@TranDtTime", TranDtTime);
 
                         cmd.Parameters.AddWithValue("@TransType", TransType);
@@ -538,11 +528,12 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@OpenRecord", OpenRecord);
 
                         cmd.Parameters.AddWithValue("@Operator", Operator);
+
+                        cmd.Parameters.AddWithValue("@RMCycle", RMCycle);
                         //rows number of record got updated
 
-                        int rows = cmd.ExecuteNonQuery();
-                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();
+                      
 
                     }
                     // Close conn
@@ -551,8 +542,7 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in PostedTrans Class............. " + ex.Message;
+                    CatchDetails(ex);
                 }
         }
 
@@ -580,9 +570,8 @@ namespace RRDM4ATMs
 
                         //rows number of record got updated
 
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();
+                      
 
                     }
                     // Close conn
@@ -591,11 +580,11 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in PostedTrans Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
-
+        //
         // Closed all transactions with in Posted No
         // 
         public void UpdateAsClosedTheAlreadyInTable(int InTranToBePostedKey)
@@ -618,9 +607,8 @@ namespace RRDM4ATMs
                        
                         //rows number of record got updated
 
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();
+                       
 
                     }
                     // Close conn
@@ -629,75 +617,10 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in PostedTrans Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
-        //// Insert TRANS To Cit Statement based on UserId 
-        ////
-        //public void InsertTranInCit(string InUserId, string InAccNo, string InOrigin)
-        //{
-
-        //    ErrorFound = false;
-        //    ErrorOutput = ""; 
-
-        //    string cmdinsert = "INSERT INTO [dbo].[PostedTrans]"
-        //            + "([TranToBePostedKey],[Origin], [UserId], [AccNo], [AtmNo], [ReplCycle], [BankId], "
-        //            + " [TranDtTime], [TransType], [TransDesc],  [CurrDesc], [TranAmount], [ValueDate], [OpenRecord],[Operator] )"
-        //            + " VALUES (@TranToBePostedKey, @Origin, @UserId, @AccNo, @AtmNo, @ReplCycle, @BankId, "
-        //            + " @TranDtTime, @TransType, @TransDesc, @CurrDesc, @TranAmount, @ValueDate, @OpenRecord, @Operator)";
-
-
-        //    using (SqlConnection conn =
-        //        new SqlConnection(connectionString))
-        //        try
-        //        {
-        //            conn.Open();
-        //            using (SqlCommand cmd =
-
-        //               new SqlCommand(cmdinsert, conn))
-        //            {
-        //                cmd.Parameters.AddWithValue("@TranToBePostedKey", TranToBePostedKey);
-        //                cmd.Parameters.AddWithValue("@Origin", Origin);
-        //                cmd.Parameters.AddWithValue("@UserId", InUserId);
-        //                cmd.Parameters.AddWithValue("@AccNo", InAccNo);
-
-        //                cmd.Parameters.AddWithValue("@AtmNo", AtmNo);
-        //                cmd.Parameters.AddWithValue("@ReplCycle", ReplCycle);
-        //                cmd.Parameters.AddWithValue("@BankId", BankId);
-
-
-        //                cmd.Parameters.AddWithValue("@TranDtTime", TranDtTime);
-
-        //                cmd.Parameters.AddWithValue("@TransType", TransType);
-        //                cmd.Parameters.AddWithValue("@TransDesc", TransDesc);
-
-
-        //                cmd.Parameters.AddWithValue("@CurrDesc", CurrDesc);
-        //                cmd.Parameters.AddWithValue("@TranAmount", TranAmount);
-
-        //                cmd.Parameters.AddWithValue("@ValueDate", ValueDate);
-
-        //                cmd.Parameters.AddWithValue("@OpenRecord", OpenRecord);
-
-        //                cmd.Parameters.AddWithValue("@Operator", Operator);
-        //                //rows number of record got updated
-
-        //                int rows = cmd.ExecuteNonQuery();
-        //                //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-        //                //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
-
-        //            }
-        //            // Close conn
-        //            conn.Close();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            conn.Close();
-        //            ErrorFound = true;
-        //            ErrorOutput = "An error occured in PostedTrans Class............. " + ex.Message;
-        //        }
-        //}
 
     }
 }

@@ -118,20 +118,47 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="logo-sign (2)" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\logo-sign (2).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Confirmed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Confirmed.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ATMMap (2)" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ATMMap (2).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RRDM-CIT Providers-1024" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RRDM-CIT Providers-1024.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="call-centre-sales-banner" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\call-centre-sales-banner.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GREEN-LIGHT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GREEN-LIGHT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ThaiITMX1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ThaiITMX1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Arrow.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RRDM-CIT Providers-1024" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RRDM-CIT Providers-1024.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="stock-vector-traffic-lights-70736890[1]" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock-vector-traffic-lights-70736890[1].jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="alert-04" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\alert-04.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="commIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\commIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GREEN-LIGHT-Repl1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GREEN-LIGHT-Repl1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="thC4MW10FA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\thC4MW10FA.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Image1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Image1.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="block-id-icon-44128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\block-id-icon-44128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logo-sign (2)" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logo-sign (2).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RRDM-Functional-1024" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RRDM-Functional-1024.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -139,65 +166,86 @@
   <data name="msgIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\msgIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="logo to the side" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\logo to the side.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RED-LIGHT-Repl1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RED-LIGHT-Repl1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Investingationpng" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Investingationpng.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Maria400" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Maria400.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RRDM-ATMs in Need-1024" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RRDM-ATMs in Need-1024.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Investigate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Investigate.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="GREEN-LIGHT-Repl1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\GREEN-LIGHT-Repl1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RRDM-Global View-1024" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RRDM-Global View-1024.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Done" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Done.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="EastWest" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EastWest.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="zigaria 2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\zigaria 2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RED-LIGHT-Repl1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RED-LIGHT-Repl1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RRDM-Global View-1024" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RRDM-Global View-1024.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="logo1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\logo1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Investigatejpg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Investigatejpg.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="logo (3)" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\logo (3).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="confirmed1[1]" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\confirmed1[1].jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="lloyds_bank_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\lloyds_bank_logo.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RRDM -Logo-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RRDM -Logo-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TakeAction" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TakeAction.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="commIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\commIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="GREEN-LIGHT-Repl" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\GREEN-LIGHT-Repl.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Done" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Done.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="YELLOW-Repl" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\YELLOW-Repl.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ATMMap (2)" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ATMMap (2).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RRDM-Disputes-1024" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RRDM-Disputes-1024.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lloyds_bank_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lloyds_bank_logo.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RRDM-ATMs in Need-1024" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RRDM-ATMs in Need-1024.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TakeAction" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TakeAction.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ThaiITMX" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ThaiITMX.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logo to the side" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logo to the side.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CallCentre" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CallCentre1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="YELLOW" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\YELLOW.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="logo2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\logo2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="logo1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logo1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ATM CASSETTE" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ATM CASSETTE.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="imageBranch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\imageBranch.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="BancNet Route" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BancNet Route1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RRDM-Disputes-1024" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RRDM-Disputes-1024.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="GREEN-LIGHT-Repl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GREEN-LIGHT-Repl.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logo2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logo2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RED-LIGHT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RED-LIGHT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -205,16 +253,19 @@
   <data name="RED-LIGHT-Repl" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RED-LIGHT-Repl.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="logo (3)" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logo (3).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Pafos-Route" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pafos-Route.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="stock-vector-traffic-lights-70736890[1]" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stock-vector-traffic-lights-70736890[1].jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ThaiRiver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ThaiRiver.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RRDM -Logo-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RRDM -Logo-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="BackOffice" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BackOffice.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="EastWest" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EastWest.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="bingo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bingo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

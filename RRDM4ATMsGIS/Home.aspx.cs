@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
+
 
 namespace RRDM4ATMsGIS
 {
@@ -14,8 +11,6 @@ namespace RRDM4ATMsGIS
         {
 
         }
-
-
  
         protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
         {
@@ -31,13 +26,16 @@ namespace RRDM4ATMsGIS
             Response.Redirect(url);
         }
 
-
         protected void btGroup_Click(object sender, EventArgs e)
         {
-            string id = tbGroupNo.Text;
+            string grpno = tbGroupNo.Text;
+            string UserId = tbUserId.Text;
+            string grpdesc = tbGroupDesc.Text;
             string url;
-            url = "~/Main.aspx?GroupNo=" + id.ToString();
+            url = "~/Main.aspx?UserId="+ UserId.ToString() +"&GroupNo=" + grpno.ToString() + "&GroupDescr=" + grpdesc.ToString();
             Response.Redirect(url);
         }
+
+        
     }
 }

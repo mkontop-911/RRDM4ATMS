@@ -48,6 +48,9 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonAllAccounting = new System.Windows.Forms.Button();
+            this.buttonAllActions = new System.Windows.Forms.Button();
+            this.buttonPrintActions = new System.Windows.Forms.Button();
             this.panelAuthor.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -85,7 +88,7 @@
             this.buttonRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.buttonRefresh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonRefresh.Location = new System.Drawing.Point(702, 322);
+            this.buttonRefresh.Location = new System.Drawing.Point(736, 321);
             this.buttonRefresh.Name = "buttonRefresh";
             this.buttonRefresh.Size = new System.Drawing.Size(85, 28);
             this.buttonRefresh.TabIndex = 402;
@@ -103,7 +106,7 @@
             this.buttonAuthor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAuthor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.buttonAuthor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonAuthor.Location = new System.Drawing.Point(702, 250);
+            this.buttonAuthor.Location = new System.Drawing.Point(736, 250);
             this.buttonAuthor.Name = "buttonAuthor";
             this.buttonAuthor.Size = new System.Drawing.Size(85, 29);
             this.buttonAuthor.TabIndex = 401;
@@ -125,7 +128,7 @@
             this.panelAuthor.Controls.Add(this.labelRequestor);
             this.panelAuthor.Location = new System.Drawing.Point(178, 321);
             this.panelAuthor.Name = "panelAuthor";
-            this.panelAuthor.Size = new System.Drawing.Size(518, 234);
+            this.panelAuthor.Size = new System.Drawing.Size(543, 234);
             this.panelAuthor.TabIndex = 403;
             // 
             // buttonAuthHistory
@@ -202,7 +205,7 @@
             // 
             this.labelAuthStatus.AutoSize = true;
             this.labelAuthStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.labelAuthStatus.ForeColor = System.Drawing.Color.Red;
+            this.labelAuthStatus.ForeColor = System.Drawing.Color.MediumSeaGreen;
             this.labelAuthStatus.Location = new System.Drawing.Point(9, 65);
             this.labelAuthStatus.Name = "labelAuthStatus";
             this.labelAuthStatus.Size = new System.Drawing.Size(76, 18);
@@ -247,7 +250,7 @@
             this.labelNumberNotes2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelNumberNotes2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.labelNumberNotes2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(198)))));
-            this.labelNumberNotes2.Location = new System.Drawing.Point(481, 22);
+            this.labelNumberNotes2.Location = new System.Drawing.Point(486, 24);
             this.labelNumberNotes2.Name = "labelNumberNotes2";
             this.labelNumberNotes2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.labelNumberNotes2.Size = new System.Drawing.Size(15, 15);
@@ -277,12 +280,14 @@
             this.textBox4.BackColor = System.Drawing.Color.White;
             this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.textBox4.ForeColor = System.Drawing.Color.Black;
-            this.textBox4.Location = new System.Drawing.Point(56, 15);
+            this.textBox4.Location = new System.Drawing.Point(44, 15);
             this.textBox4.Multiline = true;
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(370, 197);
             this.textBox4.TabIndex = 255;
-            this.textBox4.Text = resources.GetString("textBox4.Text");
+            this.textBox4.Text = "YOU HAVE FINISHED RECONCILIATION BUT THERE ARE ITEMS OUTSTANDING. \r\n\r\nI AM GUESSI" +
+    "NG THAT THESE NEED MORE INVESTIGATION. \r\n\r\nTHE RESPONSIBLE OFFICER WILL AUTHORIZ" +
+    "E YOUR DECISIONS/ACTIONS. ";
             // 
             // textBox1
             // 
@@ -294,19 +299,75 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(349, 143);
             this.textBox1.TabIndex = 250;
-            this.textBox1.Text = resources.GetString("textBox1.Text");
+            this.textBox1.Text = "YOU HAVE NOW BROUGHT THE SYSTEM TO RECONCILE. \r\n\r\nYOU HAVE TAKEN SOME ACTIONS TOW" +
+    "ARDS THIS END.  \r\n\r\nTHE RESPONSIBLE OFFICER WILL AUTHORIZE YOUR DECISIONS/ACTION" +
+    "S. ";
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.panel1.Controls.Add(this.buttonAllAccounting);
+            this.panel1.Controls.Add(this.buttonAllActions);
+            this.panel1.Controls.Add(this.buttonPrintActions);
             this.panel1.Controls.Add(this.labelNumberNotes2);
             this.panel1.Controls.Add(this.buttonNotes2);
             this.panel1.Controls.Add(this.textBox4);
             this.panel1.Controls.Add(this.textBox1);
             this.panel1.Location = new System.Drawing.Point(178, 54);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(518, 227);
+            this.panel1.Size = new System.Drawing.Size(543, 227);
             this.panel1.TabIndex = 400;
+            // 
+            // buttonAllAccounting
+            // 
+            this.buttonAllAccounting.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonAllAccounting.FlatAppearance.BorderSize = 2;
+            this.buttonAllAccounting.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonAllAccounting.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonAllAccounting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAllAccounting.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonAllAccounting.Location = new System.Drawing.Point(431, 122);
+            this.buttonAllAccounting.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.buttonAllAccounting.Name = "buttonAllAccounting";
+            this.buttonAllAccounting.Size = new System.Drawing.Size(87, 27);
+            this.buttonAllAccounting.TabIndex = 440;
+            this.buttonAllAccounting.Text = "All Accounting";
+            this.buttonAllAccounting.UseVisualStyleBackColor = true;
+            this.buttonAllAccounting.Click += new System.EventHandler(this.buttonAllAccounting_Click);
+            // 
+            // buttonAllActions
+            // 
+            this.buttonAllActions.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonAllActions.FlatAppearance.BorderSize = 2;
+            this.buttonAllActions.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonAllActions.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonAllActions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAllActions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonAllActions.Location = new System.Drawing.Point(431, 89);
+            this.buttonAllActions.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.buttonAllActions.Name = "buttonAllActions";
+            this.buttonAllActions.Size = new System.Drawing.Size(87, 27);
+            this.buttonAllActions.TabIndex = 439;
+            this.buttonAllActions.Text = "All Actions";
+            this.buttonAllActions.UseVisualStyleBackColor = true;
+            this.buttonAllActions.Click += new System.EventHandler(this.buttonAllActions_Click);
+            // 
+            // buttonPrintActions
+            // 
+            this.buttonPrintActions.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonPrintActions.FlatAppearance.BorderSize = 2;
+            this.buttonPrintActions.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonPrintActions.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonPrintActions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonPrintActions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonPrintActions.Location = new System.Drawing.Point(444, 172);
+            this.buttonPrintActions.Name = "buttonPrintActions";
+            this.buttonPrintActions.Size = new System.Drawing.Size(55, 40);
+            this.buttonPrintActions.TabIndex = 397;
+            this.buttonPrintActions.Text = "Print Actions";
+            this.buttonPrintActions.UseVisualStyleBackColor = true;
+            this.buttonPrintActions.Visible = false;
+            this.buttonPrintActions.Click += new System.EventHandler(this.buttonPrintActions_Click);
             // 
             // UCForm271d
             // 
@@ -352,5 +413,8 @@
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button buttonPrintActions;
+        private System.Windows.Forms.Button buttonAllAccounting;
+        private System.Windows.Forms.Button buttonAllActions;
     }
 }

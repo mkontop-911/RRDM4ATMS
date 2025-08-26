@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 using System.Drawing.Imaging;
 using Microsoft.Reporting.WinForms;
 
@@ -34,9 +28,9 @@ namespace RRDM4ATMsWin
         string WReplGenComment; 
         string WReconcComment; 
        
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
         RRDMAtmsMainClass Am = new RRDMAtmsMainClass();
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate();
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
 
         public Form56(string InSignedId, int InSignRecordNo, string InBankId, string InAtmNo, int InSesNo,
             Bitmap ScreenA, Bitmap ScreenB, Bitmap ScreenC, Bitmap ScreenD, string InPhysicalInspectComm, string InReplUserComm, string InReplGenComment, string InReconcComment)

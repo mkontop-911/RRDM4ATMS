@@ -313,7 +313,7 @@
             this.panel4.Controls.Add(this.radioButtonEmail);
             this.panel4.Location = new System.Drawing.Point(494, 493);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(509, 100);
+            this.panel4.Size = new System.Drawing.Size(344, 100);
             this.panel4.TabIndex = 336;
             // 
             // radioButtonActivate
@@ -343,7 +343,7 @@
             this.textBoxComment.MaxLength = 300;
             this.textBoxComment.Multiline = true;
             this.textBoxComment.Name = "textBoxComment";
-            this.textBoxComment.Size = new System.Drawing.Size(417, 39);
+            this.textBoxComment.Size = new System.Drawing.Size(179, 39);
             this.textBoxComment.TabIndex = 342;
             this.textBoxComment.Visible = false;
             // 
@@ -356,9 +356,9 @@
             this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button1.Location = new System.Drawing.Point(342, 16);
+            this.button1.Location = new System.Drawing.Point(260, 16);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(62, 30);
+            this.button1.Size = new System.Drawing.Size(55, 30);
             this.button1.TabIndex = 341;
             this.button1.Text = "Act";
             this.button1.UseVisualStyleBackColor = false;

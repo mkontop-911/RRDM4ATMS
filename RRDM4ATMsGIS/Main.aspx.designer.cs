@@ -85,15 +85,6 @@ namespace RRDM4ATMsGIS {
         protected global::System.Web.UI.WebControls.TextBox tbAtmNo;
         
         /// <summary>
-        /// tbColorId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbColorId;
-        
-        /// <summary>
         /// tbStreet control.
         /// </summary>
         /// <remarks>

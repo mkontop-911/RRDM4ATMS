@@ -1,119 +1,201 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
-using System.Drawing.Printing;
-using System.Configuration;
+using RRDM4ATMs;
 
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 namespace RRDM4ATMsWin
 {
     public partial class Form119 : Form
     {
-       // Form13 NForm13;
-
-   //     string WUserBankId;
-   //     string WAccessToBankTypes;
-    //    int WSecLevel;
-
+        string WOperator;
         string WSignedId;
         int WSignRecordNo;
-    //    string WBankId;
-    //    bool WPrive;
+  
         string WChosenUserId;
         string WUserName;
 
         string WAtmNo;
         int WGroup;
 
-        RRDMUsersAccessToAtms Ba = new RRDMUsersAccessToAtms();
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord(); // Make class availble 
+        RRDMUsersAccessToAtms Ua = new RRDMUsersAccessToAtms();
+        RRDMUsersRecords Us = new RRDMUsersRecords(); // Make class availble 
         RRDMGroups Ga = new RRDMGroups();
 
-        public Form119(string InSignedId, int SignRecordNo, string InChosenUserId, string InUserName)
+        public Form119(string InOperator, string InSignedId, int SignRecordNo, string InChosenUserId, string InUserName)
         {
+            WOperator = InOperator;
             WSignedId = InSignedId;
             WSignRecordNo = SignRecordNo;
-       //     WBankId = InBankId;
-       //     WPrive = InPrive;
+    
             WChosenUserId = InChosenUserId;
             WUserName = InUserName;
             InitializeComponent();
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
 
-            // ===============================
-         //   Us.ReadUsersRecord(InSignedId); // Read USER record for the signed user
-         //   WAccessToBankTypes = Us.AccessToBankTypes;
-      //      WUserBankId = Us.UserBankId;
-         //   WSecLevel = Us.SecLevel;
-            // ===============================
+            // Set Working Date 
+           
+            labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
+
+            textBox8.Text = "ATMs ACCESS FOR USER.." + WChosenUserId; 
         }
 
         private void Form119_Load(object sender, EventArgs e)
         {
             
-            string filter = "UserId='" + WChosenUserId + "'";
-            usersAtmTableBindingSource.Filter = filter;
-            this.usersAtmTableTableAdapter.Fill(this.aTMSDataSet23.UsersAtmTable);
+            string filter = " UserId='" + WChosenUserId + "'";
+
+            Ua.ReadUserAccessToAtmsFillTable(filter);
+
+            ShowGridUserToAtms(); 
 
             textBoxMsgBoard.Text = " Make Your Choice and Press the Button "; 
-            // TODO: This line of code loads data into the 'aTMSDataSet23.UsersAtmTable' table. You can move, or remove it, as needed.
-            this.usersAtmTableTableAdapter.Fill(this.aTMSDataSet23.UsersAtmTable);
+        }
+
+        //
+        //
+        // CHOOSE ROW TO BE DELETED 
+        //
+        private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
+      
+            WAtmNo = rowSelected.Cells[1].Value.ToString();
+
+            textBoxAtmNo.Text = WAtmNo;
+
+            Ua.ReadUsersAccessAtmTableSpecific(WChosenUserId, WAtmNo, 0);
+
+            if (Ua.Replenishment) checkBox4.Checked = true;
+            else checkBox4.Checked = false;
+
+            if (Ua.Reconciliation) checkBox5.Checked = true;
+            else checkBox5.Checked = false;
 
         }
+
 
         // ADD ATM  
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(textBox11.Text))
+            if (String.IsNullOrEmpty(textBoxAtmNo.Text))
+            {
+                MessageBox.Show("Insert ATM Number Please");
+                return;
+            }
+            // ATM  HANDLING 
+            Ua.AtmNo = textBoxAtmNo.Text;
+   
+
+            // CHECK IF ATM EXIST 
+
+            RRDMAtmsClass Ac = new RRDMAtmsClass();
+
+            Ac.ReadAtm(Ua.AtmNo);
+
+            if (Ac.CitId != "1000" & checkBox4.Checked == true)
+            {
+                MessageBox.Show("This ATM is replenished" + Environment.NewLine
+                                + "By CIT_Id =.." + Ac.CitId  +Environment.NewLine
+                                + "Not allowed operation "
+                                );
+               return;
+            }
+
+            if (Ac.CitId == "1000" & Ac.AtmsReplGroup>0 & checkBox4.Checked == true)
+            {
+                MessageBox.Show("This ATM is replenished" + Environment.NewLine
+                                + "By Branch =.." + Ac.Branch + Environment.NewLine
+                                + "And Replenishment workflow is done by centre " + Environment.NewLine
+                                + "Not allowed operation " + Environment.NewLine
+                                + "Update ATMReplGroup to zero if you want to add " + Environment.NewLine
+                                
+                                );
+                return;
+            }
+
+            if (Ac.RecordFound == false)
+            {
+                MessageBox.Show("ATM Number not valid");
+                return;
+            }
+
+            Ua.ReadUsersAccessAtmTableSpecific(WChosenUserId, Ua.AtmNo, 0);
+            if (Ua.RecordFound == true)
+            {
+                MessageBox.Show("RECORD ALREADY EXIST");
+                return;
+            }
+
+            if (checkBox4.Checked == false & checkBox5.Checked == false)
+            {
+                MessageBox.Show("Tick please");
+                return;
+            }
+            else
+            {
+                Ua.Replenishment = checkBox4.Checked;
+                Ua.Reconciliation = false;
+            }
+
+            Ua.GroupOfAtms = 0;
+
+            Ua.IsCit = false; 
+
+            Ua.UserId = WChosenUserId;
+
+            Ua.UseOfGroup = false; 
+
+            Ua.BankId = Ac.BankId;
+
+            Ua.DateOfInsert = DateTime.Now;
+
+            Ua.Operator = Ac.Operator; 
+
+            Ua.InsertUsersAtmTable(Ua.UserId, Ua.AtmNo, Ua.GroupOfAtms);
+
+            MessageBox.Show("Atm has been added");
+
+            RRDMAtmsMainClass Am = new RRDMAtmsMainClass();
+            Am.ReadAtmsMainSpecific(Ua.AtmNo);
+            Am.AuthUser = Ua.AtmNo;
+            Am.UpdateAtmsMain(Ua.AtmNo);
+
+            Form119_Load(this, new EventArgs());
+
+            textBoxMsgBoard.Text = " USER ACCESS TO ATM RELATION WAS ADDED ";
+
+        }
+
+        // Update
+        private void buttonUpdate_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(textBoxAtmNo.Text))
             {
                 MessageBox.Show("Insert ATM Number Please");
                 return;
             }
 
-            Ba.ReadUsersAccessAtmTable(WChosenUserId);
 
-            if (Ba.NoOfAtmsRepl > 0 || Ba.NoOfAtmsReconc > 0)
+            Ua.ReadUsersAccessAtmTableSpecific(WChosenUserId, textBoxAtmNo.Text, 0);
+            if (Ua.RecordFound == false)
             {
-                if (String.IsNullOrEmpty(textBox11.Text))
-                {
-                    MessageBox.Show("Insert ATM Number Please - This User Deals with Individual ATMs");
-                    return;
-                }
+                MessageBox.Show("RECORD DOES NOT EXIST");
+                return;
             }
-
-            if (Ba.NoOfGroupsRepl > 0 || Ba.NoOfGroupsReconc > 0)
-            {
-                if (String.IsNullOrEmpty(textBox6.Text))
-                {
-                    MessageBox.Show("Insert Group Number Please - This User Deals with Group of ATMs");
-                    return;
-                }
-            }
-
 
             // ATM  HANDLING 
-            Ba.AtmNo = textBox11.Text;
+            Ua.AtmNo = textBoxAtmNo.Text;
 
             // CHECK IF ATM EXIST 
 
-            RRDMAtmsClass Aa = new RRDMAtmsClass();
+            RRDMAtmsClass Ac = new RRDMAtmsClass();
 
-            Aa.ReadAtm(Ba.AtmNo);
+            Ac.ReadAtm(Ua.AtmNo);
 
-            if (Aa.RecordFound == false)
+            if (Ac.RecordFound == false)
             {
                 MessageBox.Show("ATM Number not valid");
                 return;
@@ -126,145 +208,35 @@ namespace RRDM4ATMsWin
             }
             else
             {
-                Ba.Replenishment = checkBox4.Checked;
-                Ba.Reconciliation = checkBox5.Checked;
+                Ua.Replenishment = checkBox4.Checked;
+                Ua.Reconciliation = checkBox5.Checked;
             }
 
-            Ba.GroupOfAtms = 0;
+            Ua.GroupOfAtms = 0;
 
-            Ba.UserId = WChosenUserId;
+            Ua.IsCit = false;
 
-        //    La.ReadUsersRecord(Ba.UserId);
+            Ua.UserId = WChosenUserId;
 
-            Ba.BankId = Aa.BankId;
+            Ua.UseOfGroup = false;
 
-        //    Ba.Prive = Aa.Prive;
+            Ua.BankId = Ac.BankId;
 
-            Ba.DateOfInsert = DateTime.Now;
+            Ua.DateOfInsert = DateTime.Now;
 
-            Ba.Operator = Aa.Operator; 
+            Ua.Operator = Ac.Operator;      
 
-            Ba.ReadUsersAccessAtmTableSpecific(Ba.UserId, Ba.AtmNo, Ba.GroupOfAtms);
-            if (Ba.RecordFound == true)
-            {
-                MessageBox.Show("RECORD ALREADY EXIST");
-                return;
-            }
+            Ua.UpdateUsersAtmTable(Ua.UserId, Ua.AtmNo, Ua.GroupOfAtms);
+  
+            RRDMAtmsMainClass Am = new RRDMAtmsMainClass();
+            Am.ReadAtmsMainSpecific(Ua.AtmNo);
+            Am.AuthUser = Ua.AtmNo;
+            Am.UpdateAtmsMain(Ua.AtmNo);
 
-            Ba.InsertUsersAtmTable(Ba.UserId, Ba.AtmNo, Ba.GroupOfAtms);
-
-            string filter = "UserId='" + Ba.UserId + "'";
-            usersAtmTableBindingSource.Filter = filter;
-            this.usersAtmTableTableAdapter.Fill(this.aTMSDataSet23.UsersAtmTable);
+            Form119_Load(this, new EventArgs());
 
             textBoxMsgBoard.Text = " USER ACCESS TO ATM RELATION WAS ADDED ";
-
         }
-
-
-        // ADD GROUP 
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            if (String.IsNullOrEmpty(textBox6.Text))
-            {
-                MessageBox.Show("Insert Group Number Please");
-                return;
-            }
-
-            Ba.ReadUsersAccessAtmTable(WChosenUserId);
-
-            if (Ba.NoOfAtmsRepl > 0 || Ba.NoOfAtmsReconc > 0)
-            {
-                if (String.IsNullOrEmpty(textBox11.Text))
-                {
-                    MessageBox.Show("Insert ATM Number Please - This User Deals with Individual ATMs");
-                    return;
-                }
-            }
-
-            if (Ba.NoOfGroupsRepl > 0 || Ba.NoOfGroupsReconc > 0)
-            {
-                if (String.IsNullOrEmpty(textBox6.Text))
-                {
-                    MessageBox.Show("Insert Group Number Please - This User Deals with Group of ATMs");
-                    return;
-                }
-            }
-
-
-            // GROUP HANDLING 
-            Ba.GroupOfAtms = int.Parse(textBox6.Text);
-
-            Ba.UseOfGroup = true;
-
-            Ga.ReadGroup(Ba.GroupOfAtms);
-
-            if (Ga.RecordFound == false)
-            {
-                MessageBox.Show(" Group Number not valid");
-                return;
-            }
-
-
-            if (checkBox2.Checked == true & Ga.Replenishment == false)
-            {
-                MessageBox.Show(" Group is not defined for replenish");
-                return;
-            }
-
-            if (checkBox1.Checked == true & Ga.Reconciliation == false)
-            {
-                MessageBox.Show(" Group is not defined for reconciliation");
-                return;
-            }
-
-            if (checkBox2.Checked == true) Ba.Replenishment = true;
-            if (checkBox1.Checked == true) Ba.Reconciliation = true;
-
-            Ba.AtmNo = "";
-
-            Ba.UserId = WChosenUserId;
-
-  //          La.ReadUsersRecord(Ba.UserId);
-
-            Ba.BankId = Ga.BankId;
-
-         //   Ba.Prive = Ga.Prive;
-
-            Ba.DateOfInsert = DateTime.Now;
-
-            Ba.Operator = Ga.Operator; 
-
-            Ba.ReadUsersAccessAtmTableSpecific(Ba.UserId, Ba.AtmNo, Ba.GroupOfAtms);
-            if (Ba.RecordFound == true)
-            {
-                MessageBox.Show("RECORD ALREADY EXIST");
-                return;
-            }
-
-            Ba.InsertUsersAtmTable(Ba.UserId, Ba.AtmNo, Ba.GroupOfAtms);
-
-            string filter = "UserId='" + Ba.UserId + "'";
-            usersAtmTableBindingSource.Filter = filter;
-            this.usersAtmTableTableAdapter.Fill(this.aTMSDataSet23.UsersAtmTable);
-
-            textBoxMsgBoard.Text = " GROUP RELATION WAS INSERTED ";
-
-        }
-
-        //
-        //
-        // CHOOSE ROW TO BE DELETED 
-        //
-        private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
-            //textBox1.Text = rowSelected.Cells[0].Value.ToString();
-            WAtmNo = rowSelected.Cells[1].Value.ToString(); ;
-            WGroup = (int)rowSelected.Cells[2].Value;
-        }
-
 
         // DELETE RELATION 
 
@@ -277,22 +249,67 @@ namespace RRDM4ATMsWin
             }
 
 
-            Ba.DeleteUsersAtmTableEntry(WChosenUserId, WAtmNo, WGroup);
+            Ua.DeleteUsersAtmTableEntry(WChosenUserId, WAtmNo, WGroup);
 
-            string filter = "UserId='" + WChosenUserId + "'";
-            usersAtmTableBindingSource.Filter = filter;
-            this.usersAtmTableTableAdapter.Fill(this.aTMSDataSet23.UsersAtmTable);
+            RRDMAtmsMainClass Am = new RRDMAtmsMainClass();
+
+            if (WAtmNo != "")
+            {
+                Am.ReadAtmsMainSpecific(WAtmNo);
+                if (Am.AuthUser == WChosenUserId) Am.AuthUser = "";
+                Am.UpdateAtmsMain(WAtmNo);
+            }
+
+            Form119_Load(this, new EventArgs());
 
             textBoxMsgBoard.Text = " USER ACCESS TO ATM OR GROUP RELATION WAS DELETED ";
 
         }
+
+        //******************
+        // SHOW GRID dataGridView3
+        //******************
+        private void ShowGridUserToAtms()
+        {
+            dataGridView1.DataSource = Ua.UsersToAtmsDataTable.DefaultView;
+
+            if (dataGridView1.Rows.Count == 0)
+            {
+                return;
+            }
+            else
+            {
+                dataGridView1.Show();
+            }
+            dataGridView1.Columns[0].Width = 50; // User Id
+            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[1].Width = 70; // Atm no
+            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[2].Width = 200; //  ATM Name 
+            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[3].Width = 50; //  Group of ATMs
+            dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView1.Columns[3].Visible = false;
+           
+            dataGridView1.Columns[4].Width = 80; // Replenishment
+            dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[5].Width = 80; // Reconciliation 
+            dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[6].Width = 130; // Date of insert 
+            dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+        }
+
         // Finish 
         private void buttonNext_Click(object sender, EventArgs e)
         {
-            this.Close(); 
+            this.Dispose(); 
         }
-        
-       
-      
+
     }
 }

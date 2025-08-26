@@ -1,20 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
-using System.Drawing.Printing;
-using System.Configuration;
+using RRDM4ATMs;
 
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 namespace RRDM4ATMsWin
 {
@@ -29,13 +17,13 @@ namespace RRDM4ATMsWin
         string BankName;
         string WSignedId;
         int WSignRecordNo;
-        int WSecLevel;
+        string WSecLevel;
         string WOperator;
 
         string WGroupName;
 
         int WWf;
-        public Form136(string InSignedId, int SignRecordNo, int InSecLevel, string InOperator, string InGroupName, int InWf)
+        public Form136(string InSignedId, int SignRecordNo, string InSecLevel, string InOperator, string InGroupName, int InWf)
         {
             WSignedId = InSignedId;
             WSignRecordNo = SignRecordNo;
@@ -54,8 +42,17 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             if (WWf == 0 ) labelStep1.Text = "Controllers stats for Group: " + InGroupName;
             if (WWf == 1) labelStep1.Text = "MIS for ATMs operation for Group: " + InGroupName;

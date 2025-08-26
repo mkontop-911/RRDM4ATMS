@@ -1,26 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMHostBatchesClass
+    public class RRDMHostBatchesClass : Logger
     {
+        public RRDMHostBatchesClass() : base() { }
 
         public int BatchNo;
         
         public string AtmNo; 
         public string BankId;
         public string BranchId;
-  //      public bool Prive;
+ 
         public int PreBatchNo;
         public int NextBatchNo;
       
@@ -66,7 +61,7 @@ namespace RRDM4ATMs
             ErrorOutput = ""; 
 
             string SqlString = "SELECT *"
-               + " FROM [ATMS].[dbo].[HostBatchesTable]"
+               + " FROM [ATMS].[dbo].[HostBatchesTableATMs]"
                + " WHERE BatchNo=@BatchNo ";
 
             using (SqlConnection conn =
@@ -136,9 +131,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostBatchesClass............. " + ex.Message;
 
+                    CatchDetails(ex);
                 }
         }
 
@@ -152,7 +146,7 @@ namespace RRDM4ATMs
             ErrorOutput = ""; 
 
             string SqlString = "SELECT * "
-               + " FROM [ATMS].[dbo].[HostBatchesTable]"
+               + " FROM [ATMS].[dbo].[HostBatchesTableATMs]"
                + " WHERE AtmNo=@AtmNo ";
 
             using (SqlConnection conn =
@@ -187,8 +181,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostBatchesClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -201,7 +195,7 @@ namespace RRDM4ATMs
             ErrorFound = false;
             ErrorOutput = ""; 
 
-            string cmdinsert = "INSERT INTO [ATMS].[dbo].[HostBatchesTable]"
+            string cmdinsert = "INSERT INTO [ATMS].[dbo].[HostBatchesTableATMs]"
             + "([AtmNo], [BankId],  [BranchId], [PreBatchNo], [NextBatchNo]," 
                 +" [DtTmStart], [DtTmEnd], [HFirstTraceNo], [HLastTraceNo]," 
                 + " [HCurrNm1], [HBal1], [HBal1Adjusted]," 
@@ -261,11 +255,8 @@ namespace RRDM4ATMs
 
                         
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                       cmd.ExecuteNonQuery();
+                       
 
                     }
                     // Close conn
@@ -274,9 +265,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostBatchesClass............. " + ex.Message;
 
+                    CatchDetails(ex);
                 }
         }
 
@@ -293,7 +283,7 @@ namespace RRDM4ATMs
                 {
                     conn.Open();
                     using (SqlCommand cmd =
-                        new SqlCommand("UPDATE [ATMS].[dbo].[HostBatchesTable] SET "
+                        new SqlCommand("UPDATE [ATMS].[dbo].[HostBatchesTableATMs] SET "
                           
                     + " [AtmNo] = @AtmNo, [BankId] = @BankId, " 
                         + " [BranchId] = @BranchId, [PreBatchNo] = @PreBatchNo, [NextBatchNo] = @NextBatchNo," 
@@ -338,11 +328,8 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@AdjBalUpdated", AdjBalUpdated);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                       cmd.ExecuteNonQuery();
+                       
 
                     }
                     // Close conn
@@ -351,8 +338,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostBatchesClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }

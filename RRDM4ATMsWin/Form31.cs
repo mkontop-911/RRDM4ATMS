@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
+using RRDM4ATMs;
 using System.Configuration;
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 namespace RRDM4ATMsWin
 {
@@ -101,53 +92,85 @@ namespace RRDM4ATMsWin
                 buttonShow.Hide();
                 buttonShowAll.Hide(); 
             }
-      
-            if (WUserId == "")
-            {
-                string UserId = "1000";
-                Acc.ReadAndFindAccount(UserId, WOperator, WAtmNo, WCurrDesc, WAccName);
-            }
-            else
-            {
-                Acc.ReadAndFindAccountForUserId(WUserId, WOperator, WCurrDesc, WAccName);     
-            }
-               
 
-            WAccNo = Acc.AccNo;
+            if (WAction == 5)
+            {
+                label14.Text = "All Open Ready For Posting Transactions";
+                labelAtmNo.Hide();
+                textBoxAtmNo.Hide();
+                buttonShow.Hide();
+                buttonShowAll.Hide();
+            }
+            else // Not 5 
+            {
+                if (WUserId == "")
+                {
+                    string UserId = "1000";
+                    Acc.ReadAndFindAccount(UserId, "", "", WOperator, WAtmNo, WCurrDesc, WAccName);
+                }
+                else
+                {
+                    Acc.ReadAndFindAccountForUserId(WUserId, WOperator, WCurrDesc, WAccName);
+                }
 
-            label12.Text = "TRANS FOR ACCOUNT: " + WAccNo +" ACC NAME: "+ WAccName + " In: " + WCurrDesc;
+                WAccNo = Acc.AccNo;
+
+                label12.Text = "TRANS FOR ACCOUNT: " + WAccNo + " ACC NAME: " + WAccName + " In: " + WCurrDesc;
+            }        
 
         }
 
         // Show for All
         private void Form31_Load(object sender, EventArgs e)
         {
-            if (WUserId != "") // REQUEST BY USER LIKE CIT then you use only the account no. It is unique 
+            if (WAction == 5) // ALL WAITING FOR POSTING 
             {
-                
-                WFilter = " AccNo ='" + WAccNo + "' AND CurrDesc ='" + WCurrDesc + "' AND OpenRecord = 1 "; 
+                WFilter = " OpenRecord = 1 ";
 
-                WFunction = 1;
+                WFunction = 3; // No days to be taken into consideration 
+
+                WToDate = DateTime.Now;
+
+                Pt.ReadPostedTransAndFillTheTable(WOperator, WAtmNo, WAccNo, WCurrDesc, WFromDate, WToDate, WFunction);
 
                 ShowTrans(WFilter, "", WFunction);
             }
-            if (WUserId == "") // REQUEST BY ATM - ACC no and ATM 
+            else
             {
-                WFilter = " AtmNo ='" + WAtmNo + "' AND AccNo ='" + WAccNo + "' AND CurrDesc ='" + WCurrDesc + "' AND OpenRecord = 1 "; 
+                if (WUserId != "") // REQUEST BY USER LIKE CIT then you use only the account no. It is unique 
+                {
 
-                WFunction = 2;
+                    //WFilter = " AccNo ='" + WAccNo + "' AND CurrDesc ='" + WCurrDesc + "' AND OpenRecord = 1 ";
 
-                ShowTrans(WFilter, WAtmNo, WFunction);
+                    WFunction = 1;
+
+                    WToDate = DateTime.Now;
+
+                    Pt.ReadPostedTransAndFillTheTable(WOperator, WAtmNo, WAccNo, WCurrDesc, WFromDate, WToDate, WFunction);
+
+                    ShowTrans(WFilter, "", WFunction);
+                }
+                if (WUserId == "") // REQUEST BY ATM - ACC no and ATM 
+                {
+                    //WFilter = " AtmNo ='" + WAtmNo + "' AND AccNo ='" + WAccNo + "' AND CurrDesc ='" + WCurrDesc + "' AND OpenRecord = 1 ";
+
+                    WFunction = 2;
+
+                    WToDate = DateTime.Now;
+
+                    Pt.ReadPostedTransAndFillTheTable(WOperator, WAtmNo, WAccNo, WCurrDesc, WFromDate, WToDate, WFunction);
+
+                    ShowTrans(WFilter, WAtmNo, WFunction);
+                }
             }
+            
         }
 
         // SHOW
         private void ShowTrans(string InSqlString, string InAtmNo, int InFunction)
         {
             //TEST
-            WToDate = DateTime.Now; 
-
-            Pt.ReadPostedTransAndFillTheTable(WOperator, WFilter, WFromDate, WToDate, InFunction); 
+            
 
             if (Pt.RecordFound == false)
             {
@@ -177,32 +200,36 @@ namespace RRDM4ATMsWin
             dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[1].Width = 60; // 
             dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dataGridView1.Columns[2].Width = 280; // 
-            dataGridView1.Columns[3].Width = 60; //
+            
+            dataGridView1.Columns[2].Width = 150; // 
+            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView1.Columns[3].Width = 280; // 
+            dataGridView1.Columns[4].Width = 60; //
 
-            dataGridView1.Columns[4].Width = 80; //
             dataGridView1.Columns[5].Width = 80; //
-            dataGridView1.Columns[6].Width = 95; //
-            dataGridView1.Columns[7].Width = 65; //
+            dataGridView1.Columns[6].Width = 80; //
+            dataGridView1.Columns[7].Width = 95; //
             dataGridView1.Columns[8].Width = 65; //
             dataGridView1.Columns[9].Width = 65; //
+            dataGridView1.Columns[10].Width = 65; //
 
-            dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridView1.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dataGridView1.Columns[6].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
-            dataGridView1.Columns[7].DefaultCellStyle.ForeColor = Color.LightSlateGray;
+            dataGridView1.Columns[10].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridView1.Columns[11].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
+            
             dataGridView1.Columns[8].DefaultCellStyle.ForeColor = Color.LightSlateGray;
             dataGridView1.Columns[9].DefaultCellStyle.ForeColor = Color.LightSlateGray;
             dataGridView1.Columns[10].DefaultCellStyle.ForeColor = Color.LightSlateGray;
             dataGridView1.Columns[11].DefaultCellStyle.ForeColor = Color.LightSlateGray;
             dataGridView1.Columns[12].DefaultCellStyle.ForeColor = Color.LightSlateGray;
+            dataGridView1.Columns[13].DefaultCellStyle.ForeColor = Color.LightSlateGray;
 
 
-            dataGridView1.Columns[4].DefaultCellStyle.ForeColor = Color.Red; 
+            dataGridView1.Columns[5].DefaultCellStyle.ForeColor = Color.Red; 
 
           
             //dataGridView1.Show();

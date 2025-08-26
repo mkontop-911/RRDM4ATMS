@@ -1,31 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 //multilingual
 using System.Resources;
 using System.Globalization;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
     public partial class Form10 : Form
     {
-       // Form22MIS NForm22MIS;
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
-
-        Form35 NForm35; 
+      
+        //Form35 NForm35; 
         Bitmap SCREENinitial;
-     //   string AuditTrailUniqueID = "";
-
+   
         DataTable NextReplTable10 = new DataTable();
 
         DataTable TrendTable = new DataTable();
@@ -38,14 +29,19 @@ namespace RRDM4ATMsWin
 
         RRDMFixedDaysReplAtmClass Fr = new RRDMFixedDaysReplAtmClass();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord(); 
+        RRDMUsersRecords Us = new RRDMUsersRecords();
+
+        RRDMAtmsClass Ac = new RRDMAtmsClass(); 
 
         //multilingual
         CultureInfo culture;
 
-        RRDMUsersAndSignedRecord Xa = new RRDMUsersAndSignedRecord(); // Make class availble 
+        RRDMUsersRecords Xa = new RRDMUsersRecords(); // Make class availble 
 
         ResourceManager LocRM = new ResourceManager("RRDM4ATMsWin.appRes", typeof(Form40).Assembly);
+
+        string connectionString = ConfigurationManager.ConnectionStrings
+          ["ATMSConnectionString"].ConnectionString;
 
         decimal OldBal;
         decimal NewBal;
@@ -68,36 +64,41 @@ namespace RRDM4ATMsWin
 
         string WBankId;
 
-    //    string WOperator;
-    //    bool WWPrive; 
-
         string WAtmNo; 
-  //      int WUserId;
-  //      int WReplGroup;
+
         string WCurrNm;
         int WNextRow;
-  //      string WUserBankId; 
-
+ 
         string WSignedId;
         int WSignRecordNo;
-        int WSecLevel;
+        string WSecLevel;
         string WOperator;
-    //    bool WPrive;
+   
         int WAction;
 
-        public Form10(string InSignedId, int SignRecordNo, int InSecLevel, string InOperator, int InAction)
+        public Form10(string InSignedId, int SignRecordNo, string InSecLevel, string InOperator, int InAction)
         {
             WSignedId = InSignedId;
             WSignRecordNo = SignRecordNo;
             WSecLevel = InSecLevel;
             WOperator = InOperator;
-        //    WPrive = InPrive;
+    
             WAction = InAction;  // 1 = Show 
 
             InitializeComponent();
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
-         
+
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
+            
             //TEST
             dateTimePicker1.Value = new DateTime(2014, 02, 28);
             dateTimePicker3.Value = new DateTime(2014, 03, 20);
@@ -148,23 +149,43 @@ namespace RRDM4ATMsWin
             memoryImage = new System.Drawing.Bitmap(tableLayoutPanelMain.Width, tableLayoutPanelMain.Height);
             tableLayoutPanelMain.DrawToBitmap(memoryImage, tableLayoutPanelMain.ClientRectangle);
             SCREENinitial = memoryImage;
+
         }
 
         // Show Analysis
         private void button3_Click(object sender, EventArgs e)
         {
-            Xa.ReadSignedActivityByKey(WSignRecordNo);
 
-            if (Xa.Culture == "English")
+          
+            if (textBox1.Text == "")
+            {
+                MessageBox.Show("Please enter a valid ATM No");
+                return; 
+            }
+            if (textBox1.Text != "AB102" & textBox1.Text != "AB104")
+            {
+                MessageBox.Show("Please enter ATM No = AB102 or AB104 that have testing data");
+                return;
+            }
+
+            Ac.ReadAtm(textBox1.Text);
+            if (Ac.RecordFound == false)
+            {
+                MessageBox.Show("Not Found ATM");
+                return; 
+            }
+
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
+
+            if (Usi.Culture == "English")
             {
                 culture = CultureInfo.CreateSpecificCulture("el-GR");
             }
-            if (Xa.Culture == "Français")
+            if (Usi.Culture == "Français")
             {
                 culture = CultureInfo.CreateSpecificCulture("fr-FR");
             }
-
-       
 
             label11.Show();
             label18.Show();
@@ -189,17 +210,11 @@ namespace RRDM4ATMsWin
             TimeSpan Remain = FinishDt - StartDt;
             label18.Text = (Remain.Days+1).ToString();
 
-         //   y = StartDt; 
-
             WAtmNo = textBox1.Text;
-
-            RRDMAtmsClass Ac = new RRDMAtmsClass();
 
             Ac.ReadAtm(WAtmNo); 
 
-
             WBankId = Ac.BankId;
-      //      WWPrive = Ac.Prive;
 
             WMatchDatesCateg = Ac.MatchDatesCateg;
 
@@ -212,7 +227,7 @@ namespace RRDM4ATMsWin
 
             if (WAction == 1) 
             {        
-      //          Rc.GiveMeDataTableReplInfo(WUserBankId, StartDt, WBankId, WPrive, WAtmNo, FinishDt, 0, Ac.MatchDatesCateg,2 );
+
                 int Request = 2; // Give Matching dates for period 
                 Rc.GiveMeDataTableReplInfo(WOperator, StartDt,
                                        FinishDt, WAtmNo, 0, WMatchDatesCateg, Request);
@@ -274,7 +289,6 @@ namespace RRDM4ATMsWin
                     if (Weekend == true) RowTable["SType"] = "Weekend";
                     if (Holiday == true) RowTable["SType"] = "Holiday";
 
-
                     RowTable["Suggested"] = Rc.dtRDays.Rows[I]["RecDispensed"];
 
                     Fr.ReadFixedDaysReplAtm(WOperator, WAtmNo, NextDate);
@@ -325,7 +339,6 @@ namespace RRDM4ATMsWin
                 dataGridView1.Columns["Correction%"].Width = 60;
                 dataGridView1.Columns["Final"].Width = 75;
 
-           //     dataGridView1.Show();
 
                 string SqlString2 =
                      "SELECT DtTm AS Date,"
@@ -401,19 +414,7 @@ namespace RRDM4ATMsWin
 
         }
 
-       
-       
-
-        private void toolTipMessages_Popup(object sender, PopupEventArgs e)
-        {
-
-        }
-
-        private void toolTipController_Popup(object sender, PopupEventArgs e)
-        {
-
-        }
-
+   
         private void tableLayoutPanelMain_Paint(object sender, PaintEventArgs e)
         {
 
@@ -423,56 +424,55 @@ namespace RRDM4ATMsWin
         {
 
         }
-        // UPDATE INPUT 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            decimal NewRecommend;
+      //  // UPDATE INPUT 
+      //  private void button4_Click(object sender, EventArgs e)
+      //  {
+      //      decimal NewRecommend;
 
-            if (decimal.TryParse(textBox5.Text, out NewRecommend))
-            {
-                // Take the correct action 
-            }
-            else
-            {
-                MessageBox.Show(textBox5.Text, "Please enter a valid number!");
-                return;
-            }
+      //      if (decimal.TryParse(textBox5.Text, out NewRecommend))
+      //      {
+      //          // Take the correct action 
+      //      }
+      //      else
+      //      {
+      //          MessageBox.Show(textBox5.Text, "Please enter a valid number!");
+      //          return;
+      //      }
 
 
 
-           NextReplTable10.Rows[WNextRow - 1]["Final"] = NewRecommend; 
+      //     NextReplTable10.Rows[WNextRow - 1]["Final"] = NewRecommend; 
 
-           dataGridView1.DataSource = NextReplTable10.DefaultView;
+      //     dataGridView1.DataSource = NextReplTable10.DefaultView;
              
 
 
-            //AUDIT TRAIL 
-      /*      string AuditCategory = "Maintenance";
-            string AuditSubCategory = "Cash-In";
-            string AuditAction = "Update";
-            int User = 123;
-            GetMainBodyImageAndStoreIt(AuditCategory, AuditSubCategory, AuditAction, User); */
+      //      //AUDIT TRAIL 
+      ///*      string AuditCategory = "Maintenance";
+      //      string AuditSubCategory = "Cash-In";
+      //      string AuditAction = "Update";
+      //      int User = 123;
+      //      GetMainBodyImageAndStoreIt(AuditCategory, AuditSubCategory, AuditAction, User); */
 
-        }
+      //  }
 
-        //AUDIT TRAIL : GET IMAGE AND INSERT IT IN AUDIT TRAIL 
-        private void GetMainBodyImageAndStoreIt(string InCategory, string InSubCategory, string InTypeOfChange, int InUser)
-        {
-            Bitmap SCREENa;
-            System.Drawing.Bitmap memoryImage;
-            memoryImage = new System.Drawing.Bitmap(tableLayoutPanelMain.Width, tableLayoutPanelMain.Height);
-            tableLayoutPanelMain.DrawToBitmap(memoryImage, tableLayoutPanelMain.ClientRectangle);
-            SCREENa = memoryImage;
+    //    //AUDIT TRAIL : GET IMAGE AND INSERT IT IN AUDIT TRAIL 
+    //    private void GetMainBodyImageAndStoreIt(string InCategory, string InSubCategory, string InTypeOfChange, int InUser)
+    //    {
+    //        Bitmap SCREENa;
+    //        System.Drawing.Bitmap memoryImage;
+    //        memoryImage = new System.Drawing.Bitmap(tableLayoutPanelMain.Width, tableLayoutPanelMain.Height);
+    //        tableLayoutPanelMain.DrawToBitmap(memoryImage, tableLayoutPanelMain.ClientRectangle);
+    //        SCREENa = memoryImage;
 
-            AuditTrailClass At = new AuditTrailClass();
-    //        At.InsertRecord(InCategory, InSubCategory, InTypeOfChange, InUser, SCREENa);
-        }
+    //        AuditTrailClass At = new AuditTrailClass();
+    ////        At.InsertRecord(InCategory, InSubCategory, InTypeOfChange, InUser, SCREENa);
+    //    }
        
         // ON VALUE CHANGED 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-          
-           
+         
             if (comboBox2.Text == "-25 %") NewBal = OldBal * 75 / 100;
             if (comboBox2.Text == "-20 %") NewBal = OldBal * 80 / 100;
             if (comboBox2.Text == "-15 %") NewBal = OldBal * 85 / 100;
@@ -492,37 +492,48 @@ namespace RRDM4ATMsWin
             dataGridView1.DataSource = NextReplTable10.DefaultView;
 
         }
+        //// Chart 1 
+        //private void chart1_Click(object sender, EventArgs e)
+        //{
+        //    int WF = 0;
+        //    string Heading;
+       
+        //        label2.Text = "LAST 30 DAYS TREND";
+        //        Heading = label2.Text;
+        //        WF = 31; // Means show large for Form10 - Special matched dates  
+        //        NForm35 = new Form35(WSignedId, WSignRecordNo, WOperator, TrendTable, Heading, WF);
+        //        NForm35.Show();
+           
+        //}
 
-        // UPDATE SHOWN RECORDS
-        // READ ONE BY ONE AND INSERT THEM IN DATA BASE 
-        private void buttonNext_Click(object sender, EventArgs e)
+        private void buttonUpdate_Click(object sender, EventArgs e)
         {
-            
+            int K = 0;
 
-            for (int rows = 0; rows < (dataGridView1.Rows.Count - 1); rows++)
+            while (K <= (dataGridView1.Rows.Count - 1))
             {
-                Index = (int)dataGridView1.Rows[rows].Cells["Index"].Value;
+                Index = (int)dataGridView1.Rows[K].Cells["Index"].Value;
 
-                NextDate = (DateTime)dataGridView1.Rows[rows].Cells["NextDate"].Value;
-                Day = (string)dataGridView1.Rows[rows].Cells["Day"].Value;
-                Type = (string)dataGridView1.Rows[rows].Cells["Type"].Value;
-               
-                SameAs = (DateTime)dataGridView1.Rows[rows].Cells["SameAs"].Value;
-                SDay = (string)dataGridView1.Rows[rows].Cells["SDay"].Value;
-                SType = (string)dataGridView1.Rows[rows].Cells["SType"].Value;
+                NextDate = (DateTime)dataGridView1.Rows[K].Cells["NextDate"].Value;
+                Day = (string)dataGridView1.Rows[K].Cells["Day"].Value;
+                Type = (string)dataGridView1.Rows[K].Cells["Type"].Value;
 
-                Suggested = (decimal)dataGridView1.Rows[rows].Cells["Suggested"].Value;
-                Correction = (string)dataGridView1.Rows[rows].Cells["Correction%"].Value;
-                Final = (decimal)dataGridView1.Rows[rows].Cells["Final"].Value;
+                SameAs = (DateTime)dataGridView1.Rows[K].Cells["SameAs"].Value;
+                SDay = (string)dataGridView1.Rows[K].Cells["SDay"].Value;
+                SType = (string)dataGridView1.Rows[K].Cells["SType"].Value;
+
+                Suggested = (decimal)dataGridView1.Rows[K].Cells["Suggested"].Value;
+                Correction = (string)dataGridView1.Rows[K].Cells["Correction%"].Value;
+                Final = (decimal)dataGridView1.Rows[K].Cells["Final"].Value;
 
                 // Create Record
-               // Fr.BankId = WBankId; 
+                // Fr.BankId = WBankId; 
                 // ASSIGN VALUES
 
                 Fr.BankId = WOperator;
                 Fr.AtmNo = WAtmNo;
                 Fr.NextDate = NextDate;
-          //      Fr.Prive = WWPrive;
+                //      Fr.Prive = WWPrive;
 
                 Fr.ReadFixedDaysReplAtm(WOperator, WAtmNo, NextDate);
                 if (Fr.RecordFound == true)
@@ -566,34 +577,24 @@ namespace RRDM4ATMsWin
 
                         Fr.DateInsert = DateTime.Today;
 
-                        Fr.Operator = WOperator; 
+                        Fr.Operator = WOperator;
 
                         Fr.InsertFixedDaysReplAtm(WOperator, WAtmNo, NextDate); // Insert
                     }
                 }
 
-  
+
+                K++; // Read Next entry of the table 
             }
 
             MessageBox.Show("New Final Amounts Entries Inserted or Updated");
 
             textBoxMsgBoard.Text = "All Entries Updated! ";
-
         }
-        // Chart 1 
-        private void chart1_Click(object sender, EventArgs e)
+// Finish 
+        private void buttonBack_Click(object sender, EventArgs e)
         {
-            int WF = 0;
-            string Heading;
-       
-                label2.Text = "LAST 30 DAYS TREND";
-                Heading = label2.Text;
-                WF = 31; // Means show large for Form10 - Special matched dates  
-                NForm35 = new Form35(WSignedId, WSignRecordNo, WOperator, TrendTable, Heading, WF);
-                NForm35.Show();
-           
+            this.Dispose(); 
         }
-       
-        
     }
 }

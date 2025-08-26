@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Collections;
 using Microsoft.Reporting.WinForms;
 using System.Configuration;
 
@@ -17,18 +8,23 @@ namespace RRDM4ATMsWin
     public partial class Form56R16 : Form
     {
         // REPORT FOR Trace 
-        
+
+        string RSReportName;
+
+
         string WOperator;
         string WTraceNumber; 
         string WTraceDtTm;
         string WAtmNo;
+        string WUserId; 
 
-        public Form56R16(string InOperator, string InTraceNumber, string InTraceDtTm, string InAtmNo)
+        public Form56R16(string InOperator, string InTraceNumber, string InTraceDtTm, string InAtmNo, string InUserId)
         {
             WOperator = InOperator;
             WTraceNumber = InTraceNumber;
             WTraceDtTm = InTraceDtTm;
             WAtmNo = InAtmNo;
+            WUserId = InUserId; 
 
             InitializeComponent();
         }
@@ -40,7 +36,12 @@ namespace RRDM4ATMsWin
             try
             {
                 string RSUri = ConfigurationManager.AppSettings["ReportServerUri"];
-                string RSReportName = "/TraceJournalPrinting";
+
+                //if (WOperator == "ETHNCY2N") RSReportName = "/TraceJournalPrinting_NBG";
+                //else RSReportName = "/TraceJournalPrinting";
+                string RsDir = ConfigurationManager.AppSettings["ReportsDir"];
+                string RSReportName = RsDir + "/TraceJournalPrinting_BDC";
+               // RSReportName = "/TraceJournalPrinting_NBG";
 
                 // Set the processing mode for the ReportViewer to Remote
                 reportViewer1.ProcessingMode = ProcessingMode.Remote;
@@ -56,6 +57,7 @@ namespace RRDM4ATMsWin
                 reportViewer1.ServerReport.SetParameters(new ReportParameter("TraceNumber", WTraceNumber));
                 reportViewer1.ServerReport.SetParameters(new ReportParameter("TraceDtTm", WTraceDtTm));
                 reportViewer1.ServerReport.SetParameters(new ReportParameter("AtmNo", WAtmNo));
+                reportViewer1.ServerReport.SetParameters(new ReportParameter("UserId", WUserId));
 
                 System.Drawing.Printing.PageSettings pp = new System.Drawing.Printing.PageSettings();
                 pp.Margins = new System.Drawing.Printing.Margins(20, 3, 20, 20);

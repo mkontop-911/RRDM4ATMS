@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using RRDM4ATMs;
 
 namespace RRDM4ATMsWeb
 {
     public partial class WebForm152a : System.Web.UI.Page
     {
-        RRDMNotesBalances Na = new RRDMNotesBalances();
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
    //     RRDMCaseNotes Cn = new RRDMCaseNotes(); 
         
         protected void Page_Load(object sender, EventArgs e)
@@ -21,7 +17,6 @@ namespace RRDM4ATMsWeb
                 string WAtmNo = (string)Session["WAtmNo"];
                 int WSesNo = (int)Session["WReplCycle"];
 
-                Na.ReadSessionsNotesAndValues3PhyCheck(WAtmNo, WSesNo);
 
                 if (Na.ErrorFound == true)
                 {
@@ -30,13 +25,13 @@ namespace RRDM4ATMsWeb
                     return; 
                 }
 
-                checkBoxNoChips.Checked = Na.PhysicalCheck1.NoChips;
-                checkBoxNoCameras.Checked = Na.PhysicalCheck1.NoCameras;
-                checkBoxNoSuspCards.Checked = Na.PhysicalCheck1.NoSuspCards;
-                checkBoxNoGlue.Checked = Na.PhysicalCheck1.NoGlue;
-                checkBoxNoOtherSusp.Checked = Na.PhysicalCheck1.NoOtherSusp;
+                //checkBoxNoChips.Checked = Na.PhysicalCheck1.NoChips;
+                //checkBoxNoCameras.Checked = Na.PhysicalCheck1.NoCameras;
+                //checkBoxNoSuspCards.Checked = Na.PhysicalCheck1.NoSuspCards;
+                //checkBoxNoGlue.Checked = Na.PhysicalCheck1.NoGlue;
+                //checkBoxNoOtherSusp.Checked = Na.PhysicalCheck1.NoOtherSusp;
 
-                Na.PhysicalCheck1.OtherSuspComm = TextBox1.Text;
+                //Na.PhysicalCheck1.OtherSuspComm = TextBox1.Text;
 
                 labelDescription.Text = "REPL.CYCLE INTRO";
                 txtMessage.Text = "Do the Physical Inspection and update system";
@@ -68,23 +63,23 @@ namespace RRDM4ATMsWeb
             int WSesNo = (int)Session["WReplCycle"]; 
 
             // Read for updating Physical Data
-            Na.ReadSessionsNotesAndValues3PhyCheck(WAtmNo, WSesNo);
+            //Na.ReadSessionsNotesAndValues3PhyCheck(WAtmNo, WSesNo);
             if (Na.ErrorFound == true)
             {
                  Session["WOrigin"] = "WebForm152a";
                  ShowError(Na.ErrorOutput); 
             }
 
-            Na.PhysicalCheck1.NoChips = checkBoxNoChips.Checked;
-            Na.PhysicalCheck1.NoCameras = checkBoxNoCameras.Checked;
-            Na.PhysicalCheck1.NoSuspCards = checkBoxNoSuspCards.Checked;
-            Na.PhysicalCheck1.NoGlue = checkBoxNoGlue.Checked;
-            Na.PhysicalCheck1.NoOtherSusp = checkBoxNoOtherSusp.Checked;
+            //Na.PhysicalCheck1.NoChips = checkBoxNoChips.Checked;
+            //Na.PhysicalCheck1.NoCameras = checkBoxNoCameras.Checked;
+            //Na.PhysicalCheck1.NoSuspCards = checkBoxNoSuspCards.Checked;
+            //Na.PhysicalCheck1.NoGlue = checkBoxNoGlue.Checked;
+            //Na.PhysicalCheck1.NoOtherSusp = checkBoxNoOtherSusp.Checked;
 
-            Na.PhysicalCheck1.OtherSuspComm = TextBox1.Text;
+            //Na.PhysicalCheck1.OtherSuspComm = TextBox1.Text;
 
             // Update Physical Data
-            Na.UpdateSessionsNotesAndValues3PhyCheck(WAtmNo, WSesNo);
+            //Na.UpdateSessionsNotesAndValues3PhyCheck(WAtmNo, WSesNo);
 
             // STEPLEVEL UPDATING
 

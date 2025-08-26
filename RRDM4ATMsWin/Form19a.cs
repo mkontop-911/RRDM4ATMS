@@ -1,25 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
-using System.Configuration;
+using RRDM4ATMs;
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 namespace RRDM4ATMsWin
 {
     public partial class Form19a : Form
     {
        
-        RRDMAllowedAtmsAndUpdateFromJournal Aj = new RRDMAllowedAtmsAndUpdateFromJournal();
+        RRDMJournalAndAllowUpdate Aj = new RRDMJournalAndAllowUpdate();
         RRDMUpdateGrids Ug = new RRDMUpdateGrids();
         RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass();
         RRDMHostMatchingClassGeneralLedger Hm = new RRDMHostMatchingClassGeneralLedger();
@@ -27,7 +18,7 @@ namespace RRDM4ATMsWin
 
         RRDMGasParameters Gp = new RRDMGasParameters();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
   
         string Gridfilter1;
@@ -38,12 +29,12 @@ namespace RRDM4ATMsWin
      
         string WSignedId;
         int WSignRecordNo;
-        int WSecLevel;
+        string WSecLevel;
         string WOperator;
 
         int WAction;
 
-        public Form19a(string InSignedId, int SignRecordNo, int InSecLevel, string InOperator, int InAction)
+        public Form19a(string InSignedId, int SignRecordNo, string InSecLevel, string InOperator, int InAction)
         {
             WSignedId = InSignedId;
             WSignRecordNo = SignRecordNo;
@@ -54,8 +45,17 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             textBoxMsgBoard.Text = "Review status and use force matching facility if necessary.  "; 
            

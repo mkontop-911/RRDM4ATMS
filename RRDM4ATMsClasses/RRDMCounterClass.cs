@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMCounterClass
+    public class RRDMCounterClass : Logger
     {
+        public RRDMCounterClass() : base() { }
+
         // USED FOR ATM OPERATIONAL MONITORING 
 
-        RRDMNotesBalances Na = new RRDMNotesBalances();
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate();
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
         RRDMAtmsClass Ac = new RRDMAtmsClass();
         RRDMUsersAccessToAtms Ua = new RRDMUsersAccessToAtms();
 
@@ -86,7 +82,7 @@ namespace RRDM4ATMs
 
             DateTime NextReplDt;
 
-            bool ReconcDiff;
+            bool GL_ReconcDiff;
           
 
             bool Consider = false;
@@ -148,71 +144,73 @@ namespace RRDM4ATMs
 
                                 NextReplDt = (DateTime)rdr["NextReplDt"];
 
-                                ReconcDiff = (bool)rdr["ReconcDiff"];
+                                GL_ReconcDiff = (bool)rdr["GL_ReconcDiff"];
 
-                                if (ReconcDiff == false)
+                                if (GL_ReconcDiff == false)
                                 {
                                     TotReconc = TotReconc + 1;
                                 }
-
-                                Ta.ReadSessionsStatusTraces(AtmNo, CurrentSesNo);
-
-                                if (Ta.ProcessMode == -1) // ATM is still in Process
+                                if (CurrentSesNo>0)
                                 {
-                                    // Find previous session Trace 
-
-                                    Ta.ReadSessionsStatusTraces(AtmNo, Ta.PreSes);
-
-                                }
-
-                                if (Ta.RecordFound == true)
-                                {
-                                    // Check the currently under Replenishment
-                                    if (Ta.ProcessMode == 0)
+                                    Ta.ReadSessionsStatusTraces(AtmNo, CurrentSesNo);
+                                    if (Ta.ProcessMode == -1 & Ta.RecordFound == true) // ATM is still in Process
                                     {
-                                        TotUnderRepl = TotUnderRepl + 1;
+                                        // Find previous session Trace 
+
+                                        Ta.ReadSessionsStatusTraces(AtmNo, Ta.PreSes);
+
                                     }
 
-                                    // Check the reconciliations 
-                                    if (Ta.SessionsInDiff == 1)
+                                    if (Ta.RecordFound == true)
                                     {
-                                        TotNotReconc1 = TotNotReconc1 + 1;
-                                    }
-
-                                    if (Ta.SessionsInDiff > 1)
-                                    {
-                                        TotNotReconc2 = TotNotReconc2 + 1;
-                                    }
-
-                                    if (Ta.SessionsInDiff >= InReconcDays)
-                                    {
-                                        TotNotReconc3 = TotNotReconc3 + 1;
-                                    }
-
-                                    if (Ta.SessionsInDiff > 0)
-                                    {
-                                        if (Ta.Diff1.DiffCurr1 > 0)
+                                        // Check the currently under Replenishment
+                                        if (Ta.ProcessMode == 0)
                                         {
-                                            TotDiffPlus = TotDiffPlus + Ta.Diff1.DiffCurr1;
+                                            TotUnderRepl = TotUnderRepl + 1;
                                         }
-                                        if (Ta.Diff1.DiffCurr1 < 0)
-                                        {
 
-                                            decimal Temp = -Ta.Diff1.DiffCurr1; // turn to possitive 
-                                            TotDiffMinus = TotDiffMinus + Temp;
-                                            Temp = 0;
+                                        // Check the reconciliations 
+                                        if (Ta.SessionsInDiff == 1)
+                                        {
+                                            TotNotReconc1 = TotNotReconc1 + 1;
+                                        }
+
+                                        if (Ta.SessionsInDiff > 1)
+                                        {
+                                            TotNotReconc2 = TotNotReconc2 + 1;
+                                        }
+
+                                        if (Ta.SessionsInDiff >= InReconcDays)
+                                        {
+                                            TotNotReconc3 = TotNotReconc3 + 1;
+                                        }
+
+                                        if (Ta.SessionsInDiff > 0)
+                                        {
+                                            if (Ta.Diff1.DiffCurr1 > 0)
+                                            {
+                                                TotDiffPlus = TotDiffPlus + Ta.Diff1.DiffCurr1;
+                                            }
+                                            if (Ta.Diff1.DiffCurr1 < 0)
+                                            {
+
+                                                decimal Temp = -Ta.Diff1.DiffCurr1; // turn to possitive 
+                                                TotDiffMinus = TotDiffMinus + Temp;
+                                                Temp = 0;
+                                            }
                                         }
                                     }
-                                }
 
-                                Na.ReadAllErrorsTable(AtmNo, CurrentSesNo);
+                                    Na.ReadAllErrorsTable(AtmNo, CurrentSesNo);
 
-                                if (Na.ErrorsFound == true)
-                                {
-                                    TotErrors = TotErrors + Na.NumberOfErrJournal + Na.NumberOfErrHost;
-                                    TotErrorsAtm = TotErrorsAtm + Na.NumberOfErrJournal;
-                                    TotErrorsHost = TotErrorsHost + Na.NumberOfErrHost;
-                                    TotHostToday = TotHostToday + Na.ErrHostToday;
+                                    if (Na.ErrorsFound == true)
+                                    {
+                                        TotErrors = TotErrors + Na.NumberOfErrJournal + Na.NumberOfErrHost;
+                                        TotErrorsAtm = TotErrorsAtm + Na.NumberOfErrJournal;
+                                        TotErrorsHost = TotErrorsHost + Na.NumberOfErrHost;
+                                        TotHostToday = TotHostToday + Na.ErrHostToday;
+                                    }
+
                                 }
 
 
@@ -259,10 +257,12 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in CounterClass............. " + ex.Message;
+
+                    CatchDetails(ex); 
 
                 }
         }
+
+       
     }
 }

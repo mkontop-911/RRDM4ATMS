@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading; //
 
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 using RRDM4ATMs;
-
-using System.Data.SqlClient;
-using System.Configuration;
 
 namespace JTMReqSimulator
 {
@@ -21,6 +15,7 @@ namespace JTMReqSimulator
         static bool CloseOrBreakKey = false;
 
         const string PROGRAM_MUTEX_NAME = "JTMREQUESTSIMULATOR";
+        const string bankID = "ETHNCY2N";
 
         // Program Files\NCR APTRA\Advance NDC\data\EJDATA.LOG
 
@@ -79,18 +74,18 @@ namespace JTMReqSimulator
                 Console.WriteLine("\nSimulator is configured for {0} VMs", MaxVMs);
                 msg = "\nOptions: \n" +
                       "[1]: FETCH Single ATM\n" +
-                      "[2]: FETCHDEL Single ATM\n" +
+                      /* "[2]: FETCHDEL Single ATM\n" +*/
                       "[3]: ATMSTATUS Single ATM\n" +
                       "[4]: Batch FETCH\n" +
-                      "[5]: Batch FETCHDEL\n" +
+                      /* "[5]: Batch FETCHDEL\n" + */
                       "[6]: Batch ATMSTATUS\n" +
                       "\n" +
                       "[S]: Stress Test\n" +
-                   // "[K]: Kill Threads\n" +
+                      // "[K]: Kill Threads\n" +
                       "[I]: Initialize_Tables\n\n" +
                       "\n" +
-                      "[L]: Restore file on a VM\n" +
-                      "[M]: Restore file on ALL VMs\n" +
+                      // "[L]: Restore file on a VM  (Alecos only...)\n" +
+                      // "[M]: Restore file on ALL VMs  (Alecos only...)\n" +
                       "[V]: Shutdown Single VM\n" +
                       "[W]: Shutdown ALL VMs\n" +
                       "\n" +
@@ -110,15 +105,15 @@ namespace JTMReqSimulator
                             }
                             break;
                         }
-                    case '2': //Single FETCHDEL
-                        {
-                            int indx = SelectATM();
-                            if (indx != -1)
-                            {
-                                InsertFETCHRequest(indx, "FETCHDEL", "");
-                            }
-                            break;
-                        }
+                    //case '2': //Single FETCHDEL
+                    //    {
+                    //        int indx = SelectATM();
+                    //        if (indx != -1)
+                    //        {
+                    //            InsertFETCHRequest(indx, "FETCHDEL", "");
+                    //        }
+                    //        break;
+                    //    }
                     case '3': //Single ATMSTATUS
                         {
                             int indx = SelectATM();
@@ -141,19 +136,19 @@ namespace JTMReqSimulator
                             Thread.Sleep(1000);
                             break;
                         }
-                    case '5': //Batch FETCHDEL
-                        {
-                            int bindx = rnd.Next(1, 1000000); // number between 1 and 999.999 to use in BatchId
-                            string batchid = string.Format("BATCH-{0}", bindx.ToString("000000"));
-                            Console.WriteLine("Your Option: Batch FETCHDEL will generate 10 requests as {0}.. ", batchid);
+                    //case '5': //Batch FETCHDEL
+                    //    {
+                    //        int bindx = rnd.Next(1, 1000000); // number between 1 and 999.999 to use in BatchId
+                    //        string batchid = string.Format("BATCH-{0}", bindx.ToString("000000"));
+                    //        Console.WriteLine("Your Option: Batch FETCHDEL will generate 10 requests as {0}.. ", batchid);
 
-                            for (int i = 1; i <= MaxVMs; i++)
-                            {
-                                InsertFETCHRequest(i, "FETCHDEL", batchid);
-                            }
-                            Thread.Sleep(1000);
-                            break;
-                        }
+                    //        for (int i = 1; i <= MaxVMs; i++)
+                    //        {
+                    //            InsertFETCHRequest(i, "FETCHDEL", batchid);
+                    //        }
+                    //        Thread.Sleep(1000);
+                    //        break;
+                    //    }
                     case '6': //Batch ATMSTATUS
                         {
                             int bindx = rnd.Next(1, 1000000); // number between 1 and 999.999 to use in BatchId
@@ -204,18 +199,18 @@ namespace JTMReqSimulator
                             Thread.Sleep(1000);
                             break;
                         }
-                    case 'l': // Restore Single VM
-                    case 'L':
-                        {
-                            int indx = SelectATM();
-                            if (indx != -1)
-                            {
-                                Console.WriteLine("Your Option: Restore ATMXP-{0}", (indx).ToString("00"));
-                                RestoreATM(indx);
-                            }
-                            Thread.Sleep(1000);
-                            break;
-                        }
+                    //case 'l': // Restore Single VM
+                    //case 'L':
+                    //    {
+                    //        int indx = SelectATM();
+                    //        if (indx != -1)
+                    //        {
+                    //            Console.WriteLine("Your Option: Restore ATMXP-{0}", (indx).ToString("00"));
+                    //            RestoreATM(indx);
+                    //        }
+                    //        Thread.Sleep(1000);
+                    //        break;
+                    //    }
                     case 's': // StressTest )
                     case 'S':
                         {
@@ -246,17 +241,17 @@ namespace JTMReqSimulator
                             }
                             break;
                         }
-                    case 'm': // Restore ALL VMs
-                    case 'M':
-                        {
-                            Console.WriteLine("Your Option: Restore ALL ...");
-                            for (int i = 1; i <= MaxVMs; i++)
-                            {
-                                RestoreATM(i);
-                            }
-                            Thread.Sleep(1000);
-                            break;
-                        }
+                    //case 'm': // Restore ALL VMs
+                    //case 'M':
+                    //    {
+                    //        Console.WriteLine("Your Option: Restore ALL ...");
+                    //        for (int i = 1; i <= MaxVMs; i++)
+                    //        {
+                    //            RestoreATM(i);
+                    //        }
+                    //        Thread.Sleep(1000);
+                    //        break;
+                    //    }
                     case 'v': // Shutdown Single VM
                     case 'V':
                         {
@@ -287,7 +282,7 @@ namespace JTMReqSimulator
                             return;
                         }
                     default:
-                        
+
                         Console.WriteLine("    \nInvalid ....");
                         break;
                 }
@@ -314,23 +309,48 @@ namespace JTMReqSimulator
             {
                 JtmQ.Priority = 2;
             }
-            JtmQ.BatchID = BatchId;
-            JtmQ.AtmNo = string.Format("AB1{0}", Index.ToString("00"));
-            JtmQ.BankID = "CRBAGRAA";
+            //JtmQ.BatchID = BatchId;
+            switch (Index)
+            {
+                case 2:
+                    {
+                        JtmQ.AtmNo = "00147128";
+                        JtmQ.TypeOfJournal = "DBLD01";
+                        JtmQ.SourceFileName = "EDCLocal.dat";
+                        JtmQ.SourceFilePath = @"c:\Diebold\EDC";
+                        break;
+                    }
+                case 4:
+                    {
+                        JtmQ.AtmNo = "00005128";
+                        JtmQ.TypeOfJournal = "DBLD01";
+                        JtmQ.SourceFileName = "EDCLocal.dat";
+                        JtmQ.SourceFilePath = @"c:\Diebold\EDC";
+                        break;
+                    }
+                default:
+                    {
+                        JtmQ.AtmNo = string.Format("AB1{0}", Index.ToString("00"));
+                        JtmQ.TypeOfJournal = "NCR01";
+                        JtmQ.SourceFileName = "EJData.LOG";
+                        JtmQ.SourceFilePath = @"c:\Program Files\Advance NDC\Data";
+                        break;
+                    }
+            }
+            JtmQ.BankID = bankID;
             JtmQ.BranchNo = string.Format("BR0{0}", Index.ToString("00"));
             JtmQ.ATMIPAddress = string.Format("192.168.10.2{0}", (Index + 20).ToString("00"));
             JtmQ.ATMMachineName = string.Format("ATMXP-{0}", Index.ToString("00"));
             JtmQ.ATMWindowsAuth = false;
             JtmQ.ATMAccessID = "Capitan";
             JtmQ.ATMAccessPassword = "Alejandr0";
-            JtmQ.TypeOfJournal = "NCR01";
-            JtmQ.SourceFileName = "EJDATA.LOG";
-            JtmQ.SourceFilePath = @"c$\JPool\JTMTest";
+
             JtmQ.DestnFileName = "";
-            JtmQ.DestnFilePath = string.Format(@"C:\RRDM\FilePool\ATMs\{0}", JtmQ.AtmNo);
+            // JtmQ.DestnFilePath = string.Format(@"C:\RRDM\FilePool\ATMs\{0}", JtmQ.AtmNo);
+            JtmQ.DestnFilePath = string.Format(@"C:\RRDM\FilePool\ATMs");
             JtmQ.DestnFileHASH = "";
             JtmQ.Stage = 0;
-            JtmQ.Operator = "CRBAGRAA";
+            JtmQ.Operator = bankID;
 
             JtmQ.InsertNewRecordInJTMQueue();
             if (JtmQ.ErrorFound)
@@ -357,9 +377,9 @@ namespace JTMReqSimulator
             {
                 JtmQ.Priority = 2;
             }
-            JtmQ.BatchID = batchID;
+            //JtmQ.BatchID = batchID;
             JtmQ.AtmNo = string.Format("AB1{0}", Index.ToString("00"));
-            JtmQ.BankID = "CRBAGRAA";
+            JtmQ.BankID = bankID;
             JtmQ.BranchNo = string.Format("BR0{0}", Index.ToString("00"));
             JtmQ.ATMIPAddress = string.Format("192.168.10.2{0}", (Index + 20).ToString("00"));
             JtmQ.ATMMachineName = string.Format("ATMXP-{0}", Index.ToString("00"));
@@ -373,7 +393,7 @@ namespace JTMReqSimulator
             JtmQ.DestnFilePath = ""; // string.Format(@"C:\RRDM\FilePool\ATMs\{0}", JtmQ.AtmNo);
             JtmQ.DestnFileHASH = "";
             JtmQ.Stage = 0;
-            JtmQ.Operator = "CRBAGRAA";
+            JtmQ.Operator = bankID;
 
             JtmQ.InsertNewRecordInJTMQueue();
             if (JtmQ.ErrorFound)
@@ -395,10 +415,10 @@ namespace JTMReqSimulator
             JtmQ.RequestorMachine = string.Format("TESTPC-{0}", "00");
             JtmQ.Command = "RESET";
             JtmQ.Priority = 0;
-            JtmQ.BankID = "CRBAGRAA";
+            JtmQ.BankID = bankID;
 
             // ToDo - should not need to enter these for CLEAR/RESET
-            JtmQ.BatchID = ""; //TODO
+            //JtmQ.BatchID = ""; //TODO
             JtmQ.AtmNo = "";
             JtmQ.BranchNo = "";
             JtmQ.ATMIPAddress = "";
@@ -408,7 +428,6 @@ namespace JTMReqSimulator
             JtmQ.ATMAccessPassword = "";
             JtmQ.TypeOfJournal = "";
             JtmQ.SourceFileName = "";
-            //JtmQ.SourceFilePath = "JTM\\JTMTest";
             JtmQ.SourceFilePath = "";
             //JtmQ.DestnFileName = "";
             JtmQ.DestnFilePath = "";
@@ -421,11 +440,7 @@ namespace JTMReqSimulator
             //JtmQ.FileParseStart = FileParseStart;
             //JtmQ.FileParseEnd = FileParseEnd;
 
-            JtmQ.Operator = "CRBAGRAA";
-
-
-
-
+            JtmQ.Operator = bankID;
 
 
             JtmQ.InsertNewRecordInJTMQueue();
@@ -461,40 +476,57 @@ namespace JTMReqSimulator
             RRDMJTMIdentificationDetailsClass IdD = new RRDMJTMIdentificationDetailsClass();
 
             IdD.AtmNo = string.Format("AB1{0}", Index.ToString("00"));
-            // IdD.DateLastUpdated = DateTime.Now;
+            IdD.DateLastUpdated = DateTime.MinValue;
             IdD.UserId = string.Format("ALEX-{0}", Index.ToString("00"));
-            IdD.BatchID = BatchId;
+            IdD.LoadingScheduleID = BatchId;
             IdD.ATMIPAddress = string.Format("192.168.10.2{0}", (Index + 20).ToString("00"));
             IdD.ATMMachineName = string.Format("ATMXP-{0}", Index.ToString("00"));
             IdD.ATMWindowsAuth = false;
             IdD.ATMAccessID = "Capitan";
             IdD.ATMAccessPassword = "Alejandr0";
-            IdD.TypeOfJournal = "NCR01";
-            IdD.SourceFileName = "EJDATA.LOG";
-            IdD.SourceFilePath = @"c$\JPool\JTMTest";
-            IdD.DestnFilePath = string.Format(@"C:\RRDM\FilePool\ATMs\{0}", IdD.AtmNo);
 
-            IdD.Operator = "CRBAGRAA";
-
-            //public DateTime FileUploadRequestDt;
-            //public DateTime FileParseEnd;
-            //public int ResultCode;
-            //public string ResultMessage;
+            switch (Index % 2)
+            {
+                // Even number = Diebold
+                // Odd  number = NCR
+                case 0:
+                    {
+                        IdD.TypeOfJournal = "DBLD01";
+                        IdD.SourceFileName = "EDCLocal.dat";
+                        IdD.SourceFilePath = @"c:\Diebold\EDC";
+                        break;
+                    }
+                default:
+                    {
+                        IdD.TypeOfJournal = "NCR01";
+                        IdD.SourceFileName = "EJData.LOG";
+                        IdD.SourceFilePath = @"c:\Program Files\Advance NDC\Data";
+                        break;
+                    }
+            }
+            IdD.DestnFilePath = @"C:\RRDM\FilePool\ATMs";
+            IdD.FileUploadRequestDt = DateTime.MinValue;
+            IdD.FileParseEnd = DateTime.MinValue;
+            IdD.LoadingCompleted = DateTime.MinValue;
+            IdD.NextLoadingDtTm = DateTime.MaxValue;
+            IdD.Operator = bankID;
 
             IdD.InsertNewRecordInJTMIdentificationDetails();
             if (IdD.ErrorFound)
             {
                 Console.WriteLine("InsertNewRecordInJTMIdentificationDetails() INSERT [{0}] returned: {1}", Index, IdD.ErrorOutput);
+                Console.ReadLine();
             }
             else
             {
                 string msg = string.Format("Inserted new record for {0} in JTMIdentificationDetails table", IdD.ATMMachineName);
                 Console.WriteLine(msg);
+                // Console.ReadLine();
             }
         }
         #endregion
 
-        #region PSEXEC
+        #region PSEXEC - Restore ATM
         static void RestoreATM(int Index)
         {
             //psexec \\ATMXP-xx -i -u Capitan -p Alejandr0 c:\JPool\Cerv.bat
@@ -506,7 +538,9 @@ namespace JTMReqSimulator
             // Console.ReadLine();
             StartPSExec(PSXeqArg);
         }
+        #endregion
 
+        #region PSEXEC - ShutDown ATM
         static void ShutDownATM(int Index)
         {
             // psexec \\ATMXP-01 -d -u Capitan -p Alejandr0  cmd /c "shutdown /s /t 30"
@@ -518,7 +552,9 @@ namespace JTMReqSimulator
             // Console.ReadLine();
             StartPSExec(PSXeqArg);
         }
+        #endregion
 
+        #region PSEXEC - Start PSExec
         static void StartPSExec(string arguments)
         {
             // "\\10.10.1.255 -u user -p pass -c -f "D:\MyApplications\MyExecutable.exe"";

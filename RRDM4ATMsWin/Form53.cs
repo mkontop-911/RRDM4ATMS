@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
-using System.Drawing.Printing;
-using System.Configuration;
+using RRDM4ATMs;
 
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 namespace RRDM4ATMsWin
 {
@@ -23,16 +13,23 @@ namespace RRDM4ATMsWin
 
         Form68 NForm68; 
 
-        string Gridfilter;
-
         RRDMAtmsMainClass Am = new RRDMAtmsMainClass();
 
-        RRDMAllowedAtmsAndUpdateFromJournal Aj = new RRDMAllowedAtmsAndUpdateFromJournal();
+        RRDMJournalAndAllowUpdate Aj = new RRDMJournalAndAllowUpdate();
 
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); 
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
+
+        RRDMUsersRecords Us = new RRDMUsersRecords();
+
+        string AtmNo;
+        string FromFunction;
+        string WCitId;
 
         DateTime FromDate ;
         DateTime ToDate;
+
+        DateTime WDtFrom;// Needed for repl cycles
+        DateTime WDtTo;
 
         int SelModeA;
         int SelModeB;
@@ -46,7 +43,6 @@ namespace RRDM4ATMsWin
         int WSignRecordNo;
         string WOperator; 
   
-
         public Form53(string InSignedId, int InSignRecordNo, string InOperator)
         {
             WSignedId = InSignedId;
@@ -55,68 +51,136 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
 
-            // Read USER and ATM Table 
-            // GET TABLE OF ALLOWED ATMS FOR REPLENISH
-            string WFunction = "Any";
-            Aj.CreateTableOfAccess(WSignedId, WSignRecordNo, WOperator, WFunction);
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
-            // From eJournal update traces and transactions based on table  
-            Aj.UpdateLatestEjStatus(WSignedId, WSignRecordNo, WOperator);
+            //-----------------ACCESS CONTROL TO WHAT ATMS TO SEE---------------//
 
-            //TEST
-            dateTimePicker1.Value = new DateTime(2014, 02, 12);
-            dateTimePicker2.Value = new DateTime(2014, 02, 13);
+            // Create table with the ATMs this user can access
+            Us.ReadUsersRecord(WSignedId);
+            if (Us.CitId != "1000")
+            {
+                // CIT USER 
+                AtmNo = "";
+                FromFunction = "FromCit";
+                WCitId = Us.CitId;
+            }
+            else
+            {
+                AtmNo = "";
+                FromFunction = "General";
+                WCitId = "";
+            }
 
+            // Create table with the ATMs this user can access
+            Am.ReadViewAtmsMainForAuthUserAndFillTable(WOperator, WSignedId, WSignRecordNo, AtmNo, FromFunction, WCitId);
+
+            //-----------------UPDATE LATEST TRANSACTIONS----------------------//
+            // Update latest transactions from Journal 
+            if (WOperator == "CRBAGRAA")
+            {
+                Aj.UpdateLatestEjStatusVersion2(WSignedId, WSignRecordNo, WOperator, Am.TableATMsMainSelected);
+            }
+            //
+            //-----------------------------------------------------------------// 
+            if (WOperator == "CRBAGRAA")
+            {
+                //TEST
+                dateTimePickerStartDt.Value = new DateTime(2014, 02, 12);
+                dateTimePickerEndDt.Value = new DateTime(2014, 02, 13);
+            }
+            else
+            {
+                // EG ETHNIKI 
+                dateTimePickerStartDt.Value = new DateTime(2017, 02, 12);
+                dateTimePickerEndDt.Value = DateTime.Now;
+            }
+            
             radioButton1.Checked = true; // Single ATM
 
             radioButton3.Checked = true; // All for period 
 
             textBoxMsgBoard.Text = "Make your selection for Drilling ";
-         
-          
+             
         }
         // Load 
         private void Form53_Load(object sender, EventArgs e)
         {
-                
-                Gridfilter = "Operator ='" + WOperator + "' AND AuthUser ='" + WSignedId + "'";
+            //Load Datagrid with what is allowed
+            dataGridViewMyATMS.DataSource = Am.TableATMsMainSelected.DefaultView;
 
-                atmsMainBindingSource.Filter = Gridfilter;
-                dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
-                this.atmsMainTableAdapter.Fill(this.aTMSDataSet44.AtmsMain);
+            dataGridViewMyATMS.Columns[0].Width = 110; // AtmNo
+            dataGridViewMyATMS.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-                if (dataGridView1.Rows.Count == 0)
-                {
-                    Form2 MessageForm = new Form2("You are not the owner of any ATM.");
-                    MessageForm.ShowDialog();
+            dataGridViewMyATMS.Columns[1].Width = 70; // ReplCycle
+            dataGridViewMyATMS.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                    this.Dispose();
-                    return;
-                }
+            dataGridViewMyATMS.Columns[2].Width = 120; // AtmName
+
+            dataGridViewMyATMS.Columns[3].Width = 120; // RespBranch
+
+            dataGridViewMyATMS.Columns[4].Width = 70; // Auth User 
+
+            dataGridViewMyATMS.Columns[0].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
+            dataGridViewMyATMS.Columns[4].DefaultCellStyle.ForeColor = Color.LightSlateGray;
+
+            if (dataGridViewMyATMS.Rows.Count == 0)
+            {
+                Form2 MessageForm = new Form2("You are not the owner of any ATM.");
+                MessageForm.ShowDialog();
+
+                this.Dispose();
+                return;
+            }
 
                 //TEST
                 // SET ROW Selection POSITIONING 
-                dataGridView1.Rows[1].Selected = true;
-                dataGridView1_RowEnter(this, new DataGridViewCellEventArgs(1, 1));
+                //dataGridViewMyATMS.Rows[1].Selected = true;
+                //dataGridView1_RowEnter(this, new DataGridViewCellEventArgs(1, 1));
 
         }
         // ROW ENTER 
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
+            DataGridViewRow rowSelected = dataGridViewMyATMS.Rows[e.RowIndex];
 
             WAtmNo = (string)rowSelected.Cells[0].Value;
 
-            label17.Text = "REPL. CYCLE/s FOR ATM : " + WAtmNo; 
+            label17.Text = "REPL. CYCLE/s FOR ATM : " + WAtmNo;
+            WDtFrom = new DateTime(1900, 01, 01);
+            WDtTo = DateTime.Today;
 
-            string filter = "AtmNo ='" + WAtmNo + "' AND (ProcessMode = -1 OR ProcessMode = 0 OR ProcessMode = 1 OR ProcessMode = 2 OR ProcessMode = 3)";
+            Ta.ReadReplCyclesForFromToDateFillTable(WOperator, WSignedId, WAtmNo, WDtFrom, WDtTo);
 
-            sessionsStatusTracesBindingSource.Filter = filter;
-            dataGridView2.Sort(dataGridView2.Columns[0], ListSortDirection.Descending);
-            this.sessionsStatusTracesTableAdapter.Fill(this.aTMSDataSet45.SessionsStatusTraces);
+            dataGridView2.DataSource = Ta.ATMsReplCyclesSelectedPeriod.DefaultView;
+
+            dataGridView2.Columns[0].Width = 70; // SesNo
+            dataGridView2.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            // dataGridView2.Sort(dataGridView2.Columns[0], ListSortDirection.Descending);
+
+            dataGridView2.Columns[1].Width = 130; // SesDtTimeStart
+            dataGridView2.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[2].Width = 130; // SesDtTimeEnd
+            dataGridView2.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[3].Width = 180; // ProcessMode
+            dataGridView2.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[4].Width = 65; // Mode_2
+            dataGridView2.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[5].Width = 100; // AtmNo 
+            dataGridView2.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             textBox2.Text = WAtmNo;
           
@@ -132,24 +196,46 @@ namespace RRDM4ATMsWin
 
             WSesNo = (int)rowSelected.Cells[0].Value;
 
+            Ta.ReadSessionsStatusTraces(WAtmNo, WSesNo);
+
+            dateTimePickerStartDt.Value = Ta.SesDtTimeStart;
+            dateTimePickerEndDt.Value = Ta.SesDtTimeEnd;
+
             textBox4.Text = WSesNo.ToString();
 
         }
         // Show 
         private void button7_Click(object sender, EventArgs e)
         {
-            //TEST
-            if (WAtmNo == "AB104" || WAtmNo == "ABC502")
+            //
+            // Validation for invalid characters 
+            //
+            System.Text.RegularExpressions.Regex expr = new System.Text.RegularExpressions.Regex
+              (@"^[a-zA-Z0-9]*$");
+
+            if (expr.IsMatch(textBoxInputField.Text))
             {
+                //   MessageBox.Show("field");
             }
             else
             {
-                MessageBox.Show("For testing Please enter only AB104 or ABC502 ATM ... ");
+                MessageBox.Show("invalid Characters In Input Field");
                 return;
             }
 
-            FromDate = dateTimePicker1.Value;
-            ToDate = dateTimePicker2.Value;
+            //TEST
+            if (WAtmNo == "AB102" || WAtmNo == "ABC502")
+            {
+
+            }
+            //else
+            //{
+            //    MessageBox.Show("For testing Please enter only AB104 or ABC502 ATM ... ");
+            //    return;
+            //}
+
+            FromDate = dateTimePickerStartDt.Value;
+            ToDate = dateTimePickerEndDt.Value;
 
             if (radioButton1.Checked == true) SelModeA = 1;
             if (radioButton2.Checked == true) SelModeA = 2;
@@ -172,29 +258,29 @@ namespace RRDM4ATMsWin
             if (SelModeB == 8 || SelModeB == 9 || SelModeB == 10)
             {
                 // Check if Number is entered 
-                if (String.IsNullOrEmpty(textBox1.Text))
+                if (String.IsNullOrEmpty(textBoxInputField.Text))
                 {
                     if (SelModeB == 8)
                     {
                         MessageBox.Show("Enter Data for card such as 4506531111117072");
-                        textBox1.Text = "4506531111117072";
+                        textBoxInputField.Text = "4506531111117072";
                     }
                     if (SelModeB == 9)
                     {
                         MessageBox.Show("Enter Data for Account such as 012801038482");
-                        textBox1.Text = "012801038482";
+                        textBoxInputField.Text = "012801038482";
                     }
                     if (SelModeB == 10)
                     {
                         MessageBox.Show("Enter Data for TraceNumber such as 10042990 ");
-                        textBox1.Text = "10042990";
+                        textBoxInputField.Text = "10042990";
                     } 
                       
                     return;
                 }
                 else // There is value = something will be reported 
                 {
-                    EnteredNumber = textBox1.Text; 
+                    EnteredNumber = textBoxInputField.Text; 
                 }
             }
             if (SelModeB == 10)
@@ -206,12 +292,27 @@ namespace RRDM4ATMsWin
                 }
                 else
                 {
-                    MessageBox.Show(textBox1.Text, "Please enter a valid Trace number!");
+                    MessageBox.Show(textBoxInputField.Text, "Please enter a valid Trace number!");
                     return;
                 }
             }
+
+            //TEST
+            if (WAtmNo == "AB102" )
+            {
+                WAtmNo = "AB104";
+                WSesNo = 9051; 
+            }
+            String JournalId = ""; 
+            if (WOperator == "ETHNCY2N")
+            {
+                JournalId = "[ATM_MT_Journals].[dbo].[tblHstAtmTxns]";
+            }
+            else
+            {
+                JournalId = "[ATMS_Journals].[dbo].[tblHstEjText]";
+            }
             
-            String JournalId = "[ATMS_Journals].[dbo].[tblHstEjText]";
 
             Ta.ReadSessionsStatusTraces(WAtmNo, WSesNo);
 
@@ -244,17 +345,17 @@ namespace RRDM4ATMsWin
         // Empty textBox1 
         private void radioButton8_CheckedChanged(object sender, EventArgs e)
         {
-            textBox1.Text = ""; 
+            textBoxInputField.Text = ""; 
         }
 
         private void radioButton9_CheckedChanged(object sender, EventArgs e)
         {
-            textBox1.Text = ""; 
+            textBoxInputField.Text = ""; 
         }
 
         private void radioButton10_CheckedChanged(object sender, EventArgs e)
         {
-            textBox1.Text = "";
+            textBoxInputField.Text = "";
         }
         // Finish
         private void buttonNext_Click(object sender, EventArgs e)

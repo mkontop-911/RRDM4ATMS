@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 using System.Data.SqlClient;
 using System.Configuration;
 
@@ -42,7 +36,7 @@ namespace RRDM4ATMsWin
           ["ATMSConnectionString"].ConnectionString;
 
         RRDMGasParameters Gp = new RRDMGasParameters();
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
  //       string WUserOperator;
 
@@ -51,21 +45,30 @@ namespace RRDM4ATMsWin
 
         string WSignedId;
         int WSignRecordNo;
-        int WSecLevel;
+        string WSecLevel;
         string WOperator;
      //   bool WPrive;
-        public Form81(string InSignedId, int InSignRecordNo, int InSecLevel, string InOperator)
+        public Form81(string InSignedId, int InSignRecordNo, string InSecLevel, string InOperator)
         {         
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
             WSecLevel = InSecLevel;
             WOperator = InOperator;
-        //    WPrive = InPrive;
+        
 
             InitializeComponent();
-            
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             textBoxMsgBoard.Text = "Controller sees information about the work to be done"; 
         }
@@ -150,17 +153,17 @@ namespace RRDM4ATMsWin
 
             if (Min > QualityRange2 ) 
             {
-                pictureBox3.BackgroundImage = Properties.Resources.GREEN_LIGHT;
+                pictureBox3.BackgroundImage = appResImg.GREEN_LIGHT;
                 textBox2.Text = "Min>"+QualityRange2.ToString();
             }
             if (Min >= QualityRange1 & Min <= QualityRange2)
             {
-                pictureBox3.BackgroundImage = Properties.Resources.YELLOW;
+                pictureBox3.BackgroundImage = appResImg.YELLOW;
                 textBox2.Text = QualityRange1.ToString() + "<Min<" + QualityRange2.ToString();
             }
             if (Min < QualityRange1)
             {
-                pictureBox3.BackgroundImage = Properties.Resources.RED_LIGHT;
+                pictureBox3.BackgroundImage = appResImg.RED_LIGHT;
                 textBox2.Text = "Min<" + QualityRange1.ToString(); ;
             }
 
@@ -244,17 +247,17 @@ namespace RRDM4ATMsWin
 
             if (Min > QualityRange2)
             {
-                pictureBox4.BackgroundImage = Properties.Resources.GREEN_LIGHT;
+                pictureBox4.BackgroundImage = appResImg.GREEN_LIGHT;
                 textBox11.Text = "Min>" + QualityRange2.ToString();
             }
             if (Min >= QualityRange1 & Min <= QualityRange2)
             {
-                pictureBox4.BackgroundImage = Properties.Resources.YELLOW;
+                pictureBox4.BackgroundImage = appResImg.YELLOW;
                 textBox11.Text = QualityRange1.ToString() + "<Min<" + QualityRange2.ToString();
             }
             if (Min < QualityRange1)
             {
-                pictureBox4.BackgroundImage = Properties.Resources.RED_LIGHT;
+                pictureBox4.BackgroundImage = appResImg.RED_LIGHT;
                 textBox11.Text = "Min<" + QualityRange1.ToString(); ;
             }
 
@@ -330,11 +333,11 @@ namespace RRDM4ATMsWin
 
             if (Red == false)
             {
-                pictureBox2.BackgroundImage = Properties.Resources.GREEN_LIGHT;
+                pictureBox2.BackgroundImage = appResImg.GREEN_LIGHT;
             }
             if (Red == true)
             {
-                pictureBox2.BackgroundImage = Properties.Resources.RED_LIGHT;
+                pictureBox2.BackgroundImage = appResImg.RED_LIGHT;
             }
          
         }
@@ -579,7 +582,10 @@ namespace RRDM4ATMsWin
 
                 }
         }
-
-       
+// Finish 
+        private void buttonFinish_Click(object sender, EventArgs e)
+        {
+            this.Dispose(); 
+        }
     }
 }

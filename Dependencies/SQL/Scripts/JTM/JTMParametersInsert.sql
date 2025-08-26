@@ -73,7 +73,7 @@ INSERT INTO [dbo].[GasParameters]
            ('910'
 		    ,'3'
            ,'JTM WorkerThreads'
-		   ,'JTM  FETCHRetryTimeout (sec)'
+		   ,'JTM  FETCHRetryWaitTime (sec)'
 		   , 10
 		   , 1
 		   , 3
@@ -309,7 +309,55 @@ INSERT INTO [dbo].[GasParameters]
 		    ,'4'
            ,'JTM Files'
 		   ,'JTM MaxJournalBackupsATM'
-		   , 4
+		   , 0
+		   , 1
+		   , 3
+		   ,'CRBAGRAA'
+		   ,'CRBAGRAA'
+		   )
+
+
+INSERT INTO [dbo].[GasParameters]
+           ([ParamId]
+           ,[OccuranceId]
+		   ,[ParamNm]
+		   ,[OccuranceNm]
+		   ,[Amount]
+           ,[OpenRecord]
+		   ,[AccessLevel]
+		   ,[BankId]
+           ,[Operator]
+           )
+     VALUES
+           ('911'
+		    ,'5'
+           ,'JTM Files'
+		   ,'C:\Tools\SysInternal\PSexec.exe'
+		   , 0
+		   , 1
+		   , 3
+		   ,'CRBAGRAA'
+		   ,'CRBAGRAA'
+		   )
+
+
+INSERT INTO [dbo].[GasParameters]
+           ([ParamId]
+           ,[OccuranceId]
+		   ,[ParamNm]
+		   ,[OccuranceNm]
+		   ,[Amount]
+           ,[OpenRecord]
+		   ,[AccessLevel]
+		   ,[BankId]
+           ,[Operator]
+           )
+     VALUES
+           ('911'
+		    ,'6'
+           ,'JTM Files'
+		   ,'C:\Program Files\Advance NDC\InitEJ.exe'
+		   , 0
 		   , 1
 		   , 3
 		   ,'CRBAGRAA'
@@ -317,4 +365,3 @@ INSERT INTO [dbo].[GasParameters]
 		   )
 
 GO
-

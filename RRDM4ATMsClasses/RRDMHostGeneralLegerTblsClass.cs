@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 namespace RRDM4ATMs
 {
-    public class RRDMHostGeneralLegerTblsClass
+    public class RRDMHostGeneralLegerTblsClass : Logger
     {
+        public RRDMHostGeneralLegerTblsClass() : base() { }
+
         // DECLARE General Ledger Transactions FIELDS
         //
         public int TranNo;
@@ -97,8 +93,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostTblsClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -159,8 +155,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostTblsClass............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -186,11 +182,9 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@Comment", Comment);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        
+                       cmd.ExecuteNonQuery();
+                       
 
                     }
                     // Close conn
@@ -199,8 +193,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostTblsClass............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
     }

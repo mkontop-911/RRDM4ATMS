@@ -1,25 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+
+//multilingual
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
     public partial class Form111 : Form
     {
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
+        RRDMEncryptPasswordOrField En = new RRDMEncryptPasswordOrField();
         RRDMAuthorisationProcess Ap = new RRDMAuthorisationProcess();
         RRDMGasParameters Gp = new RRDMGasParameters(); 
 
         string WAuthoriser;
-        string WPassword; 
-
+     
         string WSignedId;
         int WSignRecordNo;
         string WOperator;
@@ -57,17 +52,26 @@ namespace RRDM4ATMsWin
         //}
 
         private void buttonAuthor_Click(object sender, EventArgs e)
-        {     
-            WPassword = txtBoxPassword.Text;
+        {
+          
             // =============================================
-            Us.ReadUsersRecord(WAuthoriser); // Read USER record for the signed user
+            Us.ReadUsersRecord(WAuthoriser); // Read USER record for the Authoriser 
 
             // ===========================================
-            if (WPassword != Us.PassWord)
+            bool PasswordMatched = En.CheckPassword(txtBoxPassword.Text, Us.PassWord);
+
+            if (PasswordMatched == false)
             {
-                MessageBox.Show(" Wrong Password ");
+                MessageBox.Show(" Wrong UserID and/or Password ");
                 return;
             }
+            //DecryptedPassword = En.DecryptField(Us.PassWord);
+
+            //if (txtBoxPassword.Text != DecryptedPassword)
+            //{
+            //    MessageBox.Show(" Wrong Password ");
+            //    return;
+            //}
 
             Gp.ReadParametersSpecificId(Us.Operator, "451", "2", "", "");
             int Temp = ((int)Gp.Amount);

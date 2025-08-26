@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanelHeader = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -59,6 +58,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBox54 = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button3 = new System.Windows.Forms.Button();
             this.textBoxRecomAction = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxNeedReason = new System.Windows.Forms.TextBox();
@@ -68,42 +68,8 @@
             this.textBoxAtmNo = new System.Windows.Forms.TextBox();
             this.buttonInMoney = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.atmNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.currentSesNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.atmNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.respBranchDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.branchNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lastReplDtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.estReplDtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nextReplDtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.currCassettesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.currentDepositsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.needTypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.reconcDiffDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.moreMaxCashDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.lessMinCashDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.bankIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.citIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lastUpdatedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.authUserDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.actionNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lastDispensedHistorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lastInNeedReviewDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sessionsInDiffDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.errOutstandingDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.replCycleNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.reconcCycleNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.reconcDtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.currNm1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.diffCurr1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.processModeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.atmsReconcGroupDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.atmsMainBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.aTMSDataSet4 = new RRDM4ATMsWin.ATMSDataSet4();
             this.label1 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.atmsMainTableAdapter = new RRDM4ATMsWin.ATMSDataSet4TableAdapters.AtmsMainTableAdapter();
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -117,8 +83,6 @@
             this.tableLayoutPanel6.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.atmsMainBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet4)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanelHeader
@@ -525,6 +489,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.button3);
             this.panel2.Controls.Add(this.textBoxRecomAction);
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.textBoxNeedReason);
@@ -540,6 +505,22 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(980, 404);
             this.panel2.TabIndex = 0;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.White;
+            this.button3.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button3.FlatAppearance.BorderSize = 2;
+            this.button3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button3.Location = new System.Drawing.Point(912, 326);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(62, 64);
+            this.button3.TabIndex = 343;
+            this.button3.Text = "Confirm And Print";
+            this.button3.UseVisualStyleBackColor = false;
             // 
             // textBoxRecomAction
             // 
@@ -617,7 +598,7 @@
             this.buttonInMoney.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonInMoney.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonInMoney.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonInMoney.Location = new System.Drawing.Point(913, 333);
+            this.buttonInMoney.Location = new System.Drawing.Point(912, 263);
             this.buttonInMoney.Name = "buttonInMoney";
             this.buttonInMoney.Size = new System.Drawing.Size(62, 57);
             this.buttonInMoney.TabIndex = 333;
@@ -629,42 +610,8 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.atmNoDataGridViewTextBoxColumn,
-            this.currentSesNoDataGridViewTextBoxColumn,
-            this.atmNameDataGridViewTextBoxColumn,
-            this.respBranchDataGridViewTextBoxColumn,
-            this.branchNameDataGridViewTextBoxColumn,
-            this.lastReplDtDataGridViewTextBoxColumn,
-            this.estReplDtDataGridViewTextBoxColumn,
-            this.nextReplDtDataGridViewTextBoxColumn,
-            this.currCassettesDataGridViewTextBoxColumn,
-            this.currentDepositsDataGridViewTextBoxColumn,
-            this.needTypeDataGridViewTextBoxColumn,
-            this.reconcDiffDataGridViewCheckBoxColumn,
-            this.moreMaxCashDataGridViewCheckBoxColumn,
-            this.lessMinCashDataGridViewCheckBoxColumn,
-            this.bankIdDataGridViewTextBoxColumn,
-            this.citIdDataGridViewTextBoxColumn,
-            this.lastUpdatedDataGridViewTextBoxColumn,
-            this.authUserDataGridViewTextBoxColumn,
-            this.actionNoDataGridViewTextBoxColumn,
-            this.lastDispensedHistorDataGridViewTextBoxColumn,
-            this.lastInNeedReviewDataGridViewTextBoxColumn,
-            this.sessionsInDiffDataGridViewTextBoxColumn,
-            this.errOutstandingDataGridViewTextBoxColumn,
-            this.replCycleNoDataGridViewTextBoxColumn,
-            this.reconcCycleNoDataGridViewTextBoxColumn,
-            this.reconcDtDataGridViewTextBoxColumn,
-            this.currNm1DataGridViewTextBoxColumn,
-            this.diffCurr1DataGridViewTextBoxColumn,
-            this.processModeDataGridViewTextBoxColumn,
-            this.atmsReconcGroupDataGridViewTextBoxColumn,
-            this.operatorDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.atmsMainBindingSource;
             this.dataGridView1.GridColor = System.Drawing.Color.LightGray;
             this.dataGridView1.Location = new System.Drawing.Point(6, 3);
             this.dataGridView1.MultiSelect = false;
@@ -675,234 +622,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(971, 204);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
-            // 
-            // atmNoDataGridViewTextBoxColumn
-            // 
-            this.atmNoDataGridViewTextBoxColumn.DataPropertyName = "AtmNo";
-            this.atmNoDataGridViewTextBoxColumn.HeaderText = "AtmNo";
-            this.atmNoDataGridViewTextBoxColumn.Name = "atmNoDataGridViewTextBoxColumn";
-            this.atmNoDataGridViewTextBoxColumn.ReadOnly = true;
-            this.atmNoDataGridViewTextBoxColumn.Width = 80;
-            // 
-            // currentSesNoDataGridViewTextBoxColumn
-            // 
-            this.currentSesNoDataGridViewTextBoxColumn.DataPropertyName = "CurrentSesNo";
-            this.currentSesNoDataGridViewTextBoxColumn.HeaderText = "CurrentReplCycle";
-            this.currentSesNoDataGridViewTextBoxColumn.Name = "currentSesNoDataGridViewTextBoxColumn";
-            this.currentSesNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // atmNameDataGridViewTextBoxColumn
-            // 
-            this.atmNameDataGridViewTextBoxColumn.DataPropertyName = "AtmName";
-            this.atmNameDataGridViewTextBoxColumn.HeaderText = "AtmName";
-            this.atmNameDataGridViewTextBoxColumn.Name = "atmNameDataGridViewTextBoxColumn";
-            this.atmNameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // respBranchDataGridViewTextBoxColumn
-            // 
-            this.respBranchDataGridViewTextBoxColumn.DataPropertyName = "RespBranch";
-            this.respBranchDataGridViewTextBoxColumn.HeaderText = "RespBranch";
-            this.respBranchDataGridViewTextBoxColumn.Name = "respBranchDataGridViewTextBoxColumn";
-            this.respBranchDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // branchNameDataGridViewTextBoxColumn
-            // 
-            this.branchNameDataGridViewTextBoxColumn.DataPropertyName = "BranchName";
-            this.branchNameDataGridViewTextBoxColumn.HeaderText = "BranchName";
-            this.branchNameDataGridViewTextBoxColumn.Name = "branchNameDataGridViewTextBoxColumn";
-            this.branchNameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // lastReplDtDataGridViewTextBoxColumn
-            // 
-            this.lastReplDtDataGridViewTextBoxColumn.DataPropertyName = "LastReplDt";
-            this.lastReplDtDataGridViewTextBoxColumn.HeaderText = "LastReplDt";
-            this.lastReplDtDataGridViewTextBoxColumn.Name = "lastReplDtDataGridViewTextBoxColumn";
-            this.lastReplDtDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // estReplDtDataGridViewTextBoxColumn
-            // 
-            this.estReplDtDataGridViewTextBoxColumn.DataPropertyName = "EstReplDt";
-            this.estReplDtDataGridViewTextBoxColumn.HeaderText = "EstReplDt";
-            this.estReplDtDataGridViewTextBoxColumn.Name = "estReplDtDataGridViewTextBoxColumn";
-            this.estReplDtDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // nextReplDtDataGridViewTextBoxColumn
-            // 
-            this.nextReplDtDataGridViewTextBoxColumn.DataPropertyName = "NextReplDt";
-            this.nextReplDtDataGridViewTextBoxColumn.HeaderText = "NextReplDt";
-            this.nextReplDtDataGridViewTextBoxColumn.Name = "nextReplDtDataGridViewTextBoxColumn";
-            this.nextReplDtDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // currCassettesDataGridViewTextBoxColumn
-            // 
-            this.currCassettesDataGridViewTextBoxColumn.DataPropertyName = "CurrCassettes";
-            this.currCassettesDataGridViewTextBoxColumn.HeaderText = "CurrCassettes";
-            this.currCassettesDataGridViewTextBoxColumn.Name = "currCassettesDataGridViewTextBoxColumn";
-            this.currCassettesDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // currentDepositsDataGridViewTextBoxColumn
-            // 
-            this.currentDepositsDataGridViewTextBoxColumn.DataPropertyName = "CurrentDeposits";
-            this.currentDepositsDataGridViewTextBoxColumn.HeaderText = "CurrentDeposits";
-            this.currentDepositsDataGridViewTextBoxColumn.Name = "currentDepositsDataGridViewTextBoxColumn";
-            this.currentDepositsDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // needTypeDataGridViewTextBoxColumn
-            // 
-            this.needTypeDataGridViewTextBoxColumn.DataPropertyName = "NeedType";
-            this.needTypeDataGridViewTextBoxColumn.HeaderText = "NeedType";
-            this.needTypeDataGridViewTextBoxColumn.Name = "needTypeDataGridViewTextBoxColumn";
-            this.needTypeDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // reconcDiffDataGridViewCheckBoxColumn
-            // 
-            this.reconcDiffDataGridViewCheckBoxColumn.DataPropertyName = "ReconcDiff";
-            this.reconcDiffDataGridViewCheckBoxColumn.HeaderText = "ReconcDiff";
-            this.reconcDiffDataGridViewCheckBoxColumn.Name = "reconcDiffDataGridViewCheckBoxColumn";
-            this.reconcDiffDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // moreMaxCashDataGridViewCheckBoxColumn
-            // 
-            this.moreMaxCashDataGridViewCheckBoxColumn.DataPropertyName = "MoreMaxCash";
-            this.moreMaxCashDataGridViewCheckBoxColumn.HeaderText = "MoreMaxCash";
-            this.moreMaxCashDataGridViewCheckBoxColumn.Name = "moreMaxCashDataGridViewCheckBoxColumn";
-            this.moreMaxCashDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // lessMinCashDataGridViewCheckBoxColumn
-            // 
-            this.lessMinCashDataGridViewCheckBoxColumn.DataPropertyName = "LessMinCash";
-            this.lessMinCashDataGridViewCheckBoxColumn.HeaderText = "LessMinCash";
-            this.lessMinCashDataGridViewCheckBoxColumn.Name = "lessMinCashDataGridViewCheckBoxColumn";
-            this.lessMinCashDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // bankIdDataGridViewTextBoxColumn
-            // 
-            this.bankIdDataGridViewTextBoxColumn.DataPropertyName = "BankId";
-            this.bankIdDataGridViewTextBoxColumn.HeaderText = "BankId";
-            this.bankIdDataGridViewTextBoxColumn.Name = "bankIdDataGridViewTextBoxColumn";
-            this.bankIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // citIdDataGridViewTextBoxColumn
-            // 
-            this.citIdDataGridViewTextBoxColumn.DataPropertyName = "CitId";
-            this.citIdDataGridViewTextBoxColumn.HeaderText = "CitId";
-            this.citIdDataGridViewTextBoxColumn.Name = "citIdDataGridViewTextBoxColumn";
-            this.citIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // lastUpdatedDataGridViewTextBoxColumn
-            // 
-            this.lastUpdatedDataGridViewTextBoxColumn.DataPropertyName = "LastUpdated";
-            this.lastUpdatedDataGridViewTextBoxColumn.HeaderText = "LastUpdated";
-            this.lastUpdatedDataGridViewTextBoxColumn.Name = "lastUpdatedDataGridViewTextBoxColumn";
-            this.lastUpdatedDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // authUserDataGridViewTextBoxColumn
-            // 
-            this.authUserDataGridViewTextBoxColumn.DataPropertyName = "AuthUser";
-            this.authUserDataGridViewTextBoxColumn.HeaderText = "AuthUser";
-            this.authUserDataGridViewTextBoxColumn.Name = "authUserDataGridViewTextBoxColumn";
-            this.authUserDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // actionNoDataGridViewTextBoxColumn
-            // 
-            this.actionNoDataGridViewTextBoxColumn.DataPropertyName = "ActionNo";
-            this.actionNoDataGridViewTextBoxColumn.HeaderText = "ActionNo";
-            this.actionNoDataGridViewTextBoxColumn.Name = "actionNoDataGridViewTextBoxColumn";
-            this.actionNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // lastDispensedHistorDataGridViewTextBoxColumn
-            // 
-            this.lastDispensedHistorDataGridViewTextBoxColumn.DataPropertyName = "LastDispensedHistor";
-            this.lastDispensedHistorDataGridViewTextBoxColumn.HeaderText = "LastDispensedHistor";
-            this.lastDispensedHistorDataGridViewTextBoxColumn.Name = "lastDispensedHistorDataGridViewTextBoxColumn";
-            this.lastDispensedHistorDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // lastInNeedReviewDataGridViewTextBoxColumn
-            // 
-            this.lastInNeedReviewDataGridViewTextBoxColumn.DataPropertyName = "LastInNeedReview";
-            this.lastInNeedReviewDataGridViewTextBoxColumn.HeaderText = "LastInNeedReview";
-            this.lastInNeedReviewDataGridViewTextBoxColumn.Name = "lastInNeedReviewDataGridViewTextBoxColumn";
-            this.lastInNeedReviewDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // sessionsInDiffDataGridViewTextBoxColumn
-            // 
-            this.sessionsInDiffDataGridViewTextBoxColumn.DataPropertyName = "SessionsInDiff";
-            this.sessionsInDiffDataGridViewTextBoxColumn.HeaderText = "SessionsInDiff";
-            this.sessionsInDiffDataGridViewTextBoxColumn.Name = "sessionsInDiffDataGridViewTextBoxColumn";
-            this.sessionsInDiffDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // errOutstandingDataGridViewTextBoxColumn
-            // 
-            this.errOutstandingDataGridViewTextBoxColumn.DataPropertyName = "ErrOutstanding";
-            this.errOutstandingDataGridViewTextBoxColumn.HeaderText = "ErrOutstanding";
-            this.errOutstandingDataGridViewTextBoxColumn.Name = "errOutstandingDataGridViewTextBoxColumn";
-            this.errOutstandingDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // replCycleNoDataGridViewTextBoxColumn
-            // 
-            this.replCycleNoDataGridViewTextBoxColumn.DataPropertyName = "ReplCycleNo";
-            this.replCycleNoDataGridViewTextBoxColumn.HeaderText = "ReplCycleNo";
-            this.replCycleNoDataGridViewTextBoxColumn.Name = "replCycleNoDataGridViewTextBoxColumn";
-            this.replCycleNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // reconcCycleNoDataGridViewTextBoxColumn
-            // 
-            this.reconcCycleNoDataGridViewTextBoxColumn.DataPropertyName = "ReconcCycleNo";
-            this.reconcCycleNoDataGridViewTextBoxColumn.HeaderText = "ReconcCycleNo";
-            this.reconcCycleNoDataGridViewTextBoxColumn.Name = "reconcCycleNoDataGridViewTextBoxColumn";
-            this.reconcCycleNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // reconcDtDataGridViewTextBoxColumn
-            // 
-            this.reconcDtDataGridViewTextBoxColumn.DataPropertyName = "ReconcDt";
-            this.reconcDtDataGridViewTextBoxColumn.HeaderText = "ReconcDt";
-            this.reconcDtDataGridViewTextBoxColumn.Name = "reconcDtDataGridViewTextBoxColumn";
-            this.reconcDtDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // currNm1DataGridViewTextBoxColumn
-            // 
-            this.currNm1DataGridViewTextBoxColumn.DataPropertyName = "CurrNm1";
-            this.currNm1DataGridViewTextBoxColumn.HeaderText = "CurrNm1";
-            this.currNm1DataGridViewTextBoxColumn.Name = "currNm1DataGridViewTextBoxColumn";
-            this.currNm1DataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // diffCurr1DataGridViewTextBoxColumn
-            // 
-            this.diffCurr1DataGridViewTextBoxColumn.DataPropertyName = "DiffCurr1";
-            this.diffCurr1DataGridViewTextBoxColumn.HeaderText = "DiffCurr1";
-            this.diffCurr1DataGridViewTextBoxColumn.Name = "diffCurr1DataGridViewTextBoxColumn";
-            this.diffCurr1DataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // processModeDataGridViewTextBoxColumn
-            // 
-            this.processModeDataGridViewTextBoxColumn.DataPropertyName = "ProcessMode";
-            this.processModeDataGridViewTextBoxColumn.HeaderText = "ProcessMode";
-            this.processModeDataGridViewTextBoxColumn.Name = "processModeDataGridViewTextBoxColumn";
-            this.processModeDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // atmsReconcGroupDataGridViewTextBoxColumn
-            // 
-            this.atmsReconcGroupDataGridViewTextBoxColumn.DataPropertyName = "AtmsReconcGroup";
-            this.atmsReconcGroupDataGridViewTextBoxColumn.HeaderText = "AtmsReconcGroup";
-            this.atmsReconcGroupDataGridViewTextBoxColumn.Name = "atmsReconcGroupDataGridViewTextBoxColumn";
-            this.atmsReconcGroupDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // operatorDataGridViewTextBoxColumn
-            // 
-            this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
-            this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
-            this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
-            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // atmsMainBindingSource
-            // 
-            this.atmsMainBindingSource.DataMember = "AtmsMain";
-            this.atmsMainBindingSource.DataSource = this.aTMSDataSet4;
-            // 
-            // aTMSDataSet4
-            // 
-            this.aTMSDataSet4.DataSetName = "ATMSDataSet4";
-            this.aTMSDataSet4.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // label1
             // 
@@ -919,10 +638,6 @@
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 253;
-            // 
-            // atmsMainTableAdapter
-            // 
-            this.atmsMainTableAdapter.ClearBeforeFill = true;
             // 
             // Form50
             // 
@@ -961,8 +676,6 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.atmsMainBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet4)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1008,41 +721,8 @@
         private System.Windows.Forms.CheckBox checkBoxIfGroup;
         private System.Windows.Forms.RadioButton radioButton6;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private ATMSDataSet4 aTMSDataSet4;
-        private System.Windows.Forms.BindingSource atmsMainBindingSource;
-        private ATMSDataSet4TableAdapters.AtmsMainTableAdapter atmsMainTableAdapter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn atmNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn currentSesNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn atmNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn respBranchDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn branchNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastReplDtDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn estReplDtDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nextReplDtDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn currCassettesDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn currentDepositsDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn needTypeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn reconcDiffDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn moreMaxCashDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn lessMinCashDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn bankIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn citIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastUpdatedDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn authUserDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn actionNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastDispensedHistorDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastInNeedReviewDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sessionsInDiffDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn errOutstandingDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn replCycleNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn reconcCycleNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn reconcDtDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn currNm1DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn diffCurr1DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn processModeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn atmsReconcGroupDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn operatorDataGridViewTextBoxColumn;
         private System.Windows.Forms.TextBox textBoxRecomAction;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button3;
     }
 }

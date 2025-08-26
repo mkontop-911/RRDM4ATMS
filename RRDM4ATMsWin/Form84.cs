@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -18,7 +11,7 @@ namespace RRDM4ATMsWin
         RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass();
         RRDMErrorsClassWithActions Ec = new RRDMErrorsClassWithActions();
         RRDMHostTransClass Ch = new RRDMHostTransClass();
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate();
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
 
         DateTime NullPastDate = new DateTime(1900, 01, 01);
 
@@ -31,7 +24,7 @@ namespace RRDM4ATMsWin
         int WSignRecordNo;
         string WOperator;
         string WAtmNo; 
-        int WTranNo;
+        int WUniqueRecordId;
         int WTraceNo; 
 
         public Form84(string InSignedId, int InSignRecordNo, string InOperator, string InAtmNo, int InTraceNo, int InTranNo)
@@ -40,20 +33,20 @@ namespace RRDM4ATMsWin
             WSignRecordNo = InSignRecordNo;
             WOperator = InOperator;
             WAtmNo =  InAtmNo;
-            WTranNo = InTraceNo;
-            WTraceNo = InTraceNo; 
+            WTraceNo = InTraceNo;
+            WUniqueRecordId = InTraceNo; 
         
-            WTranNo = InTranNo;
+            WUniqueRecordId = InTranNo;
  
             InitializeComponent();
 
-            label22.Text = "Date Time Traces for trans : " + WTranNo.ToString(); 
+            label22.Text = "Date Time Traces for trans : " + WUniqueRecordId.ToString(); 
         }
         // LOAD 
         private void Form84_Load(object sender, EventArgs e)
         {
             // ATM 
-            Tc.ReadInPoolTransSpecific(WTranNo);
+            //Tc.ReadInPoolTransSpecific(WUniqueRecordId);
 
             textBox1.Text = Tc.AtmDtTime.ToString(); 
 
@@ -68,7 +61,7 @@ namespace RRDM4ATMsWin
 
             // ERROR 
 
-            Ec.ReadErrorsTableSpecificByTransNo(WTranNo);
+            Ec.ReadErrorsTableSpecificByUniqueRecordId(WUniqueRecordId);
 
             if (Ec.RecordFound == false)
             {
@@ -156,33 +149,19 @@ namespace RRDM4ATMsWin
         {
             String JournalId = "[ATMS_Journals].[dbo].[tblHstEjText]";
 
-            int Mode = 1; // Specific
+            int Mode = 5; // Specific
 
-            Tc.ReadInPoolTransSpecific(WTranNo);
-
-            NForm67 = new Form67(WSignedId, WSignRecordNo, WOperator, JournalId, 0, WAtmNo, Tc.AtmTraceNo, Tc.AtmTraceNo, Mode);
+            //Tc.ReadInPoolTransSpecific(WUniqueRecordId);
+           
+            NForm67 = new Form67(WSignedId, WSignRecordNo, WOperator,  0, WAtmNo, Tc.MasterTraceNo, Tc.AtmTraceNo, NullPastDate, NullPastDate, Mode);
             NForm67.Show();
         }
         // Full Journal 
         private void button4_Click(object sender, EventArgs e)
         {
-            String JournalId = "[ATMS_Journals].[dbo].[tblHstEjText]";
-
-            int Mode = 2; // FULL
-
-            Tc.ReadInPoolTransSpecific(WTranNo);
-
-            Ta.ReadSessionsStatusTraces(Tc.AtmNo, Tc.SesNo);
-
-            RRDME_JournalTxtClass Jt = new RRDME_JournalTxtClass();
-
-            Jt.ReadJournalTextByTrace(Ta.BankId, WAtmNo, Ta.FirstTraceNo);
-
-            int FileInJournal = Jt.FuId;
-
-            // WE SHOULD FIND OUT THE START AND OF THIS REPL. CYCLE 
-            NForm67 = new Form67(WSignedId, WSignRecordNo, WOperator, JournalId, FileInJournal, WAtmNo, Ta.FirstTraceNo, Ta.LastTraceNo, Mode);
-            NForm67.Show();
+            //int Mode = 3;
+            //NForm67 = new Form67(WSignedId, WSignRecordNo, WOperator, Mpa.FuID, Mpa.TerminalId, Ta.FirstTraceNo, Ta.LastTraceNo, Mpa.TransDate.Date, NullPastDate, Mode);
+            //NForm67.Show();
         }
         // Video Clip 
         private void button5_Click(object sender, EventArgs e)

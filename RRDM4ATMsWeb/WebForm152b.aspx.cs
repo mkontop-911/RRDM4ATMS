@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using RRDM4ATMs;
 
 namespace RRDM4ATMsWeb
@@ -11,9 +7,9 @@ namespace RRDM4ATMsWeb
     public partial class WebForm152b : System.Web.UI.Page
     {
 
-        RRDMNotesBalances Na = new RRDMNotesBalances(); // Class Notes 
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances(); // Class Notes 
 
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); // Class Traces 
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); // Class Traces 
 
         RRDMAtmsClass Ac = new RRDMAtmsClass();
 

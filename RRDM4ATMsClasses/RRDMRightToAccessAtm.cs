@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RRDM4ATMs
+﻿namespace RRDM4ATMs
 {
-    public class RRDMRightToAccessAtm
+    public class RRDMRightToAccessAtm : Logger
     {
+        public RRDMRightToAccessAtm() : base() { }
         // See if this ATM belongs to the user 
 
         public bool RecordFound;

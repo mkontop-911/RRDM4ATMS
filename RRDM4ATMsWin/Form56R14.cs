@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Collections;
 using Microsoft.Reporting.WinForms;
 using System.Configuration;
 
@@ -33,8 +24,9 @@ namespace RRDM4ATMsWin
             try
             {
                 string RSUri = ConfigurationManager.AppSettings["ReportServerUri"];
-                string RSReportName = "/Disputes_List";
-
+                string RsDir = ConfigurationManager.AppSettings["ReportsDir"];
+                string RSReportName = RsDir + "/Disputes_List";
+               
                 // Set the processing mode for the ReportViewer to Remote
                 reportViewer1.ProcessingMode = ProcessingMode.Remote;
 

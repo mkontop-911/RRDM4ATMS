@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMDisputesOwnersHistory
+    public class RRDMDisputesOwnersHistory : Logger
     {
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord(); 
+        public RRDMDisputesOwnersHistory() : base() { }
+
+        RRDMUsersRecords Us = new RRDMUsersRecords(); 
 
         public int SeqNumber;
         public int DispId;
@@ -146,8 +143,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Reading table Disputes Owners Class............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -212,9 +209,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Read Dispute User owner history............. " + ex.Message;
 
+                    CatchDetails(ex);
                 }
         }
 
@@ -279,8 +275,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Read Dispute User owner history............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -288,7 +284,7 @@ namespace RRDM4ATMs
         //
         // INSERT New Record in Dispute Owners History 
         //
-        public void InsertDisputeOwnersHistory(string Operator, int InDispId)
+        public void InsertDisputeOwnersHistory(string InOperator, int InDispId)
         {
 
             ErrorFound = false;
@@ -321,7 +317,7 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@HasOwner", HasOwner);
                         cmd.Parameters.AddWithValue("@OwnerId", OwnerId);
                      
-                        cmd.Parameters.AddWithValue("@Operator", Operator);
+                        cmd.Parameters.AddWithValue("@Operator", InOperator);
 
                         int rows = cmd.ExecuteNonQuery();
                         if (rows > 0)
@@ -338,8 +334,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Insert Dispute Owners Class............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -386,8 +382,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Update Dispute Owners History............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
 
             //  return outcome;

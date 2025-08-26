@@ -33,13 +33,13 @@
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonFinish = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.checkBoxDisputeOfficer = new System.Windows.Forms.CheckBox();
-            this.checkBoxAuthoriser = new System.Windows.Forms.CheckBox();
+            this.buttonCheckAD = new System.Windows.Forms.Button();
+            this.textBoxBranchName = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
@@ -53,20 +53,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.textBoxBrachId = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.textBoxUserId = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBoxUserName = new System.Windows.Forms.TextBox();
             this.toolTipMessages = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipController = new System.Windows.Forms.ToolTip(this.components);
             this.labelStep1 = new System.Windows.Forms.Label();
@@ -81,8 +77,6 @@
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelHeader = new System.Windows.Forms.TableLayoutPanel();
             this.atmsMainBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.checkBoxReconcOfficer = new System.Windows.Forms.CheckBox();
-            this.checkBoxReconcMgr = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanelMain.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -109,7 +103,7 @@
             this.textBoxMsgBoard.Name = "textBoxMsgBoard";
             this.textBoxMsgBoard.ReadOnly = true;
             this.textBoxMsgBoard.ShortcutsEnabled = false;
-            this.textBoxMsgBoard.Size = new System.Drawing.Size(592, 30);
+            this.textBoxMsgBoard.Size = new System.Drawing.Size(461, 30);
             this.textBoxMsgBoard.TabIndex = 242;
             this.textBoxMsgBoard.TabStop = false;
             this.textBoxMsgBoard.Text = "No guidance information available.";
@@ -129,7 +123,7 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1008, 638);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(753, 638);
             this.tableLayoutPanelMain.TabIndex = 260;
             // 
             // tableLayoutPanel2
@@ -141,15 +135,13 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.tableLayoutPanel2.Controls.Add(this.textBoxMsgBoard, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonFinish, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.button1, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.button4, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 600);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1004, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(749, 36);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
             // buttonFinish
@@ -161,47 +153,13 @@
             this.buttonFinish.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonFinish.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonFinish.ForeColor = System.Drawing.Color.White;
-            this.buttonFinish.Location = new System.Drawing.Point(924, 3);
+            this.buttonFinish.Location = new System.Drawing.Point(669, 3);
             this.buttonFinish.Name = "buttonFinish";
-            this.buttonFinish.Size = new System.Drawing.Size(61, 30);
+            this.buttonFinish.Size = new System.Drawing.Size(61, 29);
             this.buttonFinish.TabIndex = 340;
             this.buttonFinish.Text = "Finish";
             this.buttonFinish.UseVisualStyleBackColor = false;
             this.buttonFinish.Click += new System.EventHandler(this.buttonFinish_Click);
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.BorderSize = 2;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(732, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(71, 30);
-            this.button1.TabIndex = 339;
-            this.button1.Text = "Add";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
-            // button4
-            // 
-            this.button4.BackColor = System.Drawing.Color.Transparent;
-            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button4.FlatAppearance.BorderSize = 2;
-            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.ForeColor = System.Drawing.Color.White;
-            this.button4.Location = new System.Drawing.Point(841, 3);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(61, 30);
-            this.button4.TabIndex = 334;
-            this.button4.Text = "Update ";
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // panel1
             // 
@@ -212,7 +170,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1002, 592);
+            this.panel1.Size = new System.Drawing.Size(747, 592);
             this.panel1.TabIndex = 245;
             // 
             // textBox9
@@ -233,10 +191,10 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Controls.Add(this.checkBoxReconcMgr);
-            this.panel2.Controls.Add(this.checkBoxReconcOfficer);
-            this.panel2.Controls.Add(this.checkBoxDisputeOfficer);
-            this.panel2.Controls.Add(this.checkBoxAuthoriser);
+            this.panel2.Controls.Add(this.buttonCheckAD);
+            this.panel2.Controls.Add(this.textBoxBranchName);
+            this.panel2.Controls.Add(this.button4);
+            this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.checkBox5);
             this.panel2.Controls.Add(this.checkBox3);
             this.panel2.Controls.Add(this.checkBox4);
@@ -250,51 +208,86 @@
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.checkBox2);
             this.panel2.Controls.Add(this.checkBox1);
-            this.panel2.Controls.Add(this.textBox6);
+            this.panel2.Controls.Add(this.textBoxBrachId);
             this.panel2.Controls.Add(this.label6);
-            this.panel2.Controls.Add(this.label9);
-            this.panel2.Controls.Add(this.comboBox1);
             this.panel2.Controls.Add(this.textBox5);
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.textBox4);
             this.panel2.Controls.Add(this.label4);
-            this.panel2.Controls.Add(this.textBox3);
-            this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.textBoxUserId);
             this.panel2.Controls.Add(this.label11);
             this.panel2.Controls.Add(this.label12);
-            this.panel2.Controls.Add(this.textBox2);
+            this.panel2.Controls.Add(this.textBoxUserName);
             this.panel2.ForeColor = System.Drawing.Color.Black;
             this.panel2.Location = new System.Drawing.Point(9, 43);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(980, 536);
+            this.panel2.Size = new System.Drawing.Size(729, 536);
             this.panel2.TabIndex = 337;
             // 
-            // checkBoxDisputeOfficer
+            // buttonCheckAD
             // 
-            this.checkBoxDisputeOfficer.AutoSize = true;
-            this.checkBoxDisputeOfficer.Location = new System.Drawing.Point(262, 215);
-            this.checkBoxDisputeOfficer.Name = "checkBoxDisputeOfficer";
-            this.checkBoxDisputeOfficer.Size = new System.Drawing.Size(151, 17);
-            this.checkBoxDisputeOfficer.TabIndex = 355;
-            this.checkBoxDisputeOfficer.Text = "Make User Dispute Officer";
-            this.checkBoxDisputeOfficer.UseVisualStyleBackColor = true;
+            this.buttonCheckAD.BackColor = System.Drawing.Color.Transparent;
+            this.buttonCheckAD.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonCheckAD.FlatAppearance.BorderSize = 2;
+            this.buttonCheckAD.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonCheckAD.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonCheckAD.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCheckAD.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonCheckAD.Location = new System.Drawing.Point(272, 41);
+            this.buttonCheckAD.Name = "buttonCheckAD";
+            this.buttonCheckAD.Size = new System.Drawing.Size(100, 25);
+            this.buttonCheckAD.TabIndex = 355;
+            this.buttonCheckAD.Text = "Check AD";
+            this.buttonCheckAD.UseVisualStyleBackColor = false;
+            this.buttonCheckAD.Visible = false;
+            this.buttonCheckAD.Click += new System.EventHandler(this.buttonCheckAD_Click);
             // 
-            // checkBoxAuthoriser
+            // textBoxBranchName
             // 
-            this.checkBoxAuthoriser.AutoSize = true;
-            this.checkBoxAuthoriser.Location = new System.Drawing.Point(116, 215);
-            this.checkBoxAuthoriser.Name = "checkBoxAuthoriser";
-            this.checkBoxAuthoriser.Size = new System.Drawing.Size(128, 17);
-            this.checkBoxAuthoriser.TabIndex = 354;
-            this.checkBoxAuthoriser.Text = "Make User Authoriser";
-            this.checkBoxAuthoriser.UseVisualStyleBackColor = true;
-            this.checkBoxAuthoriser.CheckedChanged += new System.EventHandler(this.checkBoxAuthoriser_CheckedChanged);
+            this.textBoxBranchName.Location = new System.Drawing.Point(257, 125);
+            this.textBoxBranchName.Name = "textBoxBranchName";
+            this.textBoxBranchName.ReadOnly = true;
+            this.textBoxBranchName.Size = new System.Drawing.Size(233, 20);
+            this.textBoxBranchName.TabIndex = 354;
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.Transparent;
+            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button4.FlatAppearance.BorderSize = 2;
+            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button4.Location = new System.Drawing.Point(617, 448);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(100, 50);
+            this.button4.TabIndex = 334;
+            this.button4.Text = "Update Basic Information";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button1.FlatAppearance.BorderSize = 2;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button1.Location = new System.Drawing.Point(510, 448);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(100, 50);
+            this.button1.TabIndex = 339;
+            this.button1.Text = "Add Basic Information";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(636, 416);
+            this.checkBox5.Location = new System.Drawing.Point(114, 424);
             this.checkBox5.Name = "checkBox5";
             this.checkBox5.Size = new System.Drawing.Size(157, 17);
             this.checkBox5.TabIndex = 353;
@@ -304,7 +297,7 @@
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(635, 393);
+            this.checkBox3.Location = new System.Drawing.Point(113, 401);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(135, 17);
             this.checkBox3.TabIndex = 352;
@@ -314,7 +307,7 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(636, 360);
+            this.checkBox4.Location = new System.Drawing.Point(114, 368);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(145, 17);
             this.checkBox4.TabIndex = 351;
@@ -323,11 +316,13 @@
             // 
             // comboBox5
             // 
+            this.comboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox5.FormattingEnabled = true;
             this.comboBox5.Location = new System.Drawing.Point(116, 98);
             this.comboBox5.Name = "comboBox5";
             this.comboBox5.Size = new System.Drawing.Size(136, 21);
             this.comboBox5.TabIndex = 350;
+            this.comboBox5.SelectedIndexChanged += new System.EventHandler(this.comboBox5_SelectedIndexChanged);
             // 
             // label7
             // 
@@ -340,15 +335,16 @@
             // 
             // textBox8
             // 
-            this.textBox8.Location = new System.Drawing.Point(207, 365);
+            this.textBox8.Location = new System.Drawing.Point(207, 230);
             this.textBox8.Name = "textBox8";
+            this.textBox8.ReadOnly = true;
             this.textBox8.Size = new System.Drawing.Size(283, 20);
             this.textBox8.TabIndex = 343;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(33, 348);
+            this.label13.Location = new System.Drawing.Point(33, 213);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(120, 13);
             this.label13.TabIndex = 342;
@@ -356,8 +352,9 @@
             // 
             // comboBox4
             // 
+            this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(114, 364);
+            this.comboBox4.Location = new System.Drawing.Point(114, 229);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(87, 21);
             this.comboBox4.TabIndex = 341;
@@ -365,6 +362,7 @@
             // 
             // comboBox3
             // 
+            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Location = new System.Drawing.Point(115, 14);
             this.comboBox3.Name = "comboBox3";
@@ -384,7 +382,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(212, 349);
+            this.label1.Location = new System.Drawing.Point(212, 214);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 326;
@@ -393,7 +391,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(267, 447);
+            this.checkBox2.Location = new System.Drawing.Point(267, 295);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(73, 17);
             this.checkBox2.TabIndex = 324;
@@ -403,19 +401,20 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(268, 414);
+            this.checkBox1.Location = new System.Drawing.Point(268, 272);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(122, 17);
             this.checkBox1.TabIndex = 323;
             this.checkBox1.Text = "Make User Inactive ";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // textBox6
+            // textBoxBrachId
             // 
-            this.textBox6.Location = new System.Drawing.Point(116, 125);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(135, 20);
-            this.textBox6.TabIndex = 321;
+            this.textBoxBrachId.Location = new System.Drawing.Point(116, 125);
+            this.textBoxBrachId.Name = "textBoxBrachId";
+            this.textBoxBrachId.Size = new System.Drawing.Size(135, 20);
+            this.textBoxBrachId.TabIndex = 321;
+            this.textBoxBrachId.TextChanged += new System.EventHandler(this.textBoxBrachId_TextChanged);
             // 
             // label6
             // 
@@ -426,35 +425,17 @@
             this.label6.TabIndex = 322;
             this.label6.Text = "Branch Id";
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(33, 153);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(60, 13);
-            this.label9.TabIndex = 319;
-            this.label9.Text = "Role Name";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(115, 150);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(136, 21);
-            this.comboBox1.TabIndex = 318;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
-            // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(115, 304);
+            this.textBox5.Location = new System.Drawing.Point(115, 183);
             this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(254, 20);
+            this.textBox5.Size = new System.Drawing.Size(375, 20);
             this.textBox5.TabIndex = 312;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(33, 304);
+            this.label5.Location = new System.Drawing.Point(33, 187);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(41, 13);
             this.label5.TabIndex = 313;
@@ -462,42 +443,25 @@
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(115, 266);
+            this.textBox4.Location = new System.Drawing.Point(115, 156);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(254, 20);
+            this.textBox4.Size = new System.Drawing.Size(375, 20);
             this.textBox4.TabIndex = 310;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(33, 266);
+            this.label4.Location = new System.Drawing.Point(33, 160);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 13);
             this.label4.TabIndex = 311;
             this.label4.Text = "Email ";
             // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(115, 182);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(57, 20);
-            this.textBox3.TabIndex = 308;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(33, 182);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(74, 13);
-            this.label2.TabIndex = 309;
-            this.label2.Text = "Security Level";
-            // 
             // textBoxUserId
             // 
             this.textBoxUserId.Location = new System.Drawing.Point(115, 41);
             this.textBoxUserId.Name = "textBoxUserId";
-            this.textBoxUserId.Size = new System.Drawing.Size(77, 20);
+            this.textBoxUserId.Size = new System.Drawing.Size(136, 20);
             this.textBoxUserId.TabIndex = 304;
             // 
             // label11
@@ -518,12 +482,12 @@
             this.label12.TabIndex = 307;
             this.label12.Text = "Name (50)";
             // 
-            // textBox2
+            // textBoxUserName
             // 
-            this.textBox2.Location = new System.Drawing.Point(116, 72);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(358, 20);
-            this.textBox2.TabIndex = 305;
+            this.textBoxUserName.Location = new System.Drawing.Point(116, 72);
+            this.textBoxUserName.Name = "textBoxUserName";
+            this.textBoxUserName.Size = new System.Drawing.Size(374, 20);
+            this.textBoxUserName.TabIndex = 305;
             // 
             // toolTipMessages
             // 
@@ -577,7 +541,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(294, 6);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 6, 2, 2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(436, 71);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(305, 71);
             this.flowLayoutPanel1.TabIndex = 243;
             // 
             // label8
@@ -618,7 +582,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(228, 63);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(227, 63);
             this.tableLayoutPanel3.TabIndex = 248;
             // 
             // tableLayoutPanel5
@@ -633,7 +597,7 @@
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 67F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(288, 67);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(287, 67);
             this.tableLayoutPanel5.TabIndex = 251;
             // 
             // pictureBox1
@@ -654,7 +618,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 63F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 292F));
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(863, 2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(608, 2);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -662,7 +626,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(139, 84);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(139, 85);
             this.tableLayoutPanel1.TabIndex = 247;
             // 
             // tableLayoutPanel4
@@ -679,8 +643,8 @@
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 88F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1004, 88);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 89F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(749, 88);
             this.tableLayoutPanel4.TabIndex = 249;
             // 
             // tableLayoutPanelHeader
@@ -694,43 +658,24 @@
             this.tableLayoutPanelHeader.Name = "tableLayoutPanelHeader";
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1008, 92);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(753, 92);
             this.tableLayoutPanelHeader.TabIndex = 261;
             // 
             // atmsMainBindingSource
             // 
             this.atmsMainBindingSource.DataMember = "AtmsMain";
             // 
-            // checkBoxReconcOfficer
-            // 
-            this.checkBoxReconcOfficer.AutoSize = true;
-            this.checkBoxReconcOfficer.Location = new System.Drawing.Point(429, 215);
-            this.checkBoxReconcOfficer.Name = "checkBoxReconcOfficer";
-            this.checkBoxReconcOfficer.Size = new System.Drawing.Size(153, 17);
-            this.checkBoxReconcOfficer.TabIndex = 356;
-            this.checkBoxReconcOfficer.Text = "Make User Reconc Officer";
-            this.checkBoxReconcOfficer.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxReconcMgr
-            // 
-            this.checkBoxReconcMgr.AutoSize = true;
-            this.checkBoxReconcMgr.Location = new System.Drawing.Point(586, 215);
-            this.checkBoxReconcMgr.Name = "checkBoxReconcMgr";
-            this.checkBoxReconcMgr.Size = new System.Drawing.Size(140, 17);
-            this.checkBoxReconcMgr.TabIndex = 357;
-            this.checkBoxReconcMgr.Text = "Make User Reconc Mgr";
-            this.checkBoxReconcMgr.UseVisualStyleBackColor = true;
-            // 
             // Form20
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1008, 730);
+            this.ClientSize = new System.Drawing.Size(753, 730);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.Name = "Form20";
             this.Text = "Form20";
+            this.Load += new System.EventHandler(this.Form20_Load);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
@@ -779,20 +724,16 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox textBoxBrachId;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxUserId;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBoxUserName;
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ComboBox comboBox4;
@@ -803,10 +744,8 @@
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBoxAuthoriser;
         private System.Windows.Forms.Button buttonFinish;
-        private System.Windows.Forms.CheckBox checkBoxDisputeOfficer;
-        private System.Windows.Forms.CheckBox checkBoxReconcMgr;
-        private System.Windows.Forms.CheckBox checkBoxReconcOfficer;
+        private System.Windows.Forms.TextBox textBoxBranchName;
+        private System.Windows.Forms.Button buttonCheckAD;
     }
 }

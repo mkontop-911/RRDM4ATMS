@@ -1,28 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using RRDM4ATMs;
 
 // Alecos
-using System.Configuration;
-using System.Diagnostics;
 
 namespace RRDM4ATMsWin
 {
     public partial class Form502b : Form
     {
-        RRDMReconcCategories Rc = new RRDMReconcCategories();
-        RRDMReconcSourceFiles Rs = new RRDMReconcSourceFiles();
-        RRDMReconcCategoriesVsSourcesFiles Rcs = new RRDMReconcCategoriesVsSourcesFiles();
-        RRDMReconcCategStageVsMatchingFields Rsm = new RRDMReconcCategStageVsMatchingFields();
+        RRDMMatchingCategories Rc = new RRDMMatchingCategories();
+        RRDMMatchingSourceFiles Rs = new RRDMMatchingSourceFiles();
+        RRDMMatchingCategoriesVsSourcesFiles Rcs = new RRDMMatchingCategoriesVsSourcesFiles();
+        RRDMMatchingCategStageVsMatchingFields Rsm = new RRDMMatchingCategStageVsMatchingFields();
 
-        RRDMReconcMasksVsMetaExceptions Rme = new RRDMReconcMasksVsMetaExceptions();
+        RRDMMatchingMasksVsMetaExceptions Rme = new RRDMMatchingMasksVsMetaExceptions();
 
         RRDMErrorsORExceptionsCharacteristics Ec = new RRDMErrorsORExceptionsCharacteristics(); 
 
@@ -59,8 +51,17 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             labelUserId.Text = InSignedId; 
 
@@ -72,33 +73,31 @@ namespace RRDM4ATMsWin
 
             comboBoxMatchOper.Items.Add("Like");
 
-            comboBoxMatchOper.Items.Add("Variance");
+            comboBoxMatchOper.Items.Add("Variance");   
 
-            reconcCategoryVsSourceFilesBindingSource1.Filter = "CategoryId = '" + WCategoryId + "' ";
-
-            reconcCategoryStageVsMatchingFieldsBindingSource1.Filter = "CategoryId = '" + WCategoryId + "' ";
+            if (WOperator =="ITMX")
+            {
+                panel2.Hide();
+                label6.Hide(); 
+            }
 
         }
 
         private void Form502b_Load(object sender, EventArgs e)
         {
-            
+
             // TODO: This line of code loads data into the 'aTMSDataSet66.ReconcCategoryVsSourceFiles' table. You can move, or remove it, as needed.
-            
-            // Selected Files 
-           
-            this.reconcCategoryVsSourceFilesTableAdapter1.Fill(this.aTMSDataSet66.ReconcCategoryVsSourceFiles);
-        
+            // Selected Files (TWO)
+            string Filter2 = "CategoryId = '" + WCategoryId + "' ";
+            ShowGridCategVsSourceFiles(Filter2);
 
-            // Category Vs Matching Fields 
-
-            
-            this.reconcCategoryStageVsMatchingFieldsTableAdapter1.Fill(this.aTMSDataSet67.ReconcCategoryStageVsMatchingFields);
-
+            // Category Vs Matching Fields (FOUR)
+            string Filter4 = "CategoryId = '" + WCategoryId + "' ";
+            ShowGridCategStageVsMatchingFields(Filter4);
 
             // LOAD MAsks 
 
-            Rme.ReadReconcMasksToFillDataTable(WOperator, WCategoryId);
+            Rme.ReadMatchingMasksToFillDataTable(WOperator, WCategoryId);
 
             dataGridView1.DataSource = Rme.DataTableMasks.DefaultView;
 
@@ -108,7 +107,7 @@ namespace RRDM4ATMsWin
                 Ec.CreateMaskVsExceptionsRecords(WOperator, WCategoryId);
 
                 // Read Again for updating 
-                Rme.ReadReconcMasksToFillDataTable(WOperator, WCategoryId);
+                Rme.ReadMatchingMasksToFillDataTable(WOperator, WCategoryId);
 
                 dataGridView1.DataSource = Rme.DataTableMasks.DefaultView;
             }
@@ -130,9 +129,8 @@ namespace RRDM4ATMsWin
 
             dataGridView1.Columns[1].Width = 80; // Mask Id  
             dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
 
-            dataGridView1.Columns[2].Width = 150; // Mask Name 
+            dataGridView1.Columns[2].Width = 160; // Mask Name 
             dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
             dataGridView1.Columns[3].Width = 80; // Exception Id  
@@ -157,11 +155,11 @@ namespace RRDM4ATMsWin
             }
             else checkBoxPrimary.Checked = false;
 
-            if (Rcs.WithRemains == true)
+            if (Rcs.IsTargetSystem == true)
             {
-                checkBoxRemains.Checked = true;
+                checkBoxTargetSystem.Checked = true;
             }
-            else checkBoxRemains.Checked = false;
+            else checkBoxTargetSystem.Checked = false;
 
         }
         // ON ROW ENTER FOR FIELDS 
@@ -226,13 +224,13 @@ namespace RRDM4ATMsWin
                 Rcs.PrimaryFile = false;
             }
 
-            if (checkBoxRemains.Checked == true)
+            if (checkBoxTargetSystem.Checked == true)
             {
-                Rcs.WithRemains = true;
+                Rcs.IsTargetSystem = true;
             }
-            if (checkBoxRemains.Checked == false)
+            if (checkBoxTargetSystem.Checked == false)
             {
-                Rcs.WithRemains = false;
+                Rcs.IsTargetSystem = false;
             }
 
             Rcs.UpdateReconcCategoryVsSourceRecord(WOperator, WSeqNo2);
@@ -326,7 +324,7 @@ namespace RRDM4ATMsWin
         {
             DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
             WSeqNoMask = (int)rowSelected.Cells[0].Value;
-            Rme.ReadReconcMaskBySeqNo(WSeqNoMask);
+            Rme.ReadMatchingMaskBySeqNo(WSeqNoMask);
 
             textBox1.Text = Rme.MaskId;
 
@@ -340,9 +338,21 @@ namespace RRDM4ATMsWin
                 label10.Hide();
             }
 
+         
+            if (Rme.TransType == 11)
+            {
+                radioButtonForDebit.Checked = true;
+            }
+
+            if (Rme.TransType == 21)
+            {
+                radioButtonForCredit.Checked = true;
+            }
+          
+
             textBox2.Text = Rme.MaskName;
 
-            textBox3.Text = Rme.MetaExceptionNo.ToString(); 
+            textBox3.Text = Rme.MetaExceptionId.ToString(); 
 
         }
         private void buttonFinish_Click(object sender, EventArgs e)
@@ -363,7 +373,21 @@ namespace RRDM4ATMsWin
                 return; 
             }
 
-            Rme.ReadReconcMaskRecord(WOperator, WCategoryId, Rme.MaskId);
+            if (radioButtonForDebit.Checked == false & radioButtonForCredit.Checked == false)
+            {
+                MessageBox.Show("Please select Debit or Credit");
+                return;
+            }
+
+            if (radioButtonForDebit.Checked ==true)
+            {
+                Rme.ReadMatchingMaskRecordbyMaskId(WOperator, WCategoryId, Rme.MaskId, 11);
+            }
+            if (radioButtonForCredit.Checked == true)
+            {
+                Rme.ReadMatchingMaskRecordbyMaskId(WOperator, WCategoryId, Rme.MaskId, 21);
+            }
+
 
             if (Rme.RecordFound == true)
             {
@@ -373,9 +397,9 @@ namespace RRDM4ATMsWin
             }
 
             // Meta exception no
-             if (int.TryParse(textBox3.Text, out Rme.MetaExceptionNo))
+             if (int.TryParse(textBox3.Text, out Rme.MetaExceptionId))
             {
-                Ec.ReadErrorsIDRecord(Rme.MetaExceptionNo, WOperator);
+                Ec.ReadErrorsIDRecord(Rme.MetaExceptionId, WOperator);
                  if (Ec.RecordFound == true)
                  {
                      if (textBox2.Text.Length >0)
@@ -397,11 +421,19 @@ namespace RRDM4ATMsWin
                 MessageBox.Show(textBox3.Text, "Please enter a valid number!");
 
                 return;
-            }         
-
+            }
+             if (radioButtonForDebit.Checked == true)
+            {
+                Rme.TransType = 11;
+            }
+            if (radioButtonForCredit.Checked == true)
+            {
+                Rme.TransType = 21;
+            }
+         
             Rme.MaskName = textBox2.Text ;
 
-            Rme.InsertReconcCategoryMaskRecord();
+            Rme.InsertMatchingCategoryMaskRecord();
 
             Form502b_Load(this, new EventArgs());
 
@@ -417,13 +449,13 @@ namespace RRDM4ATMsWin
 
             Rme.MaskId = textBox1.Text;
 
-            if (dataGridView2.Rows.Count != textBox1.TextLength)
+            if (dataGridView2.Rows.Count != textBox1.TextLength) // If number of files different that MASK
             {
                 MessageBox.Show("Please enter correct Mask");
                 return;
             }
 
-            if (int.TryParse(textBox3.Text, out Rme.MetaExceptionNo))
+            if (int.TryParse(textBox3.Text, out Rme.MetaExceptionId))
             {
             }
             else
@@ -433,9 +465,25 @@ namespace RRDM4ATMsWin
                 return;
             }
 
+            if (radioButtonForDebit.Checked == true)
+            {
+                Rme.TransType = 11;
+            }
+            if (radioButtonForCredit.Checked == true)
+            {
+                Rme.TransType = 21;
+            }
+
             Rme.MaskName = textBox2.Text;
 
-            Rme.ReadReconcMaskRecord(WOperator, WCategoryId, Rme.MaskId);
+            if (radioButtonForDebit.Checked == true)
+            {
+                Rme.ReadMatchingMaskRecordbyMaskId(WOperator, WCategoryId, Rme.MaskId, 11);
+            }
+            if (radioButtonForCredit.Checked == true)
+            {
+                Rme.ReadMatchingMaskRecordbyMaskId(WOperator, WCategoryId, Rme.MaskId, 21);
+            }
 
             if (Rme.RecordFound == true)
             {
@@ -444,7 +492,7 @@ namespace RRDM4ATMsWin
                 return;
             }
 
-            Rme.UpdateReconcMaskRecord(WSeqNoMask);
+            Rme.UpdateMatchingMaskRecord(WSeqNoMask);
 
             Form502b_Load(this, new EventArgs());
 
@@ -483,6 +531,90 @@ namespace RRDM4ATMsWin
             //NForm78b.FormClosed += NForm78b_FormClosed;
             NForm78b.ShowDialog();
 
+        }
+
+     
+
+        //******************
+        // SHOW GRID dataGridView2
+        //******************
+        private void ShowGridCategVsSourceFiles(string InFilter)
+        {
+
+            Rcs.ReadReconcCategoryVsSourcesANDFillTable(InFilter);
+
+            dataGridView2.DataSource = Rcs.RMCategoryFilesDataFiles.DefaultView;
+
+            if (dataGridView2.Rows.Count == 0)
+            {
+                return;
+            }
+            dataGridView2.Columns[0].Width = 70; // SeqNo
+            dataGridView2.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[1].Width = 130; // RMCategId
+            dataGridView2.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[2].Width = 160; // FileName
+            dataGridView2.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[3].Width = 50; // ProcessMode
+            dataGridView2.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            //dataGridView1.Sort(dataGridView1.Columns[2], ListSortDirection.Ascending);
+
+            dataGridView2.Columns[4].Width = 100; // LastInFileDtTm
+            dataGridView2.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            //dataGridView2.Rows[tempRowIndex1].Selected = true;
+            //dataGridView2_RowEnter_1(this, new DataGridViewCellEventArgs(1, tempRowIndex1));
+
+
+            // DATA TABLE ROWS DEFINITION 
+            //RMCategoryFilesDataFiles.Columns.Add("SeqNo", typeof(int));
+            //RMCategoryFilesDataFiles.Columns.Add("RMCategId", typeof(string));
+            //RMCategoryFilesDataFiles.Columns.Add("FileName", typeof(string));
+            //RMCategoryFilesDataFiles.Columns.Add("ProcessMode", typeof(string));
+            //RMCategoryFilesDataFiles.Columns.Add("LastInFileDtTm", typeof(DateTime));
+            //RMCategoryFilesDataFiles.Columns.Add("LastMatchingDtTm", typeof(DateTime));
+        }
+
+
+
+        //******************
+        // SHOW GRID dataGridView4
+        //******************
+        string WTableStructureId = "Atms And Cards"; 
+        private void ShowGridCategStageVsMatchingFields(string InFilter)
+        {
+            Rsm.ReadReconcCategVsMatchingFieldsDataTable(InFilter, WTableStructureId);
+
+            dataGridView4.DataSource = Rsm.ReconcCategStagesDataTable.DefaultView;
+
+            if (dataGridView4.Rows.Count == 0)
+            {
+                return;
+            }
+            dataGridView4.Columns[0].Width = 70; // SeqNo
+            dataGridView4.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView4.Columns[1].Width = 70; // Stage
+            dataGridView4.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView4.Columns[2].Width = 100; // MatchingOperator
+            dataGridView4.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView4.Columns[2].Width = 100; // MatchingField
+            dataGridView4.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            //dataGridView4.Rows[tempRowIndex1].Selected = true;
+            //dataGridView4_RowEnter_1(this, new DataGridViewCellEventArgs(1, tempRowIndex1));
+
+            // DATA TABLE ROWS DEFINITION 
+            //ReconcCategStagesDataTable.Columns.Add("SeqNo", typeof(int));
+            //ReconcCategStagesDataTable.Columns.Add("Stage", typeof(int));
+            //ReconcCategStagesDataTable.Columns.Add("MatchingOperator", typeof(DateTime));
+            //ReconcCategStagesDataTable.Columns.Add("MatchingField", typeof(string));
+            //ReconcCategStagesDataTable.Columns.Add("CategoryId", typeof(string));
         }
 
     }

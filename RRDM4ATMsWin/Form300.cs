@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
 
 namespace RRDM4ATMsWin
 {
@@ -23,10 +15,10 @@ namespace RRDM4ATMsWin
         {
             InitializeComponent();
 
-            pictureBox4.BackgroundImage = Properties.Resources.logo2;
-            pictureBox1.Image = Properties.Resources.Arrow;
-            pictureBox2.Image = Properties.Resources.Arrow;
-            pictureBox3.Image = Properties.Resources.Arrow;
+            pictureBox4.BackgroundImage = appResImg.logo2;
+            pictureBox1.Image = appResImg.Arrow;
+            pictureBox2.Image = appResImg.Arrow;
+            pictureBox3.Image = appResImg.Arrow;
 
             //panel17.SendToBack(); 
             //panel17.Hide(); 

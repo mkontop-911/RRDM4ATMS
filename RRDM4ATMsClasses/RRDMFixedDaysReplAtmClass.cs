@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Configuration;
 //using System.Windows.Forms;
 
 namespace RRDM4ATMs
 {
-    public class RRDMFixedDaysReplAtmClass
+    public class RRDMFixedDaysReplAtmClass : Logger
     {
+        public RRDMFixedDaysReplAtmClass() : base() { }
         // DECLARE FIELDS
-     
+
         public string BankId;
         public string AtmNo; 
        
@@ -79,8 +77,6 @@ namespace RRDM4ATMs
 
                             NextDate = (DateTime)rdr["NextDate"];
 
-                   //         Prive = (bool)rdr["Prive"];
-                         
                             Day = (string)rdr["Day"];
                             Type = (string)rdr["Type"];
 
@@ -109,8 +105,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in FixedDaysReplAtmClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -160,9 +156,8 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@Operator", InOperator);
                        
 
-                        int rows = cmd.ExecuteNonQuery();
-                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();
+                     
 
                     }
                     // Close conn
@@ -171,8 +166,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in FixedDaysReplAtmClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -192,7 +187,7 @@ namespace RRDM4ATMs
                     conn.Open();
                     using (SqlCommand cmd =
                         new SqlCommand(" UPDATE [dbo].[FixedDaysReplAtm] SET "
-                            + "[BankId] = @BankId, [AtmNo] = @AtmNo, [NextDate] = @NextDate,"
+                            + "[AtmNo] = @AtmNo, [NextDate] = @NextDate,"
                              + "[Day] = @Day, [Type] = @Type, [SameAs] = @SameAs, [SDay] = @SDay, [SType] = @SType,"
                              + "[Suggested] = @Suggested, [Correction] = @Correction, [Final] = @Final, [DateInsert] = @DateInsert"
                              + "  WHERE AtmNo = @AtmNo AND Operator = @Operator AND NextDate = @NextDate", conn)) 
@@ -218,11 +213,8 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@DateInsert", DateInsert);
 
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                       cmd.ExecuteNonQuery();
+                     
 
                     }
                     // Close conn
@@ -231,8 +223,7 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in FixedDaysReplAtmClass............. " + ex.Message;
+                    CatchDetails(ex);
 
                 }
         }
@@ -258,11 +249,8 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
                         cmd.Parameters.AddWithValue("@NextDate", InDate);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();
+                       
 
                     }
                     // Close conn
@@ -271,10 +259,13 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in FixedDaysReplAtmClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
+
+      
+
     }
 }

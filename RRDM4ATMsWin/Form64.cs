@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 using System.Data.SqlClient;
-using System.Globalization;
 using System.Configuration;
-
-using System.Net;
 
 namespace RRDM4ATMsWin
 {
@@ -32,10 +23,6 @@ namespace RRDM4ATMsWin
 
         RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass(); 
 
-        public Form64()
-        {
-            InitializeComponent();
-        }
         // RUN THE STORED PROCEDURE 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -276,10 +263,9 @@ namespace RRDM4ATMsWin
                                     if (Result == "OK")  Tc.SuccTran = true;
                                     else Tc.SuccTran = false;
 
-                                    Tc.InsertTransInPool(WAtmNo);
+                                    //Tc.InsertTransInPool(Tc.Operator, WAtmNo);
 
                                 }
-
 
                             }
 

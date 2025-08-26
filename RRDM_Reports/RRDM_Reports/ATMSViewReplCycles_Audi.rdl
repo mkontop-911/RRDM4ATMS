@@ -1,0 +1,1544 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="ATMsTables">
+      <DataSourceReference>ATMsTables</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>0575ec45-6638-424f-804f-4df15a39dd54</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="Banks">
+      <Query>
+        <DataSourceName>ATMsTables</DataSourceName>
+        <CommandText>SELECT BankId, ShortName, ActiveDirectoryDM, AdGroup, BankName, BankCountry, GroupName, BasicCurName, SettlementAccount, SettlementBank, SettlementClearingAccount, DtTmCreated, UsingGAS, Culture, 
+                  GlobalCulture, Logo, LastMatchingDtTm, SenderEmail, SenderUserName, SenderPassword, SenderSmtpClient, SenderPort, Operator
+FROM     Banks</CommandText>
+        <rd:DesignerState>
+          <QueryDefinition xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational">
+            <SelectedColumns>
+              <ColumnExpression ColumnOwner="Banks" ColumnName="BankId" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="ShortName" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="ActiveDirectoryDM" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="AdGroup" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="BankName" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="BankCountry" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="GroupName" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="BasicCurName" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="SettlementAccount" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="SettlementBank" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="SettlementClearingAccount" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="DtTmCreated" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="UsingGAS" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="Culture" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="GlobalCulture" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="Logo" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="LastMatchingDtTm" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="SenderEmail" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="SenderUserName" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="SenderPassword" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="SenderSmtpClient" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="SenderPort" />
+              <ColumnExpression ColumnOwner="Banks" ColumnName="Operator" />
+            </SelectedColumns>
+          </QueryDefinition>
+        </rd:DesignerState>
+      </Query>
+      <Fields>
+        <Field Name="BankId">
+          <DataField>BankId</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ShortName">
+          <DataField>ShortName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ActiveDirectoryDM">
+          <DataField>ActiveDirectoryDM</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="AdGroup">
+          <DataField>AdGroup</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="BankName">
+          <DataField>BankName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="BankCountry">
+          <DataField>BankCountry</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="GroupName">
+          <DataField>GroupName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="BasicCurName">
+          <DataField>BasicCurName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SettlementAccount">
+          <DataField>SettlementAccount</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SettlementBank">
+          <DataField>SettlementBank</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="SettlementClearingAccount">
+          <DataField>SettlementClearingAccount</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DtTmCreated">
+          <DataField>DtTmCreated</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="UsingGAS">
+          <DataField>UsingGAS</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="Culture">
+          <DataField>Culture</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="GlobalCulture">
+          <DataField>GlobalCulture</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="Logo">
+          <DataField>Logo</DataField>
+          <rd:TypeName>System.Byte[]</rd:TypeName>
+        </Field>
+        <Field Name="LastMatchingDtTm">
+          <DataField>LastMatchingDtTm</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="SenderEmail">
+          <DataField>SenderEmail</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SenderUserName">
+          <DataField>SenderUserName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SenderPassword">
+          <DataField>SenderPassword</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SenderSmtpClient">
+          <DataField>SenderSmtpClient</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SenderPort">
+          <DataField>SenderPort</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Operator">
+          <DataField>Operator</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Filters>
+        <Filter>
+          <FilterExpression>=Fields!BankId.Value</FilterExpression>
+          <Operator>Equal</Operator>
+          <FilterValues>
+            <FilterValue>=Parameters!InBankIdLogo.Value</FilterValue>
+          </FilterValues>
+        </Filter>
+      </Filters>
+    </DataSet>
+    <DataSet Name="Replenishment_Cycles_Info">
+      <Query>
+        <DataSourceName>ATMsTables</DataSourceName>
+        <CommandText>SELECT Expr1, Expr2, Expr3, Expr4, Expr5, Expr6, Expr7, SesNo, AtmNo, PreSes, NextSes, AtmName, BankId, RespBranch, AtmGroup, CaptCardsMachine, CaptCardsCount, ReplMethod, InUserDate, InReplAmount, 
+                  Cit_ExcelUpdatedDate, Cit_UnloadedCounted, Cit_Over, Cit_Short, Cit_Loaded, GL_Balance, IsNewAtm, Is_GL_Adjusted, GL_Bal_Repl_Adjusted, DiffAtAtmLevel_Cit, DiffAtHostLevel_Cit, DiffWithErrors_Cit, CasNo_51, 
+                  CurName_51, FaceValue_51, InNotes_51, DispNotes_51, RejNotes_51, RemNotes_51, CasCount_51, RejCount_51, NewInSuggest_51, NewInUser_51, CasNo_52, CurName_52, FaceValue_52, InNotes_52, DispNotes_52, 
+                  RejNotes_52, RemNotes_52, CasCount_52, RejCount_52, NewInSuggest_52, NewInUser_52, CasNo_53, CurName_53, FaceValue_53, InNotes_53, DispNotes_53, RejNotes_53, RemNotes_53, CasCount_53, RejCount_53, 
+                  NewInSuggest_53, NewInUser_53, CasNo_54, CurName_54, FaceValue_54, InNotes_54, DispNotes_54, RejNotes_54, RemNotes_54, CasCount_54, RejCount_54, NewInSuggest_54, NewInUser_54, DepCurNm, 
+                  DepTransMach, DepNotesMach, DepAmountMach, DepNotesRejMach, DepAmountRejMach, EnvelopsMach, EnvAmountMach, DepTransCount, DepNotesCount, DepAmountCount, DepNotesRejCount, 
+                  DepAmountRejCount, EnvelopsCount, EnvAmountCount, ChequesTransMach, ChequesNoMach, ChequesAmountMach, ChequesTransCount, ChequesNoCount, ChequesAmountCount, CurrNm_1, ReplToReplAmt_1, 
+                  CurrNm_2, ReplToReplAmt_2, CurrNm_3, ReplToReplAmt_3, CurrNm_4, ReplToReplAmt_4, ReplAmountSuggest, ReplAmountTotal, InsuranceAmount, ReplUserComment, Passed, Last, InProcess, Operator, 
+                  SesDtTimeStart, SesDtTimeEnd, FirstTraceNo, LastTraceNo, OfflineMinutes, NoOpMinutes, CommErrNum, NoOfCustLocals, NoOfCustOther, NoOfCustForeign, NoOfTranCash, NoOfCheques, SignIdRepl, StartRepl, 
+                  FinishRepl, StepLevel, ReplStartDtTm, ReplFinDtTm, DiffRepl, ErrsRepl, NextRepDtTm, SignIdReconc, DelegRecon, DiffReconcStart, DiffReconcEnd, WFlowDifStatus, NumOfErrors, ErrOutstanding, BalSetsNo, CurrNm1, 
+                  DiffCurr1, CurrNm2, DiffCurr2, CurrNm3, DiffCurr3, CurrNm4, DiffCurr4, SessionsInDiff, YtdInDiff, LatestBatchNo, InNeedType, UpdatedBatch, Maker, Authoriser, ProcessMode, ReplGenComment, Expr8
+FROM     Replenishment_Cycles_Info</CommandText>
+        <rd:DesignerState>
+          <QueryDefinition xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational">
+            <SelectedColumns>
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Expr1" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Expr2" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Expr3" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Expr4" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Expr5" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Expr6" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Expr7" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="SesNo" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="AtmNo" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="PreSes" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NextSes" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="AtmName" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="BankId" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="RespBranch" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="AtmGroup" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CaptCardsMachine" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CaptCardsCount" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ReplMethod" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="InUserDate" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="InReplAmount" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Cit_ExcelUpdatedDate" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Cit_UnloadedCounted" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Cit_Over" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Cit_Short" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Cit_Loaded" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="GL_Balance" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="IsNewAtm" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Is_GL_Adjusted" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="GL_Bal_Repl_Adjusted" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DiffAtAtmLevel_Cit" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DiffAtHostLevel_Cit" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DiffWithErrors_Cit" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CasNo_51" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CurName_51" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="FaceValue_51" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="InNotes_51" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DispNotes_51" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="RejNotes_51" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="RemNotes_51" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CasCount_51" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="RejCount_51" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NewInSuggest_51" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NewInUser_51" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CasNo_52" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CurName_52" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="FaceValue_52" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="InNotes_52" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DispNotes_52" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="RejNotes_52" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="RemNotes_52" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CasCount_52" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="RejCount_52" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NewInSuggest_52" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NewInUser_52" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CasNo_53" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CurName_53" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="FaceValue_53" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="InNotes_53" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DispNotes_53" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="RejNotes_53" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="RemNotes_53" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CasCount_53" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="RejCount_53" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NewInSuggest_53" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NewInUser_53" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CasNo_54" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CurName_54" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="FaceValue_54" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="InNotes_54" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DispNotes_54" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="RejNotes_54" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="RemNotes_54" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CasCount_54" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="RejCount_54" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NewInSuggest_54" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NewInUser_54" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DepCurNm" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DepTransMach" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DepNotesMach" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DepAmountMach" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DepNotesRejMach" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DepAmountRejMach" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="EnvelopsMach" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="EnvAmountMach" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DepTransCount" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DepNotesCount" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DepAmountCount" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DepNotesRejCount" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DepAmountRejCount" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="EnvelopsCount" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="EnvAmountCount" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ChequesTransMach" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ChequesNoMach" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ChequesAmountMach" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ChequesTransCount" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ChequesNoCount" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ChequesAmountCount" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CurrNm_1" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ReplToReplAmt_1" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CurrNm_2" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ReplToReplAmt_2" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CurrNm_3" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ReplToReplAmt_3" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CurrNm_4" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ReplToReplAmt_4" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ReplAmountSuggest" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ReplAmountTotal" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="InsuranceAmount" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ReplUserComment" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Passed" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Last" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="InProcess" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Operator" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="SesDtTimeStart" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="SesDtTimeEnd" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="FirstTraceNo" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="LastTraceNo" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="OfflineMinutes" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NoOpMinutes" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CommErrNum" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NoOfCustLocals" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NoOfCustOther" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NoOfCustForeign" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NoOfTranCash" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NoOfCheques" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="SignIdRepl" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="StartRepl" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="FinishRepl" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="StepLevel" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ReplStartDtTm" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ReplFinDtTm" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DiffRepl" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ErrsRepl" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NextRepDtTm" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="SignIdReconc" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DelegRecon" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DiffReconcStart" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DiffReconcEnd" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="WFlowDifStatus" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="NumOfErrors" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ErrOutstanding" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="BalSetsNo" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CurrNm1" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DiffCurr1" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CurrNm2" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DiffCurr2" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CurrNm3" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DiffCurr3" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="CurrNm4" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="DiffCurr4" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="SessionsInDiff" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="YtdInDiff" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="LatestBatchNo" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="InNeedType" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="UpdatedBatch" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Maker" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Authoriser" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ProcessMode" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="ReplGenComment" />
+              <ColumnExpression ColumnOwner="Replenishment_Cycles_Info" ColumnName="Expr8" />
+            </SelectedColumns>
+          </QueryDefinition>
+        </rd:DesignerState>
+      </Query>
+      <Fields>
+        <Field Name="Expr1">
+          <DataField>Expr1</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Expr2">
+          <DataField>Expr2</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Expr3">
+          <DataField>Expr3</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Expr4">
+          <DataField>Expr4</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Expr5">
+          <DataField>Expr5</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Expr6">
+          <DataField>Expr6</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Expr7">
+          <DataField>Expr7</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SesNo">
+          <DataField>SesNo</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="AtmNo">
+          <DataField>AtmNo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PreSes">
+          <DataField>PreSes</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NextSes">
+          <DataField>NextSes</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="AtmName">
+          <DataField>AtmName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="BankId">
+          <DataField>BankId</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="RespBranch">
+          <DataField>RespBranch</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="AtmGroup">
+          <DataField>AtmGroup</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CaptCardsMachine">
+          <DataField>CaptCardsMachine</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CaptCardsCount">
+          <DataField>CaptCardsCount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ReplMethod">
+          <DataField>ReplMethod</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="InUserDate">
+          <DataField>InUserDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="InReplAmount">
+          <DataField>InReplAmount</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Cit_ExcelUpdatedDate">
+          <DataField>Cit_ExcelUpdatedDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="Cit_UnloadedCounted">
+          <DataField>Cit_UnloadedCounted</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Cit_Over">
+          <DataField>Cit_Over</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Cit_Short">
+          <DataField>Cit_Short</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Cit_Loaded">
+          <DataField>Cit_Loaded</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="GL_Balance">
+          <DataField>GL_Balance</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="IsNewAtm">
+          <DataField>IsNewAtm</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="Is_GL_Adjusted">
+          <DataField>Is_GL_Adjusted</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="GL_Bal_Repl_Adjusted">
+          <DataField>GL_Bal_Repl_Adjusted</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DiffAtAtmLevel_Cit">
+          <DataField>DiffAtAtmLevel_Cit</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="DiffAtHostLevel_Cit">
+          <DataField>DiffAtHostLevel_Cit</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="DiffWithErrors_Cit">
+          <DataField>DiffWithErrors_Cit</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="CasNo_51">
+          <DataField>CasNo_51</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CurName_51">
+          <DataField>CurName_51</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FaceValue_51">
+          <DataField>FaceValue_51</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="InNotes_51">
+          <DataField>InNotes_51</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DispNotes_51">
+          <DataField>DispNotes_51</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="RejNotes_51">
+          <DataField>RejNotes_51</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="RemNotes_51">
+          <DataField>RemNotes_51</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CasCount_51">
+          <DataField>CasCount_51</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="RejCount_51">
+          <DataField>RejCount_51</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NewInSuggest_51">
+          <DataField>NewInSuggest_51</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NewInUser_51">
+          <DataField>NewInUser_51</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CasNo_52">
+          <DataField>CasNo_52</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CurName_52">
+          <DataField>CurName_52</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FaceValue_52">
+          <DataField>FaceValue_52</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="InNotes_52">
+          <DataField>InNotes_52</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DispNotes_52">
+          <DataField>DispNotes_52</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="RejNotes_52">
+          <DataField>RejNotes_52</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="RemNotes_52">
+          <DataField>RemNotes_52</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CasCount_52">
+          <DataField>CasCount_52</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="RejCount_52">
+          <DataField>RejCount_52</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NewInSuggest_52">
+          <DataField>NewInSuggest_52</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NewInUser_52">
+          <DataField>NewInUser_52</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CasNo_53">
+          <DataField>CasNo_53</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CurName_53">
+          <DataField>CurName_53</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FaceValue_53">
+          <DataField>FaceValue_53</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="InNotes_53">
+          <DataField>InNotes_53</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DispNotes_53">
+          <DataField>DispNotes_53</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="RejNotes_53">
+          <DataField>RejNotes_53</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="RemNotes_53">
+          <DataField>RemNotes_53</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CasCount_53">
+          <DataField>CasCount_53</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="RejCount_53">
+          <DataField>RejCount_53</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NewInSuggest_53">
+          <DataField>NewInSuggest_53</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NewInUser_53">
+          <DataField>NewInUser_53</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CasNo_54">
+          <DataField>CasNo_54</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CurName_54">
+          <DataField>CurName_54</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FaceValue_54">
+          <DataField>FaceValue_54</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="InNotes_54">
+          <DataField>InNotes_54</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DispNotes_54">
+          <DataField>DispNotes_54</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="RejNotes_54">
+          <DataField>RejNotes_54</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="RemNotes_54">
+          <DataField>RemNotes_54</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CasCount_54">
+          <DataField>CasCount_54</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="RejCount_54">
+          <DataField>RejCount_54</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NewInSuggest_54">
+          <DataField>NewInSuggest_54</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NewInUser_54">
+          <DataField>NewInUser_54</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DepCurNm">
+          <DataField>DepCurNm</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DepTransMach">
+          <DataField>DepTransMach</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DepNotesMach">
+          <DataField>DepNotesMach</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DepAmountMach">
+          <DataField>DepAmountMach</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DepNotesRejMach">
+          <DataField>DepNotesRejMach</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DepAmountRejMach">
+          <DataField>DepAmountRejMach</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="EnvelopsMach">
+          <DataField>EnvelopsMach</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="EnvAmountMach">
+          <DataField>EnvAmountMach</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DepTransCount">
+          <DataField>DepTransCount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DepNotesCount">
+          <DataField>DepNotesCount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DepAmountCount">
+          <DataField>DepAmountCount</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="DepNotesRejCount">
+          <DataField>DepNotesRejCount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DepAmountRejCount">
+          <DataField>DepAmountRejCount</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="EnvelopsCount">
+          <DataField>EnvelopsCount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="EnvAmountCount">
+          <DataField>EnvAmountCount</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="ChequesTransMach">
+          <DataField>ChequesTransMach</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ChequesNoMach">
+          <DataField>ChequesNoMach</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ChequesAmountMach">
+          <DataField>ChequesAmountMach</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="ChequesTransCount">
+          <DataField>ChequesTransCount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ChequesNoCount">
+          <DataField>ChequesNoCount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ChequesAmountCount">
+          <DataField>ChequesAmountCount</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="CurrNm_1">
+          <DataField>CurrNm_1</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ReplToReplAmt_1">
+          <DataField>ReplToReplAmt_1</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="CurrNm_2">
+          <DataField>CurrNm_2</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ReplToReplAmt_2">
+          <DataField>ReplToReplAmt_2</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="CurrNm_3">
+          <DataField>CurrNm_3</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ReplToReplAmt_3">
+          <DataField>ReplToReplAmt_3</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="CurrNm_4">
+          <DataField>CurrNm_4</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ReplToReplAmt_4">
+          <DataField>ReplToReplAmt_4</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="ReplAmountSuggest">
+          <DataField>ReplAmountSuggest</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="ReplAmountTotal">
+          <DataField>ReplAmountTotal</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="InsuranceAmount">
+          <DataField>InsuranceAmount</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="ReplUserComment">
+          <DataField>ReplUserComment</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Passed">
+          <DataField>Passed</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="Last">
+          <DataField>Last</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="InProcess">
+          <DataField>InProcess</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="Operator">
+          <DataField>Operator</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SesDtTimeStart">
+          <DataField>SesDtTimeStart</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="SesDtTimeEnd">
+          <DataField>SesDtTimeEnd</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="FirstTraceNo">
+          <DataField>FirstTraceNo</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="LastTraceNo">
+          <DataField>LastTraceNo</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="OfflineMinutes">
+          <DataField>OfflineMinutes</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NoOpMinutes">
+          <DataField>NoOpMinutes</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CommErrNum">
+          <DataField>CommErrNum</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NoOfCustLocals">
+          <DataField>NoOfCustLocals</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NoOfCustOther">
+          <DataField>NoOfCustOther</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NoOfCustForeign">
+          <DataField>NoOfCustForeign</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NoOfTranCash">
+          <DataField>NoOfTranCash</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NoOfCheques">
+          <DataField>NoOfCheques</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="SignIdRepl">
+          <DataField>SignIdRepl</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="StartRepl">
+          <DataField>StartRepl</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="FinishRepl">
+          <DataField>FinishRepl</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="StepLevel">
+          <DataField>StepLevel</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ReplStartDtTm">
+          <DataField>ReplStartDtTm</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="ReplFinDtTm">
+          <DataField>ReplFinDtTm</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="DiffRepl">
+          <DataField>DiffRepl</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="ErrsRepl">
+          <DataField>ErrsRepl</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="NextRepDtTm">
+          <DataField>NextRepDtTm</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="SignIdReconc">
+          <DataField>SignIdReconc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DelegRecon">
+          <DataField>DelegRecon</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="DiffReconcStart">
+          <DataField>DiffReconcStart</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="DiffReconcEnd">
+          <DataField>DiffReconcEnd</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="WFlowDifStatus">
+          <DataField>WFlowDifStatus</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NumOfErrors">
+          <DataField>NumOfErrors</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ErrOutstanding">
+          <DataField>ErrOutstanding</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="BalSetsNo">
+          <DataField>BalSetsNo</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CurrNm1">
+          <DataField>CurrNm1</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DiffCurr1">
+          <DataField>DiffCurr1</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="CurrNm2">
+          <DataField>CurrNm2</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DiffCurr2">
+          <DataField>DiffCurr2</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="CurrNm3">
+          <DataField>CurrNm3</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DiffCurr3">
+          <DataField>DiffCurr3</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="CurrNm4">
+          <DataField>CurrNm4</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DiffCurr4">
+          <DataField>DiffCurr4</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="SessionsInDiff">
+          <DataField>SessionsInDiff</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="YtdInDiff">
+          <DataField>YtdInDiff</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="LatestBatchNo">
+          <DataField>LatestBatchNo</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="InNeedType">
+          <DataField>InNeedType</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="UpdatedBatch">
+          <DataField>UpdatedBatch</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="Maker">
+          <DataField>Maker</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Authoriser">
+          <DataField>Authoriser</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ProcessMode">
+          <DataField>ProcessMode</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ReplGenComment">
+          <DataField>ReplGenComment</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Expr8">
+          <DataField>Expr8</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Filters>
+        <Filter>
+          <FilterExpression>=Fields!AtmNo.Value</FilterExpression>
+          <Operator>Equal</Operator>
+          <FilterValues>
+            <FilterValue>=Parameters!Par3_ATMNo.Value</FilterValue>
+          </FilterValues>
+        </Filter>
+      </Filters>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Textbox Name="ReportTitle">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!Par1.Value</Value>
+                    <Style>
+                      <FontFamily>Verdana</FontFamily>
+                      <FontSize>20pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:WatermarkTextbox>Title</rd:WatermarkTextbox>
+            <rd:DefaultName>ReportTitle</rd:DefaultName>
+            <Top>1.76389mm</Top>
+            <Left>6.77806cm</Left>
+            <Height>10.16mm</Height>
+            <Width>190.7646mm</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Image Name="LOGO">
+            <Source>Database</Source>
+            <Value>=First(Fields!Logo.Value, "Banks")</Value>
+            <MIMEType>image/png</MIMEType>
+            <Sizing>FitProportional</Sizing>
+            <Top>4.93889mm</Top>
+            <Left>5.2441mm</Left>
+            <Height>28.49375mm</Height>
+            <Width>29.55208mm</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
+          <Tablix Name="Tablix2">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>29.55208mm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>29.55208mm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>25mm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>43.25625mm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>38.49375mm</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>6mm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox4">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox4</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox6">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Atm No</Value>
+                                  <Style>
+                                    <FontSize>12pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox6</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>LightGrey</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox16">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Cycle No</Value>
+                                  <Style>
+                                    <FontSize>12pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox16</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>LightGrey</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox37">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Cycle Start</Value>
+                                  <Style>
+                                    <FontSize>12pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox37</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>LightGrey</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox39">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Cycle End</Value>
+                                  <Style>
+                                    <FontSize>12pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox39</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>LightGrey</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>6mm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox5">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox5</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="AtmNo1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!AtmNo.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>AtmNo1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="SesNo">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!SesNo.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>SesNo</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="SesDtTimeStart">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!SesDtTimeStart.Value</Value>
+                                  <Style>
+                                    <Format>g</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>SesDtTimeStart</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="SesDtTimeEnd">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!SesDtTimeEnd.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>SesDtTimeEnd</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <KeepWithGroup>After</KeepWithGroup>
+                </TablixMember>
+                <TablixMember>
+                  <Group Name="Details1" />
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>Replenishment_Cycles_Info</DataSetName>
+            <Top>43.09533mm</Top>
+            <Left>5.2441mm</Left>
+            <Height>12mm</Height>
+            <Width>165.85416mm</Width>
+            <ZIndex>2</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+        </ReportItems>
+        <Height>276.58701mm</Height>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Body>
+      <Width>384.8566mm</Width>
+      <Page>
+        <PageFooter>
+          <Height>16.72167mm</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="ExecutionTime">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Globals!ExecutionTime</Value>
+                      <Style />
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Right</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>ExecutionTime</rd:DefaultName>
+              <Top>5.08mm</Top>
+              <Left>101.6mm</Left>
+              <Height>6.35mm</Height>
+              <Width>50.8mm</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageFooter>
+        <PageHeight>720mm</PageHeight>
+        <PageWidth>520mm</PageWidth>
+        <LeftMargin>20mm</LeftMargin>
+        <RightMargin>20mm</RightMargin>
+        <TopMargin>20mm</TopMargin>
+        <BottomMargin>20mm</BottomMargin>
+        <ColumnSpacing>0.13cm</ColumnSpacing>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="Par1">
+      <DataType>String</DataType>
+      <Prompt>Par1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Par2">
+      <DataType>String</DataType>
+      <Prompt>Par2</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Par3_ATMNo">
+      <DataType>String</DataType>
+      <Prompt>Par3_ATMNo</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="InBankIdLogo">
+      <DataType>String</DataType>
+      <Prompt>InBankIdLogo</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="InUserId">
+      <DataType>String</DataType>
+      <Prompt>InUserId</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>2</NumberOfColumns>
+      <NumberOfRows>3</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>Par1</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>Par2</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>Par3_ATMNo</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>InBankIdLogo</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>InUserId</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
+  <rd:ReportUnitType>Mm</rd:ReportUnitType>
+  <rd:ReportServerUrl>http://rrdmdemo-pc/ReportServer</rd:ReportServerUrl>
+  <rd:ReportID>9a95a34c-3d50-4ad4-923a-e7d3c3316463</rd:ReportID>
+</Report>

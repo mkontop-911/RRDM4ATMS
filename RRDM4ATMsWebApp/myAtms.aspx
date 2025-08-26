@@ -125,7 +125,7 @@
                 <div class="col-md-7">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title"><asp:Label ID="Label2" runat="server" Text="Current Info For ATM: AB102"></asp:Label></h3>
+                            <h3 class="panel-title"><asp:Label ID="LabelHeadingRight" runat="server" Text="Current Info For ATM: AB102"></asp:Label></h3>
                         </div>
                         <div class="panel-body">
                             <div class="row">

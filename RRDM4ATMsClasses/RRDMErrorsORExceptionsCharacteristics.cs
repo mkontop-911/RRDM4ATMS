@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMErrorsORExceptionsCharacteristics
+    public class RRDMErrorsORExceptionsCharacteristics : Logger
     {
+        public RRDMErrorsORExceptionsCharacteristics() : base() { }
         // Declarations 
 
         // Variables for reading errors 
@@ -32,7 +28,7 @@ namespace RRDM4ATMs
         public string AtmNo;
         public int SesNo;
         public int TraceNo;
-        public int TransNo;
+     
         public int TransType;
         public string TransDescr;
         public DateTime DateTime;
@@ -69,6 +65,11 @@ namespace RRDM4ATMs
         public bool Printed;
         public DateTime DatePrinted;
         public string CircularDesc;
+
+        public string CategoryId;
+        public int UniqueRecordId;
+        public int ActionRMCycle; 
+
         public string CitId;
         public string Operator;
 
@@ -82,7 +83,7 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput;
 
-        RRDMReconcMasksVsMetaExceptions Rme = new RRDMReconcMasksVsMetaExceptions(); 
+        RRDMMatchingMasksVsMetaExceptions Rme = new RRDMMatchingMasksVsMetaExceptions(); 
 
         string connectionString = ConfigurationManager.ConnectionStrings
            ["ATMSConnectionString"].ConnectionString;
@@ -135,27 +136,30 @@ namespace RRDM4ATMs
 
                             // Read error Details
 
-                            ErrId = (int)rdr["ErrId"]; // For Characteristics
-                            ErrDesc = rdr["ErrDesc"].ToString(); // For Characteristics
-                            ErrType = (int)rdr["ErrType"]; // For Characteristics
+                            ErrId = (int)rdr["ErrId"];
+                            ErrDesc = rdr["ErrDesc"].ToString();
+                            ErrType = (int)rdr["ErrType"];
+
+                            CategoryId = (string)rdr["CategoryId"];
+
                             AtmNo = (string)rdr["AtmNo"];
                             SesNo = (int)rdr["SesNo"];
-                            DateInserted = (DateTime)rdr["DateInserted"]; // For Characteristics
+                            DateInserted = (DateTime)rdr["DateInserted"];
 
-                            BankId = rdr["BankId"].ToString(); // For Characteristics
+                            BankId = rdr["BankId"].ToString();
 
-                            BranchId = rdr["BranchId"].ToString(); // For Characteristics
-                            TurboReconc = (bool)rdr["TurboReconc"]; // For Characteristics
+                            BranchId = rdr["BranchId"].ToString();
+                            TurboReconc = (bool)rdr["TurboReconc"];
 
                             TraceNo = (int)rdr["TraceNo"];
                             CardNo = rdr["CardNo"].ToString();
-                            TransNo = (int)rdr["TransNo"];
+                            UniqueRecordId = (int)rdr["UniqueRecordId"];
                             TransType = (int)rdr["TransType"];
                             TransDescr = rdr["TransDescr"].ToString();
 
                             DateTime = (DateTime)rdr["DateTime"];
-                            NeedAction = (bool)rdr["NeedAction"]; // For Characteristics
-                            OpenErr = (bool)rdr["OpenErr"]; 
+                            NeedAction = (bool)rdr["NeedAction"];
+                            OpenErr = (bool)rdr["OpenErr"];
                             FullCard = (bool)rdr["FullCard"];
                             UnderAction = (bool)rdr["UnderAction"];
                             DisputeAct = (bool)rdr["DisputeAct"];
@@ -163,22 +167,22 @@ namespace RRDM4ATMs
                             ByWhom = (string)rdr["ByWhom"];
 
                             ActionDtTm = (DateTime)rdr["ActionDtTm"];
-                            ActionSes = (int)rdr["ActionSes"];
+                            ActionRMCycle = (int)rdr["ActionRMCycle"];
 
                             CurDes = rdr["CurDes"].ToString();
                             ErrAmount = (decimal)rdr["ErrAmount"];
-                            ActionId = (int)rdr["ActionId"]; // For Characteristics ??
+                            ActionId = (int)rdr["ActionId"];
 
-                            DrCust = (bool)rdr["DrCust"]; // For Characteristics
-                            CrCust = (bool)rdr["CrCust"]; // For Characteristics
+                            DrCust = (bool)rdr["DrCust"];
+                            CrCust = (bool)rdr["CrCust"];
                             CustAccNo = rdr["CustAccNo"].ToString();
 
-                            DrAtmCash = (bool)rdr["DrAtmCash"]; // For Characteristics
-                            CrAtmCash = (bool)rdr["CrAtmCash"]; // For Characteristics
+                            DrAtmCash = (bool)rdr["DrAtmCash"];
+                            CrAtmCash = (bool)rdr["CrAtmCash"];
                             AccountNo1 = rdr["AccountNo1"].ToString();
 
-                            DrAtmSusp = (bool)rdr["DrAtmSusp"]; // For Characteristics
-                            CrAtmSusp = (bool)rdr["CrAtmSusp"]; // For Characteristics
+                            DrAtmSusp = (bool)rdr["DrAtmSusp"];
+                            CrAtmSusp = (bool)rdr["CrAtmSusp"];
                             AccountNo2 = rdr["AccountNo2"].ToString();
 
                             DrAccount3 = (bool)rdr["DrAccount3"];
@@ -186,14 +190,74 @@ namespace RRDM4ATMs
                             AccountNo3 = rdr["AccountNo3"].ToString();
 
                             ForeignCard = (bool)rdr["ForeignCard"];
-                            MainOnly = (bool)rdr["MainOnly"]; // For Characteristics
+                            MainOnly = (bool)rdr["MainOnly"];
 
                             UserComment = rdr["UserComment"].ToString();
 
                             Printed = (bool)rdr["Printed"];
                             DatePrinted = (DateTime)rdr["DatePrinted"];
 
-                            CircularDesc = rdr["CircularDesc"].ToString(); // For Characteristics 
+                            CircularDesc = rdr["CircularDesc"].ToString();
+
+                            //ErrId = (int)rdr["ErrId"]; // For Characteristics
+                            //ErrDesc = rdr["ErrDesc"].ToString(); // For Characteristics
+                            //ErrType = (int)rdr["ErrType"]; // For Characteristics
+                            //AtmNo = (string)rdr["AtmNo"];
+                            //SesNo = (int)rdr["SesNo"];
+                            //DateInserted = (DateTime)rdr["DateInserted"]; // For Characteristics
+
+                            //BankId = rdr["BankId"].ToString(); // For Characteristics
+
+                            //BranchId = rdr["BranchId"].ToString(); // For Characteristics
+                            //TurboReconc = (bool)rdr["TurboReconc"]; // For Characteristics
+
+                            //TraceNo = (int)rdr["TraceNo"];
+                            //CardNo = rdr["CardNo"].ToString();
+
+                            //TransType = (int)rdr["TransType"];
+                            //TransDescr = rdr["TransDescr"].ToString();
+
+                            //DateTime = (DateTime)rdr["DateTime"];
+                            //NeedAction = (bool)rdr["NeedAction"]; // For Characteristics
+                            //OpenErr = (bool)rdr["OpenErr"]; 
+                            //FullCard = (bool)rdr["FullCard"];
+                            //UnderAction = (bool)rdr["UnderAction"];
+                            //DisputeAct = (bool)rdr["DisputeAct"];
+                            //ManualAct = (bool)rdr["ManualAct"];
+                            //ByWhom = (string)rdr["ByWhom"];
+
+                            //ActionDtTm = (DateTime)rdr["ActionDtTm"];
+                            //ActionSes = (int)rdr["ActionSes"];
+
+                            //CurDes = rdr["CurDes"].ToString();
+                            //ErrAmount = (decimal)rdr["ErrAmount"];
+                            //ActionId = (int)rdr["ActionId"]; // For Characteristics ??
+
+                            //DrCust = (bool)rdr["DrCust"]; // For Characteristics
+                            //CrCust = (bool)rdr["CrCust"]; // For Characteristics
+                            //CustAccNo = rdr["CustAccNo"].ToString();
+
+                            //DrAtmCash = (bool)rdr["DrAtmCash"]; // For Characteristics
+                            //CrAtmCash = (bool)rdr["CrAtmCash"]; // For Characteristics
+                            //AccountNo1 = rdr["AccountNo1"].ToString();
+
+                            //DrAtmSusp = (bool)rdr["DrAtmSusp"]; // For Characteristics
+                            //CrAtmSusp = (bool)rdr["CrAtmSusp"]; // For Characteristics
+                            //AccountNo2 = rdr["AccountNo2"].ToString();
+
+                            //DrAccount3 = (bool)rdr["DrAccount3"];
+                            //CrAccount3 = (bool)rdr["CrAccount3"];
+                            //AccountNo3 = rdr["AccountNo3"].ToString();
+
+                            //ForeignCard = (bool)rdr["ForeignCard"];
+                            //MainOnly = (bool)rdr["MainOnly"]; // For Characteristics
+
+                            //UserComment = rdr["UserComment"].ToString();
+
+                            //Printed = (bool)rdr["Printed"];
+                            //DatePrinted = (DateTime)rdr["DatePrinted"];
+
+                            //CircularDesc = rdr["CircularDesc"].ToString(); // For Characteristics 
                             //
                             // Insert Record In Table 
                             //
@@ -220,8 +284,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in RRDMErrorsORExceptionsCharacteristics Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
         //
@@ -292,8 +356,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in RRDMErrorsORExceptionsCharacteristics Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 //
@@ -330,7 +394,55 @@ namespace RRDM4ATMs
 
                             // Read error Details
 
-                            ErrId = (int)rdr["ErrId"]; // For Characteristics
+      //                      [ErrId]
+      //,[BankId]
+      //,[ErrDesc]
+      //,[ErrType]
+      //,[CategoryId]
+      //,[UniqueRecordId]
+      //,[AtmNo]
+      //,[SesNo]
+      //,[DateInserted]
+      //,[BranchId]
+      //,[TurboReconc]
+      //,[TraceNo]
+      //,[CardNo]
+      //,[TransType]
+      //,[TransDescr]
+      //,[DateTime]
+      //,[NeedAction]
+      //,[OpenErr]
+      //,[FullCard]
+      //,[UnderAction]
+      //,[DisputeAct]
+      //,[ManualAct]
+      //,[ByWhom]
+      //,[ActionDtTm]
+      //,[ActionRMCycle]
+      //,[CurDes]
+      //,[ErrAmount]
+      //,[ActionId]
+      //,[DrCust]
+      //,[CrCust]
+      //,[CustAccNo]
+      //,[DrAtmCash]
+      //,[CrAtmCash]
+      //,[AccountNo1]
+      //,[DrAtmSusp]
+      //,[CrAtmSusp]
+      //,[AccountNo2]
+      //,[DrAccount3]
+      //,[CrAccount3]
+      //,[AccountNo3]
+      //,[ForeignCard]
+      //,[MainOnly]
+      //,[UserComment]
+      //,[Printed]
+      //,[DatePrinted]
+      //,[CircularDesc]
+      //,[Operator]
+
+        ErrId = (int)rdr["ErrId"]; // For Characteristics
                             ErrDesc = rdr["ErrDesc"].ToString(); // For Characteristics
                             ErrType = (int)rdr["ErrType"]; // For Characteristics
                             AtmNo = (string)rdr["AtmNo"];
@@ -344,7 +456,7 @@ namespace RRDM4ATMs
 
                             TraceNo = (int)rdr["TraceNo"];
                             CardNo = rdr["CardNo"].ToString();
-                            TransNo = (int)rdr["TransNo"];
+                         
                             TransType = (int)rdr["TransType"];
                             TransDescr = rdr["TransDescr"].ToString();
 
@@ -358,7 +470,7 @@ namespace RRDM4ATMs
                             ByWhom = (string)rdr["ByWhom"];
 
                             ActionDtTm = (DateTime)rdr["ActionDtTm"];
-                            ActionSes = (int)rdr["ActionSes"];
+                            ActionSes = (int)rdr["ActionRMCycle"];
 
                             CurDes = rdr["CurDes"].ToString();
                             ErrAmount = (decimal)rdr["ErrAmount"];
@@ -401,14 +513,21 @@ namespace RRDM4ATMs
                             //cmd.Parameters.AddWithValue("@MetaExceptionNo", MetaExceptionNo);
 
                             //cmd.Parameters.AddWithValue("@Operator", Operator);
+                            Rme.ReadMatchingMaskForMetaException(InOperator, InCategory, ErrId); 
+                            if (Rme.RecordFound == true)
+                            {
+                                //Skip
+                            }
+                            else
+                            {
+                                Rme.CategoryId = InCategory;
+                                Rme.MaskId = "";
+                                Rme.MaskName = ErrDesc;
+                                Rme.MetaExceptionId = ErrId;
+                                Rme.Operator = InOperator;
 
-                            Rme.CategoryId = InCategory;
-                            Rme.MaskId = "";
-                            Rme.MaskName = ErrDesc;
-                            Rme.MetaExceptionNo = ErrId;
-                            Rme.Operator = InOperator; 
-
-                            Rme.InsertReconcCategoryMaskRecord(); 
+                                Rme.InsertMatchingCategoryMaskRecord();
+                            }                
 
                         }
 
@@ -422,8 +541,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in RRDMErrorsORExceptionsCharacteristics Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -461,6 +580,9 @@ namespace RRDM4ATMs
                             ErrId = (int)rdr["ErrId"];
                             ErrDesc = rdr["ErrDesc"].ToString();
                             ErrType = (int)rdr["ErrType"];
+
+                            CategoryId = (string)rdr["CategoryId"];
+
                             AtmNo = (string)rdr["AtmNo"];
                             SesNo = (int)rdr["SesNo"];
                             DateInserted = (DateTime)rdr["DateInserted"];
@@ -472,7 +594,7 @@ namespace RRDM4ATMs
 
                             TraceNo = (int)rdr["TraceNo"];
                             CardNo = rdr["CardNo"].ToString();
-                            TransNo = (int)rdr["TransNo"];
+                            UniqueRecordId = (int)rdr["UniqueRecordId"];
                             TransType = (int)rdr["TransType"];
                             TransDescr = rdr["TransDescr"].ToString();
 
@@ -486,7 +608,7 @@ namespace RRDM4ATMs
                             ByWhom = (string)rdr["ByWhom"];
 
                             ActionDtTm = (DateTime)rdr["ActionDtTm"];
-                            ActionSes = (int)rdr["ActionSes"];
+                            ActionRMCycle = (int)rdr["ActionRMCycle"];
 
                             CurDes = rdr["CurDes"].ToString();
                             ErrAmount = (decimal)rdr["ErrAmount"];
@@ -518,6 +640,7 @@ namespace RRDM4ATMs
 
                             CircularDesc = rdr["CircularDesc"].ToString();
 
+
                             //        CitId = (int)rdr["CitId"];
                         }
 
@@ -531,8 +654,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in RRDMErrorsORExceptionsCharacteristics Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -599,11 +722,8 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@Operator", Operator);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                       cmd.ExecuteNonQuery();
+                       
 
                     }
                     // Close conn
@@ -612,8 +732,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in RRDMErrorsORExceptionsCharacteristicsClass............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -674,11 +794,8 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@CircularDesc", CircularDesc);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                       cmd.ExecuteNonQuery();
+                        
 
                     }
                     // Close conn
@@ -687,8 +804,7 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in RRDMErrorsORExceptionsCharacteristics Class............. " + ex.Message;
+                    CatchDetails(ex);
                 }
         }
 
@@ -712,12 +828,9 @@ namespace RRDM4ATMs
                     {
                         cmd.Parameters.AddWithValue("@ErrId", InErrId);
                         cmd.Parameters.AddWithValue("@BankId", InBankId);
-                        //rows number of record got updated
 
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
-
+                        cmd.ExecuteNonQuery();
+                       
                     }
                     // Close conn
                     conn.Close();
@@ -725,8 +838,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in RRDMErrorsORExceptionsCharacteristics Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
     }

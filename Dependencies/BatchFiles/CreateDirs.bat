@@ -1,0 +1,10 @@
+md c:\RRDM
+md c:\RRDM\RRDMExec
+md c:\RRDM\FilePool
+md C:\RRDM\FilePool\Atms_Journals_Txns
+md C:\RRDM\FilePool\Core_Banking_T24_Txns
+md C:\RRDM\FilePool\Switch_Base24_Txns
+md c:\RRDM\Archives
+md C:\RRDM\Archives\Atms_Journals_Txns
+md C:\RRDM\Archives\Core_Banking_T24_Txns
+md C:\RRDM\Archives\Switch_Base24_Txns

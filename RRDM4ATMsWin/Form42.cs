@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
     public partial class Form42 : Form
     {
-        RRDMReplActionsClass Ra = new RRDMReplActionsClass(); 
+        RRDMReplOrdersClass Ra = new RRDMReplOrdersClass(); 
 
         int WReplActNo;
 
@@ -37,8 +30,17 @@ namespace RRDM4ATMsWin
             
             InitializeComponent();
 
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             labelStep1.Text = "Actions Cycles for AtmNo : " + WAtmNo;
 
@@ -50,9 +52,9 @@ namespace RRDM4ATMsWin
 
             string filter = "BankId ='" + WOperator + "' AND AtmNo ='" + WAtmNo + "' " ; 
 
-            Ra.ReadReplActionsAndFillTable(WOperator, filter, WDtFrom, WDtTo);
+            Ra.ReadReplActionsAndFillTable(WOperator, filter, WDtFrom, WDtTo, 2);
 
-            dataGridView1.DataSource = Ra.TableReplActions.DefaultView;
+            dataGridView1.DataSource = Ra.TableReplOrders.DefaultView;
 
             dataGridView1.Columns[0].Width = 40; // ActNo
             dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -104,7 +106,7 @@ namespace RRDM4ATMsWin
 
             Ra.ReadReplActionsForAtm(WAtmNo, WReplActNo);
 
-            textBox1.Text = Ra.ReplActNo.ToString();
+            textBox1.Text = Ra.ReplOrderNo.ToString();
 
             textBox2.Text = Ra.AtmNo;
 
@@ -141,7 +143,7 @@ namespace RRDM4ATMsWin
             textBoxInMoneyReal.Text = Ra.InMoneyReal.ToString("#,##0.00");
             textBoxCashDifference.Text = (Ra.CashInAmount - Ra.InMoneyReal).ToString("#,##0.00");
 
-            textBoxReplActId.Text = Ra.ReplActId.ToString();
+            textBoxReplActId.Text = Ra.ReplOrderId.ToString();
             textBoxAuthUser.Text = Ra.AuthUser;
             textBoxCitId.Text = Ra.CitId; 
 

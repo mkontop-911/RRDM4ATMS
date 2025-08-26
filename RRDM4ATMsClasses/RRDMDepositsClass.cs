@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Data;
+
 
 namespace RRDM4ATMs
 {
-    public class RRDMDepositsClass
+    public class RRDMDepositsClass : Logger
     {
-        
+        public RRDMDepositsClass() : base() { }
+
         string WAtmNo;
         int WSesNo;
 
@@ -115,9 +112,8 @@ namespace RRDM4ATMs
         string connectionString = ConfigurationManager.ConnectionStrings
            ["ATMSConnectionString"].ConnectionString;
 
-     //   string outcome = ""; // TO FACILITATE EXCEPTIONS 
-
-        
+        public DataTable DataTableNotes = new DataTable();
+        public DataTable DataTableTotals = new DataTable();
 
         // READ Session Notes AND CALCULATE BALANCES 
         //
@@ -131,7 +127,7 @@ namespace RRDM4ATMs
             ErrorFound = false;
             ErrorOutput = ""; 
 
-            string SqlString = "SELECT *"
+            SqlString = "SELECT *"
                                 + " FROM [dbo].[SessionsNotesAndValues] "
                                 + " WHERE SesNo = @SesNo AND AtmNo=@AtmNo";
             using (SqlConnection conn =
@@ -230,11 +226,114 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in DepositsClass............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
+        //
+        // FIND NOTES By Currency and Facevalue AND FILL TABLE 
+        //
+        
+        public void ReadDepositsAndGet_Table_With_Notes(string InAtmNo, int InReplCycle)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            DataTableNotes = new DataTable();
+            DataTableNotes.Clear();
+         
+           SqlString =
+         " SELECT [Currency] "
+           + "    ,[FaceValue] "
+           + "     ,Sum([notes]) As Notes"
+           + " FROM [ATM_MT_Journals_AUDI].[dbo].[Deposit_Txns_Analysis] "
+           + "  where [AtmNo] = @AtmNo AND ReplCycle = @ReplCycle  "
+           + "  group by [Currency],[FaceValue] "
+           + "  Order By Currency, FaceValue ";
+
+            using (SqlConnection conn =
+           new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    using (SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString, conn))
+                    {
+
+                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@ReplCycle", InReplCycle);
+                        //sqlAdapt.SelectCommand.Parameters.AddWithValue("@Currency", InCurrency);
+
+                        //Create a datatable that will be filled with the data retrieved from the command
+
+                        sqlAdapt.Fill(DataTableNotes);
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    CatchDetails(ex);
+                }
+
+        }
+        //
+        // Totals By Currency
+        //
+        public void ReadDepositsAndGet_Table_With_TotalsByCurrency(string InAtmNo, int InReplCycle)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            DataTableTotals = new DataTable();
+            DataTableTotals.Clear();
+
+                SqlString =
+             " SELECT [Currency] "
+           + "     ,Sum([notes]) As TotalNotes "
+           + " FROM [ATM_MT_Journals_AUDI].[dbo].[Deposit_Txns_Analysis] "
+           + "  where [AtmNo] = @AtmNo AND ReplCycle = @ReplCycle  "
+           + "  group by [Currency] "
+           + "  Order By Currency  ";
+          
+
+            using (SqlConnection conn =
+           new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    using (SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString, conn))
+                    {
+                      
+                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@ReplCycle", InReplCycle);
+                        //sqlAdapt.SelectCommand.Parameters.AddWithValue("@Currency", InCurrency);
+
+                        //Create a datatable that will be filled with the data retrieved from the command
+
+                        sqlAdapt.Fill(DataTableTotals);
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    CatchDetails(ex);
+                }
+           
+        }
+
         // UPDATE SESSION NOTES Machine Totals
+        public int DepNotesMach; 
         public void UpdateDepositsNaWithMachineTotals(string InAtmNo, int InSesNo)
         {
             
@@ -249,31 +348,23 @@ namespace RRDM4ATMs
                     conn.Open();
                     using (SqlCommand cmd =
                         new SqlCommand("UPDATE SessionsNotesAndValues  SET "
-                           + " [DepTransMach] = @DepTransMach,[DepNotesMach] = @DepNotesMach, "
-                           + " [DepAmountMach] = @DepAmountMach,[DepNotesRejMach] = @DepNotesRejMach, "
-                           + " [DepAmountRejMach] = @DepAmountRejMach,"
-                           + " [EnvelopsMach] = @EnvelopsMach,"
-                           + " [EnvAmountMach] = @EnvAmountMach,"
-                           + " [ChequesTransMach] = @ChequesTransMach,"
-                           + " [ChequesNoMach] = @ChequesNoMach,[ChequesAmountMach] = @ChequesAmountMach"
+                           + " [DepNotesMach] = @DepNotesMach, "
+                           + " [DepAmountMach] = @DepAmountMach "
+                           //+ " [DepAmountRejMach] = @DepAmountRejMach,"
+                           //+ " [EnvelopsMach] = @EnvelopsMach,"
+                           //+ " [EnvAmountMach] = @EnvAmountMach,"
+                           //+ " [ChequesTransMach] = @ChequesTransMach,"
+                           //+ " [ChequesNoMach] = @ChequesNoMach,[ChequesAmountMach] = @ChequesAmountMach"
                             + " WHERE AtmNo= @AtmNo AND SesNo=@SesNo", conn))
                     {
 
                         cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
                         cmd.Parameters.AddWithValue("@SesNo", InSesNo);
 
-                        cmd.Parameters.AddWithValue("@DepTransMach", DepositsMachine1.Trans);
-                        cmd.Parameters.AddWithValue("@DepNotesMach", 0 ); // Value not available yet 
+                        //cmd.Parameters.AddWithValue("@DepTransMach", DepositsMachine1.Trans);
+                        cmd.Parameters.AddWithValue("@DepNotesMach", DepNotesMach); // Value not available yet 
                         cmd.Parameters.AddWithValue("@DepAmountMach", DepositsMachine1.Amount); 
-                        cmd.Parameters.AddWithValue("@DepNotesRejMach", 0 ); // Not available yet 
-                        cmd.Parameters.AddWithValue("@DepAmountRejMach", 0 ); // Not Availble yet 
-
-                        cmd.Parameters.AddWithValue("@EnvelopsMach", DepositsMachine1.Envelops);
-                        cmd.Parameters.AddWithValue("@EnvAmountMach", DepositsMachine1.EnvAmount);
-
-                        cmd.Parameters.AddWithValue("@ChequesTransMach", ChequesMachine1.Trans);
-                        cmd.Parameters.AddWithValue("@ChequesNoMach", 0 ); // WEDo not currently have the value 
-                        cmd.Parameters.AddWithValue("@ChequesAmountMach", ChequesMachine1.Amount);
+                      
 
                         // Execute and check success 
                         int rows = cmd.ExecuteNonQuery();
@@ -291,8 +382,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in DepositsClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -353,13 +444,60 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in DepositsClass............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
         //
-         // FIND TOTALS FOR DEPOSITS 
+        // UPDATE  [ATM_MT_Journals_AUDI].[dbo].[Deposit_Txns_Analysis]
+        //
+        public void Update_Deposit_Txns_Analysis_ReplCycleNo(string InAtmNo, int InSesNo, int InTraceNo, DateTime InTransDateTime)
+        {
+
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            UpdSesNotes = false;
+            using (SqlConnection conn =
+                new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand("UPDATE [ATM_MT_Journals_AUDI].[dbo].[Deposit_Txns_Analysis]  SET "
+                           + " [ReplCycle] = @ReplCycle "
+                            + "  WHERE ReplCycle = 0   AND AtmNo = @AtmNo AND  TraceNo = @TraceNo AND TransDateTime=@TransDateTime ", conn))
+                    {
+
+                        cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                        cmd.Parameters.AddWithValue("@ReplCycle", InSesNo);
+                        cmd.Parameters.AddWithValue("@TraceNo", InTraceNo);
+                        cmd.Parameters.AddWithValue("@TransDateTime", InTransDateTime);
+
+                        // Execute and check success 
+                        int rows = cmd.ExecuteNonQuery();
+                        if (rows > 0)
+                        {
+                            UpdSesNotes = true;
+                            //  textBoxMsg.Text = " ATMs Table UPDATED ";
+                        }
+                        else UpdSesNotes = false;//textBoxMsg.Text = " Nothing WAS UPDATED ";
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+        }
+        //
+        // FIND TOTALS FOR DEPOSITS OLD DATA BASE 
         //
         public void ReadDepositsTotals(string InAtmNo, int InSesNo)
         {
@@ -428,7 +566,6 @@ namespace RRDM4ATMs
                                 ChequesMachine1.Trans = ChequesMachine1.Trans + 1;
                                 // ChequesMachine1.Number = ChequesMachine1.Number + ???
                                 ChequesMachine1.Amount = ChequesMachine1.Amount + Amount;
-
                             }
 
                             if (TransDesc == "DEP CHEQUES") // ENVELOPS 
@@ -449,10 +586,100 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in DepositsClass............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
-               
+
+        //
+        // FIND TOTALS FOR DEPOSITS NEW DATA BASE 
+        //
+        public void ReadDepositsTotals_NEW(string InTerminalId, int InReplCycleNo)
+        {
+            decimal TransAmount;
+            int TransType ;
+            string TransCurr ;
+          
+            // "DEPOSIT_BNA") // BNA TransType = 23
+
+            DepositsMachine1.Trans = 0;
+            DepositsMachine1.Amount = 0;
+
+            // "DEPOSIT") // CHEQUES TransType = 24
+
+            ChequesMachine1.Trans = 0;
+            ChequesMachine1.Amount = 0;
+
+            // "DEP CHEQUES") // ENVELOPS TransType = 25 
+
+            DepositsMachine1.Envelops = 0;
+            DepositsMachine1.EnvAmount = 0;
+
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            string SqlString = "SELECT *"
+                    + " FROM [RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolATMs] "
+                    + " WHERE ReplCycleNo = @ReplCycleNo AND TerminalId=@TerminalId AND (TransType = 23 OR TransType = 24 OR TransType = 25) ";
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@TerminalId", InTerminalId);
+                        cmd.Parameters.AddWithValue("@ReplCycleNo", InReplCycleNo);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+
+                            TransType = (int)rdr["TransType"];
+                            TransCurr = rdr["TransCurr"].ToString();
+                            TransAmount = (decimal)rdr["TransAmount"];
+
+                            if (TransType == 23) // BNA 
+                            {
+                                DepositsMachine1.Trans = DepositsMachine1.Trans + 1;
+                                DepositsMachine1.Amount = DepositsMachine1.Amount + TransAmount;
+                            }
+                            if (TransType == 24) // CHEQUES 
+                            {
+                                ChequesMachine1.Trans = ChequesMachine1.Trans + 1;
+                                ChequesMachine1.Amount = ChequesMachine1.Amount + TransAmount;
+                            }
+
+                            if (TransType == 25) // ENVELOPS 
+                            {
+                                DepositsMachine1.Envelops = DepositsMachine1.Envelops + 1;
+                                DepositsMachine1.EnvAmount = DepositsMachine1.EnvAmount + TransAmount;
+                            }
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+        }
+
+       
     }
 }

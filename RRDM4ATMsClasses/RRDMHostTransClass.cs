@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMHostTransClass
+    public class RRDMHostTransClass : Logger
     {
+        public RRDMHostTransClass() : base() { }
+
         public int TranNo;
         public string BankId;
     
@@ -114,8 +110,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostTrans Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -188,8 +184,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostTrans Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -261,8 +257,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostTrans Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
       // Insert transactions 
@@ -313,10 +309,8 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@TargetSystem", TargetSystem);
                         cmd.Parameters.AddWithValue("@Operator", Operator);
                         //       cmd.Parameters.AddWithValue("@Reconciled", Reconciled);
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();
+                       
 
                     }
                     // Close conn
@@ -325,8 +319,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostTrans Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
         // Copy transactions for testing purpose
@@ -409,8 +403,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostTrans Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
         //
@@ -419,7 +413,7 @@ namespace RRDM4ATMs
         public void CopyFromPoolToTrans()
         {
            
-            Tc.ReadInPoolTransSpecific(94);
+         //   Tc.ReadInPoolTransSpecific(94);
 
             TranNo = Tc.TranNo;
             BankId = Tc.BankId;

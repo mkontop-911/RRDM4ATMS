@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 using System.Data.SqlClient;
-using System.Drawing.Printing;
 using System.Configuration;
 
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 namespace RRDM4ATMsWin
 {
@@ -35,20 +27,21 @@ namespace RRDM4ATMsWin
         int WProcessMode; 
  
         int Action; 
-        bool RecordFound;
+        //bool RecordFound;
    
         int CurrentSessionNo;
    
-        int LastSesNo;
-        int SessionsInDiff;
-        int PreSes; // Previous to last 
+        //int LastSesNo;
+        //int SessionsInDiff;
+        //int PreSes; // Previous to last 
         DateTime NullPastDate = new DateTime(1900, 01, 01);
         DateTime NullFutureDate = new DateTime(2050, 11, 21);
 
         DateTime FromDate; 
         DateTime ToDate;
 
-        string Gridfilter;
+        DateTime WDtFrom; //
+        DateTime WDtTo;
 
         string WBankId;
 
@@ -63,11 +56,11 @@ namespace RRDM4ATMsWin
         RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass();
         RRDMAtmsClass Ac = new RRDMAtmsClass();
 
-        RRDMNotesBalances Na = new RRDMNotesBalances();
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
 
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); 
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); 
 
-        RRDMReconcCountersClass Rc = new RRDMReconcCountersClass();
+        //RRDMReconcCountersClass_XXXXX Rc = new RRDMReconcCountersClass_XXXXX();
 
         RRDMTurboReconcClass Tuc = new RRDMTurboReconcClass();
 
@@ -77,20 +70,17 @@ namespace RRDM4ATMsWin
 
         RRDMErrorsClassWithActions Ec = new RRDMErrorsClassWithActions();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
-   //     string WUserBankId;
+        RRDMJournalAndAllowUpdate Aj = new RRDMJournalAndAllowUpdate();
 
-    //    ClassCashInOut Ct = new ClassCashInOut();
-
-        RRDMAllowedAtmsAndUpdateFromJournal Aj = new RRDMAllowedAtmsAndUpdateFromJournal(); 
-
- //       int WCitId; 
+        string AtmNo ;
+        string FromFunction ;
+        string WCitId ;
 
         string WSignedId;
         int WSignRecordNo;
         string WOperator;
-      //  bool WPrive;
         int WAction; 
 
         public Form52(string InSignedId, int InSignRecordNo, string InOperator, int Action)
@@ -101,14 +91,48 @@ namespace RRDM4ATMsWin
     
             WAction = Action;
          
-            InitializeComponent();   
+            InitializeComponent();
 
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
 
-            //TEST
-            dateTimePicker1.Value = new DateTime(2014, 02, 12);
-            dateTimePicker2.Value = new DateTime(2014, 02, 13);
+            pictureBox1.BackgroundImage = appResImg.logo2;
+
+            Us.ReadUsersRecord(WSignedId);
+            if (Us.CitId != "1000")
+            {
+                AtmNo = "";
+                FromFunction = "FromCit";
+                WCitId = Us.CitId;
+            }
+            else
+            {
+                AtmNo = "";
+                FromFunction = "General";
+                WCitId = "";
+            }
+            //-----------------------------------------------------------------// 
+            //--TEST -----------------------------------------------------------
+            if (WOperator == "CRBAGRAA")
+            {
+                //TEST
+                dateTimePicker1.Value = new DateTime(2014, 02, 12);
+                dateTimePicker2.Value = new DateTime(2014, 02, 13);
+            }
+            else
+            {
+                // EG ETHNIKI 
+                dateTimePicker1.Value = new DateTime(2017, 02, 12);
+                dateTimePicker2.Value = DateTime.Now;
+            }
+
             WRow1 = 1; 
 
             // WAction codes 
@@ -126,44 +150,9 @@ namespace RRDM4ATMsWin
             // Read USER and ATM Table 
             //WAction = 1; // Update Main record AuthUser field with User Applies to single or group of ATMs 
 
-            if (WAction == 5) // REPLENISHMENT  Group of Atms 
-            {
-              // / ==================ACCESS TO ATMS=========================
-
-                // Read USER and ATM Table 
-                // GET TABLE OF ALLOWED ATMS FOR REPLENISH
-                string WFunction = "Any";
-                Aj.CreateTableOfAccess(WSignedId, WSignRecordNo, WOperator, WFunction);
-
-                // From eJournal update traces and transactions based on table  
-                Aj.UpdateLatestEjStatus(WSignedId, WSignRecordNo, WOperator);
-
-
-                //==================================
-                //==================================
-
-                labelStep1.Text = "ATMs Replenishment";
-                label5.Hide();
-                panel4.Hide();
-                label12.Hide();
-                panel3.Hide();
-           
-            }
-
             if (WAction == 7) // TRANSACTIONS 
             {
-                // ==================ACCESS TO ATMS=========================
-
-                // Read USER and ATM Table 
-                // GET TABLE OF ALLOWED ATMS FOR REPLENISH
-                string WFunction = "Any";
-                Aj.CreateTableOfAccess(WSignedId, WSignRecordNo, WOperator, WFunction);
-
-                // From eJournal update traces and transactions based on table  
-                Aj.UpdateLatestEjStatus(WSignedId, WSignRecordNo, WOperator);
-
-
-                //==================================
+               
                 //==================================
 
                 labelStep1.Text = "Show Transactions per Repl.Cycle, Period or Specific";
@@ -175,42 +164,34 @@ namespace RRDM4ATMsWin
                 panel3.Show();
            
             }
-
-           
+       
         }
 
         private void Form52_Load(object sender, EventArgs e)
         {
-                      
-            // LOAD FIRST DATA GRID ( ATMS MAIN)
-            
+
+            // Create table with the ATMs this user can access
+
+            Ua.ReadUserAccess_ToAtmsFillTable(WOperator, WSignedId,"",2);
+
+            if (Ua.UserGroups_ToAtms_Table.Rows.Count > 0)
+            {
+                dataGridViewMyATMS.DataSource = Ua.UserGroups_ToAtms_Table.DefaultView;
+                ShowGrid_ATMs_1();
+            }
+            else
+            {
+                MessageBox.Show("NO ATMS For this User ");
+            }
+
           
-                Gridfilter = "Operator ='" + WOperator + "' AND AuthUser ='" + WSignedId + "'";
-              
-
-                atmsMainBindingSource.Filter = Gridfilter;
-                dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
-                this.atmsMainTableAdapter.Fill(this.aTMSDataSet30.AtmsMain);
-
-                if (dataGridView1.Rows.Count == 0)
-                {
-                    Form2 MessageForm = new Form2("You are not the owner of any ATM.");
-                    MessageForm.ShowDialog();
-
-                    this.Dispose();
-                    return;
-                }
-
-                // SET ROW Selection POSITIONING 
-               dataGridView1.Rows[WRow1].Selected = true;
-               dataGridView1_RowEnter(this, new DataGridViewCellEventArgs(1, WRow1));
   
         }
 
         // ROW ENTER
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
+            DataGridViewRow rowSelected = dataGridViewMyATMS.Rows[e.RowIndex];
 
             WAtmNo = (string)rowSelected.Cells[0].Value;
 
@@ -246,18 +227,35 @@ namespace RRDM4ATMsWin
 
             label17.Text = "REPL. CYCLE/s FOR ATM : " + WAtmNo; 
 
-         
-
             if (WAction == 7) // FOR TRANSACTIONS
             {
                 label5.Text = "TRANSACTIONS FOR ATM: " + WAtmNo.ToString(); 
             }
+            WDtFrom = new DateTime(1900, 01, 01);
+            WDtTo = DateTime.Today;
 
-            string filter = "AtmNo ='" + WAtmNo + "' AND (ProcessMode = -1 OR ProcessMode = 0 OR ProcessMode = 1 OR ProcessMode = 2 OR ProcessMode = 3)";
+            Ta.ReadReplCyclesForFromToDateFillTable(WOperator, WSignedId, WAtmNo, WDtFrom, WDtTo);
 
-            sessionsStatusTracesBindingSource.Filter = filter;
-            dataGridView2.Sort(dataGridView2.Columns[0], ListSortDirection.Descending);
-            this.sessionsStatusTracesTableAdapter.Fill(this.aTMSDataSet34.SessionsStatusTraces);
+            dataGridView2.DataSource = Ta.ATMsReplCyclesSelectedPeriod.DefaultView;
+
+            dataGridView2.Columns[0].Width = 70; // SesNo
+            dataGridView2.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            // dataGridView2.Sort(dataGridView2.Columns[0], ListSortDirection.Descending);
+
+            dataGridView2.Columns[1].Width = 130; // SesDtTimeStart
+            dataGridView2.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[2].Width = 130; // SesDtTimeEnd
+            dataGridView2.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[3].Width = 180; // ProcessMode
+            dataGridView2.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[4].Width = 65; // Mode_2
+            dataGridView2.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[5].Width = 100; // AtmNo 
+            dataGridView2.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             // Read and update 
             Am.ReadAtmsMainSpecific(WAtmNo);
@@ -281,6 +279,67 @@ namespace RRDM4ATMsWin
             }
         }
 
+        // Show Grid 1
+        private void ShowGrid_ATMs_1()
+        {
+
+            if (dataGridViewMyATMS.Rows.Count == 0)
+            {
+                Form2 MessageForm = new Form2("You are not the owner of any ATM.");
+                MessageForm.ShowDialog();
+
+                this.Dispose();
+                return;
+            }
+            this.dataGridViewMyATMS.Sort(dataGridViewMyATMS.Columns["InNeed"], System.ComponentModel.ListSortDirection.Descending);
+
+            dataGridViewMyATMS.Columns[0].Width = 90; // User id 
+            dataGridViewMyATMS.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewMyATMS.Columns[0].Visible = false;
+
+            dataGridViewMyATMS.Columns[1].Width = 60; // InNeed
+            dataGridViewMyATMS.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridViewMyATMS.Columns[2].Width = 90; // ATM No
+            dataGridViewMyATMS.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridViewMyATMS.Columns[3].Width = 140; // AtmName
+            dataGridViewMyATMS.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridViewMyATMS.Columns[4].Width = 90; // Repl Pending
+            dataGridViewMyATMS.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridViewMyATMS.Columns[5].Width = 90; // Repl Cycle
+            dataGridViewMyATMS.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+
+            dataGridViewMyATMS.Columns[6].Width = 120; // RespBranch
+            dataGridViewMyATMS.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridViewMyATMS.Columns[7].Width = 150; // Branch Name
+            dataGridViewMyATMS.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+
+            foreach (DataGridViewRow row in dataGridViewMyATMS.Rows)
+            {
+                //WSeqNo = (int)rowSelected.Cells[0].Value;
+                bool WInNeed = (bool)row.Cells[1].Value;
+
+                if (WInNeed == true)
+                {
+                    row.DefaultCellStyle.BackColor = Color.Gainsboro;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
+                else
+                {
+                    row.DefaultCellStyle.BackColor = Color.White;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
+            }
+
+
+        }
+
         // SESSION TRACES SELECTION 
         private void dataGridView2_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
@@ -291,9 +350,7 @@ namespace RRDM4ATMsWin
             textBox2.Text = WSesNo.ToString();
 
             Ta.ReadSessionsStatusTraces(WAtmNo, WSesNo);
-            if (RecordFound == true)
-            {
-            }
+          
 
             WProcessMode = Ta.ProcessMode; 
 
@@ -364,11 +421,32 @@ namespace RRDM4ATMsWin
                 return;
             }
 
-            string Atmfilter = " AtmNo = '" + WAtmNo + "'";
+            //Load Datagrid with what is allowed
+            dataGridViewMyATMS.DataSource = Am.TableATMsMainSelected.DefaultView;
 
-            atmsMainBindingSource.Filter = Atmfilter;
+            dataGridViewMyATMS.Columns[0].Width = 70; // AtmNo
+            dataGridViewMyATMS.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            this.atmsMainTableAdapter.Fill(this.aTMSDataSet30.AtmsMain);
+            dataGridViewMyATMS.Columns[1].Width = 70; // ReplCycle
+            dataGridViewMyATMS.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridViewMyATMS.Columns[2].Width = 120; // AtmName
+
+            dataGridViewMyATMS.Columns[3].Width = 130; // RespBranch
+
+            dataGridViewMyATMS.Columns[4].Width = 70; // Auth User 
+
+            dataGridViewMyATMS.Columns[0].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
+            dataGridViewMyATMS.Columns[4].DefaultCellStyle.ForeColor = Color.LightSlateGray;
+
+            if (dataGridViewMyATMS.Rows.Count == 0)
+            {
+                Form2 MessageForm = new Form2("You are not the owner of any ATM.");
+                MessageForm.ShowDialog();
+
+                this.Dispose();
+                return;
+            }
 
             if (DateTime.Today > Am.NextReplDt)
             {
@@ -385,12 +463,33 @@ namespace RRDM4ATMsWin
         private void button3_Click_1(object sender, EventArgs e)
         {
 
-       
-                string errfilter = "Operator ='" + WOperator + "' AND AuthUser ='" + WSignedId + "'";
 
-                atmsMainBindingSource.Filter = errfilter;
-                dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
-                this.atmsMainTableAdapter.Fill(this.aTMSDataSet30.AtmsMain);
+            //Load Datagrid with what is allowed
+            dataGridViewMyATMS.DataSource = Am.TableATMsMainSelected.DefaultView;
+
+            dataGridViewMyATMS.Columns[0].Width = 70; // AtmNo
+            dataGridViewMyATMS.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridViewMyATMS.Columns[1].Width = 70; // ReplCycle
+            dataGridViewMyATMS.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridViewMyATMS.Columns[2].Width = 120; // AtmName
+
+            dataGridViewMyATMS.Columns[3].Width = 130; // RespBranch
+
+            dataGridViewMyATMS.Columns[4].Width = 70; // Auth User 
+
+            dataGridViewMyATMS.Columns[0].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
+            dataGridViewMyATMS.Columns[4].DefaultCellStyle.ForeColor = Color.LightSlateGray;
+
+            if (dataGridViewMyATMS.Rows.Count == 0)
+            {
+                Form2 MessageForm = new Form2("You are not the owner of any ATM.");
+                MessageForm.ShowDialog();
+
+                this.Dispose();
+                return;
+            }
      
         }
 
@@ -407,18 +506,21 @@ namespace RRDM4ATMsWin
                 MessageBox.Show("This ATm is not active!");
                 return;
             }
-            //Keep Row Selection positioning 
-            WRow1 = dataGridView1.SelectedRows[0].Index;
-            WRow2 = dataGridView2.SelectedRows[0].Index; 
-
             if (String.IsNullOrEmpty(textBox2.Text))
             {
                 //    SelectAtmMain(AtmNo); // Find what is the running SessionNo for this ATM
+                MessageBox.Show("No Session Number Yet. ATM under migration process.");
+                return;
             }
             else
             {
                 CurrentSessionNo = int.Parse(textBox2.Text);
             }
+            //Keep Row Selection positioning 
+            WRow1 = dataGridViewMyATMS.SelectedRows[0].Index;
+            WRow2 = dataGridView2.SelectedRows[0].Index; 
+
+           
             // REPLENISHMENT PROCESS CODES
             // SINGLES
             // WFunction = 1 Normal branch ATM
@@ -466,8 +568,8 @@ namespace RRDM4ATMsWin
                                       == DialogResult.Yes)
                         {
                             // Process No Updating 
-                         
-                            Us.ReadSignedActivityByKey(WSignRecordNo);
+                            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+                            Usi.ReadSignedActivityByKey(WSignRecordNo);
                             // GROUPS
                             // 5 Normal Group belonging to Bank . 
                             // 30 Offsite Group belonging to Bank  ????? 
@@ -476,21 +578,21 @@ namespace RRDM4ATMsWin
                             Us.ReadUsersRecord(WSignedId);
                             if (Ac.OffSite == true & Ac.CitId == "")
                             {
-                                Us.ProcessNo = 30; // ?????? 
+                                Usi.ProcessNo = 30; // ?????? 
                             }
                             if ((Ac.CitId != ""))
                             {
-                                Us.ProcessNo = 31;
+                                Usi.ProcessNo = 31;
                             }
                             if (Ac.OffSite == false & Ac.CitId == "")
                             {
-                                Us.ProcessNo = 5; // NORMAL AT BRANCH
+                                Usi.ProcessNo = 5; // NORMAL AT BRANCH
                             }
                             // 5 for internal group and 30 for OffSite ATM and 31 for external 
 
-                            Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+                            Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
-                            if (Us.ProcessNo == 30 || Us.ProcessNo == 25)
+                            if (Usi.ProcessNo == 30 || Usi.ProcessNo == 25)
                             {
                                 MessageBox.Show("MSG667: Process codes 30 and 25 = off-site ATMs note available in Form51 yet");
                             }
@@ -503,14 +605,14 @@ namespace RRDM4ATMsWin
                                 return; 
                             }
 
-                            Ta.FindNextReplCycleId(WAtmNo);
+                            Ta.FindNextAndLastReplCycleId(WAtmNo);
                             if (WProcessMode == 0 & WSesNo != Ta.NextReplNo)
                             {
                                 MessageBox.Show("MSG671: Choose the right Repl Number. Choose the : " + Ta.NextReplNo.ToString());
                                 return;
                             }
 
-                            Ta.FindNextReplCycleId(WAtmNo);
+                            Ta.FindNextAndLastReplCycleId(WAtmNo);
                             if (WProcessMode == 0 & WSesNo != Ta.NextReplNo)
                             {
                                 MessageBox.Show("MSG672: Choose the right Repl Number. Choose the : " + Ta.NextReplNo.ToString());
@@ -542,8 +644,8 @@ namespace RRDM4ATMsWin
                                            == DialogResult.Yes)
                     {
                         // Process No Updating 
-
-                        Us.ReadSignedActivityByKey(WSignRecordNo);
+                        RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+                        Usi.ReadSignedActivityByKey(WSignRecordNo);
                         // GROUPS
                         // 5 Normal Group belonging to Bank . 
                         // 30 Offsite Group belonging to Bank
@@ -555,19 +657,19 @@ namespace RRDM4ATMsWin
 
                         if (Ac.OffSite == true & Us.UserType == "Operator Entity") // Our Own User but ATM is Offsite 
                         {
-                            Us.ProcessNo = 30;
+                            Usi.ProcessNo = 30;
                         }
                         if ((Ac.OffSite == true & Us.UserType == "CIT Company") || (Ac.OffSite == false & Us.UserType == "CIT Company"))
                         {
-                            Us.ProcessNo = 31;
+                            Usi.ProcessNo = 31;
                         }
                         if (Ac.OffSite == false & Us.UserType == "Operator Entity") // Our own User and ATM is at the Baranch 
                         {
-                            Us.ProcessNo = 5; // NORMAL AT BRANCH
+                            Usi.ProcessNo = 5; // NORMAL AT BRANCH
                         }
                         // 5 for internal group and 30 for OffSite ATM and 31 for external 
 
-                        Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+                        Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
                        
                         if (WProcessMode == -1)
@@ -578,7 +680,7 @@ namespace RRDM4ATMsWin
                         }
 
 
-                        Ta.FindNextReplCycleId(WAtmNo);
+                        Ta.FindNextAndLastReplCycleId(WAtmNo);
                         if (WProcessMode == 0 & WSesNo != Ta.NextReplNo)
                         {
                             MessageBox.Show("MSG676: Choose the right Repl Number. Choose the : " + Ta.NextReplNo.ToString());
@@ -607,11 +709,12 @@ namespace RRDM4ATMsWin
             {
                 Action = 21;
                 FromDate = NullPastDate;
-                ToDate = NullPastDate; 
+                ToDate = NullPastDate;
+                SingleChoice = ""; 
                 
                 NForm62 = new Form62(WSignedId, WSignRecordNo, WBankId, WAtmNo, WSesNo, Action,
                     FromDate, ToDate, SingleChoice);
-                NForm62.ShowDialog(); ;
+                NForm62.ShowDialog(); 
                 
             }
            
@@ -660,6 +763,22 @@ namespace RRDM4ATMsWin
         // SHOW SINGLE TRANSACTION 
         private void button7_Click(object sender, EventArgs e)
         {
+            //
+            // Validation for invalid characters 
+            //
+            System.Text.RegularExpressions.Regex expr = new System.Text.RegularExpressions.Regex
+              (@"^[a-zA-Z0-9]*$");
+
+            if (expr.IsMatch(textBoxInputField.Text))
+            {
+                //   MessageBox.Show("field");
+            }
+            else
+            {
+                MessageBox.Show("invalid Characters In Input Field");
+                return;
+            }
+
             Am.ReadAtmsMainSpecific(WAtmNo);
             if (Am.ProcessMode == -2)
             {
@@ -673,14 +792,14 @@ namespace RRDM4ATMsWin
             }
             else
             {
-                if (String.IsNullOrEmpty(textBox1.Text))
+                if (String.IsNullOrEmpty(textBoxInputField.Text))
                 {
                     MessageBox.Show("Enter the number please", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 else
                 {
-                    SingleChoice = textBox1.Text;
+                    SingleChoice = textBoxInputField.Text;
 
                     //TEST
                     WAtmNo = "AB104"; // NEEDED FOR THE JOURNAL 
@@ -690,14 +809,14 @@ namespace RRDM4ATMsWin
                 if (radioButton3.Checked == true)
                 {
                     int TraceNo;
-                    if (int.TryParse(textBox1.Text, out TraceNo))
+                    if (int.TryParse(textBoxInputField.Text, out TraceNo))
                     {
                         SingleChoice = TraceNo.ToString();
                       
                     }
                     else
                     {
-                        MessageBox.Show(textBox1.Text, "Please enter a valid trace number!");
+                        MessageBox.Show(textBoxInputField.Text, "Please enter a valid trace number!");
                         return;
                     }
                     Action = 25; // Trace no
@@ -711,56 +830,7 @@ namespace RRDM4ATMsWin
             radioButton1.Checked = false;
             radioButton2.Checked = false;
             radioButton3.Checked = false;
-            textBox1.Text = ""; 
-        }
-
-        
-        //
-        // READ Last SESSION TRACE to find last Session No 
-        //
-    //
-private void ReadSessionsStatusTraces(string AtmNo)
-        { 
-     
-            string SqlString =
-                "SELECT * "
-                + " FROM [dbo].[SessionsStatusTraces] "
-                + " WHERE AtmNo =" + AtmNo + " and Last = 1 ";
-
-            using (SqlConnection conn =
-                          new SqlConnection(connectionString))
-                try
-                {
-                    conn.Open();
-                    using (SqlCommand cmd =
-                        new SqlCommand(SqlString, conn))
-                    {
-                        // Read table 
-
-                        SqlDataReader rdr = cmd.ExecuteReader();
-
-                        while (rdr.Read())
-                        {
-                            // Assign Values
-                            RecordFound = true;    
-
-                            LastSesNo = (int)rdr["SesNo"];
-                            PreSes = (int)rdr["PreSes"];
-                            SessionsInDiff = (int)rdr["SessionsInDiff"];
-
-                        }
-                        // Close Reader
-                        rdr.Close();
-                    }
-                    // Close conn
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    //  string exception = ex.ToString();
-                    MessageBox.Show(ex.ToString());
-                    MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
-                }
+            textBoxInputField.Text = ""; 
         }
 
         // Show SESSION STATUS 
@@ -818,17 +888,17 @@ private void button1_Click(object sender, EventArgs e)
         // card
 private void radioButton1_CheckedChanged(object sender, EventArgs e)
 {
-    textBox1.Text = "450653******7072";
+    textBoxInputField.Text = "4375071234567892";
 }
 // account number
 private void radioButton2_CheckedChanged(object sender, EventArgs e)
 {
-    textBox1.Text = "013600004883";
+    textBoxInputField.Text = "013600004883";
 }
 // Trace 
 private void radioButton3_CheckedChanged(object sender, EventArgs e)
 {
-    textBox1.Text = "10042990";
+    textBoxInputField.Text = "10042990";
 }
 
 private void button10_Click(object sender, EventArgs e)

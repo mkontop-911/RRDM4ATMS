@@ -59,7 +59,7 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(17, 44);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(706, 66);
             this.panel1.TabIndex = 0;
@@ -69,7 +69,7 @@
             this.checkBoxOpen.AutoSize = true;
             this.checkBoxOpen.Enabled = false;
             this.checkBoxOpen.Location = new System.Drawing.Point(606, 32);
-            this.checkBoxOpen.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxOpen.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxOpen.Name = "checkBoxOpen";
             this.checkBoxOpen.Size = new System.Drawing.Size(52, 17);
             this.checkBoxOpen.TabIndex = 9;
@@ -81,7 +81,7 @@
             this.checkBoxSerious.AutoSize = true;
             this.checkBoxSerious.Enabled = false;
             this.checkBoxSerious.Location = new System.Drawing.Point(606, 9);
-            this.checkBoxSerious.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxSerious.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxSerious.Name = "checkBoxSerious";
             this.checkBoxSerious.Size = new System.Drawing.Size(61, 17);
             this.checkBoxSerious.TabIndex = 8;
@@ -176,8 +176,9 @@
             // 
             this.textBox1.BackColor = System.Drawing.Color.White;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(17, 127);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
@@ -225,7 +226,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form55a";
             this.Text = "Form55a";
             this.Load += new System.EventHandler(this.Form55a_Load);

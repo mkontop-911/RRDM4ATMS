@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 using System.Drawing.Imaging;
 using Microsoft.Reporting.WinForms;
 using System.Configuration;
@@ -28,9 +22,9 @@ namespace RRDM4ATMsWin
         Bitmap Image3;
         Bitmap Image4;
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
         RRDMAtmsMainClass Am = new RRDMAtmsMainClass();
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate();
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
 
         public Form56R(Bitmap ScreenA, Bitmap ScreenB, Bitmap ScreenC, Bitmap ScreenD)
         {
@@ -60,8 +54,9 @@ namespace RRDM4ATMsWin
             {
 
                 string RSUri = ConfigurationManager.AppSettings["ReportServerUri"];
-                string RSReportName = "/ReplenishmentReport";
-
+                string RsDir = ConfigurationManager.AppSettings["ReportsDir"];
+                string RSReportName = RsDir + "/ReplenishmentReport";
+               
                 // Set the processing mode for the ReportViewer to Remote
                 reportViewer1.ProcessingMode = ProcessingMode.Remote;
 

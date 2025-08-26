@@ -1,32 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
-using System.Configuration;
+using RRDM4ATMs;
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 namespace RRDM4ATMsWin
 {
     public partial class Form192 : Form
     {
         RRDMGasParameters Gp = new RRDMGasParameters();
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         string WSignedId;
         int WSignRecordNo;
-        int WSecLevel;
+        string WSecLevel;
         string WOperator;
    
-        public Form192(string InSignedId, int InSignRecordNo, int InSecLevel, string InOperator)
+        public Form192(string InSignedId, int InSignRecordNo, string InSecLevel, string InOperator)
         {
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
@@ -34,8 +23,17 @@ namespace RRDM4ATMsWin
             WOperator = InOperator;
 
             InitializeComponent();
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                 labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             label17.Text = WOperator;
 
@@ -49,7 +47,7 @@ namespace RRDM4ATMsWin
 
             // RED 
             Gp.ParamId = "901"; // Number Values    
-            comboBox2.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox2.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox2.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "601", "1", "", "");
@@ -57,7 +55,7 @@ namespace RRDM4ATMsWin
 
             // GREEN
             Gp.ParamId = "901"; // Number Values    
-            comboBox3.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox3.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox3.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "602", "1",  "", "");
@@ -67,7 +65,7 @@ namespace RRDM4ATMsWin
 
             // RED 
             Gp.ParamId = "901"; // Number Values    
-            comboBox5.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox5.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox5.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "601", "2",  "", "");
@@ -75,7 +73,7 @@ namespace RRDM4ATMsWin
 
             // GREEN
             Gp.ParamId = "901"; // Number Values    
-            comboBox4.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox4.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox4.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "602", "2",  "", "");
@@ -85,7 +83,7 @@ namespace RRDM4ATMsWin
 
             // RED 
             Gp.ParamId = "901"; // Number Values    
-            comboBox7.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox7.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox7.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "601", "3",  "", "");
@@ -93,7 +91,7 @@ namespace RRDM4ATMsWin
 
             // GREEN
             Gp.ParamId = "901"; // Number Values    
-            comboBox6.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox6.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox6.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "602", "3",  "", "");
@@ -103,7 +101,7 @@ namespace RRDM4ATMsWin
 
             // RED 
             Gp.ParamId = "901"; // Number Values    
-            comboBox17.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox17.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox17.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "601", "4",  "", "");
@@ -111,7 +109,7 @@ namespace RRDM4ATMsWin
 
             // GREEN
             Gp.ParamId = "901"; // Number Values    
-            comboBox16.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox16.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox16.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "602", "4",  "", "");
@@ -124,7 +122,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox13.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox13.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox13.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "603", "1",  "", "");
@@ -133,7 +131,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox12.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox12.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox12.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "604", "1",  "", "");
@@ -144,7 +142,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox20.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox20.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox20.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "603", "2",  "", "");
@@ -153,7 +151,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox19.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox19.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox19.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "604", "2",  "", "");
@@ -164,7 +162,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox11.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox11.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox11.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "603", "3",  "", "");
@@ -173,7 +171,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox10.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox10.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox10.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "604", "3",  "", "");
@@ -184,7 +182,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox9.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox9.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox9.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "603", "4",  "", "");
@@ -193,7 +191,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox8.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox8.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox8.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "604", "4",  "", "");
@@ -204,7 +202,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox15.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox15.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox15.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "603", "5",  "", "");
@@ -213,7 +211,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox14.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox14.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox14.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "604", "5",  "", "");
@@ -224,7 +222,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox18.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox18.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox18.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "603", "6",  "", "");
@@ -233,7 +231,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox1.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox1.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox1.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "604", "6",  "", "");
@@ -244,7 +242,7 @@ namespace RRDM4ATMsWin
             // Green 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox23.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox23.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox23.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "603", "7",  "", "");
@@ -253,7 +251,7 @@ namespace RRDM4ATMsWin
             // Red 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox22.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox22.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox22.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "604", "7",  "", "");
@@ -264,7 +262,7 @@ namespace RRDM4ATMsWin
             //Dispute Target date 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox21.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox21.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox21.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "605", "1",  "", "");
@@ -273,7 +271,7 @@ namespace RRDM4ATMsWin
             //Based days for unreconcilied 
 
             Gp.ParamId = "901"; // Number Values    
-            comboBox24.DataSource = Gp.GetParamOccurancesId(WOperator);
+            comboBox24.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBox24.DisplayMember = "DisplayValue";
 
             Gp.ReadParametersSpecificId(WOperator, "605", "2",  "", "");

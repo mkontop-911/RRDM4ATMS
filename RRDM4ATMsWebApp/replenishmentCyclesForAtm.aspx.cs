@@ -16,10 +16,10 @@ public partial class replenishmentCyclesForAtm : System.Web.UI.Page
     int WProcessMode;
 
     RRDMUpdateGrids Ug = new RRDMUpdateGrids();
-    RRDMNotesBalances Na = new RRDMNotesBalances();
-    RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate();
+    RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
+    RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
 
-    RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+   // RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
     RRDMErrorsClassWithActions Ec = new RRDMErrorsClassWithActions();
 
     string WUserBankId;
@@ -56,7 +56,7 @@ public partial class replenishmentCyclesForAtm : System.Web.UI.Page
 
             //MsgGuidance.Text = "Select Atm and see what is needed";
 
-            Ta.ReadReplCyclesForFromToDate(WOperator, WAtmNo, WDtFrom, WDtTo);
+       //     Ta.ReadReplCyclesForFromToDate(WOperator, WAtmNo, WDtFrom, WDtTo);
 
             GridView1.DataSource = Ta.ATMsReplCyclesSelectedPeriod.DefaultView;
             GridView1.DataBind();
@@ -213,11 +213,11 @@ public partial class replenishmentCyclesForAtm : System.Web.UI.Page
             Button1.Visible = false;
         }
 
-        Us.ReadUsersRecord(Ta.Repl1.SignIdRepl);
-        TextBox18.Text = Us.UserName;
+    //    Us.ReadUsersRecord(Ta.Repl1.SignIdRepl);
+     //   TextBox18.Text = Us.UserName;
 
-        Us.ReadUsersRecord(Ta.Recon1.SignIdReconc);
-        TextBox19.Text = Us.UserName;
+    //    Us.ReadUsersRecord(Ta.Recon1.SignIdReconc);
+    //    TextBox19.Text = Us.UserName;
     }
 
     private void PopUpMessage(string InMsg)

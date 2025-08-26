@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
+using RRDM4ATMs;
 using System.Configuration;
 // Alecos
 using System.Diagnostics;
@@ -26,29 +18,11 @@ namespace RRDM4ATMsWin
         Form22MIS NForm22MIS; 
         Form24 NForm24; 
 
-       // string AtmNo;
-      //  int CurrentSesNo;
-       
-     //   string BankId;
         public bool Prive;
        
+        int WAction;
 
-   //     bool OffSite;
-     //   DateTime LastReplDt;
-     //   int TypeOfRepl;
-
-      //  int AtmsReplGroup; 
-
-        // NULL Values 
-      //  DateTime NextReplDt;
-
-     //   bool ReconcDiff;
- 
-        int WAction; 
-
-//        decimal TotalRepl;
-
-
+        string WBankId; 
 
         // DATATable for Grid 
         // public DataTable GridDays = new DataTable();
@@ -59,11 +33,11 @@ namespace RRDM4ATMsWin
         string MsgFilter;
      //   string WAtmNo; 
 
-        RRDMNotesBalances Na = new RRDMNotesBalances();
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
 
       //  DepositsClass Dc = new DepositsClass();
 
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); 
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); 
 
         RRDMReplStatsClass Rs = new RRDMReplStatsClass();
 
@@ -73,7 +47,7 @@ namespace RRDM4ATMsWin
 
         RRDMUsersAccessToAtms Ua = new RRDMUsersAccessToAtms();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         RRDMCounterClass Cc = new RRDMCounterClass();
 
@@ -87,24 +61,19 @@ namespace RRDM4ATMsWin
 
         RRDMGasParameters Gp = new RRDMGasParameters();
 
-        RRDMReconcCategories Rc = new RRDMReconcCategories();
-
-   //     string outcome = ""; // TO FACILITATE EXCEPTIONS 
-
-   //     string WBankId;
+        RRDMMatchingCategories Rc = new RRDMMatchingCategories();
 
         string WSignedId;
         int WSignRecordNo;
-        int WSecLevel;
+        string WSecLevel;
         string WOperator;
-    //    bool WPrive;
-     
+  
         string WCitId; 
 
         // Methods 
         // READ ATMs Main
         // 
-        public Form200(string InSignedId, int SignRecordNo, int InSecLevel, string InOperator, string InCitId)
+        public Form200(string InSignedId, int SignRecordNo, string InSecLevel, string InOperator, string InCitId)
         {
             WSignedId = InSignedId;
             WSignRecordNo = SignRecordNo;
@@ -115,11 +84,22 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
-            
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             textBoxMsgBoard.Text = "The total picture of the current ATM work is showed ";
+
+            Us.ReadUsersRecord(WSignedId);
+            WBankId = Us.BankId;
 
             // 
             //TEST
@@ -127,15 +107,20 @@ namespace RRDM4ATMsWin
             // 
 
             // How many 
-            string WParameter4 = "Physical Ispection";
+            string WParameter4 = "Physical Inspection";
             string Order = "Ascending";
-            string SearchP4 = "Physical Ispection";
+            string SearchP4 = "Physical Inspection";
             Cn.ReadAllNotes(WParameter4, WSignedId, Order, SearchP4);
             if (Cn.RecordFound == true)
             {
             }
+           
+            // Find Total and Fill table for all Notes
+            string SelectionCriteria = " WHERE Parameter2 = 'PhysicalInspection' ";
+            Cn.ReadAllCaseNotesAndFillTableBySelectionCriteria(SelectionCriteria);
 
-            textBox26.Text = Cn.TotalNotes.ToString() ;
+            textBox26.Text = Cn.TotalSelected.ToString();
+
             textBox27.Text = Cn.TotalNotes.ToString() ; 
 
             //*****************************************
@@ -149,7 +134,7 @@ namespace RRDM4ATMsWin
             }
             if (WCitId == "1000")
             {
-                Ba.ReadOperator(WOperator);
+                Ba.ReadBanksForOperator(WOperator);
 
                 labelStep1.Text = "Today's Repl. and Reconc. Status For " + Ba.BankName;
             }
@@ -165,7 +150,7 @@ namespace RRDM4ATMsWin
               + " OR (ReadMsg = 0 AND ToUser='" + WSignedId + "')";
 
 
-            Cm.ReadControlerMSGs(MsgFilter);
+            Cm.ReadControlerMSGsSerious(MsgFilter);
 
             if (Cm.SerMsgCount > 0)
             {
@@ -184,12 +169,16 @@ namespace RRDM4ATMsWin
 
             toolTipController.SetToolTip(buttonCommController, "Communicate with today's controller.");
 
+           
+                MessageBox.Show("No Testing Data to show");
+                return; 
+            
 
            // MAIN PROGRAM 
             //TESTING
             DateTime WReplDate = DateTime.Today;
             WReplDate = new DateTime(2014, 04, 18); // IF NOT TESTING THIS IS TODAY
-
+            
           //  Read Counted totals 
 
             Cc.ReadAtmsMainTotals(WReplDate, WOperator, WCitId, 0); 
@@ -243,7 +232,7 @@ namespace RRDM4ATMsWin
                 textBox23.Text = (Cc.TotErrorsHost * 100 / (Cc.TotErrors)).ToString();
             }
 
-            Ba.ReadOperator(WOperator); 
+            Ba.ReadBanksForOperator(WOperator); 
 
             label22.Text = label22.Text + " " + Ba.BasicCurName;
             label16.Text = label16.Text + " " + Ba.BasicCurName;
@@ -251,7 +240,7 @@ namespace RRDM4ATMsWin
             textBox19.Text = Cc.TotDiffPlus.ToString();
             textBox18.Text = Cc.TotDiffMinus.ToString();
 
-            Rc.ReadReconcCategoriesForAllocation(WOperator);
+            Rc.ReadMatchingCategoriesForAllocation(WOperator);
 
             textBox35.Text = (Rc.TotalReconc + Rc.TotalNotReconc).ToString();
             textBox34.Text = Rc.TotalMatchingDone.ToString(); ;
@@ -267,20 +256,19 @@ namespace RRDM4ATMsWin
             if (Rc.TotalMatchingNotDone <= QualityRange1)
             {
                 // Green
-                pictureBox2.BackgroundImage = Properties.Resources.GREEN_LIGHT_Repl;
+                pictureBox2.BackgroundImage = appResImg.GREEN_LIGHT_Repl;
             }
 
             if (Rc.TotalMatchingNotDone >= QualityRange2)
             {
                 // Red 
-                pictureBox2.BackgroundImage = Properties.Resources.RED_LIGHT_Repl;
+                pictureBox2.BackgroundImage = appResImg.RED_LIGHT_Repl;
             }
             if (Rc.TotalMatchingNotDone > QualityRange1 & Rc.TotalUnMatchedRecords < QualityRange2)
             {
                 // Yellow 
-                pictureBox2.BackgroundImage = Properties.Resources.YELLOW_Repl;
+                pictureBox2.BackgroundImage = appResImg.YELLOW_Repl;
             }
-
 
             textBox28.Text = (Rc.TotalReconc + Rc.TotalNotReconc).ToString();
             textBox29.Text = Rc.TotalReconc.ToString();  ;
@@ -296,18 +284,18 @@ namespace RRDM4ATMsWin
             if (Rc.TotalUnMatchedRecords <= QualityRange1)
             {
                 // Green
-                pictureBox3.BackgroundImage = Properties.Resources.GREEN_LIGHT_Repl;
+                pictureBox3.BackgroundImage = appResImg.GREEN_LIGHT_Repl;
             }
 
             if (Rc.TotalUnMatchedRecords >= QualityRange2)
             {
                 // Red 
-                pictureBox3.BackgroundImage = Properties.Resources.RED_LIGHT_Repl;
+                pictureBox3.BackgroundImage = appResImg.RED_LIGHT_Repl;
             }
             if (Rc.TotalUnMatchedRecords > QualityRange1 & Rc.TotalUnMatchedRecords < QualityRange2)
             {
                 // Yellow 
-                pictureBox3.BackgroundImage = Properties.Resources.YELLOW_Repl;
+                pictureBox3.BackgroundImage = appResImg.YELLOW_Repl;
             }
             //
             //
@@ -420,7 +408,7 @@ namespace RRDM4ATMsWin
              + " OR (ReadMsg = 0 AND ToUser='" + WSignedId + "')";
 
 
-            Cm.ReadControlerMSGs(MsgFilter);
+            Cm.ReadControlerMSGsSerious(MsgFilter);
 
             if (Cm.SerMsgCount > 0)
             {
@@ -452,7 +440,8 @@ namespace RRDM4ATMsWin
             string ParId = "263";
             string OccurId = "1";
             Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
-
+#if DEBUG
+#endif
             if (Gp.OccuranceNm == "YES") // Electronic needed 
             {
               
@@ -463,12 +452,69 @@ namespace RRDM4ATMsWin
                 return; 
             }
 
+            RRDMTempAtmsLocation Tl = new RRDMTempAtmsLocation();
+
+            // READ NOTES TABLE AND Insert in Temp ATMs Location
+            int WGroupNo = 25 ; 
+            Tl.DeleteTempAtmLocationGroup(WSignedId, WGroupNo); 
+
+            int I = 0;
+            string PreviousAtm = ""; 
+            
+            while (I <= (Cn.NotesDataTable.Rows.Count - 1))
+            {
+                int SeqNo = (int)Cn.NotesDataTable.Rows[I]["SeqNo"];
+                string Parameter3 = (string)Cn.NotesDataTable.Rows[I]["Parameter3"];
+                string Parameter4 = (string)Cn.NotesDataTable.Rows[I]["Parameter4"];
+
+                string WAtmNo = Parameter3;
+
+                if (WAtmNo != PreviousAtm) // Create Entry for sictict ATM
+                {
+
+                    RRDMAtmsClass Ac = new RRDMAtmsClass();
+                    Ac.ReadAtm(WAtmNo);
+
+                    Tl.UserId = WSignedId; 
+                    Tl.AtmNo = WAtmNo; 
+                    Tl.BankId = WOperator;
+                    Tl.Mode = 2;
+
+                    Tl.GroupNo = WGroupNo;
+                    Tl.GroupDesc = "Show ATMs With Physical Problems ";
+
+                    Tl.DtTmCreated = DateTime.Now;
+
+                    Tl.Street = Ac.Street;
+                    Tl.Town = Ac.Town;
+                    Tl.District = Ac.District;
+                    Tl.PostalCode = Ac.PostalCode;
+                    Tl.Country = Ac.Country;
+
+                    Tl.Latitude = Ac.Latitude;
+                    Tl.Longitude = Ac.Longitude;
+
+                    Tl.ColorId = "2";
+                    Tl.ColorDesc = "Normal Color";
+
+                    // Insert In Maps 
+
+                    Tl.SeqNo = Tl.InsertTempAtmLocationRecord();
+
+                    PreviousAtm = WAtmNo; 
+                }
+
+                I++; // Read Next entry of the table 
+
+            }
+
             //TEST
             /* New code for RRDMMaps... */
             // Read the URL from app.config
             string ATMGroupNoURL = ConfigurationManager.AppSettings["RRDMMapsGroupNoURL"];
             // Format the URL with the query string (ATMId=#)
-            string QueryURL = ATMGroupNoURL + "?GroupNo=25";
+            string GrpDescr = "ATMs with Problems!";
+            string QueryURL = ATMGroupNoURL + "?GroupNo=" + WGroupNo +"&UserId="+ WSignedId + "&GroupDescr=" + GrpDescr;
 
             // Invoke default browser
             ProcessStartInfo sInfo = new ProcessStartInfo(QueryURL);
@@ -483,9 +529,9 @@ namespace RRDM4ATMsWin
         {
             Form197 NForm197;
             string WParameter3 = ""; 
-            string WParameter4 = "";
-            string SearchP4 = "Physical Ispection";
-            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, WParameter3, WParameter4, "Read", SearchP4);
+            string WParameter4 = "Physical Inspection";
+            string SearchP4 = "Physical Inspection";
+            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, "", WParameter3, WParameter4, "Read", SearchP4);
             NForm197.ShowDialog();
         }
 // SHOW DETAILS OF MATCHING STATUS OF RM CATEGORIES 
@@ -500,11 +546,20 @@ namespace RRDM4ATMsWin
 // Show Reconciliation Details 
         private void button11_Click(object sender, EventArgs e)
         {
-            Form80a NForm80a;
+           Form80a NForm80aITMX;
             string WFunction = "View";
-            NForm80a = new Form80a(WSignedId, WSignRecordNo, WOperator, WFunction, "ALL");
-            NForm80a.ShowDialog();
-        }   
+            string Category = "All";
 
+            string WhatBank = WBankId;
+
+            NForm80aITMX = new Form80a(WSignedId, WSignRecordNo, WOperator, WFunction, Category, WhatBank);
+
+            NForm80aITMX.ShowDialog();
+        }
+// Finish
+        private void buttonNext_Click(object sender, EventArgs e)
+        {
+            this.Dispose(); 
+        }
     }
 }

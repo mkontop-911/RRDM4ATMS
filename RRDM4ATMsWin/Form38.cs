@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 using System.Data.SqlClient;
 using System.Configuration;
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 
 namespace RRDM4ATMsWin
@@ -20,7 +13,6 @@ namespace RRDM4ATMsWin
     public partial class Form38 : Form
     {
        
-
         Form24 NForm24; // Errors 
 
         Form67 NForm67; // Journal 
@@ -28,9 +20,6 @@ namespace RRDM4ATMsWin
         Form5 NForm5; // Dispute form 
 
         DataTable DepositsTran = new DataTable();
-
-        RRDMAtmsClass Ac = new RRDMAtmsClass();
-        RRDMDisputeTrasactionClass Dt = new RRDMDisputeTrasactionClass(); 
 
         int RowSelected; 
 
@@ -40,7 +29,9 @@ namespace RRDM4ATMsWin
 
         int TransType;
 
-        int TranNo ;
+        int WMasterTraceNo; 
+
+        int UniqueRecordId;
         int TraceNo ;
         string  Card ;
         string Account ;
@@ -81,7 +72,9 @@ namespace RRDM4ATMsWin
         string connectionString = ConfigurationManager.ConnectionStrings
           ["ATMSConnectionString"].ConnectionString;
 
-        RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass();
+        RRDMAtmsClass Ac = new RRDMAtmsClass();
+        RRDMDisputeTransactionsClass Dt = new RRDMDisputeTransactionsClass();
+        RRDMMatchingTxns_MasterPoolATMs Mpa = new RRDMMatchingTxns_MasterPoolATMs();
         RRDMDepositsClass Da = new RRDMDepositsClass(); 
 
         string WSignedId;
@@ -96,14 +89,23 @@ namespace RRDM4ATMsWin
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
             WOperator = InOperator;
-       //     WPrive = InPrive; 
+   
             WAtmNo = InAtmNo;
             WSesNo = InSesNo; 
 
             InitializeComponent();
 
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             labelATMno.Text = WAtmNo;
 
@@ -121,7 +123,7 @@ namespace RRDM4ATMsWin
             DepositsTran.Clear();
             bool TranFound = false;
             // DATA TABLE ROWS DEFINITION 
-            DepositsTran.Columns.Add("TranNo", typeof(int));
+            DepositsTran.Columns.Add("UniqueId", typeof(int));
             DepositsTran.Columns.Add("TraceNo", typeof(int));
             DepositsTran.Columns.Add("Card", typeof(string));
             DepositsTran.Columns.Add("Account", typeof(string));
@@ -139,10 +141,6 @@ namespace RRDM4ATMsWin
 
             DepositsTran.Columns.Add("Comments", typeof(string));
 
-       //     TotDepCash = 0;
-       //     TotDepCheques = 0;
-       //     TotDepEnvel = 0; 
-
             TotNoCa = 0;
             TotValueCa = 0;
             TotCountedCa = 0;
@@ -156,11 +154,13 @@ namespace RRDM4ATMsWin
             TotNoEnv = 0;
             TotValueEnv = 0;
             TotCountedEnv = 0;
-            TotDiffEnv = 0; 
+            TotDiffEnv = 0;
+         
 
-            SQLString = "Select * FROM [dbo].[InPoolTrans]"
-            + " WHERE AtmNo = @AtmNo AND SesNo = @SesNo AND (TransType = 23 OR TransType = 24 OR TransType = 25)"
-            + " ORDER BY TranNo ASC" ;
+            SQLString = "Select * "
+                + "FROM [RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolATMs]"
+                + " WHERE TerminalId = @AtmNo AND ReplCycleNo = @SesNo "
+                + " AND (TransType = 23 OR TransType = 24 OR TransType = 25)"; 
 
             using (SqlConnection conn =
                           new SqlConnection(connectionString))
@@ -181,25 +181,21 @@ namespace RRDM4ATMsWin
                         {
                             TranFound = true;
 
-                            TransType = (int)rdr["TransType"];
-
-                   //         if (TransType == 23) TotDepCash = TotDepCash + 1;
-                    //        if (TransType == 24) TotDepCheques = TotDepCheques + 1;
-                     //       if (TransType == 25) TotDepEnvel = TotDepEnvel + 1;
-
                             DataRow RowGrid = DepositsTran.NewRow();
 
-                            RowGrid["TranNo"] = (int)rdr["TranNo"];
+                            RowGrid["UniqueId"] = (int)rdr["UniqueRecordId"];
                             RowGrid["TraceNo"] = (int)rdr["AtmTraceNo"];
-                            RowGrid["Card"] = (string)rdr["CardNo"];
-                            RowGrid["Account"] = (string)rdr["AccNo"];
-                            RowGrid["CurrNm"] = (string)rdr["CurrDesc"];
+                            RowGrid["Card"] = (string)rdr["CardNumber"];
+                            RowGrid["Account"] = (string)rdr["AccNumber"];
+                            RowGrid["CurrNm"] = (string)rdr["TransCurr"];
 
-                            Amount = (decimal)rdr["TranAmount"];
+                            Amount = (decimal)rdr["TransAmount"];
                             RowGrid["Amount"] = Amount;
-                            TransDesc = (string)rdr["TransDesc"];
+                            TransDesc = (string)rdr["TransDescr"];
                             RowGrid["TransDesc"] = TransDesc; 
-                            RowGrid["DateTm"] = (DateTime)rdr["AtmDtTime"];
+                            RowGrid["DateTm"] = (DateTime)rdr["TransDate"];
+
+                            TransType = (int)rdr["TransType"];
 
                             Counted = (decimal)rdr["DepCount"];
 
@@ -215,7 +211,7 @@ namespace RRDM4ATMsWin
                             }
                             else RowGrid["Matched"] = false;
 
-                            ErrNo = (int)rdr["ErrNo"];
+                            ErrNo = (int)rdr["MetaExceptionNo"];
 
                             if (ErrNo > 0)
                             {
@@ -223,24 +219,24 @@ namespace RRDM4ATMsWin
                             }
                             else RowGrid["Error"] = false;
 
-                            RowGrid["Comments"] = (string)rdr["AtmMsg"];
+                            RowGrid["Comments"] = (string)rdr["Comments"];
 
-                            if (TransDesc == "DEPOSIT_BNA")
+                            if (TransType == 23) // "DEPOSIT BNA"
                             {
                                 TotNoCa = TotNoCa + 1;
                                 TotValueCa = TotValueCa + Amount;
                                 TotCountedCa = TotCountedCa + Counted;
                                 TotDiffCa = TotCountedCa - TotValueCa; 
                             }
-                            if (TransDesc == "DEP CHEQUES")
-                            {
+                            if ( TransType == 24) //TransDesc == "DEP CHEQUES")
+                                {
                                 TotNoCh = TotNoCh + 1;
                                 TotValueCh = TotValueCh + Amount;
                                 TotCountedCh = TotCountedCh + Counted;
                                 TotDiffCh = TotCountedCh - TotValueCh;
                             }
 
-                            if (TransDesc == " DEPOSIT")
+                            if (TransType == 25) // Envelope Deposit                            
                             {
                                 TotNoEnv = TotNoEnv + 1;
                                 TotValueEnv = TotValueEnv + Amount;
@@ -275,7 +271,7 @@ namespace RRDM4ATMsWin
 
             dataGridView1.DataSource = DepositsTran.DefaultView;
       
-            dataGridView1.Columns[0].Name = "TranNo";
+            dataGridView1.Columns[0].Name = "UniqueId";
             dataGridView1.Columns[1].Name = "TraceNo";
             dataGridView1.Columns[2].Name = "Card";
             dataGridView1.Columns[3].Name = "Account";
@@ -294,7 +290,7 @@ namespace RRDM4ATMsWin
             dataGridView1.Columns[12].Name = "Comments";
 
             // SIZE
-            dataGridView1.Columns["TranNo"].Width = 50; //
+            dataGridView1.Columns["UniqueId"].Width = 50; //
             dataGridView1.Columns["TraceNo"].Width = 60; //
             dataGridView1.Columns["Card"].Width = 100;
             dataGridView1.Columns["Account"].Width = 70;
@@ -314,8 +310,6 @@ namespace RRDM4ATMsWin
 
             dataGridView1.Sort(dataGridView1.Columns["TransDesc"], ListSortDirection.Ascending);
 
-            dataGridView1.Sort(dataGridView1.Columns["TranNo"], ListSortDirection.Ascending);
-
             // Show Cash Deposits 
             textBox5.Text = TotNoCa.ToString();
             textBox1.Text = TotValueCa.ToString("#,##0.00");
@@ -332,6 +326,66 @@ namespace RRDM4ATMsWin
             textBox14.Text = TotCountedEnv.ToString("#,##0.00");
             textBox17.Text = TotDiffEnv.ToString("#,##0.00");
       
+        }
+
+        // ON Row Enter Fill up the fields 
+        private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
+
+            RowSelected = e.RowIndex;
+
+            UniqueRecordId = (int)rowSelected.Cells["UniqueId"].Value;
+            TraceNo = (int)rowSelected.Cells["TraceNo"].Value;
+            Card = (string)rowSelected.Cells["Card"].Value;
+            Amount = (decimal)rowSelected.Cells["Amount"].Value;
+            Counted = (decimal)rowSelected.Cells["Counted"].Value;
+            Differ = (decimal)rowSelected.Cells["Differ"].Value;
+            Comments = (string)rowSelected.Cells["Comments"].Value;
+            Error = (bool)rowSelected.Cells["Error"].Value;
+
+            if (Error == true)
+            {
+                button5.Show();
+                textBox18.Show();
+                textBox18.Text = "Suspected Notes";
+
+            }
+            else
+            {
+                textBox18.Hide();
+                button5.Hide();
+            }
+
+            textBox8.Text = TraceNo.ToString();
+            textBox7.Text = Amount.ToString("#,##0.00");
+            textBox9.Text = Counted.ToString("#,##0.00");
+            textBox10.Text = Differ.ToString("#,##0.00");
+            textBoxMyComments.Text = Comments;
+
+            // Show Dispute 
+
+            Dt.ReadDisputeTranByUniqueRecordId(UniqueRecordId);
+            if (Dt.RecordFound == true)
+            {
+                labelDisputeId.Show();
+                textBoxDisputeId.Show();
+                buttonMoveToDispute.Hide();
+                textBoxDisputeId.Text = Dt.DisputeNumber.ToString();
+            }
+            else
+            {
+                labelDisputeId.Hide();
+                textBoxDisputeId.Hide();
+                buttonMoveToDispute.Show();
+            }
+
+            //Tc.ReadInPoolTransSpecific(UniqueRecordId);
+            string SelectionCriteria = " Where UniqueRecordId =" + UniqueRecordId;
+            Mpa.ReadMatchingTxnsMasterPoolBySelectionCriteria(SelectionCriteria,1);
+
+            WMasterTraceNo = Mpa.MasterTraceNo;
+
         }
 
         // FINISH = UPDATE ALL ACTIONS 
@@ -352,44 +406,48 @@ namespace RRDM4ATMsWin
             TotValueEnv = 0;
             TotCountedEnv = 0;
             TotDiffEnv = 0;
+            int K = 0;
 
-            for (int rows = 0; rows <= dataGridView1.Rows.Count - 1; rows++)
+            while (K <= (dataGridView1.Rows.Count - 1))
             {
-                TranNo = (int)dataGridView1.Rows[rows].Cells["TranNo"].Value;
-                TraceNo = (int)dataGridView1.Rows[rows].Cells["TraceNo"].Value;
-                Card = (string)dataGridView1.Rows[rows].Cells["Card"].Value;
-                Account = (string)dataGridView1.Rows[rows].Cells["Account"].Value;
-                CurrNm = (string)dataGridView1.Rows[rows].Cells["CurrNm"].Value;
+                UniqueRecordId = (int)dataGridView1.Rows[K].Cells["UniqueId"].Value;
+                TraceNo = (int)dataGridView1.Rows[K].Cells["TraceNo"].Value;
+                Card = (string)dataGridView1.Rows[K].Cells["Card"].Value;
+                Account = (string)dataGridView1.Rows[K].Cells["Account"].Value;
+                CurrNm = (string)dataGridView1.Rows[K].Cells["CurrNm"].Value;
 
-                Amount = (decimal)dataGridView1.Rows[rows].Cells["Amount"].Value;
-                TransDesc = (string)dataGridView1.Rows[rows].Cells["TransDesc"].Value;
-                DateTm = (DateTime)dataGridView1.Rows[rows].Cells["DateTm"].Value;
-                Counted = (decimal)dataGridView1.Rows[rows].Cells["Counted"].Value;
+                Amount = (decimal)dataGridView1.Rows[K].Cells["Amount"].Value;
+                TransDesc = (string)dataGridView1.Rows[K].Cells["TransDesc"].Value;
+                DateTm = (DateTime)dataGridView1.Rows[K].Cells["DateTm"].Value;
+                Counted = (decimal)dataGridView1.Rows[K].Cells["Counted"].Value;
 
-                Differ = (decimal)dataGridView1.Rows[rows].Cells["Differ"].Value;
-                Matched = (bool)dataGridView1.Rows[rows].Cells["Matched"].Value;
+                Differ = (decimal)dataGridView1.Rows[K].Cells["Differ"].Value;
+                Matched = (bool)dataGridView1.Rows[K].Cells["Matched"].Value;
 
-                Error = (bool)dataGridView1.Rows[rows].Cells["Error"].Value;
+                Error = (bool)dataGridView1.Rows[K].Cells["Error"].Value;
 
-                Comments = (string)dataGridView1.Rows[rows].Cells["Comments"].Value;
+                Comments = (string)dataGridView1.Rows[K].Cells["Comments"].Value;
 
                 // Read Transaction
-                Tc.ReadInPoolTransSpecific(TranNo);
+                string SelectionCriteria = " Where UniqueRecordId =" + UniqueRecordId; 
+                Mpa.ReadMatchingTxnsMasterPoolBySelectionCriteria(SelectionCriteria,1); 
 
-                Tc.DepCount = Counted;
+                //Tc.ReadInPoolTransSpecific(UniqueRecordId);
 
-                Tc.AtmMsg = Comments;
+                Mpa.DepCount = Counted;
 
-                Tc.UpdateTransforDep(TranNo);
+                Mpa.Comments = Comments;
 
-                if (TransDesc == "DEPOSIT_BNA")
+                Mpa.UpdateTransforDeposits(UniqueRecordId,2);
+
+                if (Mpa.TransType == 23) // "DEPOSIT BNA"
                 {
                     TotNoCa = TotNoCa + 1;
                     TotValueCa = TotValueCa + Amount;
                     TotCountedCa = TotCountedCa + Counted;
                     TotDiffCa = TotCountedCa - TotValueCa;
                 }
-                if (TransDesc == "DEPOSIT")
+                if (Mpa.TransType == 24) //TransDesc == "DEP CHEQUES")
                 {
                     TotNoCh = TotNoCh + 1;
                     TotValueCh = TotValueCh + Amount;
@@ -397,7 +455,7 @@ namespace RRDM4ATMsWin
                     TotDiffCh = TotCountedCh - TotValueCh;
                 }
 
-                if (TransDesc == "DEP CHEQUES")
+                if (Mpa.TransType == 25) // Envelope Deposit                            
                 {
                     TotNoEnv = TotNoEnv + 1;
                     TotValueEnv = TotValueEnv + Amount;
@@ -405,6 +463,30 @@ namespace RRDM4ATMsWin
                     TotDiffEnv = TotCountedEnv - TotValueEnv;
                 }
 
+                //if (Mpa.TransType == 23 ) // "DEPOSIT_BNA"
+                //{
+                //    TotNoCa = TotNoCa + 1;
+                //    TotValueCa = TotValueCa + Amount;
+                //    TotCountedCa = TotCountedCa + Counted;
+                //    TotDiffCa = TotCountedCa - TotValueCa;
+                //}
+                //if (TransDesc == "DEPOSIT")
+                //{
+                //    TotNoCh = TotNoCh + 1;
+                //    TotValueCh = TotValueCh + Amount;
+                //    TotCountedCh = TotCountedCh + Counted;
+                //    TotDiffCh = TotCountedCh - TotValueCh;
+                //}
+
+                //if (TransDesc == "DEP CHEQUES")
+                //{
+                //    TotNoEnv = TotNoEnv + 1;
+                //    TotValueEnv = TotValueEnv + Amount;
+                //    TotCountedEnv = TotCountedEnv + Counted;
+                //    TotDiffEnv = TotCountedEnv - TotValueEnv;
+                //}
+
+                K++; // Read Next entry of the table 
             }
 
             // Update deposits in Na. 
@@ -437,60 +519,7 @@ namespace RRDM4ATMsWin
             this.Dispose(); 
         }
        
-       
-        // ON Row Enter Fill up the fields 
-        private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
-
-            RowSelected = e.RowIndex; 
-
-            TranNo = (int)rowSelected.Cells["TranNo"].Value;
-            TraceNo = (int)rowSelected.Cells["TraceNo"].Value;
-            Card = (string)rowSelected.Cells["Card"].Value;
-            Amount = (Decimal)rowSelected.Cells["Amount"].Value;
-            Counted = (Decimal)rowSelected.Cells["Counted"].Value;
-            Differ = (Decimal)rowSelected.Cells["Differ"].Value;
-            Comments = (string)rowSelected.Cells["comments"].Value;
-            Error = (bool)rowSelected.Cells["Error"].Value;
-
-            if (Error == true)
-            {
-                button5.Show();
-                textBox18.Show();
-                textBox18.Text = "Suspected Notes";
-
-            }
-            else
-            {
-                textBox18.Hide();
-                button5.Hide();
-            }
-
-            textBox8.Text = TraceNo.ToString();
-            textBox7.Text = Amount.ToString("#,##0.00");
-            textBox9.Text = Counted.ToString("#,##0.00");
-            textBox10.Text = Differ.ToString("#,##0.00");
-            textBox11.Text = Comments;
-
-// Show Dispute 
-
-            Dt.ReadDisputeTranForInPool(TranNo);
-            if (Dt.RecordFound == true)
-            {
-                labelDisputeId.Show();
-                textBoxDisputeId.Show();
-                buttonMoveToDispute.Hide();
-                textBoxDisputeId.Text = Dt.DisputeNumber.ToString();
-            }
-            else
-            {
-                labelDisputeId.Hide();
-                textBoxDisputeId.Hide();
-                buttonMoveToDispute.Show();
-            }
-
-        }
+  
         // Text Change 
         private void textBox9_TextChanged(object sender, EventArgs e)
         {
@@ -526,16 +555,19 @@ namespace RRDM4ATMsWin
         // text change 
         private void textBox11_TextChanged(object sender, EventArgs e)
         {
-            dataGridView1.Rows[RowSelected].Cells["Comments"].Value = textBox11.Text;
+            dataGridView1.Rows[RowSelected].Cells["Comments"].Value = textBoxMyComments.Text;
             dataGridView1.Refresh(); 
         }
 
         // Show Error 
         private void button5_Click(object sender, EventArgs e)
         {
-            Tc.ReadInPoolTransSpecific(TranNo); 
+            string SelectionCriteria = " Where UniqueRecordId =" + UniqueRecordId;
+            Mpa.ReadMatchingTxnsMasterPoolBySelectionCriteria(SelectionCriteria,2);
+
             bool Deposits = true;
-            string SearchFilter = "ErrNo = " + Tc.ErrNo ;
+            string SearchFilter = "ErrNo = " + Mpa.MetaExceptionNo ;
+
             NForm24 = new Form24(WSignedId, WSignRecordNo, WBankId,  WAtmNo, WSesNo, "", Deposits, SearchFilter);
             NForm24.ShowDialog(); ;
         }
@@ -547,15 +579,15 @@ namespace RRDM4ATMsWin
                 MessageBox.Show("No difference to be disputed");
                 return;
             }
-            int From = 3; // From dispute 
-            NForm5 = new Form5(WSignedId, WSignRecordNo, WOperator, Card, TranNo, Counted, 0 , textBox11.Text, From, "ATM");
+            int From = 3; // From Deposit 
+            NForm5 = new Form5(WSignedId, WSignRecordNo, WOperator, Card, UniqueRecordId, Counted, 0 , textBoxMyComments.Text, From, "ATM");
             NForm5.FormClosed += NForm5_FormClosed;
-            NForm5.ShowDialog(); ;
+            NForm5.ShowDialog(); 
         }
 
         void NForm5_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Dt.ReadDisputeTranForInPool(TranNo);
+            Dt.ReadDisputeTranByUniqueRecordId(UniqueRecordId);
             if (Dt.RecordFound == true)
             {
                 labelDisputeId.Show();
@@ -579,12 +611,13 @@ namespace RRDM4ATMsWin
                 return; 
             }
             //
-            String JournalId = "[ATMS_Journals].[dbo].[tblHstEjText]";
-
-            int Mode = 1; // Specific
-
-            NForm67 = new Form67(WSignedId, WSignRecordNo, WOperator, JournalId, 0, WAtmNo, TraceNo, TraceNo, Mode);
-            NForm67.ShowDialog(); ;
+     
+            int Mode = 5; // Specific
+            DateTime NullPastDate = new DateTime(1900, 01, 01);
+            NForm67 = new Form67(WSignedId, WSignRecordNo, WOperator,  0, WAtmNo, WMasterTraceNo, TraceNo, Mpa.TransDate.Date, NullPastDate, Mode);
+            //   DateTime Tempdt = new DateTime(2014, 02, 12);
+            //   NForm67 = new Form67("1005", 70513, "CRBAGRAA",  0, "AB104", 10044990, 10044990, Tempdt, NullPastDate, Mode);
+            NForm67.ShowDialog(); 
       
         }
        

@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
-using System.Runtime.InteropServices;
 using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
@@ -34,7 +25,7 @@ namespace RRDM4ATMsWin
 
         //MapGroupFields MapGroupFields1; // Declare 
 
-        RRDMTempAtmLocation Tl = new RRDMTempAtmLocation(); 
+        RRDMTempAtmsLocation Tl = new RRDMTempAtmsLocation(); 
 
         private int[] InNotesTypes = new int[4]; 
 
@@ -134,8 +125,8 @@ namespace RRDM4ATMsWin
 // TEST ARRAY
         private void button2_Click(object sender, EventArgs e)
         {
-           
-            Tl.ReadTempAtmLocationByGroup(27); 
+            string UserId = "1005"; 
+            Tl.ReadTempAtmLocationByGroup(UserId, 27); 
             if (Tl.RecordFound == true)
             {
                 
@@ -143,8 +134,8 @@ namespace RRDM4ATMsWin
                 for (int x = 0; Tl.GroupLocationArray.Count > x; x++)
                 {
                     //MapGroupFields1  = ()Tl.GroupLocationArray[x];
-                    string test1 = ((RRDMTempAtmLocation.MapGroupFields)Tl.GroupLocationArray[x]).SCountry;
-                    string test2 = ((RRDMTempAtmLocation.MapGroupFields)Tl.GroupLocationArray[x]).SDistrict;
+                    string test1 = ((RRDMTempAtmsLocation.MapGroupFields)Tl.GroupLocationArray[x]).SCountry;
+                    string test2 = ((RRDMTempAtmsLocation.MapGroupFields)Tl.GroupLocationArray[x]).SDistrict;
                     //i.deleteNote += i_deleteNote;
                     //panelNotes.Controls.Add(i);
                     //panelNotes.Controls[x].Dock = DockStyle.Top;

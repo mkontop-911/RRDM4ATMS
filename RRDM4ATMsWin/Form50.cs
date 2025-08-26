@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
+using RRDM4ATMs;
 using System.Configuration;
 
 namespace RRDM4ATMsWin
@@ -58,7 +51,7 @@ namespace RRDM4ATMsWin
    //     DataTable dtAtmsMain = new DataTable();
     //    SqlDataAdapter daAtmsMain;
 
-        RRDMNotesBalances Na = new RRDMNotesBalances(); // Class Notes 
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances(); // Class Notes 
 
         RRDMAtmsMainClass Am = new RRDMAtmsMainClass(); // ATM MAIN CLASS TO UPDATE NEXT REPLENISHMENT DATE
 
@@ -66,9 +59,9 @@ namespace RRDM4ATMsWin
 
         RRDMDepositsClass Dc = new RRDMDepositsClass();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
-        RRDMReplActionsClass Ra = new RRDMReplActionsClass(); 
+        RRDMReplOrdersClass Ra = new RRDMReplOrdersClass(); 
 
         RRDMUpdateGrids Ug = new RRDMUpdateGrids();
 
@@ -78,7 +71,7 @@ namespace RRDM4ATMsWin
 
         RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass();
 
-        RRDMAllowedAtmsAndUpdateFromJournal Aj = new RRDMAllowedAtmsAndUpdateFromJournal();
+        RRDMJournalAndAllowUpdate Aj = new RRDMJournalAndAllowUpdate();
 
         DateTime NullPastDate = new DateTime(1900, 01, 01);
 
@@ -102,39 +95,43 @@ namespace RRDM4ATMsWin
             //buttonFinish.Hide();
 
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             textBoxMsgBoard.Text = "Review data and take necessary action for each individual ATM"; 
 
-            }
+        }
         //
         // ON LOADING 
         //
     
         private void Form50_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'aTMSDataSet4.AtmsMain' table. You can move, or remove it, as needed.
-            //this.atmsMainTableAdapter.Fill(this.aTMSDataSet4.AtmsMain);
-           
-                 // ===========================================
+            // ==================ACCESS TO ATMS=========================
 
-                // Read USER and ATM Table 
-                // GET TABLE OF ALLOWED ATMS FOR REPLENISH
-                string WFunction = "Replen";
-                Aj.CreateTableOfAccess(WSignedId, WSignRecordNo, WOperator, WFunction);
+            //-----------------ACCESS CONTROL TO WHAT ATMS TO SEE---------------//
 
-                // From eJournal update traces and transactions based on table  
-                Aj.UpdateLatestEjStatus(WSignedId, WSignRecordNo, WOperator);
-            
+            string AtmNo = "";
+            string FromFunction = "General";
+            string WCitId = "";
 
-              
+            // Create table with the ATMs this user can access
+            Am.ReadViewAtmsMainForAuthUserAndFillTable(WOperator, WSignedId, WSignRecordNo, AtmNo, FromFunction, WCitId);
 
+            //-----------------UPDATE LATEST TRANSACTIONS----------------------//
+            // Update latest transactions from Journal 
+            Aj.UpdateLatestEjStatusVersion2(WSignedId, WSignRecordNo, WOperator, Am.TableATMsMainSelected);
+
+            //-------------------
+
+            int TableSize = Am.TableATMsMainSelected.Rows.Count;
             //
             // Read all in Table provided by Aj and see if need 
             //
             J = 0;
-
-            while (J < Aj.DtSize)
+            //
+            // LOOP 
+            //
+            while (J < TableSize)
             {
                 // Initialise variables
 
@@ -143,7 +140,7 @@ namespace RRDM4ATMsWin
                 Am.LessMinCash = false;  
 
                 // Read next ATM
-                WAtmNo = (string)Aj.dtAtmsMain.Rows[J]["AtmNo"];
+                WAtmNo = (string)Am.TableATMsMainSelected.Rows[J]["AtmNo"];
 
                 Am.ReadAtmsMainSpecific(WAtmNo);
                 Ac.ReadAtm(WAtmNo);
@@ -350,7 +347,7 @@ namespace RRDM4ATMsWin
                         // CitId =1000
                         //*********************************************
 
-                        if (Ac.CashInType == "As per RRDM Suggest" || Ac.CashInType == "As per Third Party System") // THERE IS NEED AND Repl At Max
+                        if (Ac.CashInType == "As per RRDM suggest" || Ac.CashInType == "As per Third Party System") // THERE IS NEED AND Repl At Max
                         {
                             // Create action at no amount
                             // Send email and SMS to user 
@@ -460,25 +457,25 @@ namespace RRDM4ATMsWin
 
                 J++;
             }
-           
 
-            Us.ReadSignedActivityByKey(WSignRecordNo); // REad Access level 
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo); // REad Access level 
 
-            if (Us.SecLevel == 3)
+            if (Usi.SecLevel == "03")
             {
                 Tablefilter = "Operator ='" + WOperator + "' AND AuthUser ='" + WSignedId + "'";
             }
             
 
-            if (Us.SecLevel == 4)
+            if (Usi.SecLevel == "04")
             {
                 Tablefilter = "Operator ='" + WOperator + "'";
             }
            
 
-            atmsMainBindingSource.Filter = Tablefilter;
-            //        dataGridView1.Sort(dataGridView1.Columns[6], ListSortDirection.Ascending);
-            this.atmsMainTableAdapter.Fill(this.aTMSDataSet4.AtmsMain);
+            //atmsMainBindingSource.Filter = Tablefilter;
+            ////        dataGridView1.Sort(dataGridView1.Columns[6], ListSortDirection.Ascending);
+            //this.atmsMainTableAdapter.Fill(this.aTMSDataSet4.AtmsMain);
 
         }
 
@@ -531,13 +528,17 @@ namespace RRDM4ATMsWin
             {
                 textBoxNeedReason.Text = " Replenish now because of low balance ";
             }
+            if (Am.NeedType == 13)
+            {
+                textBoxNeedReason.Text = "This ATM is in Need ";
+            }
             if (Am.NeedType == 13 & Ac.CashInType == "At Defined Maximum" & Ra.RecordFound == true) 
             {
                 if (Ac.CitId == "1000") // EMBORIKI MODEL 
                 {
                     textBoxNeedReason.Text = "Inform Bank ATM Operator to replenish ";
 
-                    textBoxRecomAction.Text = " A default Replenishment Action with Id : " + Ra.ReplActNo.ToString() + " is suggested " + Environment.NewLine
+                    textBoxRecomAction.Text = " A default Replenishment Action with Id : " + Ra.ReplOrderNo.ToString() + " is suggested " + Environment.NewLine
                                    + " Next Replenishment : " + Ra.NewEstReplDt.Date.ToShortDateString() + Environment.NewLine
                                    + " Amount for Replenihsment : " + Ra.NewAmount.ToString("#,##0.00") + Environment.NewLine
                                    + " An Alerting email was sent to ATM owner at this email:  " + Environment.NewLine
@@ -547,7 +548,7 @@ namespace RRDM4ATMsWin
                 {
                     textBoxNeedReason.Text = " Inform CIT " + Ac.CitId + " to replenish ";
 
-                    textBoxRecomAction.Text = " A default Replenishment Action with Id : " + Ra.ReplActNo.ToString() + " is suggested " + Environment.NewLine
+                    textBoxRecomAction.Text = " A default Replenishment Action with Id : " + Ra.ReplOrderNo.ToString() + " is suggested " + Environment.NewLine
                         + " Next Replenishment : " + Ra.NewEstReplDt.Date.ToShortDateString() + Environment.NewLine
                         + " Amount for Replenihsment : " + Ra.NewAmount.ToString("#,##0.00") + Environment.NewLine
                         + " At Action management an email and report will be sent to  " + Environment.NewLine
@@ -569,7 +570,7 @@ namespace RRDM4ATMsWin
             {
                 textBoxNeedReason.Text = "Bank ATM Operator was alerted to replenish ";
 
-                textBoxRecomAction.Text = " A alert Replenishment Action with Id : " + Ra.ReplActNo.ToString() + " is suggested " + Environment.NewLine
+                textBoxRecomAction.Text = " A alert Replenishment Action with Id : " + Ra.ReplOrderNo.ToString() + " is suggested " + Environment.NewLine
                                + " Next Replenishment : " + Ra.NewEstReplDt.Date.ToShortDateString() + Environment.NewLine
                                + " Amount for Replenihsment : " + Ra.NewAmount.ToString("#,##0.00") + Environment.NewLine
                                + " An Alerting SMS and email was sent to ATM owner at this email:  " + Environment.NewLine
@@ -579,7 +580,7 @@ namespace RRDM4ATMsWin
             if (Am.NeedType == 13 & Ac.CashInType == "As per RRDM suggest" & Ac.CitId != "1000" & Ra.RecordFound == true) // CIT CASE
             {
                 textBoxNeedReason.Text = " There is need. Action was created ";
-                textBoxRecomAction.Text = " An Replenishment Action with Id : " + Ra.ReplActNo.ToString() + " is suggested " + Environment.NewLine
+                textBoxRecomAction.Text = " An Replenishment Action with Id : " + Ra.ReplOrderNo.ToString() + " is suggested " + Environment.NewLine
                         + " Next Replenishment : " + Ra.NewEstReplDt.Date.ToShortDateString() + Environment.NewLine
                         + " Amount for Replenihsment : " + Ra.NewAmount.ToString("#,##0.00") + Environment.NewLine
                         + " At Action management an email and report will be sent to  " + Environment.NewLine
@@ -615,14 +616,19 @@ namespace RRDM4ATMsWin
         // GO TO RECOMMEND MONEY 
         private void button3_Click(object sender, EventArgs e)
         {
+           if (Ra.RecordFound == true)
+           {
+               MessageBox.Show("ACtion with Id: " + Ra.ReplOrderNo.ToString() + " Will be reviewed!"); 
+           }
+
             // Process No Updating
             //
-            RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            Us.ProcessNo = 9;
+            Usi.ProcessNo = 9;
 
-            Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+            Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
             NForm51 = new Form51(WSignedId, WSignRecordNo, WOperator,  WAtmNo, WSesNo);
             NForm51.FormClosed += NForm51_FormClosed;
@@ -773,9 +779,9 @@ namespace RRDM4ATMsWin
               
             }
 
-            atmsMainBindingSource.Filter = Tablefilter;
-            //        dataGridView1.Sort(dataGridView1.Columns[6], ListSortDirection.Ascending);
-            this.atmsMainTableAdapter.Fill(this.aTMSDataSet4.AtmsMain);
+            //atmsMainBindingSource.Filter = Tablefilter;
+            ////        dataGridView1.Sort(dataGridView1.Columns[6], ListSortDirection.Ascending);
+            //this.atmsMainTableAdapter.Fill(this.aTMSDataSet4.AtmsMain);
 
         }
      
@@ -815,8 +821,8 @@ namespace RRDM4ATMsWin
                     // Move to update Existing Record 
 
                  //   Ra.ReadReplActionsForAtm(WAtmNo, Ra.ReplActNo);
-                    WActionNo = Ra.ReplActNo; 
-                    Ra.ReplActId = 30;  // Do Replenishment  
+                    WActionNo = Ra.ReplOrderNo; 
+                    Ra.ReplOrderId = 30;  // Do Replenishment  
                     //Ra.AuthorisedDate = DateTime.Now; // Effective date 
                     Ra.AtmNo = WAtmNo;
 
@@ -846,7 +852,7 @@ namespace RRDM4ATMsWin
                     Ra.MaxCash = Ac.MaxCash;
                     Ra.ReplAlertDays = Ac.ReplAlertDays;
 
-                    Ra.ReconcDiff = Am.ReconcDiff;
+                    Ra.ReconcDiff = Am.GL_ReconcDiff;
                     Ra.MoreMaxCash = Am.MoreMaxCash;
                     Ra.LessMinCash = Am.LessMinCash;
                     Ra.NeedType = Am.NeedType;
@@ -858,12 +864,14 @@ namespace RRDM4ATMsWin
                     // THESE ARE THE NEW DATA FOR ACTION 
 
                     Ra.NewEstReplDt = InNextRepDtTm;
+                    Ra.InsuredAmount = 0;
+                    Ra.SystemAmount = 0;
                     Ra.NewAmount = InTotal;
-
-                    Ra.CassetteOneNotes = InTot_51; // Number of notes 
-                    Ra.CassetteTwoNotes = InTot_52;
-                    Ra.CassetteThreeNotes = InTot_53;
-                    Ra.CassetteFourNotes = InTot_54;
+                   
+                    Ra.Cassette_1 = InTot_51; // Number of notes 
+                    Ra.Cassette_2 = InTot_52;
+                    Ra.Cassette_3 = InTot_53;
+                    Ra.Cassette_4 = InTot_54;
 
                     Ra.AtmsStatsGroup = Ac.AtmsStatsGroup;
                     Ra.AtmsReplGroup = Ac.AtmsReplGroup;
@@ -878,7 +886,7 @@ namespace RRDM4ATMsWin
                     // UPDATE EXISTING 
                     //
 
-                    Ra.UpdateReplActionsForAtm(WAtmNo, Ra.ReplActNo);
+                    Ra.UpdateReplActionsForAtm(WAtmNo, Ra.ReplOrderNo);
 
                  
                     //Am.EstReplDt = InNextRepDtTm;
@@ -901,8 +909,9 @@ namespace RRDM4ATMsWin
                 // INSERT NEW ACTION 
                 // Repl ACtion FIELDS 
 
-                Ra.ReplActId = 30;  // Do Replenishment  
+                Ra.ReplOrderId = 30;  // Do Replenishment  
                 //Ra.AuthorisedDate = DateTime.Now; // Effective date 
+                Ra.OrdersCycleNo = 0; 
                 Ra.AtmNo = Am.AtmNo;
                 Ra.AtmName = Am.AtmName;
 
@@ -931,7 +940,7 @@ namespace RRDM4ATMsWin
                 Ra.MaxCash = Ac.MaxCash;
                 Ra.ReplAlertDays = Ac.ReplAlertDays;
 
-                Ra.ReconcDiff = Am.ReconcDiff;
+                Ra.ReconcDiff = Am.GL_ReconcDiff;
                 Ra.MoreMaxCash = Am.MoreMaxCash;
                 Ra.LessMinCash = Am.LessMinCash;
                 Ra.NeedType = Am.NeedType;
@@ -943,12 +952,21 @@ namespace RRDM4ATMsWin
                 // THESE ARE THE NEW DATA FOR ACTION 
 
                 Ra.NewEstReplDt = InNextRepDtTm;
+
+                //+"[InsuredAmount],[SystemAmount],[NewAmount],"
+
+                Ra.InsuredAmount = 0;
+                Ra.SystemAmount = 0;
                 Ra.NewAmount = InTotal;
 
-                Ra.CassetteOneNotes = InTot_51; // Number of notes 
-                Ra.CassetteTwoNotes = InTot_52;
-                Ra.CassetteThreeNotes = InTot_53;
-                Ra.CassetteFourNotes = InTot_54;
+                Ra.FaceValue_1 = Ac.FaceValue_11;
+                Ra.Cassette_1 = InTot_51; // Number of notes 
+                Ra.FaceValue_2 = Ac.FaceValue_12;
+                Ra.Cassette_2 = InTot_52;
+                Ra.FaceValue_3 = Ac.FaceValue_13;
+                Ra.Cassette_3 = InTot_53;
+                Ra.FaceValue_4 = Ac.FaceValue_14;
+                Ra.Cassette_4 = InTot_54;
 
                 Ra.AtmsStatsGroup = Ac.AtmsStatsGroup;
                 Ra.AtmsReplGroup = Ac.AtmsReplGroup;
@@ -962,11 +980,7 @@ namespace RRDM4ATMsWin
                 Ac.ReadAtm(WAtmNo);
                 Ra.Operator = Ac.Operator;
 
-                Ra.InsertReplActionsTable(WAtmNo);
-
-                Ra.ReadReplActionsForLast(WAtmNo);
-
-                WActionNo = Ra.ReplActNo;
+                WActionNo= Ra.InsertReplOrdersTable(WAtmNo);
 
             }
 

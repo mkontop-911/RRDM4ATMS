@@ -1,16 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-
-using System.Data.SqlClient;
-using System.Configuration;
 
 using System.Diagnostics;
 using System.ComponentModel;
-using System.Security.Cryptography;
 
 using RRDM4ATMs;
 
@@ -95,11 +88,11 @@ namespace RRDMJTMClasses
                 return;
             }
 
-            msg = string.Format("Processing Request --> MsgID:{0} Command:{1} ATM:\\\\{2}\\{3} Requestor:{4}",
+            msg = string.Format("Processing Request --> MsgID: [{0}] Command: [{1}] ATM No: [{2}] MachineName: [{3}] Requestor: [{4}]",
                   JTMThreadRegistry.ThreadArray[ThreadIndex].Req.MsgID,
                   JTMThreadRegistry.ThreadArray[ThreadIndex].Req.Command,
-                  JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMMachineName,
                   JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo,
+                  JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMMachineName,
                   JTMThreadRegistry.ThreadArray[ThreadIndex].Req.RequestorID);
             EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Information);
             #endregion
@@ -117,7 +110,7 @@ namespace RRDMJTMClasses
                             break;
                         }
                     case JTMQueueCommand.Cmd_FETCH:
-                    case JTMQueueCommand.Cmd_FETCHDEL:
+                        // case JTMQueueCommand.Cmd_FETCHDEL:
                         {
                             bool rc = false;
                             rc = ProcessJournalRequest();
@@ -217,7 +210,7 @@ namespace RRDMJTMClasses
                                      JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMAccessPassword,
                                      JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMWindowsAuth);
                 if (success) break;
-                Thread.Sleep(JTMThreadRegistry.JTM_FETCH_RetryTimeout);
+                Thread.Sleep(JTMThreadRegistry.JTM_FETCH_RetryWaitTime);
                 i++;
             } while (i < JTMThreadRegistry.JTM_FETCH_Retries && JTMThreadRegistry.Abort_Abort != true);
 
@@ -272,7 +265,7 @@ namespace RRDMJTMClasses
                 return (false);
             try
             {
-                if (WinAuth == true) // Windows Authentication, no need for JTMRemote
+                if (WinAuth == true) // Windows Authentication
                 {
                     UserID = null;
                     pwd = null;
@@ -305,13 +298,16 @@ namespace RRDMJTMClasses
             bool success = false;
             bool UpdSuccess = false;
             string Cmd = JTMThreadRegistry.ThreadArray[ThreadIndex].Req.Command;
-            bool BackupFlag = ((Cmd == JTMQueueCommand.Cmd_FETCHDEL) ? true : false);
+            // bool BackupFlag = ((Cmd == JTMQueueCommand.Cmd_FETCHDEL) ? true : false);
+            bool BackupFlag = false;
 
             // Check for Abort_Abort at each step
             if (JTMThreadRegistry.Abort_Abort == true) return (false);
 
             #region Fetch the Journal file
             // Fetch the Journal file
+            if (JTMThreadRegistry.JTM_MaxJournalBackups > 0)
+                BackupFlag = true;
             success = this.ProcessJournalFetch(BackupFlag);
             if (!success) return (false);
             #endregion
@@ -343,35 +339,19 @@ namespace RRDMJTMClasses
 
             if (JTMThreadRegistry.Abort_Abort == true) return (false);
 
-            #region Handle received Journal file (FETCHDEL: move to Archive, FETCH: delete)
-            if (Cmd == JTMQueueCommand.Cmd_FETCHDEL)
-            {   // move the received file in the Archive
-                success = this.MoveToArchive();
-                if (!success)
-                {
-                    string FileThatFailedToMove = string.Format("{0}\\{1}\\{2}",
-                                       JTMThreadRegistry.JTM_FilePoolRoot,
-                                       JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo.Trim(),
-                                       JTMThreadRegistry.ThreadArray[ThreadIndex].Req.DestnFileName.Trim()
-                                       );
-                    msg = string.Format("Failed to move file {0} to the archive after successfull processing!", FileThatFailedToMove);
-                    EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-                }
+            #region Move received eJournal file to Archive
+            // move the received file in the Archive
+            success = this.MoveToArchive();
+            if (!success)
+            {
+                string FileThatFailedToMove = string.Format("{0}\\{1}",
+                                   JTMThreadRegistry.JTM_FilePoolRoot,
+                                   JTMThreadRegistry.ThreadArray[ThreadIndex].Req.DestnFileName.Trim()
+                                   );
+                msg = string.Format("Failed to move file {0} to the archive after successfull processing!", FileThatFailedToMove);
+                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
             }
-            else
-            {   // delete the received file
-                // TODO --- why not keep it??????????
-                string FileToDelete = string.Format("{0}\\{1}\\{2}",
-                    JTMThreadRegistry.JTM_FilePoolRoot,
-                    JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo,
-                    JTMThreadRegistry.ThreadArray[ThreadIndex].Req.DestnFileName);
-                success = this.DeleteTheFile(FileToDelete);
-                if (!success)
-                {
-                    msg = string.Format("Failed to delete file {0} after successfull processing!", FileToDelete);
-                    EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-                }
-            }
+
             #endregion
 
             if (JTMThreadRegistry.Abort_Abort == true) return (false);
@@ -379,15 +359,24 @@ namespace RRDMJTMClasses
             #region CloseUp
 
             // Update Identification Details. This is done only once, here!!!
-            JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.DateLastUpdated = DateTime.Now;
-            JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.FileUploadRequestDt = JTMThreadRegistry.ThreadArray[ThreadIndex].Req.MsgDateTime;
-            JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.FileParseEnd = JTMThreadRegistry.ThreadArray[ThreadIndex].Req.FileParseEnd;
-            JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ResultCode = JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultCode;
-            JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ResultMessage = JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultMessage;
-
+            DateTime dt = DateTime.Now;
+            // JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.DateLastUpdated = dt;
+            // JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.LoadingCompleted = dt;
+            JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.QueueRecId = JTMThreadRegistry.ThreadArray[ThreadIndex].Req.MsgID; // update
+            JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.FileUploadRequestDt = JTMThreadRegistry.ThreadArray[ThreadIndex].Req.MsgDateTime; // update
+            JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.FileParseEnd = JTMThreadRegistry.ThreadArray[ThreadIndex].Req.FileParseEnd; // update value
+            JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ResultCode = JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultCode; // update
+            if (JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultCode == 0)
+            {
+                JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ResultMessage = "Journal File Loaded and Parsed!";
+            }
+            else
+            {
+                JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ResultMessage = JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultMessage; // update
+            }
             success = this.UpdateIndentificationDetailsRecord();
 
-            JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ProcessEnd = DateTime.Now;
+            JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ProcessEnd = dt;
             UpdSuccess = this.UpdateJTMQueueRecordInSQL(JTMThreadRegistry.ThreadArray[ThreadIndex].Req);
             // if (UpdSuccess != true) { ; } // UpdateRecordInSQL will have thrown the JTMCustomException
 
@@ -433,11 +422,13 @@ namespace RRDMJTMClasses
                                           JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMAccessPassword.Trim(),
                                           SrcFilePath,
                                           JTMThreadRegistry.ThreadArray[ThreadIndex].Req.SourceFileName.Trim(),
-                                          JTMThreadRegistry.ThreadArray[ThreadIndex].Req.DestnFilePath.Trim(),
+                                          // JTMThreadRegistry.ThreadArray[ThreadIndex].Req.DestnFilePath.Trim(),
+                                          JTMThreadRegistry.JTM_FilePoolRoot, // ignore 'destfilepath' passed in the request (queue); use the globally defined one.
                                           JTMThreadRegistry.ThreadArray[ThreadIndex].Req.Command.Trim(),
                                           JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMWindowsAuth,
                                           BackupFlag
                                          );
+
             if (DestFullFileName != null)
             {
                 success = true;
@@ -447,14 +438,55 @@ namespace RRDMJTMClasses
                 JTMThreadRegistry.ThreadArray[ThreadIndex].Req.DestnFileHASH = DestFileHASH;
                 JTMThreadRegistry.ThreadArray[ThreadIndex].Req.FileUploadEnd = DateTime.Now;
                 JTMThreadRegistry.ThreadArray[ThreadIndex].Req.Stage = JTMQueueStage.Const_TransferFinished;
+                JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultCode = JTMQueueResult.Success;
+                JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultMessage = "Journal Log Transfered with success";
                 UpdSuccess = this.UpdateJTMQueueRecordInSQL(JTMThreadRegistry.ThreadArray[ThreadIndex].Req);
                 // if (UpdSuccess != true) { ; } // UpdateRecordInSQL will have thrown the JTMCustomException
+
+                #region Trim file if Diebold
+                switch (JTMThreadRegistry.ThreadArray[ThreadIndex].Req.TypeOfJournal)
+                {
+                    case "DBLD01":
+                        {
+                            int lineCount = -1;
+                            lineCount = TrimDieboldFile(DestFullFileName);
+                            if (lineCount > 1) // File must have at least two lines
+                            {
+                                success = true;
+                                JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultCode = JTMQueueResult.Success;
+                                JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultMessage = "Journal Log Transfered and valid data extracted with success";
+                                UpdSuccess = this.UpdateJTMQueueRecordInSQL(JTMThreadRegistry.ThreadArray[ThreadIndex].Req);
+                                // if (UpdSuccess != true) { ; } // UpdateRecordInSQL will have thrown the JTMCustomException
+                            }
+                            else
+                            {
+                                success = false;
+                                string msg = string.Format("Journal Log Transfered with success but JTM failed to extract valid data from Diebold eJournal file! ATMNo:[{0}], MachineName:[{1}] File:[{2}]",
+                                                            JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo,
+                                                            JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMMachineName,
+                                                            Path.GetFileName(DestFullFileName));
+                                JTMThreadRegistry.ChangeThreadStatus(ThreadIndex, StatusOfThread.Stopping);
+                                JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultCode = JTMQueueResult.Failure;
+                                JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultMessage = msg;
+                                UpdSuccess = this.UpdateJTMQueueRecordInSQL(JTMThreadRegistry.ThreadArray[ThreadIndex].Req);
+                                // if (UpdSuccess != true) { ; } // UpdateRecordInSQL will have thrown the JTMCustomException
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            // Currently only Diebold files are trimmed....
+                            break;
+                        }
+                }
+                #endregion
+
             }
             else
             {
                 // Failure to fetch file
                 success = false;
-                string msg = string.Format("Failure to copy the file {0}\\{1} from {2}",
+                string msg = string.Format("Failure to transfer the file {0}\\{1} from {2}",
                                             SrcFilePath,
                                             JTMThreadRegistry.ThreadArray[ThreadIndex].Req.SourceFileName,
                                             JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMMachineName);
@@ -490,7 +522,7 @@ namespace RRDMJTMClasses
         /// </returns>
         public string FETCHJournalFile(string ATMNo, string RemoteMachine, string UserName, string Password, string SrcPath, string SrcFile, string DstPath, string Cmd, bool WinAuth, bool DoBackup)
         {
-            string msg;
+            // string msg;
             string ReceivedFullFileName;
             bool OvrWr = true;
             string DstFile;
@@ -498,10 +530,15 @@ namespace RRDMJTMClasses
             string dstFullPath;
 
             DateTime dt = DateTime.Now;
-            DstFile = string.Format("{0}-{1}-{2}{3}",
+            //DstFile = string.Format("{0}-{1}-{2}{3}",
+            //                         ATMNo.Trim(),
+            //                         Path.GetFileNameWithoutExtension(SrcFile.Trim()),
+            //                         dt.ToString("yyyyMMdd-HHmmss.ffffff"),
+            //                         Path.GetExtension(SrcFile.Trim())
+            //                       );
+            DstFile = string.Format("{0}-{1}{2}",
                                      ATMNo.Trim(),
-                                     Path.GetFileNameWithoutExtension(SrcFile.Trim()),
-                                     dt.ToString("yyyyMMdd-HHmmss.ffffff"),
+                                     dt.ToString("yyyyMMdd-HHmmss.fff"),
                                      Path.GetExtension(SrcFile.Trim())
                                    );
             srcFullPath = Path.Combine(SrcPath, SrcFile);
@@ -510,31 +547,35 @@ namespace RRDMJTMClasses
             if (JTMThreadRegistry.Abort_Abort == true)
                 return (null);
 
-            if (WinAuth == true)
-            {
-                ReceivedFullFileName = this.GetJournalFileWithRetries(srcFullPath, dstFullPath, OvrWr, DoBackup);
-            }
-            else
-            {
-                try
-                {
-                    using (JTMRemote.EstablishConnection(RemoteMachine, UserName, Password))
-                    {
-                        ReceivedFullFileName = this.GetJournalFileWithRetries(srcFullPath, dstFullPath, OvrWr, DoBackup);
-                    }
-                }
-                catch (Win32Exception ex)
-                {
-                    ReceivedFullFileName = null;
-                    msg = string.Format("Error in JTMWorker:FETCHJournalFile while connecting to [{0}] using UserName:{1}!" +
-                                        "\nThe error reads: Source:{2} ErrorCode:{3} ErrorMessage:{4}",
-                                         RemoteMachine, UserName, ex.Source, ex.NativeErrorCode.ToString(), ex.Message);
-                    EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-                }
-                //catch (Exception ex)
-                // Any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upsteram...
 
-            }
+            ReceivedFullFileName = GetJournalFileWithRetries(srcFullPath, dstFullPath, OvrWr, DoBackup);
+
+
+            //if (WinAuth == true)
+            //{
+            //    ReceivedFullFileName = GetJournalFileWithRetries(srcFullPath, dstFullPath, OvrWr, DoBackup);
+            //}
+            //else
+            //{
+            //try
+            //{
+            //    using (JTMRemote.EstablishConnection(RemoteMachine, UserName, Password))
+            //    {
+            //        ReceivedFullFileName = GetJournalFileWithRetries(srcFullPath, dstFullPath, OvrWr, DoBackup);
+            //    }
+            //}
+            //catch (Win32Exception ex)
+            //{
+            //    ReceivedFullFileName = null;
+            //    msg = string.Format("Error in JTMWorker:FETCHJournalFile while connecting to [{0}] using UserName:{1}!" +
+            //                        "\nThe error reads: Source:{2} ErrorCode:{3} ErrorMessage:{4}",
+            //                         RemoteMachine, UserName, ex.Source, ex.NativeErrorCode.ToString(), ex.Message);
+            //    EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+            //}
+            ////catch (Exception ex)
+            //// Any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upstream...
+
+            //}
             return (ReceivedFullFileName);
         }
         #endregion
@@ -559,7 +600,7 @@ namespace RRDMJTMClasses
             {
                 CopiedFullFileName = this.GetJournalFile(srcFullPath, dstFullPath, OvrWr, DoBackup);
                 if (CopiedFullFileName != null) break;
-                Thread.Sleep(JTMThreadRegistry.JTM_FETCH_RetryTimeout);
+                Thread.Sleep(JTMThreadRegistry.JTM_FETCH_RetryWaitTime);
                 i--;
             } while (i > 0);
             if (CopiedFullFileName == null)
@@ -575,66 +616,207 @@ namespace RRDMJTMClasses
         /// <summary>GetJournalFile
         /// Copies the ATM Journal file to the destination
         /// </summary>
-        /// <param name="srcFullPath"></param>
+        /// <param name="srcPath"></param>
         /// <param name="dstFullPath"></param>
         /// <param name="OvrWr"></param>
-        /// <returns>
-        /// The fully qualified destination file name if successfull
-        /// null if not</returns>
-        public string GetJournalFile(string srcFullPath, string dstFullPath, bool OvrWr, bool DoBackup)
+        /// <returns>The fully qualified destination file name if successfull, null if not</returns>
+        public string GetJournalFile(string srcPath, string dstFullPath, bool OvrWr, bool DoBackup)
         {
-            // bool success;
-            string RenamedSource = null;
+            // Case with InitEJ - deprecated
+            ///*
+            //1. Check connectivity
+            //2. Execute PSEXEC to invoke InitEJ
+            //3. Chain Rename
+            //4. Transfer
+            //*/
+
+            // Case without InitEJ
+            /*
+            1. Check connectivity
+            2. Use PSExec to Copy active journal file to EJRCPY.LOG
+            3. Chain Rename
+            4. Transfer
+            */
+
+            DateTime dtStart1;
+            DateTime dtFinish1;
+            DateTime dtStart2;
+            DateTime dtFinish2;
+            DateTime dtStart3;
+            DateTime dtFinish3;
+            string srcFullPath = srcPath.Replace(":", "$");
+            // int PSExecReturnCode = -1;
+            bool success;
             string msg;
+            string RenamedSource = null;
+            string pathEJRCPY = Path.Combine(Path.GetDirectoryName(srcFullPath), "EJRCPY.LOG");
             string DestFullFileName = dstFullPath;
-            
+
+
             int MaxJBck = JTMThreadRegistry.JTM_MaxJournalBackups;
 
             if (JTMThreadRegistry.Abort_Abort == true)
                 return (null);
 
-            if (DoBackup)
+
+            // 1. Check connectivity
+            success = CheckConnection(JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo,
+                     JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMMachineName,
+                     JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMAccessID,
+                     JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMAccessPassword,
+                     JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMWindowsAuth);
+            if (!success)
             {
-                RenamedSource = this.BackupAndRecreate(srcFullPath, MaxJBck);
+                // Failure to connect
+                return null;
             }
+
+            // Case with InitEJ
+            // Uncomment this and comment out '2. try/catch' ...below.
+            //// 2.Execute PSEXEC to invoke InitEJ
+            //success = CallInitEJ(JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMMachineName,
+            //         JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMAccessID,
+            //         JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMAccessPassword,
+            //         JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMWindowsAuth);
+            //if (!success)
+            //    return null;
+
+            // 2.Execute PSEXEC to invoke "cmd /c copy..."
+            dtStart1 = DateTime.Now;
+            string ATM_LocalSrc = Path.Combine(JTMThreadRegistry.ThreadArray[ThreadIndex].Req.SourceFilePath, JTMThreadRegistry.ThreadArray[ThreadIndex].Req.SourceFileName);
+            string ATM_LocalDst = Path.Combine(JTMThreadRegistry.ThreadArray[ThreadIndex].Req.SourceFilePath, "EJRCPY.LOG");
+            success = CallCmdToCopy(JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMMachineName,
+                     JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMAccessID,
+                     JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMAccessPassword,
+                     JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMWindowsAuth,
+                     ATM_LocalSrc, ATM_LocalDst);
+            dtFinish1 = DateTime.Now;
+            if (!success)
+                return null;
 
             try
             {
-                if (!string.IsNullOrWhiteSpace(RenamedSource))
+                string lpUserID = null;
+                string lpPassword = null;
+
+                if (!JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMWindowsAuth)
                 {
-                    File.Copy(RenamedSource, DestFullFileName, OvrWr);
+                    lpUserID = JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMAccessID;
+                    lpPassword = JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMAccessPassword;
                 }
-                else
+
+                using (JTMRemote.EstablishConnection(JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMMachineName, lpUserID, lpPassword))
                 {
-                    File.Copy(srcFullPath, DestFullFileName, OvrWr);
+
+                    //// 2. Copy active journal file to EJRCPY.LOG
+                    //try
+                    //{
+                    //    dtStart1 = DateTime.Now;
+                    //    pathEJRCPY = Path.Combine(Path.GetDirectoryName(srcFullPath), "EJRCPY.LOG");
+                    //    File.Copy(srcFullPath, pathEJRCPY, OvrWr);
+                    //    dtFinish1 = DateTime.Now;
+
+                    //}
+                    //catch (UnauthorizedAccessException ex)
+                    //{
+                    //    DestFullFileName = null;
+                    //    msg = string.Format("Access permission error while copying file {0} to {1}!\nThe error message reads:\n{2}", srcFullPath, pathEJRCPY, ex.Message);
+                    //    EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+                    //    return (DestFullFileName);
+                    //}
+                    //catch (ArgumentException ex)
+                    //{
+                    //    DestFullFileName = null;
+                    //    msg = string.Format("Invalid filename error while copying file {0} to {1}!\nThe error message reads:\n{2}", srcFullPath, pathEJRCPY, ex.Message);
+                    //    EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+                    //    return (DestFullFileName);
+                    //}
+                    //catch (NotSupportedException ex)
+                    //{
+                    //    DestFullFileName = null;
+                    //    msg = string.Format("Invalid filename format error while copying file {0} to {1}!\nThe error message reads:\n{2}", srcFullPath, pathEJRCPY, ex.Message);
+                    //    EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+                    //    return (DestFullFileName);
+                    //}
+                    //catch (IOException ex)
+                    //{
+                    //    DestFullFileName = null;
+                    //    msg = string.Format("I/O error while copying file {0} to {1}!\nThe error message reads:\n{2}", srcFullPath, pathEJRCPY, ex.Message);
+                    //    EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+                    //    return (DestFullFileName);
+                    //}
+                    //// catch (Exception ex)
+                    //// Any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upstream...
+
+
+                    // 3. Chain Rename
+                    if (DoBackup)
+                    {
+                        // Case of InitEJ
+                        //RenamedSource = ChainRename(srcFullPath, MaxJBck);
+                        dtStart2 = DateTime.Now;
+                        RenamedSource = ChainRename(pathEJRCPY, MaxJBck);
+                        dtFinish2 = DateTime.Now;
+                    }
+
+
+                    // 4.Transfer
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(RenamedSource))
+                        {
+                            dtStart3 = DateTime.Now;
+                            File.Copy(RenamedSource, DestFullFileName, OvrWr);
+                            dtFinish3 = DateTime.Now;
+                        }
+                        else
+                        {
+                            // Case of InitEJ
+                            // File.Copy(srcFullPath, DestFullFileName, OvrWr);
+                            return (null);
+                        }
+                    }
+                    catch (UnauthorizedAccessException ex)
+                    {
+                        DestFullFileName = null;
+                        msg = string.Format("Access permission error while copying file {0} to {1}!\nThe error message reads:\n{2}", srcFullPath, dstFullPath, ex.Message);
+                        EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        DestFullFileName = null;
+                        msg = string.Format("Invalid filename error while copying file {0} to {1}!\nThe error message reads:\n{2}", srcFullPath, dstFullPath, ex.Message);
+                        EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+                    }
+                    catch (NotSupportedException ex)
+                    {
+                        DestFullFileName = null;
+                        msg = string.Format("Invalid filename format error while copying file {0} to {1}!\nThe error message reads:\n{2}", srcFullPath, dstFullPath, ex.Message);
+                        EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+                    }
+                    catch (IOException ex)
+                    {
+                        DestFullFileName = null;
+                        msg = string.Format("I/O error while copying file {0} to {1}!\nThe error message reads:\n{2}", srcFullPath, dstFullPath, ex.Message);
+                        EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+                    }
+                    // catch (Exception ex)
+                    // Any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upstream...
+
                 }
             }
-            catch (UnauthorizedAccessException ex)
+            catch (Win32Exception ex)
             {
                 DestFullFileName = null;
-                msg = string.Format("Access permission error while copying file {0} to {1}!\nThe error message reads:\n{2}", srcFullPath, dstFullPath, ex.Message);
+                msg = string.Format("Error in JTMWorker:GetJournalFile while connecting to [{0}] using UserName:{1}!" +
+                                    "\nThe error reads: Source:{2} ErrorCode:{3} ErrorMessage:{4}",
+                                     JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMMachineName,
+                                     JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ATMAccessID,
+                                     ex.Source, ex.NativeErrorCode.ToString(), ex.Message);
                 EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
             }
-            catch (ArgumentException ex)
-            {
-                DestFullFileName = null;
-                msg = string.Format("Invalid filename error while copying file {0} to {1}!\nThe error message reads:\n{2}", srcFullPath, dstFullPath, ex.Message);
-                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-            }
-            catch (NotSupportedException ex)
-            {
-                DestFullFileName = null;
-                msg = string.Format("Invalid filename format error while copying file {0} to {1}!\nThe error message reads:\n{2}", srcFullPath, dstFullPath, ex.Message);
-                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-            }
-            catch (IOException ex)
-            {
-                DestFullFileName = null;
-                msg = string.Format("I/O error while copying file {0} to {1}!\nThe error message reads:\n{2}", srcFullPath, dstFullPath, ex.Message);
-                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-            }
-            // catch (Exception ex)
-            // Any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upsteram...
+            //catch (Exception ex)
+            // Any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upstream...
 
             return (DestFullFileName);
         }
@@ -652,7 +834,7 @@ namespace RRDMJTMClasses
             // Execute the SP that will Parse the file and Import in SQL
             int ret;
             string msg;
-            bool success = false;
+            bool IsSuccessful = false;
             bool UpdSuccess = false;
             string FullName;
             long FileSize = 0;
@@ -671,7 +853,7 @@ namespace RRDMJTMClasses
             catch (IOException ex)
             {
                 // Input file problem 
-                success = false;
+                IsSuccessful = false;
                 msg = string.Format("Skipped execution of the Stored Procedure on SQL because of input file error!.\nThe file is {0}.\nThe error message reads:\n{1} ",
                                      FullName, ex.Message);
                 JTMThreadRegistry.ChangeThreadStatus(ThreadIndex, StatusOfThread.Aborting);
@@ -692,7 +874,7 @@ namespace RRDMJTMClasses
             if (FileSize == 0)
             {
                 // File has zero length ... return
-                success = false;
+                IsSuccessful = false;
                 msg = string.Format("Skipped execution of the Stored Procedure on SQL because of empty input file!.\nThe file is: {0}", FullName);
                 JTMThreadRegistry.ChangeThreadStatus(ThreadIndex, StatusOfThread.Stopping);
                 JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultCode = JTMQueueResult.Failure;
@@ -705,28 +887,44 @@ namespace RRDMJTMClasses
             else
             {
                 RRDMJTMQueue JQ1 = new RRDMJTMQueue();
+                string InputFileName = null;
 
+                if (string.IsNullOrEmpty(JTMThreadRegistry.JTM_SQLRelativeFilePoolPath))
+                {
+                    InputFileName = FullName;
+                }
+                else
+                {
+                    InputFileName = Path.Combine(JTMThreadRegistry.JTM_SQLRelativeFilePoolPath, Path.GetFileName(FullName));
+                }
+
+                //ret = JQ1.InvokeStoredProcedure(
+                //                        ProcedureName,
+                //                        JTMThreadRegistry.ThreadArray[ThreadIndex].Req.BankID,
+                //                        JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo,
+                //                        JTMThreadRegistry.ThreadArray[ThreadIndex].Req.BranchNo,
+                //                        InputFileName);
                 ret = JQ1.InvokeStoredProcedure(
                                         ProcedureName,
+                                        JTMThreadRegistry.ThreadArray[ThreadIndex].Req.TypeOfJournal,
                                         JTMThreadRegistry.ThreadArray[ThreadIndex].Req.BankID,
                                         JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo,
-                                        JTMThreadRegistry.ThreadArray[ThreadIndex].Req.BranchNo,
-                                        FullName);
+                                        InputFileName);
 
-                if (JQ1.ErrorFound != true)
+                if (!JQ1.ErrorFound)
                 {
                     if (ret == 0)
                     {
-                        success = true;
+                        IsSuccessful = true;
                         JTMThreadRegistry.ThreadArray[ThreadIndex].Req.Stage = JTMQueueStage.Const_ParserFinished;
                         JTMThreadRegistry.ThreadArray[ThreadIndex].Req.FileParseEnd = DateTime.Now;
                         UpdSuccess = this.UpdateJTMQueueRecordInSQL(JTMThreadRegistry.ThreadArray[ThreadIndex].Req);
                     }
                     else
                     {
-                        success = false;
+                        IsSuccessful = false;
                         msg = string.Format("The Stored Procedure returned an error! Input file is:{0}\n. RerurnCode: {1}",
-                                             FullName, ret);
+                                             InputFileName, ret);
                         JTMThreadRegistry.ChangeThreadStatus(ThreadIndex, StatusOfThread.Stopping);
                         JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultCode = JTMQueueResult.Failure;
                         JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultMessage = msg;
@@ -738,9 +936,9 @@ namespace RRDMJTMClasses
                 else
                 {
                     // Failure of SP
-                    success = false;
+                    IsSuccessful = false;
                     msg = string.Format("Failure in executing the Stored Procedure on SQL! Input fle is:{0}. The error message reads: {1}",
-                                         FullName, JQ1.ErrorOutput);
+                                         InputFileName, JQ1.ErrorOutput);
                     JTMThreadRegistry.ChangeThreadStatus(ThreadIndex, StatusOfThread.Stopping);
                     JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultCode = JTMQueueResult.Failure;
                     JTMThreadRegistry.ThreadArray[ThreadIndex].Req.ResultMessage = msg;
@@ -749,7 +947,7 @@ namespace RRDMJTMClasses
                     // if (UpdSuccess != true) { ; } // UpdateRecordInSQL will have thrown the JTMCustomException
                 }
             }
-            return (success);
+            return (IsSuccessful);
         }
         #endregion
 
@@ -803,10 +1001,11 @@ namespace RRDMJTMClasses
             RRDMJTMIdentificationDetailsClass JdUpd = new RRDMJTMIdentificationDetailsClass();
 
             JdUpd.SeqNo = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.SeqNo;
+            JdUpd.QueueRecId = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.QueueRecId;
             JdUpd.AtmNo = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.AtmNo;
             JdUpd.DateLastUpdated = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.DateLastUpdated;
             JdUpd.UserId = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.UserId;
-            JdUpd.BatchID = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.BatchID;
+            JdUpd.LoadingScheduleID = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.LoadingScheduleID;
             JdUpd.ATMIPAddress = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ATMIPAddress;
             JdUpd.ATMMachineName = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ATMMachineName;
             JdUpd.ATMWindowsAuth = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ATMWindowsAuth;
@@ -818,12 +1017,17 @@ namespace RRDMJTMClasses
             JdUpd.DestnFilePath = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.DestnFilePath;
             JdUpd.FileUploadRequestDt = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.FileUploadRequestDt;
             JdUpd.FileParseEnd = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.FileParseEnd;
+            JdUpd.LoadingCompleted = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.LoadingCompleted;
             JdUpd.ResultCode = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ResultCode;
             JdUpd.ResultMessage = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ResultMessage;
             JdUpd.Operator = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.Operator;
-            JdUpd.RecordFound = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.RecordFound;
-            JdUpd.ErrorFound = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ErrorFound;
-            JdUpd.ErrorOutput = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ErrorOutput;
+            // JdUpd.RecordFound = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.RecordFound;
+            // JdUpd.ErrorFound = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ErrorFound;
+            // JdUpd.ErrorOutput = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.ErrorOutput;
+            JdUpd.SWVersion = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.SWVersion;
+            JdUpd.SWDate = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.SWDate;
+            JdUpd.SWDCategory = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.SWDCategory;
+            JdUpd.TypeOfSWD = JTMThreadRegistry.ThreadArray[ThreadIndex].IdentClass.TypeOfSWD;
 
             JdUpd.UpdateRecordInJTMIdentificationDetailsByID(JdUpd.SeqNo);
             if (!JdUpd.ErrorFound)
@@ -835,29 +1039,28 @@ namespace RRDMJTMClasses
                 success = false;
                 msg = string.Format("Error in updating JTMIdentificationDetails for ATM:{0}. The error message reads: \n{1} ",
                                     JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo,
-                                    JdUpd.ResultMessage);
+                                    JdUpd.ErrorOutput);
                 EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
             }
             return (success);
         }
         #endregion
 
-        #region BackupAndRecreate
+        #region ChainRename
         /// <summary>
         /// BackupAndRecreate
         /// </summary>
         /// <param name="srcFullPath"></param>
         /// <param name="MaxBckFileCount"></param>
-        /// <returns>New name of original file</returns>
-        public string BackupAndRecreate(string srcFullPath, int MaxBckFileCount)
+        /// <returns>New name of original file (EJRCPY.LOG.001.BAK)</returns>
+        public string ChainRename(string srcFullPath, int MaxBckFileCount)
         {
             string NewFileName = null;
             string msg;
-            bool rc = false;
-            string srcFile;         //  "EJDATA.LOG";
-            string srcDir;          //  @"C:\RRDM\ATM";
-            string FileSearchMask;  //  "EJDATA.LOG.???.BAK";
-            string FileBackupMask;  //  "EJDATA.LOG.{0}.BAK";
+            string srcFile;         //  "EJRCPY.LOG";
+            string srcDir;          //  @"C:\Program Files\Advance NDC\Data";
+            string FileSearchMask;  //  "EJRCPY.LOG.???.BAK";
+            string FileBackupMask;  //  "EJRCPY.LOG.{0}.BAK";
 
             string[] fArray;
             int FileCount = 0;
@@ -879,9 +1082,8 @@ namespace RRDMJTMClasses
                 fArray = Directory.GetFiles(srcDir, FileSearchMask);
                 FileCount = fArray.Length;
 
-                // Delete the files over the MaxBckFileCount 
-                // No backup is to be taken... delete any leftovers
-                if (MaxBckFileCount == 0)
+                #region Delete the files over the MaxBckFileCount 
+                if (MaxBckFileCount == 0) // No backup is to be taken... delete any leftovers
                 {
                     for (int i = 0; i < FileCount; i++)
                     {
@@ -908,7 +1110,9 @@ namespace RRDMJTMClasses
                 {
                     LastIndx = FileCount;
                 }
+                #endregion
 
+                #region Rename older files
                 if (LastIndx > 0)
                 {
                     // Rename older files in reverse sequence (eg: 3->4, 2->3, 1->2)
@@ -916,102 +1120,93 @@ namespace RRDMJTMClasses
                     {
                         prev = Path.Combine(srcDir, (string.Format(FileBackupMask, (p).ToString("000"))));
                         next = Path.Combine(srcDir, (string.Format(FileBackupMask, (p + 1).ToString("000"))));
-                        //if (Environment.UserInteractive)
-                        //{
-                        //    Console.WriteLine("Rename {0}  to  {1}", prev, next);
-                        //}
                         File.Move(prev, next);
                     }
                 }
+                #endregion
 
-                // Rename the actual Log file to 001
-                // TODO rethink about renaming actual LOG file ??? !!!!!!!!!!!!!!!!!!!
+                #region Rename the actual file to 001
+                // Rename the actual file to 001
                 SrcLogFile = Path.Combine(srcDir, srcFile);
                 DstBakFile = Path.Combine(srcDir, (string.Format(FileBackupMask, "001")));
                 File.Move(SrcLogFile, DstBakFile);
-                NewFileName = DstBakFile; // NewFileName is the actual file we will be retrieving...
-
-                // Create an empty file 
-                // TODO rethink about creating empty files...
-                // the disruption to the ATM operation is only between the previous line (File.Move) and this one (CreateEmptyFile)
-                rc = this.CreateEmptyFile(srcFullPath);
-                if (rc != true)
-                {
-                    // TODO .... Will the ATM must recover by itself?????????????
-                }
+                NewFileName = DstBakFile; // NewFileName is the actual file we will be transfering...
+                #endregion
             }
+            #region Catch
             catch (UnauthorizedAccessException ex)
             {
                 NewFileName = null;
-                msg = string.Format("Access permission error in BackupAndRecreate Log file:{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
+                msg = string.Format("Access permission error in ChainRename Log file:{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
                 EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
             }
             catch (ArgumentException ex)
             {
                 NewFileName = null;
-                msg = string.Format("Invalid filename error in BackupAndRecreate Log file:{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
+                msg = string.Format("Invalid filename error in ChainRename Log file:{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
                 EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
             }
             catch (NotSupportedException ex)
             {
                 NewFileName = null;
-                msg = string.Format("Invalid filename format error in BackupAndRecreate Log file:{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
+                msg = string.Format("Invalid filename format error in ChainRename Log file:{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
                 EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
             }
             catch (IOException ex)
             {
                 NewFileName = null;
-                msg = string.Format("I/O error in BackupAndRecreate Log file:{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
+                msg = string.Format("I/O error in ChainRename Log file:{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
                 EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
             }
             //catch (Exception ex)
-            //TODO any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upsteram...
+            //TODO any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upstream...
+            #endregion
 
             return (NewFileName);
         }
         #endregion
 
         #region CreateEmptyFile
-        public bool CreateEmptyFile(string srcFullPath)
-        {
-            bool success = false;
-            string msg;
-            try
-            {
-                using (FileStream stream = File.Create(srcFullPath))
-                {
-                    success = true;
-                }
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                success = false;
-                msg = string.Format("Access permission error in CreateEmptyFile():{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
-                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-            }
-            catch (ArgumentException ex)
-            {
-                success = false;
-                msg = string.Format("Invalid filename error in CreateEmptyFile():{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
-                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-            }
-            catch (NotSupportedException ex)
-            {
-                success = false;
-                msg = string.Format("Invalid filename format error in CreateEmptyFile():{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
-                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-            }
-            catch (IOException ex)
-            {
-                success = false;
-                msg = string.Format("I/O error in CreateEmptyFile():{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
-                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-            }
-            //catch (Exception ex)
-            //TODO any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upsteram...
+        //public bool CreateEmptyFile(string srcFullPath)
+        //{
+        //    bool success = false;
+        //    string msg;
+        //    try
+        //    {
+        //        using (FileStream stream = File.Create(srcFullPath))
+        //        {
+        //            success = true;
+        //        }
+        //    }
+        //    catch (UnauthorizedAccessException ex)
+        //    {
+        //        success = false;
+        //        msg = string.Format("Access permission error in CreateEmptyFile():{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
+        //        EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+        //    }
+        //    catch (ArgumentException ex)
+        //    {
+        //        success = false;
+        //        msg = string.Format("Invalid filename error in CreateEmptyFile():{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
+        //        EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+        //    }
+        //    catch (NotSupportedException ex)
+        //    {
+        //        success = false;
+        //        msg = string.Format("Invalid filename format error in CreateEmptyFile():{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
+        //        EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+        //    }
+        //    catch (IOException ex)
+        //    {
+        //        success = false;
+        //        msg = string.Format("I/O error in CreateEmptyFile():{0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
+        //        EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+        //    }
+        //    //catch (Exception ex)
+        //    //TODO any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upstream...
 
-            return (success);
-        }
+        //    return (success);
+        //}
         #endregion
 
         #region MoveToArchive
@@ -1024,16 +1219,25 @@ namespace RRDMJTMClasses
             string msg;
             bool success = false;
 
-            string srcFullPath = string.Format("{0}\\{1}\\{2}",
-                                                       JTMThreadRegistry.JTM_FilePoolRoot,
-                                                       JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo.Trim(),
-                                                       JTMThreadRegistry.ThreadArray[ThreadIndex].Req.DestnFileName.Trim()
-                                                       );
-            string ArchivePath = string.Format("{0}\\{1}\\{2}",
+            //string srcFullPath = string.Format("{0}\\{1}\\{2}",
+            //                                           JTMThreadRegistry.JTM_FilePoolRoot,
+            //                                           JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo.Trim(),
+            //                                           JTMThreadRegistry.ThreadArray[ThreadIndex].Req.DestnFileName.Trim()
+            //                                           );
+            //string ArchivePath = string.Format("{0}\\{1}\\{2}",
+            //                                           JTMThreadRegistry.JTM_ArchiveRoot,
+            //                                           JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo.Trim(),
+            //                                           JTMThreadRegistry.ThreadArray[ThreadIndex].Req.DestnFileName.Trim()
+            //                                           );
+            string srcFullPath = string.Format("{0}\\{1}",
+                                           JTMThreadRegistry.JTM_FilePoolRoot,
+                                           JTMThreadRegistry.ThreadArray[ThreadIndex].Req.DestnFileName.Trim()
+                                           );
+            string ArchivePath = string.Format("{0}\\{1}",
                                                        JTMThreadRegistry.JTM_ArchiveRoot,
-                                                       JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo.Trim(),
                                                        JTMThreadRegistry.ThreadArray[ThreadIndex].Req.DestnFileName.Trim()
                                                        );
+
             try
             {
                 File.Move(srcFullPath, ArchivePath);
@@ -1064,7 +1268,7 @@ namespace RRDMJTMClasses
                 EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
             }
             //catch (Exception ex)
-            //TODO any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upsteram...
+            //TODO any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upstream...
 
             return (success);
         }
@@ -1076,48 +1280,254 @@ namespace RRDMJTMClasses
         /// </summary>
         /// <param name="srcFullPath"></param>
         /// <returns>bool</returns>
-        public bool DeleteTheFile(string srcFullPath)
-        {
-            bool success = false;
-            string msg;
+        //public bool DeleteTheFile(string srcFullPath)
+        //{
+        //    bool success = false;
+        //    string msg;
 
+        //    try
+        //    {
+        //        File.Delete(srcFullPath);
+        //        success = true;
+        //    }
+        //    catch (UnauthorizedAccessException ex)
+        //    {
+        //        success = false;
+        //        msg = string.Format("Access permission error while deleting file {0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
+        //        EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+        //    }
+        //    catch (ArgumentException ex)
+        //    {
+        //        success = false;
+        //        msg = string.Format("Invalid filename error while deleting file {0}!\nThe error message reads: \n{1}", srcFullPath, ex.Message);
+        //        EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+        //    }
+        //    catch (NotSupportedException ex)
+        //    {
+        //        success = false;
+        //        msg = string.Format("Invalid filename format error while deleting file {0}!\nThe error message reads: \n{1}", srcFullPath, ex.Message);
+        //        EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+        //    }
+        //    catch (IOException ex)
+        //    {
+        //        success = false;
+        //        msg = string.Format("I/O error while deleting file {0}!\nThe error message reads: \n{1}", srcFullPath, ex.Message);
+        //        EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+        //    }
+        //    //catch (Exception ex)
+        //    //TODO any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upstream...
+
+        //    return (success);
+        //}
+        #endregion
+
+        #region PSEXEC / InitEJ
+        public bool CallInitEJ(string ATMMachineName, string ATMUser, string ATMPassword, bool WinAuth)
+        {
+            int PSExecReturnCode = -1;
+            string PSXeqArg;
+
+            // Sample PSExec invocation
+            // C:\Tools\SysInternal\psexec \\ATMXP-04 -u UserId -p password "c:\Program Files\Advance NDC\InitEJ.exe"
+            //string PSXeqArg = string.Format("\\\\{0} -u {1} -p {2} \"c:\\Program Files\\Advance NDC\\InitEJ.exe\"", ATMMachineName, ATMUser, ATMPassword);
+
+            if (!WinAuth)
+                PSXeqArg = string.Format("\\\\{0} -u {1} -p {2} \"{3}\"", ATMMachineName, ATMUser, ATMPassword, JTMThreadRegistry.JTM_InitEJPath);
+            else
+                PSXeqArg = string.Format("\\\\{0} \"{1}\"", ATMMachineName, JTMThreadRegistry.JTM_InitEJPath);
+
+            PSExecReturnCode = StartPSExec(PSXeqArg);
+
+            if (PSExecReturnCode == 0)
+                return true;
+            else
+                return false;
+        }
+
+        public int StartPSExec(string arguments)
+        {
+            int rc = -1;
+            string msg;
+            // static string PSExecFileName = @"c:\Tools\SysInternal\PSexec.exe";
             try
             {
-                File.Delete(srcFullPath);
-                success = true;
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                success = false;
-                msg = string.Format("Access permission error while deleting file {0}!\nThe error message reads:\n{1}", srcFullPath, ex.Message);
-                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-            }
-            catch (ArgumentException ex)
-            {
-                success = false;
-                msg = string.Format("Invalid filename error while deleting file {0}!\nThe error message reads: \n{1}", srcFullPath, ex.Message);
-                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-            }
-            catch (NotSupportedException ex)
-            {
-                success = false;
-                msg = string.Format("Invalid filename format error while deleting file {0}!\nThe error message reads: \n{1}", srcFullPath, ex.Message);
-                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-            }
-            catch (IOException ex)
-            {
-                success = false;
-                msg = string.Format("I/O error while deleting file {0}!\nThe error message reads: \n{1}", srcFullPath, ex.Message);
-                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
-            }
-            //catch (Exception ex)
-            //TODO any other type of exception (e.g. threadabort, JTMCustom,..., will propagate upsteram...
+                Process oProcess = new Process();
+                oProcess.EnableRaisingEvents = false;
+                oProcess.StartInfo.CreateNoWindow = true;
+                oProcess.StartInfo.UseShellExecute = false;
+                oProcess.StartInfo.RedirectStandardOutput = true;
+                oProcess.StartInfo.FileName = JTMThreadRegistry.JTM_PSExecPath;
+                oProcess.StartInfo.Arguments = arguments;
+                oProcess.Start();
 
-            return (success);
+                while (!oProcess.HasExited)
+                {
+                    Thread.Sleep(1000);
+                }
+                rc = oProcess.ExitCode;
+            }
+            catch (InvalidOperationException ex)
+            {
+                rc = -1;
+                msg = string.Format("InvalidOperationException while starting PSEXEC for ATM:{0}. The exception message reads: \n{1} ",
+                    JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo, ex.Message);
+                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+            }
+            catch (Win32Exception ex)
+            {
+                rc = -1;
+                msg = string.Format("Win32Exception while starting PSEXEC for ATM:{0}. The exception message reads: \n{1} ",
+                    JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo, ex.Message);
+                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+            }
+            return (rc);
+        }
+        #endregion
+
+        #region PSEXEC / Cmd Copy
+        public bool CallCmdToCopy(string ATMMachineName, string ATMUser, string ATMPassword, bool WinAuth, string LocalSrc, string LocalDst)
+        {
+            // LocalSrc = c:\Diebold\EDC\EDCLocal.dat || c:\Program Files\Advance NDC\Data\EJData.log
+            int PSExecReturnCode = -1;
+            string PSXeqArg;
+
+            // Sample PSExec invocation
+            // psexec \\ATMXP-04 -u Username -p password cmd /c copy /y "c:\Diebold\EDC\EDCLocal.dat" "c:\Diebold\EDC\EJRCPY.LOG"
+            // psexec \\ATMXP-01 -u UserName -p password cmd /c copy / y "c:\Program Files\Advance NDC\Data\EJData.Log" "c:\Program Files\Advance NDC\Data"\EJRCPY.LOG"
+            // string PSXeqArg = string.Format("\\\\{0} -u {1} -p {2} cmd /c copy /y \"{3}\" \"{4}\", ATMMachineName, ATMUser, ATMPassword, LocalSrc, LocalDst);
+
+
+            if (!WinAuth)
+                PSXeqArg = string.Format("\\\\{0} -u {1} -p {2} cmd /c copy /y \"{3}\" \"{4}\"", ATMMachineName, ATMUser, ATMPassword, LocalSrc, LocalDst);
+            else
+                PSXeqArg = string.Format("\\\\{0} cmd /c copy /y \"{1}\" \"{2}\"", ATMMachineName, LocalSrc, LocalDst);
+
+            PSExecReturnCode = PSExecCmdCopy(PSXeqArg);
+
+            if (PSExecReturnCode == 0)
+                return true;
+            else
+                return false;
+        }
+
+        public int PSExecCmdCopy(string arguments)
+        {
+            int rc = -1;
+            string msg;
+            // static string PSExecFileName = @"c:\Tools\SysInternal\PSexec.exe";
+            try
+            {
+                Process oProcess = new Process();
+                oProcess.EnableRaisingEvents = false;
+                oProcess.StartInfo.CreateNoWindow = true;
+                oProcess.StartInfo.UseShellExecute = false;
+                oProcess.StartInfo.RedirectStandardOutput = true;
+                oProcess.StartInfo.FileName = JTMThreadRegistry.JTM_PSExecPath;
+                oProcess.StartInfo.Arguments = arguments;
+                oProcess.Start();
+
+                while (!oProcess.HasExited)
+                {
+                    Thread.Sleep(500);
+                }
+                rc = oProcess.ExitCode;
+            }
+            catch (InvalidOperationException ex)
+            {
+                rc = -1;
+                msg = string.Format("InvalidOperationException while starting PSEXEC for ATM:{0}. The exception message reads: \n{1} ",
+                    JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo, ex.Message);
+                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+            }
+            catch (Win32Exception ex)
+            {
+                rc = -1;
+                msg = string.Format("Win32Exception while starting PSEXEC for ATM:{0}. The exception message reads: \n{1} ",
+                    JTMThreadRegistry.ThreadArray[ThreadIndex].Req.AtmNo, ex.Message);
+                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+            }
+            return (rc);
+        }
+        #endregion
+
+        #region Trim Diebold File
+        /// <summary>
+        /// TrimDieboldFile(string srcFile)
+        /// </summary>
+        /// <param name="srcFile"></param>
+        /// <returns>Number of lines</returns>
+        private static int TrimDieboldFile(string srcFile)
+        {
+            // Creates a temprary file where the useful data is copied to.
+            // On success, renames the temporary file to the original file name, having first deleted the original file.
+            int i;
+            int counter = 0;
+            int PrevLineSeq = -1;
+            int CurrLineSeq;
+            string srcLine;
+            string strSeqNo;
+            string dstFile;
+
+            StreamReader inpFile = null;
+            StreamWriter outFile = null;
+            dstFile = Path.Combine(Path.GetDirectoryName(srcFile), Path.GetRandomFileName());
+            try
+            {
+                // Read the file line by line and output into the temporary file
+                inpFile = new System.IO.StreamReader(srcFile);
+                outFile = new System.IO.StreamWriter(dstFile);
+
+                srcLine = inpFile.ReadLine();
+                counter++;
+                do
+                {
+                    outFile.WriteLine(srcLine);
+                    srcLine = inpFile.ReadLine();
+                    if (srcLine != null)
+                    {
+                        strSeqNo = srcLine.Substring(1, 6); // position 2 to 7 holds the Diebold eJournal sequence number
+                        if (Int32.TryParse(strSeqNo, out i))
+                        {
+                            CurrLineSeq = i;
+                            if (CurrLineSeq == PrevLineSeq + 1)
+                            {
+                                PrevLineSeq = CurrLineSeq;
+                                counter++;
+                            }
+                            else
+                            {
+                                break; // not in sequence; must have reached the end of valid data. Break the loop...
+                            }
+                        }
+                        else
+                        {
+                            break; // not a valid integer; must have reached the end of valid data. Break the loop...
+                        }
+                    }
+                } while (srcLine != null);
+
+                inpFile.Close();
+                outFile.Close();
+                File.Delete(srcFile);
+                File.Move(dstFile, srcFile);
+            }
+            catch (Exception ex)
+            {
+                inpFile.Close();
+                outFile.Close();
+                if (File.Exists(dstFile))
+                    File.Delete(dstFile);
+
+                string msg = string.Format("Encountered an Exception while extracting valid data from Diebold eJournal [{0]]!\nThe error message reads:\n{1}", srcFile, ex.Message);
+                EventLogging.MessageOut(JTMThreadRegistry.JTMEventSource, msg, EventLogEntryType.Error);
+
+                return (-1);
+            }
+            return (counter);
         }
         #endregion
 
         #endregion
     }
-        
+
 }

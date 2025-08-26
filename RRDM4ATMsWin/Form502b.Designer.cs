@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -36,6 +35,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.buttonShowMetaIds = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -52,21 +52,11 @@
             this.labelFileId = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBoxTargetSystem = new System.Windows.Forms.CheckBox();
             this.buttonUpdateFile = new System.Windows.Forms.Button();
             this.checkBoxRemains = new System.Windows.Forms.CheckBox();
             this.checkBoxPrimary = new System.Windows.Forms.CheckBox();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.seqNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.categoryIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sourceFileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewCheckBoxColumn1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dataGridViewCheckBoxColumn2 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.lastInFileDtTmDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lastMatchingDtTmDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.processModeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.reconcCategoryVsSourceFilesBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.aTMSDataSet66 = new RRDM4ATMsWin.ATMSDataSet66();
             this.labelSelectedMatch = new System.Windows.Forms.Label();
             this.labelRMCategory = new System.Windows.Forms.Label();
             this.panelSelectFields = new System.Windows.Forms.Panel();
@@ -80,17 +70,6 @@
             this.labelLow = new System.Windows.Forms.Label();
             this.textBoxFrom = new System.Windows.Forms.TextBox();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
-            this.seqNoDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.categoryIdDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.reconcCategoryStageVsMatchingFieldsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.aTMSDataSet67 = new RRDM4ATMsWin.ATMSDataSet67();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.textBoxMsgBoard = new System.Windows.Forms.TextBox();
             this.buttonFinish = new System.Windows.Forms.Button();
@@ -107,21 +86,16 @@
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelHeader = new System.Windows.Forms.TableLayoutPanel();
-            this.reconcCategoryVsSourceFilesTableAdapter1 = new RRDM4ATMsWin.ATMSDataSet66TableAdapters.ReconcCategoryVsSourceFilesTableAdapter();
-            this.reconcCategoryStageVsMatchingFieldsTableAdapter1 = new RRDM4ATMsWin.ATMSDataSet67TableAdapters.ReconcCategoryStageVsMatchingFieldsTableAdapter();
-            this.buttonShowMetaIds = new System.Windows.Forms.Button();
+            this.radioButtonForCredit = new System.Windows.Forms.RadioButton();
+            this.radioButtonForDebit = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanelMain.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.reconcCategoryVsSourceFilesBindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet66)).BeginInit();
             this.panelSelectFields.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.reconcCategoryStageVsMatchingFieldsBindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet67)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -183,6 +157,8 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.radioButtonForCredit);
+            this.panel2.Controls.Add(this.radioButtonForDebit);
             this.panel2.Controls.Add(this.buttonShowMetaIds);
             this.panel2.Controls.Add(this.label10);
             this.panel2.Controls.Add(this.label9);
@@ -200,11 +176,27 @@
             this.panel2.Size = new System.Drawing.Size(984, 176);
             this.panel2.TabIndex = 348;
             // 
+            // buttonShowMetaIds
+            // 
+            this.buttonShowMetaIds.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonShowMetaIds.FlatAppearance.BorderSize = 2;
+            this.buttonShowMetaIds.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonShowMetaIds.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonShowMetaIds.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonShowMetaIds.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonShowMetaIds.Location = new System.Drawing.Point(692, 65);
+            this.buttonShowMetaIds.Name = "buttonShowMetaIds";
+            this.buttonShowMetaIds.Size = new System.Drawing.Size(93, 24);
+            this.buttonShowMetaIds.TabIndex = 365;
+            this.buttonShowMetaIds.Text = "Show Options";
+            this.buttonShowMetaIds.UseVisualStyleBackColor = true;
+            this.buttonShowMetaIds.Click += new System.EventHandler(this.buttonShowMetaIds_Click);
+            // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.ForeColor = System.Drawing.Color.Red;
-            this.label10.Location = new System.Drawing.Point(689, 44);
+            this.label10.Location = new System.Drawing.Point(689, 22);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(45, 13);
             this.label10.TabIndex = 364;
@@ -213,7 +205,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(502, 72);
+            this.label9.Location = new System.Drawing.Point(502, 99);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(67, 13);
             this.label9.TabIndex = 363;
@@ -221,7 +213,7 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(607, 102);
+            this.textBox3.Location = new System.Drawing.Point(607, 68);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(72, 20);
             this.textBox3.TabIndex = 362;
@@ -229,7 +221,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(502, 105);
+            this.label7.Location = new System.Drawing.Point(502, 71);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(96, 13);
             this.label7.TabIndex = 361;
@@ -237,15 +229,16 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(607, 72);
+            this.textBox2.Location = new System.Drawing.Point(607, 99);
             this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(178, 20);
             this.textBox2.TabIndex = 360;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(502, 40);
+            this.label2.Location = new System.Drawing.Point(502, 18);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 359;
@@ -253,7 +246,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(607, 37);
+            this.textBox1.Location = new System.Drawing.Point(607, 15);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(72, 20);
             this.textBox1.TabIndex = 358;
@@ -340,7 +333,7 @@
             this.panel3.Controls.Add(this.labelFileId);
             this.panel3.Controls.Add(this.label5);
             this.panel3.Controls.Add(this.checkBox2);
-            this.panel3.Controls.Add(this.checkBox1);
+            this.panel3.Controls.Add(this.checkBoxTargetSystem);
             this.panel3.Controls.Add(this.buttonUpdateFile);
             this.panel3.Controls.Add(this.checkBoxRemains);
             this.panel3.Controls.Add(this.checkBoxPrimary);
@@ -380,16 +373,17 @@
             this.checkBox2.TabIndex = 348;
             this.checkBox2.Text = "Visa Settlement";
             this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.Visible = false;
             // 
-            // checkBox1
+            // checkBoxTargetSystem
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(120, 295);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(76, 17);
-            this.checkBox1.TabIndex = 347;
-            this.checkBox1.Text = "Target File";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBoxTargetSystem.AutoSize = true;
+            this.checkBoxTargetSystem.Location = new System.Drawing.Point(120, 295);
+            this.checkBoxTargetSystem.Name = "checkBoxTargetSystem";
+            this.checkBoxTargetSystem.Size = new System.Drawing.Size(76, 17);
+            this.checkBoxTargetSystem.TabIndex = 347;
+            this.checkBoxTargetSystem.Text = "Target File";
+            this.checkBoxTargetSystem.UseVisualStyleBackColor = true;
             // 
             // buttonUpdateFile
             // 
@@ -418,6 +412,7 @@
             this.checkBoxRemains.TabIndex = 4;
             this.checkBoxRemains.Text = "Visa Author like File";
             this.checkBoxRemains.UseVisualStyleBackColor = true;
+            this.checkBoxRemains.Visible = false;
             // 
             // checkBoxPrimary
             // 
@@ -433,19 +428,8 @@
             // 
             this.dataGridView2.AllowUserToAddRows = false;
             this.dataGridView2.AllowUserToDeleteRows = false;
-            this.dataGridView2.AutoGenerateColumns = false;
             this.dataGridView2.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.seqNoDataGridViewTextBoxColumn,
-            this.categoryIdDataGridViewTextBoxColumn,
-            this.sourceFileNameDataGridViewTextBoxColumn,
-            this.dataGridViewCheckBoxColumn1,
-            this.dataGridViewCheckBoxColumn2,
-            this.lastInFileDtTmDataGridViewTextBoxColumn,
-            this.lastMatchingDtTmDataGridViewTextBoxColumn,
-            this.processModeDataGridViewTextBoxColumn});
-            this.dataGridView2.DataSource = this.reconcCategoryVsSourceFilesBindingSource1;
             this.dataGridView2.GridColor = System.Drawing.Color.LightGray;
             this.dataGridView2.Location = new System.Drawing.Point(15, 6);
             this.dataGridView2.MultiSelect = false;
@@ -456,75 +440,6 @@
             this.dataGridView2.Size = new System.Drawing.Size(462, 223);
             this.dataGridView2.TabIndex = 2;
             this.dataGridView2.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_RowEnter);
-            // 
-            // seqNoDataGridViewTextBoxColumn
-            // 
-            this.seqNoDataGridViewTextBoxColumn.DataPropertyName = "SeqNo";
-            this.seqNoDataGridViewTextBoxColumn.HeaderText = "SeqNo";
-            this.seqNoDataGridViewTextBoxColumn.Name = "seqNoDataGridViewTextBoxColumn";
-            this.seqNoDataGridViewTextBoxColumn.ReadOnly = true;
-            this.seqNoDataGridViewTextBoxColumn.Width = 70;
-            // 
-            // categoryIdDataGridViewTextBoxColumn
-            // 
-            this.categoryIdDataGridViewTextBoxColumn.DataPropertyName = "CategoryId";
-            this.categoryIdDataGridViewTextBoxColumn.HeaderText = "CategoryId";
-            this.categoryIdDataGridViewTextBoxColumn.Name = "categoryIdDataGridViewTextBoxColumn";
-            this.categoryIdDataGridViewTextBoxColumn.ReadOnly = true;
-            this.categoryIdDataGridViewTextBoxColumn.Width = 75;
-            // 
-            // sourceFileNameDataGridViewTextBoxColumn
-            // 
-            this.sourceFileNameDataGridViewTextBoxColumn.DataPropertyName = "SourceFileName";
-            this.sourceFileNameDataGridViewTextBoxColumn.HeaderText = "SourceFileName";
-            this.sourceFileNameDataGridViewTextBoxColumn.Name = "sourceFileNameDataGridViewTextBoxColumn";
-            this.sourceFileNameDataGridViewTextBoxColumn.ReadOnly = true;
-            this.sourceFileNameDataGridViewTextBoxColumn.Width = 140;
-            // 
-            // dataGridViewCheckBoxColumn1
-            // 
-            this.dataGridViewCheckBoxColumn1.DataPropertyName = "PrimaryFile";
-            this.dataGridViewCheckBoxColumn1.HeaderText = "PrimaryFile";
-            this.dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
-            this.dataGridViewCheckBoxColumn1.ReadOnly = true;
-            // 
-            // dataGridViewCheckBoxColumn2
-            // 
-            this.dataGridViewCheckBoxColumn2.DataPropertyName = "WithRemains";
-            this.dataGridViewCheckBoxColumn2.HeaderText = "WithRemains";
-            this.dataGridViewCheckBoxColumn2.Name = "dataGridViewCheckBoxColumn2";
-            this.dataGridViewCheckBoxColumn2.ReadOnly = true;
-            // 
-            // lastInFileDtTmDataGridViewTextBoxColumn
-            // 
-            this.lastInFileDtTmDataGridViewTextBoxColumn.DataPropertyName = "LastInFileDtTm";
-            this.lastInFileDtTmDataGridViewTextBoxColumn.HeaderText = "LastInFileDtTm";
-            this.lastInFileDtTmDataGridViewTextBoxColumn.Name = "lastInFileDtTmDataGridViewTextBoxColumn";
-            this.lastInFileDtTmDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // lastMatchingDtTmDataGridViewTextBoxColumn
-            // 
-            this.lastMatchingDtTmDataGridViewTextBoxColumn.DataPropertyName = "LastMatchingDtTm";
-            this.lastMatchingDtTmDataGridViewTextBoxColumn.HeaderText = "LastMatchingDtTm";
-            this.lastMatchingDtTmDataGridViewTextBoxColumn.Name = "lastMatchingDtTmDataGridViewTextBoxColumn";
-            this.lastMatchingDtTmDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // processModeDataGridViewTextBoxColumn
-            // 
-            this.processModeDataGridViewTextBoxColumn.DataPropertyName = "ProcessMode";
-            this.processModeDataGridViewTextBoxColumn.HeaderText = "ProcessMode";
-            this.processModeDataGridViewTextBoxColumn.Name = "processModeDataGridViewTextBoxColumn";
-            this.processModeDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // reconcCategoryVsSourceFilesBindingSource1
-            // 
-            this.reconcCategoryVsSourceFilesBindingSource1.DataMember = "ReconcCategoryVsSourceFiles";
-            this.reconcCategoryVsSourceFilesBindingSource1.DataSource = this.aTMSDataSet66;
-            // 
-            // aTMSDataSet66
-            // 
-            this.aTMSDataSet66.DataSetName = "ATMSDataSet66";
-            this.aTMSDataSet66.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // labelSelectedMatch
             // 
@@ -626,7 +541,7 @@
             // labelUpper
             // 
             this.labelUpper.AutoSize = true;
-            this.labelUpper.Location = new System.Drawing.Point(204, 283);
+            this.labelUpper.Location = new System.Drawing.Point(271, 283);
             this.labelUpper.Name = "labelUpper";
             this.labelUpper.Size = new System.Drawing.Size(36, 13);
             this.labelUpper.TabIndex = 6;
@@ -634,7 +549,7 @@
             // 
             // textBoxTo
             // 
-            this.textBoxTo.Location = new System.Drawing.Point(244, 280);
+            this.textBoxTo.Location = new System.Drawing.Point(311, 280);
             this.textBoxTo.Name = "textBoxTo";
             this.textBoxTo.Size = new System.Drawing.Size(66, 20);
             this.textBoxTo.TabIndex = 5;
@@ -642,7 +557,7 @@
             // labelLow
             // 
             this.labelLow.AutoSize = true;
-            this.labelLow.Location = new System.Drawing.Point(208, 256);
+            this.labelLow.Location = new System.Drawing.Point(275, 256);
             this.labelLow.Name = "labelLow";
             this.labelLow.Size = new System.Drawing.Size(27, 13);
             this.labelLow.TabIndex = 4;
@@ -650,7 +565,7 @@
             // 
             // textBoxFrom
             // 
-            this.textBoxFrom.Location = new System.Drawing.Point(244, 253);
+            this.textBoxFrom.Location = new System.Drawing.Point(311, 253);
             this.textBoxFrom.Name = "textBoxFrom";
             this.textBoxFrom.Size = new System.Drawing.Size(64, 20);
             this.textBoxFrom.TabIndex = 3;
@@ -659,7 +574,6 @@
             // 
             this.dataGridView4.AllowUserToAddRows = false;
             this.dataGridView4.AllowUserToDeleteRows = false;
-            this.dataGridView4.AutoGenerateColumns = false;
             this.dataGridView4.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
@@ -670,17 +584,6 @@
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView4.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView4.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.seqNoDataGridViewTextBoxColumn2,
-            this.categoryIdDataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn4,
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn5,
-            this.dataGridViewTextBoxColumn6,
-            this.dataGridViewTextBoxColumn7});
-            this.dataGridView4.DataSource = this.reconcCategoryStageVsMatchingFieldsBindingSource1;
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
@@ -707,82 +610,6 @@
             this.dataGridView4.Size = new System.Drawing.Size(439, 220);
             this.dataGridView4.TabIndex = 2;
             this.dataGridView4.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView4_RowEnter);
-            // 
-            // seqNoDataGridViewTextBoxColumn2
-            // 
-            this.seqNoDataGridViewTextBoxColumn2.DataPropertyName = "SeqNo";
-            this.seqNoDataGridViewTextBoxColumn2.HeaderText = "SeqNo";
-            this.seqNoDataGridViewTextBoxColumn2.Name = "seqNoDataGridViewTextBoxColumn2";
-            this.seqNoDataGridViewTextBoxColumn2.ReadOnly = true;
-            this.seqNoDataGridViewTextBoxColumn2.Width = 70;
-            // 
-            // categoryIdDataGridViewTextBoxColumn1
-            // 
-            this.categoryIdDataGridViewTextBoxColumn1.DataPropertyName = "CategoryId";
-            this.categoryIdDataGridViewTextBoxColumn1.HeaderText = "CategoryId";
-            this.categoryIdDataGridViewTextBoxColumn1.Name = "categoryIdDataGridViewTextBoxColumn1";
-            this.categoryIdDataGridViewTextBoxColumn1.ReadOnly = true;
-            this.categoryIdDataGridViewTextBoxColumn1.Width = 70;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.DataPropertyName = "MatchingField";
-            this.dataGridViewTextBoxColumn4.HeaderText = "MatchingField";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            this.dataGridViewTextBoxColumn4.Width = 80;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "Stage";
-            this.dataGridViewTextBoxColumn1.HeaderText = "Stage";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "SourceFileNameA";
-            this.dataGridViewTextBoxColumn2.HeaderText = "SourceFileNameA";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.DataPropertyName = "SourceFileNameB";
-            this.dataGridViewTextBoxColumn3.HeaderText = "SourceFileNameB";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.DataPropertyName = "MatchingOperator";
-            this.dataGridViewTextBoxColumn5.HeaderText = "MatchingOperator";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.DataPropertyName = "LowVarianceAmount";
-            this.dataGridViewTextBoxColumn6.HeaderText = "LowVarianceAmount";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.DataPropertyName = "UpperVarianceAmount";
-            this.dataGridViewTextBoxColumn7.HeaderText = "UpperVarianceAmount";
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            // 
-            // reconcCategoryStageVsMatchingFieldsBindingSource1
-            // 
-            this.reconcCategoryStageVsMatchingFieldsBindingSource1.DataMember = "ReconcCategoryStageVsMatchingFields";
-            this.reconcCategoryStageVsMatchingFieldsBindingSource1.DataSource = this.aTMSDataSet67;
-            // 
-            // aTMSDataSet67
-            // 
-            this.aTMSDataSet67.DataSetName = "ATMSDataSet67";
-            this.aTMSDataSet67.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // tableLayoutPanel2
             // 
@@ -1012,29 +839,27 @@
             this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1008, 80);
             this.tableLayoutPanelHeader.TabIndex = 269;
             // 
-            // reconcCategoryVsSourceFilesTableAdapter1
+            // radioButtonForCredit
             // 
-            this.reconcCategoryVsSourceFilesTableAdapter1.ClearBeforeFill = true;
+            this.radioButtonForCredit.AutoSize = true;
+            this.radioButtonForCredit.Location = new System.Drawing.Point(717, 45);
+            this.radioButtonForCredit.Name = "radioButtonForCredit";
+            this.radioButtonForCredit.Size = new System.Drawing.Size(100, 17);
+            this.radioButtonForCredit.TabIndex = 410;
+            this.radioButtonForCredit.TabStop = true;
+            this.radioButtonForCredit.Text = "Rules For Credit";
+            this.radioButtonForCredit.UseVisualStyleBackColor = true;
             // 
-            // reconcCategoryStageVsMatchingFieldsTableAdapter1
+            // radioButtonForDebit
             // 
-            this.reconcCategoryStageVsMatchingFieldsTableAdapter1.ClearBeforeFill = true;
-            // 
-            // buttonShowMetaIds
-            // 
-            this.buttonShowMetaIds.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonShowMetaIds.FlatAppearance.BorderSize = 2;
-            this.buttonShowMetaIds.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonShowMetaIds.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonShowMetaIds.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonShowMetaIds.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonShowMetaIds.Location = new System.Drawing.Point(692, 99);
-            this.buttonShowMetaIds.Name = "buttonShowMetaIds";
-            this.buttonShowMetaIds.Size = new System.Drawing.Size(93, 24);
-            this.buttonShowMetaIds.TabIndex = 365;
-            this.buttonShowMetaIds.Text = "Show Options";
-            this.buttonShowMetaIds.UseVisualStyleBackColor = true;
-            this.buttonShowMetaIds.Click += new System.EventHandler(this.buttonShowMetaIds_Click);
+            this.radioButtonForDebit.AutoSize = true;
+            this.radioButtonForDebit.Location = new System.Drawing.Point(614, 45);
+            this.radioButtonForDebit.Name = "radioButtonForDebit";
+            this.radioButtonForDebit.Size = new System.Drawing.Size(98, 17);
+            this.radioButtonForDebit.TabIndex = 409;
+            this.radioButtonForDebit.TabStop = true;
+            this.radioButtonForDebit.Text = "Rules For Debit";
+            this.radioButtonForDebit.UseVisualStyleBackColor = true;
             // 
             // Form502b
             // 
@@ -1055,13 +880,9 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.reconcCategoryVsSourceFilesBindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet66)).EndInit();
             this.panelSelectFields.ResumeLayout(false);
             this.panelSelectFields.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.reconcCategoryStageVsMatchingFieldsBindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet67)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
@@ -1134,33 +955,10 @@
         private System.Windows.Forms.Label labelFileId;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBoxTargetSystem;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label labelUserId;
         private System.Windows.Forms.Label label1;
-        private ATMSDataSet66 aTMSDataSet66;
-        private System.Windows.Forms.BindingSource reconcCategoryVsSourceFilesBindingSource1;
-        private ATMSDataSet66TableAdapters.ReconcCategoryVsSourceFilesTableAdapter reconcCategoryVsSourceFilesTableAdapter1;
-        private ATMSDataSet67 aTMSDataSet67;
-        private System.Windows.Forms.BindingSource reconcCategoryStageVsMatchingFieldsBindingSource1;
-        private ATMSDataSet67TableAdapters.ReconcCategoryStageVsMatchingFieldsTableAdapter reconcCategoryStageVsMatchingFieldsTableAdapter1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn seqNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn categoryIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sourceFileNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastInFileDtTmDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastMatchingDtTmDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn processModeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn seqNoDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn categoryIdDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataGridView dataGridView1;
@@ -1175,5 +973,7 @@
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button buttonShowMetaIds;
+        private System.Windows.Forms.RadioButton radioButtonForCredit;
+        private System.Windows.Forms.RadioButton radioButtonForDebit;
     }
 }

@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMHostMatchingClassGeneralLedger
+    public class RRDMHostMatchingClassGeneralLedger : Logger
     {
+        public RRDMHostMatchingClassGeneralLedger() : base() { }
+
         public int PostedNo;
         public int TranOrigin;
 
@@ -227,11 +223,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostMatching General Ledger ............. " + ex.Message;
-                    //  log4net.Config.XmlConfigurator.Configure();
-                    //  RRDM4ATMsWin.Log.ProcessException(ex, "TransClass.cs",
-                    //                                               "UpdateTransToBePostedAction1");
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -281,11 +274,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostMatching General Ledger ............. " + ex.Message;
-                    //  log4net.Config.XmlConfigurator.Configure();
-                    //  RRDM4ATMsWin.Log.ProcessException(ex, "TransClass.cs",
-                    //                                               "UpdateTransToBePostedAction1");
+
+                    CatchDetails(ex);
                 }
         }
         public void AddWorkdays(DateTime originalDate, int workDays, string InHolidaysVersion)
@@ -327,11 +317,9 @@ namespace RRDM4ATMs
                     {
                         cmd.Parameters.AddWithValue("@BankSwiftId", InPostedNo);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                       
+                        cmd.ExecuteNonQuery();
+                       
 
                     }
                     // Close conn
@@ -340,8 +328,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in HostMatching General Ledger ............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }    

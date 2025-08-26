@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
-using System.Configuration;
+using RRDM4ATMs;
 //multilingual
-using System.Resources;
-using System.Globalization;
 
 namespace RRDM4ATMsWin
 {
@@ -20,19 +11,26 @@ namespace RRDM4ATMsWin
     {
         RRDMGasParameters Gp = new RRDMGasParameters();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         RRDMComboClass Cc = new RRDMComboClass();
+
+        RRDMCaseNotes Cn = new RRDMCaseNotes();
+
+        // NOTES 
+        string Order;
+        string WParameter4;
+        string WSearchP4;
 
         string WParamId;
         string WParamNm;
         decimal EnteredAmount;
 
-        bool InternalChange; 
+        bool InternalChange;
 
-        int WComboIndex; 
+        int WComboIndex;
 
-        bool ValidationPassed; 
+        bool ValidationPassed;
 
         int WRefKey;
         int WRow;
@@ -40,10 +38,10 @@ namespace RRDM4ATMsWin
 
         string WSignedId;
         int WSignRecordNo;
-        int WSecLevel;
+        string WSecLevel;
         string WOperator;
-     //   bool WPrive;
-        public Form191(string InSignedId, int InSignRecordNo, int InSecLevel, string InOperator)
+        //   bool WPrive;
+        public Form191(string InSignedId, int InSignRecordNo, string InSecLevel, string InOperator)
         {
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
@@ -52,8 +50,18 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             label18.Text = WOperator;
 
@@ -61,46 +69,47 @@ namespace RRDM4ATMsWin
             comboBox2.DataSource = Cc.GetBanksIds(WOperator);
             comboBox2.DisplayMember = "DisplayValue";
 
-        
 
-            textBoxMsgBoard.Text = "For new change the parameter id to requested id and press Add. For maintenance use grid or comboBox. "; 
 
-            if (WSecLevel == 9)
+            textBoxMsgBoard.Text = "For new change the parameter id to requested id and press Add. For maintenance use grid or comboBox. ";
+
+            if (WSecLevel == "09")
             {
                 panel5.Show();
                 textBox10.Text = "ModelBak";
                 label19.Show();
-                comboBox3.Show(); 
+                comboBox3.Show();
             }
             else
             {
                 panel5.Hide();
                 label19.Hide();
-                comboBox3.Hide(); 
+                comboBox3.Hide();
             }
         }
 
         private void Form191_Load(object sender, EventArgs e)
         {
             // TODO: This line of code loads data into the 'aTMSDataSet55.GasParameters' table. You can move, or remove it, as needed.
-            
+
             // TODO: This line of code loads data into the 'aTMSDataSet15.GasParameters' table. You can move, or remove it, as needed.
-           
+
             //Tablefilter = "Operator ='" + WOperator + "' AND OpenRecord = 1";
             //gasParametersBindingSource.Filter = Tablefilter;
-          
+
             //this.gasParametersTableAdapter.Fill(this.aTMSDataSet55.GasParameters);
 
             //dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
-          
+
 
             // LOAD COMBO BOX
             comboBox1.DataSource = Gp.GetParametersList2(WOperator);
             comboBox1.DisplayMember = "DisplayValue";
 
-      //      int WComboIndex = comboBox1.SelectedIndex;
+            //      int WComboIndex = comboBox1.SelectedIndex;
 
-            comboBox1.SelectedIndex = WComboIndex; 
+            comboBox1.SelectedIndex = WComboIndex;
+
 
             // *******************************************************************
             // LOAD SPECIALS 
@@ -127,7 +136,7 @@ namespace RRDM4ATMsWin
             ParId = "260";
             OccurId = "1";
             Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
-                                
+
             if (Gp.OccuranceNm == "YES")
             {
                 checkBoxAuthorDisput.Checked = true;
@@ -178,7 +187,7 @@ namespace RRDM4ATMsWin
             {
                 checkBoxGoogleLicence.Checked = false;
             }
-            
+
             // Load Active Directory Mode 
             ParId = "264";
             OccurId = "1";
@@ -194,7 +203,7 @@ namespace RRDM4ATMsWin
                 checkBoxActiveDirectory.Checked = false;
             }
 
-           
+
 
         }
         // ON ROW ENTER 
@@ -209,14 +218,41 @@ namespace RRDM4ATMsWin
             WParamId = Gp.ParamId;
             WParamNm = Gp.ParamNm;
 
-            textBox3.Text = Gp.ParamId.ToString();
-            comboBox2.Text = Gp.BankId; 
+            textBoxParId.Text = Gp.ParamId.ToString();
+            comboBox2.Text = Gp.BankId;
             textBox4.Text = Gp.ParamNm;
             textBox5.Text = Gp.OccuranceId;
             textBox6.Text = Gp.OccuranceNm;
-            textBox7.Text = Gp.Amount.ToString("#,##0.00");
+            textBox7.Text = Gp.Amount.ToString("#,##0.0000");
             textBox8.Text = Gp.RelatedParmId;
             textBox9.Text = Gp.RelatedOccuranceId;
+
+            if (Gp.RelatedParmId != "")
+            {
+                textBox11.Text = Gp.GetParamOccurancesRelatedNm(WOperator, Gp.RelatedParmId, Gp.RelatedOccuranceId);
+
+                // REFRESH INITIAL 
+                Gp.ReadParametersByRefKey(WOperator, WRefKey);
+                label22.Show();
+                textBox11.Show();
+            }
+            else
+            {
+                label22.Hide();
+                textBox11.Hide();
+            }
+
+
+            // NOTES for final comment 
+            Order = "Descending";
+            WParameter4 = "Parameter Id:" + Gp.ParamId.ToString() + " Occurance Id: " + Gp.OccuranceId;
+            WSearchP4 = "";
+            Cn.ReadAllNotes(WParameter4, WSignedId, Order, WSearchP4);
+            if (Cn.RecordFound == true)
+            {
+                labelNumberNotes.Text = Cn.TotalNotes.ToString();
+            }
+            else labelNumberNotes.Text = "0";
 
         }
         // UPDATE LINE  
@@ -224,26 +260,29 @@ namespace RRDM4ATMsWin
         {
             WRow = dataGridView1.SelectedRows[0].Index;
 
-            if (WSecLevel != Gp.AccessLevel)
-            {
-                MessageBox.Show("Your access level does not allow to update this parameter");
-                return;
-            }
+            string OldParamNm = Gp.ParamNm;
 
             // Validate Input and get numeric values 
             ValidateInput(); // Validate Input and get numeric values 
             if (ValidationPassed == false) return;
 
             Gp.BankId = comboBox2.Text;
-            Gp.ParamId = textBox3.Text;
-            Gp.ParamNm = textBox4.Text;
-            Gp.OccuranceId = textBox5.Text;
-            Gp.OccuranceNm = textBox6.Text;
+            Gp.ParamId = textBoxParId.Text.Trim();
+            Gp.ParamNm = textBox4.Text.Trim();
+            Gp.OccuranceId = textBox5.Text.Trim();
+            Gp.OccuranceNm = (textBox6.Text).Trim();
             Gp.Amount = EnteredAmount;
-            Gp.RelatedParmId = textBox8.Text;
-            Gp.RelatedOccuranceId = textBox9.Text;
+            Gp.RelatedParmId = textBox8.Text.Trim();
+            Gp.RelatedOccuranceId = textBox9.Text.Trim();
+
+            
 
             Gp.UpdateGasParamByKey(WOperator, WRefKey);
+
+            if (OldParamNm.Trim() != Gp.ParamNm) // Name has been changed FOR ALL
+            {
+                Gp.UpdateGasParamByParamId(WOperator, Gp.ParamId);
+            }
 
             ShowFilter();
 
@@ -253,25 +292,25 @@ namespace RRDM4ATMsWin
         // ADD NEW 
         private void button2_Click(object sender, EventArgs e)
         {
-          
+
             // Validate Input and get numeric values
- 
+
             ValidateInput(); // Validate Input and get numeric values 
             if (ValidationPassed == false) return;
 
 
-            if (textBox1.Text == "")
+            if (textBoxNewPar.Text == "")
             {
-                Gp.ParamId = textBox3.Text;
-                
+                Gp.ParamId = textBoxParId.Text;
+
             }
             else
             {
                 // This is new
 
-                Gp.ParamId = textBox1.Text;
+                Gp.ParamId = textBoxNewPar.Text;
             }
-            
+
 
             Gp.BankId = comboBox2.Text;
 
@@ -280,24 +319,24 @@ namespace RRDM4ATMsWin
 
             if (Gp.RecordFound)
             {
-                if (WSecLevel != Gp.AccessLevel)
-                {
-                    MessageBox.Show("Your access level does not allow to add this parameter");
-                    return;
-                }
+                //if (WSecLevel != Gp.AccessLevel)
+                //{
+                //    MessageBox.Show("Your access level does not allow to add this parameter");
+                //    return;
+                //}
             }
 
-            Gp.ParamNm = textBox4.Text;
-            Gp.OccuranceId = textBox5.Text;
-          
-            Gp.OccuranceNm = textBox6.Text;
-            Gp.Amount = EnteredAmount;
-            Gp.RelatedParmId = textBox8.Text;
-            Gp.RelatedOccuranceId = textBox9.Text; 
-            Gp.Operator = WOperator;
-            Gp.AccessLevel = WSecLevel; 
+            Gp.ParamNm = textBox4.Text.Trim();
+            Gp.OccuranceId = textBox5.Text.Trim();
 
-            Gp.ReadParametersSpecificParmAndOccurance(WOperator, Gp.ParamId, Gp.OccuranceId); 
+            Gp.OccuranceNm = (textBox6.Text).Trim();
+            Gp.Amount = EnteredAmount;
+            Gp.RelatedParmId = textBox8.Text.Trim();
+            Gp.RelatedOccuranceId = textBox9.Text.Trim();
+            Gp.Operator = WOperator;
+            Gp.AccessLevel = 6;
+
+            Gp.ReadParametersSpecificParmAndOccurance(WOperator, Gp.ParamId, Gp.OccuranceId, Gp.RelatedParmId, Gp.RelatedOccuranceId);
             if (Gp.RecordFound == true & Gp.OpenRecord == true)
             {
                 MessageBox.Show("Parameter and Occurance Already in Data Base");
@@ -305,54 +344,52 @@ namespace RRDM4ATMsWin
             }
             else Gp.InsertGasParam(WOperator, Gp.ParamId, Gp.OccuranceId);
 
-            InternalChange = true; 
+            InternalChange = true;
             comboBox1.DataSource = Gp.GetParametersList2(WOperator); // Refresh to get new
             comboBox1.DisplayMember = "DisplayValue";
             //
             // Re -initialise
             //
-            if (textBox1.Text == "")
+            if (textBoxNewPar.Text == "")
             {
-                Gp.ParamId = textBox3.Text;
+                Gp.ParamId = textBoxParId.Text;
 
             }
             else
             {
                 // This is new
 
-                Gp.ParamId = textBox1.Text;
+                Gp.ParamId = textBoxNewPar.Text;
             }
-            Gp.ParamNm = textBox4.Text;
+            Gp.ParamNm = textBox4.Text.Trim();
 
             comboBox1.Text = Gp.ParamId + " " + Gp.ParamNm;
 
             ShowFilter(); // Our method 
 
-            textBox1.Text = ""; 
+            textBoxNewPar.Text = "";
 
             // Initialise internal change 
-            InternalChange = false; 
+            InternalChange = false;
 
         }
 
         // DELETE 
         private void button4_Click(object sender, EventArgs e)
         {
-           
+
             if (MessageBox.Show("Warning: Do you want to delete this parameter occurance?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
                              == DialogResult.Yes)
             {
                 Gp.ReadParametersByRefKey(WOperator, WRefKey);
 
-                if (WSecLevel != Gp.AccessLevel )
-                {
-                    MessageBox.Show("Your access level does not allow to delete this parameter");
-                    return;
-                }
+                //if (WSecLevel != Gp.AccessLevel )
+                //{
+                //    MessageBox.Show("Your access level does not allow to delete this parameter");
+                //    return;
+                //}
 
-                Gp.OpenRecord = false; 
-
-                Gp.UpdateGasParamByKey(WOperator, WRefKey);
+                Gp.DeleteParameterEntryByRefKey(WRefKey);
 
                 InternalChange = true;
                 comboBox1.DataSource = Gp.GetParametersList2(WOperator); // Refresh to get new
@@ -361,16 +398,16 @@ namespace RRDM4ATMsWin
                 //
                 // Re -initialise
                 //
-                if (textBox1.Text == "")
+                if (textBoxNewPar.Text == "")
                 {
-                    Gp.ParamId = textBox3.Text;
+                    Gp.ParamId = textBoxParId.Text;
 
                 }
                 else
                 {
                     // This is new
 
-                    Gp.ParamId = textBox1.Text;
+                    Gp.ParamId = textBoxNewPar.Text;
                 }
                 Gp.ParamNm = textBox4.Text;
 
@@ -378,15 +415,15 @@ namespace RRDM4ATMsWin
 
                 ShowFilter(); // Our method 
 
-                textBox1.Text = "";
+                textBoxNewPar.Text = "";
 
                 // Initialise internal change 
-                InternalChange = false; 
+                InternalChange = false;
             }
             else
             {
             }
-            
+
         }
 
         // Show for specific parameter 
@@ -401,11 +438,11 @@ namespace RRDM4ATMsWin
                 Tablefilter = "Operator ='" + WOperator + "' AND OpenRecord = 1";
             }
             else Tablefilter = "Operator ='" + WOperator + "' AND ParamId ='" + TempParam + "' AND OpenRecord = 1";
-         //   else Tablefilter = "Operator ='" + WOperator + "' AND ParamId ='" + WParamId + "'";
+            //   else Tablefilter = "Operator ='" + WOperator + "' AND ParamId ='" + WParamId + "'";
 
             gasParametersBindingSource.Filter = Tablefilter;
 
-      
+
 
             this.gasParametersTableAdapter.Fill(this.aTMSDataSet55.GasParameters);
 
@@ -430,7 +467,7 @@ namespace RRDM4ATMsWin
                 //InternalChange = false; 
 
                 // Save combo Index 
-                WComboIndex = 0 ;
+                WComboIndex = 0;
                 // Reload 
                 //
                 Form191_Load(this, new EventArgs());
@@ -441,7 +478,7 @@ namespace RRDM4ATMsWin
         // Input Validation 
         private void ValidateInput()
         {
-            ValidationPassed = true; 
+            ValidationPassed = true;
 
             if (decimal.TryParse(textBox7.Text, out EnteredAmount))
             {
@@ -449,23 +486,38 @@ namespace RRDM4ATMsWin
             else
             {
                 MessageBox.Show(textBox7.Text, "Please enter a valid Amount!");
-                ValidationPassed = false; 
+                ValidationPassed = false;
+                return;
+            }
+
+            if (textBoxParId.Text.Trim() == "853" & textBox5.Text.Trim() == "5" & EnteredAmount < 70)
+            {
+                MessageBox.Show("The HST Entered Amount is less than 70 days. "+ Environment.NewLine
+                    +"This is not allowed");
+                ValidationPassed = false;
                 return;
             }
 
             // Check existance of Ralated Parameter if inputed 
             if (textBox8.Text != "" || textBox9.Text != "")
             {
-                Gp.ReadParametersSpecificParmAndOccurance(comboBox2.Text, textBox8.Text, textBox9.Text);
+                textBox11.Text = Gp.GetParamOccurancesRelatedNm(WOperator, textBox8.Text, textBox9.Text);
                 if (Gp.RecordFound == false)
                 {
                     MessageBox.Show("Related Parameters + Occurance do not exist ");
-                    ValidationPassed = false; 
+                    ValidationPassed = false;
+                    label22.Hide();
+                    textBox11.Hide();
                     return;
-                } 
+                }
+                else
+                {
+                    label22.Show();
+                    textBox11.Show();
+                }
             }
-            
-            
+
+
         }
 
         // UPDATE Specials 
@@ -494,6 +546,24 @@ namespace RRDM4ATMsWin
             }
 
             Gp.UpdateGasParamByKey(Gp.Operator, Gp.RefKey);
+            // AND DO THIS PARAMETER TOO
+            // CASH MANAGEMENT BEFORE REPLENISHEMENT
+            ParId = "211";
+            OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+
+            if (checkBoxCash.Checked == true)
+            {
+                // Gp.OccuranceNm = "YES";
+            }
+            else
+            {
+                Gp.OccuranceNm = "NO";
+            }
+
+            Gp.UpdateGasParamByKey(Gp.Operator, Gp.RefKey);
+
+
 
             // Dispute ELECTRONIC AUTHORISATION - Dispute 
             ParId = "260";
@@ -541,7 +611,7 @@ namespace RRDM4ATMsWin
                 Gp.OccuranceNm = "NO";
             }
 
-            Gp.UpdateGasParamByKey(Gp.Operator, Gp.RefKey); 
+            Gp.UpdateGasParamByKey(Gp.Operator, Gp.RefKey);
 
             // Update Goodle Licence 
             ParId = "263";
@@ -571,11 +641,11 @@ namespace RRDM4ATMsWin
             else
             {
                 Gp.OccuranceNm = "NO";
-              
+
             }
 
             Gp.UpdateGasParamByKey(Gp.Operator, Gp.RefKey);
-            
+
 
             // Reload 
             //
@@ -602,7 +672,7 @@ namespace RRDM4ATMsWin
             {
                 ShowFilter();
             }
-            
+
 
         }
         // ACTION ALLOW ONLY TO GRAND MASTER 
@@ -615,22 +685,176 @@ namespace RRDM4ATMsWin
 
             if (Gp.RecordFound == false)
             {
-                MessageBox.Show("Parameters of BankA : " + BankA + " Not found.. check bank name" );  
+                MessageBox.Show("Parameters of BankA : " + BankA + " Not found.. check bank name");
             }
             else
             {
-                MessageBox.Show("Parameters of BankA : " + BankA + " Have been copied to BankB : " + BankB) ;  
-            }         
+                MessageBox.Show("Parameters of BankA : " + BankA + " Have been copied to BankB : " + BankB);
+            }
 
         }
+        // NOTES button 
+        private void buttonNotes_Click(object sender, EventArgs e)
+        {
+            Form197 NForm197;
+            string WParameter3 = "Parameters";
+            string WParameter4 = WParameter4 = "Parameter Id:" + Gp.ParamId.ToString() + " Occurance Id: " + Gp.OccuranceId;
+            string SearchP4 = "";
+            //if (ViewWorkFlow == true) WMode = "Read";
+            string WMode = "Update";
+            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, "", WParameter3, WParameter4, WMode, SearchP4);
+            NForm197.ShowDialog();
 
+            // NOTES for final comment 
+            Order = "Descending";
+            WParameter4 = "Parameter Id:" + Gp.ParamId.ToString() + " Occurance Id: " + Gp.OccuranceId;
+            WSearchP4 = "";
+            Cn.ReadAllNotes(WParameter4, WSignedId, Order, WSearchP4);
+            if (Cn.RecordFound == true)
+            {
+                labelNumberNotes.Text = Cn.TotalNotes.ToString();
+            }
+            else labelNumberNotes.Text = "0";
+
+        }
         // FINISH 
-      
+
         private void buttonFinish_Click(object sender, EventArgs e)
         {
             this.Dispose();
         }
+        // Excel
+        private void buttonExcel_Click(object sender, EventArgs e)
+        {
+            // Folder, where a file is created.
+            // Make sure to change this folder to your own folder 
 
-     
+            //string someText = "C# Corner is a community of software and data developers";
+            //File.WriteAllText(@"C:\Temp\csc.txt", someText);
+            //// Read a file  
+            //string readText = File.ReadAllText(@"C:\Temp\csc.txt");
+            //Console.WriteLine(readText);
+            //string folder = @"C:\Temp\";
+            //return; 
+            //// Filename  
+            //string fileName = "CSharpCornerAuthors.txt";
+            //// Fullpath. You can direct hardcode it if you like.  
+            //string fullPath = folder + fileName;
+            //// An array of strings  
+            //string[] authors = {"Mahesh Chand", "Allen O'Neill", "David McCarter",
+            //             "Raj Kumar", "Dhananjay Kumar"};
+            //// Write array of strings to a file using WriteAllLines.  
+            //// If the file does not exists, it will create a new file.  
+            //// This method automatically opens the file, writes to it, and closes file  
+            //File.WriteAllLines(fullPath, authors);
+            //// Read a file  
+            //readText = File.ReadAllText(fullPath);
+            //Console.WriteLine(readText);
+            //return;
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            Gp.ReadParametersAndFillDataTable(WOperator, WSignedId);
+
+            RRDM_EXCEL_AND_Directories XL = new RRDM_EXCEL_AND_Directories();
+
+            // string ExcelPath = "C:\\_KONTO\\CreateXL\\Files_" + DateTime.Now + ".xls";
+            string ExcelDATE = DateTime.Now.Year.ToString()
+                       + DateTime.Now.Month.ToString()
+                       + DateTime.Now.Day.ToString()
+                       + "_"
+                       + DateTime.Now.Hour.ToString()
+                        + DateTime.Now.Minute.ToString()
+                        + DateTime.Now.Second.ToString()
+                        ;
+
+            string ExcelPath;
+            string WorkingDir;
+
+          
+
+            ExcelPath = "C:\\RRDM\\W_New_Parameters_Loading\\ALL_Parameters.xls";
+            WorkingDir = "C:\\RRDM\\W_New_Parameters_Loading\\";
+            XL.ExportToExcel(Gp.DataTableAllParameters, WorkingDir, ExcelPath);
+
+          
+
+        }
+        // Copy from Text
+        private void buttonCopyFromText_Click(object sender, EventArgs e)
+        {
+
+
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string FullPath = "C:\\RRDM\\W_New_Parameters_Loading\\ALL_Parameters.txt";
+
+            // FIND FULL FILE PATH
+
+            string WFullPath_01 = "";
+
+            string[] specificFiles = Directory.GetFiles("C:\\RRDM\\W_New_Parameters_Loading");
+
+            if (specificFiles == null || specificFiles.Length == 0)
+            {
+                MessageBox.Show("No such a text file in the directory...");
+
+                return;
+            }
+            bool FileFound = false;
+            foreach (string file in specificFiles)
+            {
+                //int FileLen = file.Length;
+                long length = new System.IO.FileInfo(file).Length;
+                if (length < 150)
+                {
+                    File.Delete(file);
+                    continue;
+                }
+                if (file == FullPath)
+                {
+                    FileFound = true;
+                }
+            }
+            if (FileFound)
+            {
+                // OK 
+            }
+            else
+            {
+                MessageBox.Show("Not the proper file in Directory");
+                return;
+            }
+            Gp.MoveParametersFromUAT_To_Production(WOperator, FullPath);
+        }
+// Create Text File 
+        private void buttonCreateTEXT_File_Click(object sender, EventArgs e)
+        {
+
+            string OutputFileNm = Gp.CopyParameters_To_TEXT_Delimiter_File(WOperator, WSignedId);                                                                                               
+           
+            if (Gp.RecordFound == true)
+            {
+                MessageBox.Show("Tab delimeter file created as.." + OutputFileNm);
+                return;
+            }
+            else
+            {
+                MessageBox.Show("Tab delimeter was not created ");
+                return;
+            }
+        }
+// Parameter History
+        private void linkLabelHst_Par_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Form78d_FileRecords NForm78d_FileRecords;
+            
+            int WMode = 12; // ParamId
+                           // 
+                           // 
+         
+            string WTableId = "";
+            string WString = WParamId; 
+
+            NForm78d_FileRecords = new Form78d_FileRecords(WOperator, WSignedId, WTableId, WString, 0, "", WMode, false );
+            NForm78d_FileRecords.Show();
+        }
     }
 }

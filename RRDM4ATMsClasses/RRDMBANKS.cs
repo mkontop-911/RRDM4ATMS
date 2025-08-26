@@ -1,70 +1,157 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-//using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Data;
+using System.Collections;
 
 namespace RRDM4ATMs
 {
-    public class RRDMBanks
+    public class RRDMBanks : Logger
     {
-        public string BankSwiftId;
+        public RRDMBanks() : base() { }
 
-        public string ActiveDirectoryDM;
-        public string AdGroup; 
+        private string _BankId;
+        private string _ShortName;
+        private string _ActiveDirectoryDM;
+        private string _AdGroup;
 
-        public string BankName;
-        public string BankCountry;
+        private string _BankName;
+        private string _BankCountry;
 
-        public string GroupName; 
+        private string _GroupName;
 
-        public string BasicCurName;
+        private string _BasicCurName;
 
-        public DateTime DtTmCreated;
-        public bool UsingGAS;
+        private string _SettlementAccount;
+        private bool _SettlementBank;
+        private string _SettlementClearingAccount;
 
-        public int BanksInGroup;
+        private DateTime _DtTmCreated;
+        private bool _UsingGAS;
 
-        public byte[] Logo;
+        private int _BanksInGroup;
 
-        public DateTime LastMatchingDtTm; // This date is checked during sign in
-                                          // If Today is bigger then we run the matching process 
-                                          // of Trans to be posted with Host
+        private byte[] _Logo;
 
-        public string SenderEmail; // the Banks Sender email
-        public string SenderUserName;
-        public string SenderPassword;
-        public string SenderSmtpClient;
-        public int SenderPort; 
+        private DateTime _LastMatchingDtTm; // This date is checked during sign in
+                                            // If Today is bigger then we run the matching process 
+                                            // of Trans to be posted with Host
 
-        public string Operator; 
+        private string _SenderEmail; // the Banks Sender email
+        private string _SenderUserName;
+        private string _SenderPassword;
+        private string _SenderSmtpClient;
+        private int _SenderPort;
 
-        public int BanksWithOperator;
+        private string _Operator;
 
-        public bool RecordFound;
-        public bool ErrorFound;
-        public string ErrorOutput; 
+        private int _BanksWithOperator;
+
+        // Define the data table 
+        private DataTable _BanksDataTable;
+        private int _TotalSelected;
+
+        private bool _RecordFound;
+        private bool _ErrorFound;
+        private string _ErrorOutput;
 
         string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+                                  ["ATMSConnectionString"].ConnectionString;
+        // string connectionString;
+
+        public string BankId { get { return _BankId; } set { _BankId = value; } }
+        public string ShortName { get { return _ShortName; } set { _ShortName = value; } }
+        public string ActiveDirectoryDM { get { return _ActiveDirectoryDM; } set { _ActiveDirectoryDM = value; } }
+        public string AdGroup { get { return _AdGroup; } set { _AdGroup = value; } }
+        public string BankName { get { return _BankName; } set { _BankName = value; } }
+        public string BankCountry { get { return _BankCountry; } set { _BankCountry = value; } }
+        public string GroupName { get { return _GroupName; } set { _GroupName = value; } }
+        public string BasicCurName { get { return _BasicCurName; } set { _BasicCurName = value; } }
+        public string SettlementAccount { get { return _SettlementAccount; } set { _SettlementAccount = value; } }
+        public bool SettlementBank { get { return _SettlementBank; } set { _SettlementBank = value; } }
+        public string SettlementClearingAccount { get { return _SettlementClearingAccount; } set { _SettlementClearingAccount = value; } }
+        public DateTime DtTmCreated { get { return _DtTmCreated; } set { _DtTmCreated = value; } }
+        public bool UsingGAS { get { return _UsingGAS; } set { _UsingGAS = value; } }
+        public int BanksInGroup { get { return _BanksInGroup; } set { _BanksInGroup = value; } }
+        public byte[] Logo { get { return _Logo; } set { _Logo = value; } }
+        public DateTime LastMatchingDtTm { get { return _LastMatchingDtTm; } set { _LastMatchingDtTm = value; } }
+
+        public string SenderEmail { get { return _SenderEmail; } set { _SenderEmail = value; } }
+        public string SenderUserName { get { return _SenderUserName; } set { _SenderUserName = value; } }
+        public string SenderPassword { get { return _SenderPassword; } set { _SenderPassword = value; } }
+        public string SenderSmtpClient { get { return _SenderSmtpClient; } set { _SenderSmtpClient = value; } }
+        public int SenderPort { get { return _SenderPort; } set { _SenderPort = value; } }
+        public string Operator { get { return _Operator; } set { _Operator = value; } }
+
+
+        // The following do not have their values set. They are 'return' only properties
+        public int TotalSelected { get { return _TotalSelected; } }
+        public bool RecordFound { get { return _RecordFound; } }
+        public bool ErrorFound { get { return _ErrorFound; } }
+        public string ErrorOutput { get { return _ErrorOutput; } }
+        public DataTable BanksDataTable { get { return _BanksDataTable; } }
+
+       // public RRDMBanks()
+       // {
+       //     try
+       //     {
+       //         connectionString = ConfigurationManager.ConnectionStrings
+       //["ATMSConnectionString"].ConnectionString;
+       //     }
+       //     catch (Exception ex)
+       //     {
+       //         string msg = ex.Message;
+       //     }
+
+       // }
+
+
+        // Bank's Reader's fields 
+        private void BanksReaderFields(SqlDataReader rdr)
+        {
+            _BankId = (string)rdr["BankId"];
+            _ShortName = (string)rdr["ShortName"];
+            _ActiveDirectoryDM = (string)rdr["ActiveDirectoryDM"];
+            _AdGroup = (string)rdr["AdGroup"];
+
+            _BankName = (string)rdr["BankName"];
+            _BankCountry = (string)rdr["BankCountry"];
+
+            _GroupName = (string)rdr["GroupName"];
+
+            _BasicCurName = (string)rdr["BasicCurName"];
+
+            _SettlementAccount = (string)rdr["SettlementAccount"];
+            _SettlementBank = (bool)rdr["SettlementBank"];
+            _SettlementClearingAccount = (string)rdr["SettlementClearingAccount"];
+
+            _DtTmCreated = (DateTime)rdr["DtTmCreated"];
+            _UsingGAS = (bool)rdr["UsingGAS"];
+            _Logo = (byte[])rdr["Logo"];
+
+            _LastMatchingDtTm = (DateTime)rdr["LastMatchingDtTm"];
+
+            _SenderEmail = (string)rdr["SenderEmail"];
+            _SenderUserName = (string)rdr["SenderUserName"];
+            _SenderPassword = (string)rdr["SenderPassword"];
+            _SenderSmtpClient = (string)rdr["SenderSmtpClient"];
+            _SenderPort = (int)rdr["SenderPort"];
+
+            _Operator = (string)rdr["Operator"];
+        }
 
         // READ BANK 
 
-        public void ReadBank(string InBankSwiftId)
+        public void ReadBank(string InBankId)
         {
-            RecordFound = false;
-            ErrorFound = false;
-            ErrorOutput = ""; 
+            _RecordFound = false;
+            _ErrorFound = false;
+            _ErrorOutput = ""; 
 
             string SqlString = "SELECT *"
-          + " FROM [dbo].[BANKS] "
-          + " WHERE BankSwiftId = @BankSwiftId";
+                   + " FROM [dbo].[BANKS] "
+                   + " WHERE BankId = @BankId";
             using (SqlConnection conn =
                           new SqlConnection(connectionString))
                 try
@@ -73,7 +160,7 @@ namespace RRDM4ATMs
                     using (SqlCommand cmd =
                         new SqlCommand(SqlString, conn))
                     {
-                        cmd.Parameters.AddWithValue("@BankSwiftId", InBankSwiftId);
+                        cmd.Parameters.AddWithValue("@BankId", InBankId);
 
                         // Read table 
 
@@ -81,33 +168,208 @@ namespace RRDM4ATMs
 
                         while (rdr.Read())
                         {
-                            RecordFound = true;
+                            _RecordFound = true;
 
                             // Read Bank Details
-                            BankSwiftId = (string)rdr["BankSwiftId"];
+                            BanksReaderFields(rdr);
 
-                            ActiveDirectoryDM = (string)rdr["ActiveDirectoryDM"];
-                            AdGroup = (string)rdr["AdGroup"];
-                
-                            BankName = (string)rdr["BankName"];
-                            BankCountry = (string)rdr["BankCountry"];
-                            
-                            GroupName = (string)rdr["GroupName"];
-                            BasicCurName = (string)rdr["BasicCurName"];
-                            DtTmCreated = (DateTime)rdr["DtTmCreated"];
-                            UsingGAS = (bool)rdr["UsingGAS"];
-                            Logo = (byte[])rdr["Logo"];
+                        }
 
-                            LastMatchingDtTm = (DateTime)rdr["LastMatchingDtTm"];
+                        // Close Reader
+                        rdr.Close();
+                    }
 
-                            SenderEmail = (string)rdr["SenderEmail"];
-                            SenderUserName = (string)rdr["SenderUserName"];
-                            SenderPassword = (string)rdr["SenderPassword"];
-                            SenderSmtpClient = (string)rdr["SenderSmtpClient"];
-                            SenderPort = (int)rdr["SenderPort"];
-                            
-                            Operator = (string)rdr["Operator"];
-                                               
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+        }
+
+
+        // READ BANK by short name  
+
+        public void ReadBankByShortName(string InShortName)
+        {
+            _RecordFound = false;
+            _ErrorFound = false;
+            _ErrorOutput = "";
+
+            string SqlString = "SELECT *"
+          + " FROM [dbo].[BANKS] "
+          + " WHERE ShortName = @ShortName";
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ShortName", InShortName);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            _RecordFound = true;
+
+                            // Read Bank Details
+                            BanksReaderFields(rdr);
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+        }
+
+        // READ BANK by short name  
+
+        public void ReadBankToGetName(int InMode)
+        {
+            _RecordFound = false;
+            _ErrorFound = false;
+            _ErrorOutput = "";
+
+            string SqlString = "SELECT Top (1) *"
+          + " FROM [dbo].[BANKS] "
+          + "  ";
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            _RecordFound = true;
+
+                            // Read Bank Details
+                            BanksReaderFields(rdr);
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    _ErrorFound = true;
+                  
+                    CatchDetails(ex);
+
+                }
+          
+        }
+
+
+        //
+        // READ Banks AND Fill table by Operator
+        //
+
+        public void ReadBanksForDataTableByOperator(string InOperator, int InMode)
+        {
+            _RecordFound = false;
+            _ErrorFound = false;
+            _ErrorOutput = "";
+
+            //InMode = 1 ... is ITMX
+            //InMode = 2 ... is Clearing Bank = central Bank
+
+            _BanksDataTable = new DataTable();
+            _BanksDataTable.Clear();
+
+            _TotalSelected = 0;
+
+            // DATA TABLE ROWS DEFINITION 
+            _BanksDataTable.Columns.Add("BankId", typeof(string));
+            _BanksDataTable.Columns.Add("ShortName", typeof(string));
+            _BanksDataTable.Columns.Add("Full Name", typeof(string));
+            _BanksDataTable.Columns.Add("Country", typeof(string));
+            _BanksDataTable.Columns.Add("DateInRRDM", typeof(string));
+
+            if (InMode == 2)
+            {
+                _BanksDataTable.Columns.Add("Ccy", typeof(string));
+                _BanksDataTable.Columns.Add("SettlementAcc", typeof(string));
+                _BanksDataTable.Columns.Add("Settl_Clearing", typeof(string));
+            }
+
+            string SqlString = "SELECT *"
+               + " FROM [dbo].[BANKS] "
+               + " WHERE Operator = @Operator";
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            _RecordFound = true;
+
+
+                            // Read Bank Details
+                            BanksReaderFields(rdr);
+                            //
+                            // Fill In Table
+                            //
+                            DataRow RowSelected = _BanksDataTable.NewRow();
+
+                            RowSelected["BankId"] = _BankId;
+                            RowSelected["ShortName"] = _ShortName;
+                            RowSelected["Full Name"] = _BankName;
+                            RowSelected["Country"] = _BankCountry;
+                            RowSelected["DateInRRDM"] = _DtTmCreated;
+                            if (InMode == 2)
+                            {
+                                RowSelected["Ccy"] = _BasicCurName;
+                                RowSelected["SettlementAcc"] = _SettlementAccount;
+                                RowSelected["Settl_Clearing"] = _SettlementClearingAccount;
+                            }
+
+                            // ADD ROW
+                            _BanksDataTable.Rows.Add(RowSelected);
+
                         }
 
                         // Close Reader
@@ -121,19 +383,172 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Banks Class............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
 
+        //
+        // READ Banks AND Fill table by Operator
+        //
+
+        public void ReadBanksForDataTableByBankId(string InOperator, string InBankId, int InMode)
+        {
+            _RecordFound = false;
+            _ErrorFound = false;
+            _ErrorOutput = "";
+
+            //InMode = 1 ... is ITMX
+            //InMode = 2 ... is Clearing Bank = central Bank
+
+            _BanksDataTable = new DataTable();
+            _BanksDataTable.Clear();
+
+            _TotalSelected = 0;
+
+            // DATA TABLE ROWS DEFINITION 
+            _BanksDataTable.Columns.Add("BankId", typeof(string));
+            _BanksDataTable.Columns.Add("ShortName", typeof(string));
+            _BanksDataTable.Columns.Add("Full Name", typeof(string));
+            _BanksDataTable.Columns.Add("Country", typeof(string));
+            _BanksDataTable.Columns.Add("DateInRRDM", typeof(string));
+
+            if (InMode == 2)
+            {
+                _BanksDataTable.Columns.Add("Ccy", typeof(string));
+                _BanksDataTable.Columns.Add("SettlementAcc", typeof(string));
+                _BanksDataTable.Columns.Add("Settl_Clearing", typeof(string));
+            }
+
+            string SqlString = "SELECT *"
+               + " FROM [dbo].[BANKS] "
+               + " WHERE Operator = @Operator AND BankId = @BankId ";
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+                        cmd.Parameters.AddWithValue("@BankId", InBankId);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            _RecordFound = true;
+
+
+                            // Read Bank Details
+                            BanksReaderFields(rdr);
+                            //
+                            // Fill In Table
+                            //
+                            DataRow RowSelected = _BanksDataTable.NewRow();
+
+                            RowSelected["BankId"] = _BankId;
+                            RowSelected["ShortName"] = _ShortName;
+                            RowSelected["Full Name"] = _BankName;
+                            RowSelected["Country"] = _BankCountry;
+                            RowSelected["DateInRRDM"] = _DtTmCreated;
+                            if (InMode == 2)
+                            {
+                                RowSelected["Ccy"] = _BasicCurName;
+                                RowSelected["SettlementAcc"] = _SettlementAccount;
+                                RowSelected["Settl_Clearing"] = _SettlementClearingAccount;
+                            }
+
+                            // ADD ROW
+                            _BanksDataTable.Rows.Add(RowSelected);
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+        }
+
+        //
+        // GET BANKS belonging 
+        //
+        public ArrayList GetBanksShortNames(string InOperator)
+        {
+            //USED ONLY TO DEFINE CATEGORIES IT IS NOT USED FOR OTHER 
+            ArrayList BanksIdsList = new ArrayList
+            {
+                "SelectEntity"
+            };
+
+            _RecordFound = false;
+            _ErrorFound = false;
+            _ErrorOutput = "";
+
+            string SqlString = "SELECT *"
+          + " FROM [dbo].[BANKS] "
+          + " WHERE Operator = @Operator";
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+                        // Read table 
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+
+                        while (rdr.Read())
+                        {
+                            _RecordFound = true;
+                            _ShortName = (string)rdr["ShortName"];
+                          
+                            BanksIdsList.Add(_ShortName);    
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+
+            return BanksIdsList;
+        }
         // READ Operator
 
-        public void ReadOperator(string InOperator)
+        public void ReadBanksForOperator(string InOperator)
         {
-            RecordFound = false;
-            ErrorFound = false;
-            ErrorOutput = ""; 
+            _RecordFound = false;
+            _ErrorFound = false;
+            _ErrorOutput = ""; 
 
             string SqlString = "SELECT *"
           + " FROM [dbo].[BANKS] "
@@ -154,34 +569,10 @@ namespace RRDM4ATMs
 
                         while (rdr.Read())
                         {
-                            RecordFound = true;
+                            _RecordFound = true;
 
                             // Read Bank Details
-                            BankSwiftId = (string)rdr["BankSwiftId"];
-
-                            ActiveDirectoryDM = (string)rdr["ActiveDirectoryDM"];
-                            AdGroup = (string)rdr["AdGroup"];
-                        
-                            BankName = (string)rdr["BankName"];
-                            BankCountry = (string)rdr["BankCountry"];
-
-                            GroupName = (string)rdr["GroupName"];
-                          
-                            BasicCurName = (string)rdr["BasicCurName"];
-                            DtTmCreated = (DateTime)rdr["DtTmCreated"];
-                            UsingGAS = (bool)rdr["UsingGAS"];
-
-                            Logo = (byte[])rdr["Logo"];
-
-                            LastMatchingDtTm = (DateTime)rdr["LastMatchingDtTm"];
-
-                            SenderEmail = (string)rdr["SenderEmail"];
-                            SenderUserName = (string)rdr["SenderUserName"];
-                            SenderPassword = (string)rdr["SenderPassword"];
-                            SenderSmtpClient = (string)rdr["SenderSmtpClient"];
-                            SenderPort = (int)rdr["SenderPort"];
-       
-                            Operator = (string)rdr["Operator"];
+                            BanksReaderFields(rdr);
 
                         }
 
@@ -196,8 +587,59 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Banks Class............. " + ex.Message;
+
+                    CatchDetails(ex);
+
+                }
+        }
+
+        // READ Settlement Bank 
+
+        public void ReadSettlementBank(string InOperator)
+        {
+            _RecordFound = false;
+            _ErrorFound = false;
+            _ErrorOutput = "";
+
+            string SqlString = "SELECT *"
+          + " FROM [dbo].[BANKS] "
+          + " WHERE Operator = @Operator AND SettlementBank = 1";
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            _RecordFound = true;
+
+                            // Read Bank Details
+                            BanksReaderFields(rdr);
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -206,11 +648,11 @@ namespace RRDM4ATMs
 
         public void ReadBankActiveDirectory(string InActiveDirectoryDM)
         {
-            RecordFound = false;
-            ErrorFound = false;
-            ErrorOutput = "";
+            _RecordFound = false;
+            _ErrorFound = false;
+            _ErrorOutput = "";
 
-            string SqlString = "SELECT *"
+            string SqlString = "SELECT * "
           + " FROM [dbo].[BANKS] "
           + " WHERE ActiveDirectoryDM = @ActiveDirectoryDM";
             using (SqlConnection conn =
@@ -229,34 +671,11 @@ namespace RRDM4ATMs
 
                         while (rdr.Read())
                         {
-                            RecordFound = true;
+                            _RecordFound = true;
+
 
                             // Read Bank Details
-                            BankSwiftId = (string)rdr["BankSwiftId"];
-
-                            ActiveDirectoryDM = (string)rdr["ActiveDirectoryDM"];
-                            AdGroup = (string)rdr["AdGroup"];
-
-                            BankName = (string)rdr["BankName"];
-                            BankCountry = (string)rdr["BankCountry"];
-
-                            GroupName = (string)rdr["GroupName"];
-
-                            BasicCurName = (string)rdr["BasicCurName"];
-                            DtTmCreated = (DateTime)rdr["DtTmCreated"];
-                            UsingGAS = (bool)rdr["UsingGAS"];
-
-                            Logo = (byte[])rdr["Logo"];
-
-                            LastMatchingDtTm = (DateTime)rdr["LastMatchingDtTm"];
-
-                            SenderEmail = (string)rdr["SenderEmail"];
-                            SenderUserName = (string)rdr["SenderUserName"];
-                            SenderPassword = (string)rdr["SenderPassword"];
-                            SenderSmtpClient = (string)rdr["SenderSmtpClient"];
-                            SenderPort = (int)rdr["SenderPort"];
-
-                            Operator = (string)rdr["Operator"];
+                            BanksReaderFields(rdr);
 
                         }
 
@@ -271,8 +690,9 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Banks Class............. " + ex.Message;
+
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -280,11 +700,11 @@ namespace RRDM4ATMs
 
         public void ReadNoBanksInGroup(string InGroupName)
         {
-            RecordFound = false;
-            ErrorFound = false;
-            ErrorOutput = ""; 
+            _RecordFound = false;
+            _ErrorFound = false;
+            _ErrorOutput = ""; 
 
-            BanksInGroup = 0; 
+            _BanksInGroup = 0; 
           
             string SqlString = "SELECT *"
           + " FROM [dbo].[BANKS] "
@@ -305,9 +725,9 @@ namespace RRDM4ATMs
 
                         while (rdr.Read())
                         {
-                            RecordFound = true;
+                            _RecordFound = true;
 
-                            BanksInGroup = BanksInGroup + 1; 
+                            _BanksInGroup = _BanksInGroup + 1; 
                         }
 
                         // Close Reader
@@ -321,8 +741,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Banks Class............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -331,11 +751,11 @@ namespace RRDM4ATMs
 
         public void ReadNoBanksWithOperator(string InOperator)
         {
-            RecordFound = false;
-            ErrorFound = false;
-            ErrorOutput = ""; 
+            _RecordFound = false;
+            _ErrorFound = false;
+            _ErrorOutput = ""; 
 
-            BanksWithOperator = 0;
+            _BanksWithOperator = 0;
          
             string SqlString = "SELECT *"
           + " FROM [dbo].[BANKS] "
@@ -356,9 +776,9 @@ namespace RRDM4ATMs
 
                         while (rdr.Read())
                         {
-                            RecordFound = true;
+                            _RecordFound = true;
 
-                            BanksWithOperator = BanksWithOperator + 1;
+                            _BanksWithOperator = _BanksWithOperator + 1;
                         }
 
                         // Close Reader
@@ -372,29 +792,35 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Banks Class............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
         // Insert NEW BANK 
         //
-        public void InsertBank(string InBankSwiftId)
+        public void InsertBank(string InBankId)
         {
             
-            ErrorFound = false;
-            ErrorOutput = ""; 
+            _ErrorFound = false;
+            _ErrorOutput = ""; 
 
             string cmdinsert = "INSERT INTO [BANKS]"
-                + " ([BankSwiftId],[ActiveDirectoryDM],[AdGroup],[BankName],[BankCountry],"
+                + " ([BankId],[ShortName],[ActiveDirectoryDM],[AdGroup],[BankName],[BankCountry],"
                 + " [GroupName],"
                 + "[BasicCurName], "
+                + "[SettlementAccount], "
+                + "[SettlementBank], "
+                + "[SettlementClearingAccount], "
                 + "[DtTmCreated],[UsingGAS],[Logo],"
                 + "[SenderEmail],[SenderUserName],[SenderPassword],[SenderSmtpClient],[SenderPort],"
                 + "[Operator]  ) "
-                + " VALUES (@BankSwiftId,@ActiveDirectoryDM,@AdGroup,@BankName,@BankCountry,"
+                + " VALUES (@BankId,@ShortName,@ActiveDirectoryDM,@AdGroup,@BankName,@BankCountry,"
                 + "@GroupName,"
                 + "@BasicCurName,"
+                + "@SettlementAccount,"
+                + "@SettlementBank,"
+                + "@SettlementClearingAccount,"
                 + "@DtTmCreated,@UsingGAS,@Logo,"
                 + "@SenderEmail,@SenderUserName,@SenderPassword,@SenderSmtpClient,@SenderPort,"
                 + "@Operator )";
@@ -409,34 +835,37 @@ namespace RRDM4ATMs
                        new SqlCommand(cmdinsert, conn))
                     {
 
-                        cmd.Parameters.AddWithValue("@BankSwiftId", BankSwiftId);
+                        cmd.Parameters.AddWithValue("@BankId", _BankId);
+                        cmd.Parameters.AddWithValue("@ShortName", _ShortName);
 
-                        cmd.Parameters.AddWithValue("@ActiveDirectoryDM", ActiveDirectoryDM);
-                        cmd.Parameters.AddWithValue("@AdGroup", AdGroup);
+                        cmd.Parameters.AddWithValue("@ActiveDirectoryDM", _ActiveDirectoryDM);
+                        cmd.Parameters.AddWithValue("@AdGroup", _AdGroup);
                 
-                        cmd.Parameters.AddWithValue("@BankName", BankName);
-                        cmd.Parameters.AddWithValue("@BankCountry", BankCountry);
+                        cmd.Parameters.AddWithValue("@BankName", _BankName);
+                        cmd.Parameters.AddWithValue("@BankCountry", _BankCountry);
 
-                        cmd.Parameters.AddWithValue("@GroupName", GroupName);
+                        cmd.Parameters.AddWithValue("@GroupName", _GroupName);
 
-                        cmd.Parameters.AddWithValue("@BasicCurName", BasicCurName);
-                        cmd.Parameters.AddWithValue("@DtTmCreated", DtTmCreated);
-                        cmd.Parameters.AddWithValue("@UsingGAS", UsingGAS);
-                        cmd.Parameters.AddWithValue("@Logo", Logo);
+                        cmd.Parameters.AddWithValue("@BasicCurName", _BasicCurName);
 
-                        cmd.Parameters.AddWithValue("@SenderEmail", SenderEmail);
-                        cmd.Parameters.AddWithValue("@SenderUserName", SenderUserName);
-                        cmd.Parameters.AddWithValue("@SenderPassword", SenderPassword);
-                        cmd.Parameters.AddWithValue("@SenderSmtpClient", SenderSmtpClient);
-                        cmd.Parameters.AddWithValue("@SenderPort", SenderPort);
+                        cmd.Parameters.AddWithValue("@SettlementAccount", _SettlementAccount);
+                        cmd.Parameters.AddWithValue("@SettlementBank", _SettlementBank);
+                        cmd.Parameters.AddWithValue("@SettlementClearingAccount", _SettlementClearingAccount);
+
+                        cmd.Parameters.AddWithValue("@DtTmCreated", _DtTmCreated);
+                        cmd.Parameters.AddWithValue("@UsingGAS", _UsingGAS);
+                        cmd.Parameters.AddWithValue("@Logo", _Logo);
+
+                        cmd.Parameters.AddWithValue("@SenderEmail", _SenderEmail);
+                        cmd.Parameters.AddWithValue("@SenderUserName", _SenderUserName);
+                        cmd.Parameters.AddWithValue("@SenderPassword", _SenderPassword);
+                        cmd.Parameters.AddWithValue("@SenderSmtpClient", _SenderSmtpClient);
+                        cmd.Parameters.AddWithValue("@SenderPort", _SenderPort);
                        
-                        cmd.Parameters.AddWithValue("@Operator", Operator);
+                        cmd.Parameters.AddWithValue("@Operator", _Operator);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();
+                        
 
                     }
                     // Close conn
@@ -445,8 +874,9 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Banks Class............. " + ex.Message;
+
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -454,11 +884,11 @@ namespace RRDM4ATMs
 
         // UPDATE BANK
         // 
-        public void UpdateBank(string InBankSwiftId)
+        public void UpdateBank(string InBankId)
         {
            
-            ErrorFound = false;
-            ErrorOutput = ""; 
+            _ErrorFound = false;
+            _ErrorOutput = ""; 
 
             using (SqlConnection conn =
                 new SqlConnection(connectionString))
@@ -467,45 +897,50 @@ namespace RRDM4ATMs
                     conn.Open();
                     using (SqlCommand cmd =
                         new SqlCommand("UPDATE BANKS SET "
-                            + " BankSwiftId = @BankSwiftId, ActiveDirectoryDM = @ActiveDirectoryDM, AdGroup = @AdGroup,"
+                            + " BankId = @BankId, ShortName = @ShortName, ActiveDirectoryDM = @ActiveDirectoryDM, AdGroup = @AdGroup,"
                              + "BankName = @BankName, BankCountry = @BankCountry,"
                              + "GroupName = @GroupName,"
                              + "BasicCurName = @BasicCurName,"
+                             + "SettlementAccount = @SettlementAccount,"
+                             + "SettlementBank = @SettlementBank,"
+                             + "SettlementClearingAccount = @SettlementClearingAccount,"
                              + "DtTmCreated = @DtTmCreated, UsingGAS = @UsingGAS, Logo = @Logo,  LastMatchingDtTm = @LastMatchingDtTm, "
                               + "SenderEmail = @SenderEmail, SenderUserName = @SenderUserName, SenderPassword = @SenderPassword,"
                               + " SenderSmtpClient = @SenderSmtpClient, SenderPort = @SenderPort "
-                            + " WHERE BankSwiftId = @BankSwiftId", conn))
-
+                            + " WHERE BankId = @BankId", conn))
                     {
-                        cmd.Parameters.AddWithValue("@BankSwiftId", InBankSwiftId);
+                        cmd.Parameters.AddWithValue("@BankId", InBankId);
+                        cmd.Parameters.AddWithValue("@ShortName", _ShortName);
 
-                        cmd.Parameters.AddWithValue("@ActiveDirectoryDM", ActiveDirectoryDM);
-                        cmd.Parameters.AddWithValue("@AdGroup", AdGroup);
-                    
-                        cmd.Parameters.AddWithValue("@BankName", BankName);
-                        cmd.Parameters.AddWithValue("@BankCountry", BankCountry);
-                      
-                        cmd.Parameters.AddWithValue("@GroupName", GroupName);
-                    //    cmd.Parameters.AddWithValue("@BasicCurCode", BasicCurCode);
-                        cmd.Parameters.AddWithValue("@BasicCurName", BasicCurName);
-                        cmd.Parameters.AddWithValue("@DtTmCreated", DtTmCreated);
-                        cmd.Parameters.AddWithValue("@UsingGAS", UsingGAS);
+                        cmd.Parameters.AddWithValue("@ActiveDirectoryDM", _ActiveDirectoryDM);
+                        cmd.Parameters.AddWithValue("@AdGroup", _AdGroup);
 
-                        cmd.Parameters.AddWithValue("@Logo", Logo);
+                        cmd.Parameters.AddWithValue("@BankName", _BankName);
+                        cmd.Parameters.AddWithValue("@BankCountry", _BankCountry);
 
-                        cmd.Parameters.AddWithValue("@LastMatchingDtTm", LastMatchingDtTm);
+                        cmd.Parameters.AddWithValue("@GroupName", _GroupName);
+                        //    cmd.Parameters.AddWithValue("@BasicCurCode", BasicCurCode);
 
-                        cmd.Parameters.AddWithValue("@SenderEmail", SenderEmail);
-                        cmd.Parameters.AddWithValue("@SenderUserName", SenderUserName);
-                        cmd.Parameters.AddWithValue("@SenderPassword", SenderPassword);
-                        cmd.Parameters.AddWithValue("@SenderSmtpClient", SenderSmtpClient);
-                        cmd.Parameters.AddWithValue("@SenderPort", SenderPort);
-                  
-                        //rows number of record got updated
+                        cmd.Parameters.AddWithValue("@BasicCurName", _BasicCurName);
+                        cmd.Parameters.AddWithValue("@SettlementAccount", _SettlementAccount);
+                        cmd.Parameters.AddWithValue("@SettlementBank", _SettlementBank);
+                        cmd.Parameters.AddWithValue("@SettlementClearingAccount", _SettlementClearingAccount);
 
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.Parameters.AddWithValue("@DtTmCreated", _DtTmCreated);
+                        cmd.Parameters.AddWithValue("@UsingGAS", _UsingGAS);
+
+                        cmd.Parameters.AddWithValue("@Logo", _Logo);
+
+                        cmd.Parameters.AddWithValue("@LastMatchingDtTm", _LastMatchingDtTm);
+
+                        cmd.Parameters.AddWithValue("@SenderEmail", _SenderEmail);
+                        cmd.Parameters.AddWithValue("@SenderUserName", _SenderUserName);
+                        cmd.Parameters.AddWithValue("@SenderPassword", _SenderPassword);
+                        cmd.Parameters.AddWithValue("@SenderSmtpClient", _SenderSmtpClient);
+                        cmd.Parameters.AddWithValue("@SenderPort", _SenderPort);
+
+                       cmd.ExecuteNonQuery();
+                       
 
                     }
                     // Close conn
@@ -514,9 +949,9 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Banks Class............. " + ex.Message;
 
+
+                    CatchDetails(ex);
                 }
         }
         //
@@ -525,8 +960,8 @@ namespace RRDM4ATMs
         public void DeleteBankEntry(string InBankId)
         {
             
-            ErrorFound = false;
-            ErrorOutput = ""; 
+            _ErrorFound = false;
+            _ErrorOutput = ""; 
 
             using (SqlConnection conn =
                 new SqlConnection(connectionString))
@@ -535,15 +970,12 @@ namespace RRDM4ATMs
                     conn.Open();
                     using (SqlCommand cmd =
                         new SqlCommand("DELETE FROM [dbo].[BANKS] "
-                            + " WHERE BankSwiftId = @BankSwiftId ", conn))
+                            + " WHERE BankId = @BankId ", conn))
                     {
-                        cmd.Parameters.AddWithValue("@BankSwiftId", InBankId);
+                        cmd.Parameters.AddWithValue("@BankId", InBankId);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                       cmd.ExecuteNonQuery();
+                        
 
                     }
                     // Close conn
@@ -552,10 +984,41 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Banks Class............. " + ex.Message;
+
+
+                    CatchDetails(ex);
+
+                }
+
+            _ErrorFound = false;
+            _ErrorOutput = "";
+
+            using (SqlConnection conn =
+                new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand("DELETE FROM [ATMS].[dbo].[ErrorsIdCharacteristics] "
+                            + " WHERE BankId = @BankId ", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@BankId", InBankId);
+
+                        cmd.ExecuteNonQuery();
+                       
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
 
                 }
         }
+        //
+
     }
 }

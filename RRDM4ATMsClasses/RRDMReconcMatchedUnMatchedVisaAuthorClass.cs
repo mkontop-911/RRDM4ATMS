@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Collections;
-using System.IO;
 namespace RRDM4ATMs
 {
-    public class RRDMReconcMatchedUnMatchedVisaAuthorClass
+    public class RRDMReconcMatchedUnMatchedVisaAuthorClass : Logger
     {
+        public RRDMReconcMatchedUnMatchedVisaAuthorClass() : base() { }
+
         public int SeqNo;
 
         public string OriginFileName; //* 
@@ -49,7 +44,6 @@ namespace RRDM4ATMs
         public int AtmTraceNo;
         public int RRNumber;
         public int ResponseCode;
-        public string T24RefNumber;
 
         public bool Matched;
         public string MatchMask;
@@ -90,9 +84,9 @@ namespace RRDM4ATMs
         public int TotalUnMatched; 
         public decimal TotalAmountUnMatched ; 
 
-        RRDMReconcCategoriesMatchingSessions Rms = new RRDMReconcCategoriesMatchingSessions();
+        RRDMMatchingCategoriesSessions Rms = new RRDMMatchingCategoriesSessions();
 
-        RRDMReconcMasksVsMetaExceptions Rme = new RRDMReconcMasksVsMetaExceptions();
+        RRDMMatchingMasksVsMetaExceptions Rme = new RRDMMatchingMasksVsMetaExceptions();
 
         // Define the data table 
         //public DataTable RMRecords = new DataTable();
@@ -199,7 +193,6 @@ namespace RRDM4ATMs
 
                         while (rdr.Read())
                         {
-
                             RecordFound = true;
 
                             SeqNo = (int)rdr["SeqNo"];
@@ -235,9 +228,10 @@ namespace RRDM4ATMs
                             TransDate = (DateTime)rdr["TransDate"];
 
                             AtmTraceNo = (int)rdr["AtmTraceNo"];
+
                             RRNumber = (int)rdr["RRNumber"];
                             ResponseCode = (int)rdr["ResponseCode"];
-                            T24RefNumber = (string)rdr["T24RefNumber"];
+                         
 
                             Matched = (bool)rdr["Matched"];
                             MatchMask = (string)rdr["MatchMask"];
@@ -279,9 +273,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReadMatchedORUnMatchedFileSpecificRecordBySeqNo......... " + ex.Message;
 
+                    CatchDetails(ex);
                 }
         }
         //
@@ -394,7 +387,7 @@ namespace RRDM4ATMs
                             AtmTraceNo = (int)rdr["AtmTraceNo"];
                             RRNumber = (int)rdr["RRNumber"];
                             ResponseCode = (int)rdr["ResponseCode"];
-                            T24RefNumber = (string)rdr["T24RefNumber"];
+                        
 
                             Matched = (bool)rdr["Matched"];
                             MatchMask = (string)rdr["MatchMask"];
@@ -436,8 +429,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReadMatchedORUnMatchedFileSpecificRecordBySeqNo......... " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -523,7 +516,7 @@ namespace RRDM4ATMs
                             AtmTraceNo = (int)rdr["AtmTraceNo"];
                             RRNumber = (int)rdr["RRNumber"];
                             ResponseCode = (int)rdr["ResponseCode"];
-                            T24RefNumber = (string)rdr["T24RefNumber"];
+                          
 
                             Matched = (bool)rdr["Matched"];
                             MatchMask = (string)rdr["MatchMask"];
@@ -565,8 +558,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReadMatchedORUnMatchedFileTableLeft ......... " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -683,7 +676,6 @@ namespace RRDM4ATMs
                             AtmTraceNo = (int)rdr["AtmTraceNo"];
                             RRNumber = (int)rdr["RRNumber"];
                             ResponseCode = (int)rdr["ResponseCode"];
-                            T24RefNumber = (string)rdr["T24RefNumber"];
 
                             Matched = (bool)rdr["Matched"];
                             MatchMask = (string)rdr["MatchMask"];
@@ -753,8 +745,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReadMatchedORUnMatchedFileTableLeft ......... " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -875,8 +867,7 @@ namespace RRDM4ATMs
                             AtmTraceNo = (int)rdr["AtmTraceNo"];
                             RRNumber = (int)rdr["RRNumber"];
                             ResponseCode = (int)rdr["ResponseCode"];
-                            T24RefNumber = (string)rdr["T24RefNumber"];
-
+                          
                             Matched = (bool)rdr["Matched"];
                             MatchMask = (string)rdr["MatchMask"];
 
@@ -939,9 +930,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReadMatchedORUnMatchedFileTableLeft ......... " + ex.Message;
 
+                    CatchDetails(ex);
                 }
         }
 
@@ -1067,7 +1057,7 @@ namespace RRDM4ATMs
                             AtmTraceNo = (int)rdr["AtmTraceNo"];
                             RRNumber = (int)rdr["RRNumber"];
                             ResponseCode = (int)rdr["ResponseCode"];
-                            T24RefNumber = (string)rdr["T24RefNumber"];
+                          
 
                             Matched = (bool)rdr["Matched"];
                             MatchMask = (string)rdr["MatchMask"];
@@ -1140,8 +1130,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReadMatchedORUnMatchedFileTableLeft ......... " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
             // 
@@ -1227,7 +1217,7 @@ namespace RRDM4ATMs
                             AtmTraceNo = (int)rdr["AtmTraceNo"];
                             RRNumber = (int)rdr["RRNumber"];
                             ResponseCode = (int)rdr["ResponseCode"];
-                            T24RefNumber = (string)rdr["T24RefNumber"];
+                        
 
                             Matched = (bool)rdr["Matched"];
                             MatchMask = (string)rdr["MatchMask"];
@@ -1299,8 +1289,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReadMatchedORUnMatchedFileTableLeft ......... " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -1416,7 +1406,7 @@ namespace RRDM4ATMs
                             AtmTraceNo = (int)rdr["AtmTraceNo"];
                             RRNumber = (int)rdr["RRNumber"];
                             ResponseCode = (int)rdr["ResponseCode"];
-                            T24RefNumber = (string)rdr["T24RefNumber"];
+                          
 
                             Matched = (bool)rdr["Matched"];
                             MatchMask = (string)rdr["MatchMask"];
@@ -1475,12 +1465,12 @@ namespace RRDM4ATMs
 
                             // UPDATE META EXCEPTION NUMBER 
 
-                            Rme.ReadReconcMaskRecord(InOperator, RMCateg, MatchMask);
+                            Rme.ReadMatchingMaskRecordbyMaskId(InOperator, RMCateg, MatchMask, 11);
 
                             if (Rme.RecordFound)
                             {
                                 UnMatchedType = Rme.MaskName;
-                                MetaExceptionId = Rme.MetaExceptionNo;
+                                MetaExceptionId = Rme.MetaExceptionId;
                             }
                             else
                             {
@@ -1506,9 +1496,7 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReadMatchedORUnMatchedFileTableLeft ......... " + ex.Message;
-
+                    CatchDetails(ex);
                 }
         }
 
@@ -1616,7 +1604,7 @@ namespace RRDM4ATMs
                             AtmTraceNo = (int)rdr["AtmTraceNo"];
                             RRNumber = (int)rdr["RRNumber"];
                             ResponseCode = (int)rdr["ResponseCode"];
-                            T24RefNumber = (string)rdr["T24RefNumber"];
+                         
 
                             Matched = (bool)rdr["Matched"];
                             MatchMask = (string)rdr["MatchMask"];
@@ -1690,9 +1678,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReadMatchedORUnMatchedFileTableLeft ......... " + ex.Message;
 
+                    CatchDetails(ex);
                 }
         }
         //
@@ -1804,7 +1791,7 @@ namespace RRDM4ATMs
                             AtmTraceNo = (int)rdr["AtmTraceNo"];
                             RRNumber = (int)rdr["RRNumber"];
                             ResponseCode = (int)rdr["ResponseCode"];
-                            T24RefNumber = (string)rdr["T24RefNumber"];
+                           
 
                             Matched = (bool)rdr["Matched"];
                             MatchMask = (string)rdr["MatchMask"];
@@ -1868,9 +1855,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReadMatchedORUnMatchedFileTableLeft ......... " + ex.Message;
 
+                    CatchDetails(ex);
                 }
         }
         // 
@@ -1910,14 +1896,14 @@ namespace RRDM4ATMs
                      + " [Origin], [TransTypeAtOrigin], [Product], [CostCentre], "
                      +" [TerminalId], [TransType], [TransDescr],"
                      +" [CardNumber], [AccNumber], [TransCurr], [TransAmount],"
-                     +" [TransDate], [AtmTraceNo], [RRNumber], [ResponseCode], [T24RefNumber],"
+                     +" [TransDate], [AtmTraceNo], [RRNumber], [ResponseCode], "
                      +" [OpenRecord], [Operator]) "
                      + " VALUES (@OriginFileName, @OriginalRecordId,"
                      + " @RMCateg, @RMCycle,@MaskRecordId,@UniqueRecordId,"
                      +" @Origin,@TransTypeAtOrigin, @Product, @CostCentre,"
                      +" @TerminalId, @TransType, @TransDescr,"
                      +" @CardNumber, @AccNumber, @TransCurr, @TransAmount,"
-                     +" @TransDate, @AtmTraceNo, @RRNumber, @ResponseCode, @T24RefNumber,"
+                     +" @TransDate, @AtmTraceNo, @RRNumber, @ResponseCode, "
                      +" @OpenRecord, @Operator)" ;
 
             using (SqlConnection conn =
@@ -1962,16 +1948,14 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@RRNumber", RRNumber);
                         cmd.Parameters.AddWithValue("@ResponseCode", ResponseCode);
 
-                        cmd.Parameters.AddWithValue("@T24RefNumber", T24RefNumber);
-
+                      
                         cmd.Parameters.AddWithValue("@OpenRecord", OpenRecord);
 
                         cmd.Parameters.AddWithValue("@Operator", Operator);
 
                      
-                        int rows = cmd.ExecuteNonQuery();
-                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();
+                     
 
                     }
                     // Close conn
@@ -1980,8 +1964,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in MatchedORUnMatched ............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -2065,8 +2049,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UpdateMatchedORUnMatchedRecordFooter Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -2108,9 +2092,8 @@ namespace RRDM4ATMs
 
                         //rows number of record got updated
 
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();
+                      
 
                     }
                     // Close conn
@@ -2119,8 +2102,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in DeleteRecordInMatchedORUnMatchedFile Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
 
         }

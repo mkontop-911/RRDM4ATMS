@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.AspNet.Membership.OpenAuth;
-
-namespace RRDM4ATMsWeb
+﻿namespace RRDM4ATMsWeb
 {
     internal static class AuthConfig
     {

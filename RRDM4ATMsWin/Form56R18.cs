@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs;
-using System.Collections;
 using Microsoft.Reporting.WinForms;
 using System.Configuration;
 
@@ -19,12 +10,11 @@ namespace RRDM4ATMsWin
         // REPORT FOR NOTES
 
         string WHeader;
-        string WDetails;
-        public Form56R18(string InHeader, string InDetails)
+        string WInBankIdLogo;
+        public Form56R18(string InHeader, string InBankIdLogo)
         {
             WHeader = InHeader;
-      
-            WDetails = InDetails;
+            WInBankIdLogo = InBankIdLogo;
 
             InitializeComponent();
         }
@@ -36,7 +26,10 @@ namespace RRDM4ATMsWin
             try
             {
                 string RSUri = ConfigurationManager.AppSettings["ReportServerUri"];
-                string RSReportName = "/NotesPrinting";
+                
+                string RsDir = ConfigurationManager.AppSettings["ReportsDir"];
+                string RSReportName = RsDir + "/NotesPrinting_ALL";
+              //  string RSReportName = RsDir + "/Form2_Content_Printing_ALL";
 
                 // Set the processing mode for the ReportViewer to Remote
                 reportViewer1.ProcessingMode = ProcessingMode.Remote;
@@ -49,7 +42,7 @@ namespace RRDM4ATMsWin
 
                 // ***********************
                 reportViewer1.ServerReport.SetParameters(new ReportParameter("Header", WHeader));
-                reportViewer1.ServerReport.SetParameters(new ReportParameter("Details", WDetails));
+                reportViewer1.ServerReport.SetParameters(new ReportParameter("InBankIdLogo", WInBankIdLogo));
 
                 System.Drawing.Printing.PageSettings pp = new System.Drawing.Printing.PageSettings();
                 pp.Margins = new System.Drawing.Printing.Margins(20, 3, 20, 20);

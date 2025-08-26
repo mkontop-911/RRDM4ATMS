@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -15,21 +8,22 @@ namespace RRDM4ATMsWin
     {
         RRDMEmailClass2 Em = new RRDMEmailClass2();
 
-        RRDMReplActionsClass Ra = new RRDMReplActionsClass();
+        RRDMReplOrdersClass Ra = new RRDMReplOrdersClass();
 
         string WSignedId;
         int WSignRecordNo;
         string WOperator;
         string WCitId;
-
+        int WOrdersCycle; 
         string WEmailContent;
 
-        public Form2_EMailContent(string InSignedId, int InSignRecordNo, string InOperator, string InCitId, string InEmailContent)
+        public Form2_EMailContent(string InSignedId, int InSignRecordNo, string InOperator, string InCitId, int InOrdersCycle, string InEmailContent)
         {
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
             WOperator = InOperator;
             WCitId = InCitId;
+            WOrdersCycle = InOrdersCycle;
             WEmailContent = InEmailContent; 
             InitializeComponent();
         }
@@ -41,6 +35,7 @@ namespace RRDM4ATMsWin
         // Proceed and send email 
         private void buttonProceed_Click(object sender, EventArgs e)
         {
+
             string Recipient = "panicos.michael@cablenet.com.cy";
 
             string Subject = "Replenish ATM";
@@ -49,9 +44,9 @@ namespace RRDM4ATMsWin
             if (Em.MessageSent == true)
             {
                 MessageBox.Show("Email to: " + Recipient + " Has been sent");
-
+               
                 int Function = 2; // .. Do update 
-                Ra.ReadReplActionsForCITAndUpdate(WCitId, WOperator, WSignedId, Function);
+                Ra.ReadReplActionsForCITAndUpdate(WCitId, WOrdersCycle, WOperator, WSignedId);
 
                 this.Close(); 
             }
@@ -63,7 +58,7 @@ namespace RRDM4ATMsWin
                                 );
 
                 int Function = 2; // .. Do update 
-                Ra.ReadReplActionsForCITAndUpdate(WCitId, WOperator, WSignedId, Function);
+                Ra.ReadReplActionsForCITAndUpdate(WCitId, WOrdersCycle, WOperator, WSignedId);
 
                 this.Close(); 
             }

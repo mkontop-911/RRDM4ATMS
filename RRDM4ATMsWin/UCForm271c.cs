@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using RRDM4ATMs;
-using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMsWin
@@ -20,8 +12,14 @@ namespace RRDM4ATMsWin
         public decimal WRRDMJournalBal;
         public decimal WBalanceWithActions;
 
+        decimal WOpenAndMatched;
+
+        decimal textBoxGrandDIFF_Value; 
+
         //Form75 NForm75;
         Form14a NForm14;
+
+        string WCcy;
 
         //Form79 NForm79;
         Form5 NForm5;
@@ -40,11 +38,11 @@ namespace RRDM4ATMsWin
 
         int WProcess;
 
-        bool DisputeOpenned;
+        bool DisputeOpened;
 
         bool ViewWorkFlow;
        
-        string WCurrNm;
+    //    string WCurrNm;
   
         decimal AmountForSuspense;
 
@@ -52,10 +50,11 @@ namespace RRDM4ATMsWin
         string connectionString = ConfigurationManager.ConnectionStrings
             ["ATMSConnectionString"].ConnectionString;
 
+        RRDMReconcCategoriesSessions Rcs = new RRDMReconcCategoriesSessions();
 
-        RRDMReconcCategoriesMatchingSessions Rs = new RRDMReconcCategoriesMatchingSessions();
+        RRDMMatchingTxns_MasterPoolATMs Mpa = new RRDMMatchingTxns_MasterPoolATMs();
 
-        RRDMReconcCategATMsRMCycles RAtms = new RRDMReconcCategATMsRMCycles(); 
+        RRDMReconcCategATMsAtRMCycles RAtms = new RRDMReconcCategATMsAtRMCycles(); 
 
         RRDMErrorsClassWithActions Er = new RRDMErrorsClassWithActions(); // Make class availble 
 
@@ -65,11 +64,13 @@ namespace RRDM4ATMsWin
 
         RRDMHostTransClass Ht = new RRDMHostTransClass();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        //RRDMUsersAccessRights Us = new RRDMUsersAccessRights(); 
+
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         RRDMDisputesTableClass Di = new RRDMDisputesTableClass();
 
-        RRDMDisputeTrasactionClass Dt = new RRDMDisputeTrasactionClass();
+        RRDMDisputeTransactionsClass Dt = new RRDMDisputeTransactionsClass();
         //   string WUserOperator; 
         public event EventHandler ChangeBoardMessage;
         public string guidanceMsg;
@@ -77,35 +78,45 @@ namespace RRDM4ATMsWin
         DateTime NullPastDate = new DateTime(1900, 01, 01);
 
         //int WSeqNo;
-
+        string WMainCateg;
         //int WRowIndex;
 
         string WSignedId;
         int WSignRecordNo;
         string WOperator;
-        string WCategory;
-        int WCategMatchingSession;
+        string WRecCategory;
+        int WRunningJobNo;
 
-        public void UCForm271cPar(string InSignedId, int InSignRecordNo, string InOperator, string InCategory, int InCategMathingSession)
+        public void UCForm271cPar(string InSignedId, int InSignRecordNo, string InOperator, string InRecCategory, int InRunningJobNo)
         {
 
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
             WOperator = InOperator;
 
-            WCategory = InCategory;
+            WRecCategory = InRecCategory;
 
-            WCategMatchingSession = InCategMathingSession;
+            WRunningJobNo = InRunningJobNo;
             InitializeComponent();
 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            Us.ReadUsersRecord(WSignedId);
+            string WBankId = Us.BankId;
+            RRDMBanks Ba = new RRDMBanks();
+            Ba.ReadBank(WBankId);
+            WCcy = Ba.BasicCurName;
 
-            if (Us.ProcessNo == 54 || Us.ProcessNo == 55 || Us.ProcessNo == 56)
+            // FIND STATUS
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
+
+            if (Usi.ProcessNo == 54 || Usi.ProcessNo == 55 || Usi.ProcessNo == 56)
             {
                 ViewWorkFlow = true;
-            }    
+            }
 
-            if (WCategory == "EWB311")
+            WMainCateg = WRecCategory.Substring(0, 4);
+
+            if (WRecCategory == "EWB311")
             {
                 // LEAVE THIS HERE 
                 // DO NOT MOVE IT FROM HERE
@@ -121,49 +132,28 @@ namespace RRDM4ATMsWin
                 label26.Text = "GL Balance Adj";
 
                 label24.Text = "Open+Matched";
-                label23.Text = "GL Balanc Adj"; 
-
-                Rs.ReadReconcCategoriesMatchingSessionsByRmCycle(WOperator, WCategMatchingSession);
-
+                label23.Text = "GL Balanc Today";
+                Rcs.ReadReconcCategorySessionByCatAndRunningJobNo(WOperator, WRecCategory, WRunningJobNo); 
+                //Rcs.ReadMatchingCategoriesSessionsByRunningJobNo(WOperator, WCategMatchingSession);
 
                 WProcess = 4; // Include corrected errors 
-                Rs.ReadAllErrorsTableFromCategSessionGL
-                    (WCategory, WCategMatchingSession, Rs.MatchedTransAmt ,Rs.GlTodaysBalance , WProcess);
+                Rcs.ReadAllErrorsFromCategSessionGL
+                    (WRecCategory, WRunningJobNo, Rcs.MatchedTransAmt ,(Rcs.GlTodaysBalance + Rcs.MatchedTransAmt + Rcs.SettledUnMatchedAmtDefault ) , WProcess);
 
                 // Journal is the GL
 
-                labelCurr.Text = Rs.GlCurrency;
+                labelCurr.Text = WCcy;
 
-                textBox8.Text = Rs.GlYesterdaysBalance.ToString("#,##0.00");
-                decimal WOpenAndMatched = Rs.GlYesterdaysBalance + Rs.MatchedTransAdjWithErrors;
+                textBox8.Text = Rcs.GlYesterdaysBalance.ToString("#,##0.00");
+                WOpenAndMatched = Rcs.GlYesterdaysBalance + Rcs.MatchedTransAmt+ Rcs.SettledUnMatchedAmtDefault;
                 textBox7.Text = WOpenAndMatched.ToString("#,##0.00");
 
-                textBox6.Text = Rs.BanksClosedBalAdjWithErrors.ToString("#,##0.00");
+                textBox6.Text = Rcs.GlTodaysBalance.ToString("#,##0.00");
                 //textBox6.Text = Rs.GlTodaysBalance.ToString("#,##0.00");
-                textBox4.Text = (WOpenAndMatched - Rs.BanksClosedBalAdjWithErrors).ToString("#,##0.00");
-
-                if ((WOpenAndMatched - Rs.BanksClosedBalAdjWithErrors) == 0)
-                {
-                    Er.ReadAllErrorsTableForCounters(WOperator, WCategory, "");
-
-                    if (Er.NumOfErrors == Er.ErrUnderAction)
-                    {
-                        UpdateReconcStatus(1);
-                    }
-                    else
-                    {
-                        UpdateReconcStatus(2);
-                    }
-
-
-                }
-                else UpdateReconcStatus(2);
+                textBoxGrandDIFF_Value = (WOpenAndMatched - Rcs.GlTodaysBalance); 
+                textBoxGrandDIFF.Text = textBoxGrandDIFF_Value.ToString("#,##0.00");         
+                
             }
-
-            //panel3.Hide(); // HIDE REFRESHED BALANCES 
-            //label22.Hide();
-
-            //panel4.Hide(); // HIDE ERROR DETAILS  
 
             SetScreen(); 
         }
@@ -172,97 +162,152 @@ namespace RRDM4ATMsWin
 
         public void SetScreen()
         {
-           
+
             //// READ FOR CATEGORY 
             // THIS SHOULD BE LEFT HERE FOR "EWB102"
             // Do Not MOVE it 
-
-            if (WCategory == "EWB102")
+          
+            if (WMainCateg == "RECA")
             {
-                Rs.ReadReconcCategoriesMatchingSessionsByRmCycle(WOperator, WCategMatchingSession);
-
+                Rcs.ReadReconcCategorySessionByCatAndRunningJobNo(WOperator, WRecCategory, WRunningJobNo);
+                RAtms.ReadReconcCategATMsAtRMCyclesCategoriesATMsRMCycleForTotals(WOperator, WRecCategory, WRunningJobNo);
                 // INCLUDE IN BALANCES ANY CORRECTED ERRORS
-
                 WProcess = 4; // Include corrected errors 
 
-                Rs.ReadAllErrorsTableFromCategSessionForAllAtmsWithErrors
-                          (WCategory, WCategMatchingSession, (Rs.GlYesterdaysBalance + Rs.MatchedTransAmt), WProcess);
+                Rcs.ReadAllErrorsFromCategSessionForAllAtmsWithErrors
+                          (WRecCategory, WRunningJobNo, (RAtms.AllAtmsOpeningBalance 
+                          + RAtms.AllAtmsMatchedAmtAtMatching + RAtms.AllAtmsMatchedAmtAtDefault), WProcess);
 
                 // REQUEST TO RECONCILE FIRST SET OF BALANCES
+                // GETthe Forced Matched
 
+                string SelectionCriteria = " WHERE Operator ='" + WOperator + "' AND RMCateg ='"
+                           + WRecCategory + "' AND MatchingAtRMCycle =" + WRunningJobNo
+                           //+ " AND TerminalId ='" + Er.AtmNo + "'"
+                           + " AND IsMatchingDone = 1 ";
+
+                Mpa.ReadMatchingTxnsMasterPoolATMsTotals(SelectionCriteria,2);
                 // Journal is the GL
 
-                labelCurr.Text = Rs.GlCurrency;
+                labelCurr.Text = WCcy;
 
-                textBox8.Text = Rs.GlYesterdaysBalance.ToString("#,##0.00");
-                decimal WRRDMJournalBalCateg = Rs.GlYesterdaysBalance + Rs.MatchedTransAmt + Rs.NotMatchedTransAmt;
+                textBox8.Text = Rcs.GlYesterdaysBalance.ToString("#,##0.00");
+                decimal WRRDMJournalBalCateg = RAtms.AllAtmsJournalAmt; 
+                //decimal WRRDMJournalBalCateg = Rs.GlYesterdaysBalance + Rs.MatchedTransAmt + Rs.NotMatchedTransAmt;
                 textBox7.Text = WRRDMJournalBalCateg.ToString("#,##0.00");
-                textBox6.Text = Rs.BanksClosedBalAdjWithErrors.ToString("#,##0.00");
-                textBox4.Text = (WRRDMJournalBalCateg - Rs.BanksClosedBalAdjWithErrors).ToString("#,##0.00");
+                decimal Temp1 = Rcs.BanksClosedBalAdjWithErrors
+                             + Mpa.TotalForcedMatchedAmountAndInJournal + Mpa.TotalMoveToDisputeAmt;
+                textBox6.Text = Temp1.ToString("#,##0.00");
+                textBoxGrandDIFF.Text = (WRRDMJournalBalCateg - Temp1).ToString("#,##0.00");
+                textBoxGrandDIFF_Value = (WRRDMJournalBalCateg - Temp1);
+             
 
-                if ((WRRDMJournalBalCateg - Rs.BanksClosedBalAdjWithErrors) == 0)
+                //if ((WRRDMJournalBalCateg - (Rcs.BanksClosedBalAdjWithErrors + Mpa.TotalForcedMatchedAmount )) == 0)
+                //textBox6.Text = Rcs.BanksClosedBalAdjWithErrors.ToString("#,##0.00");
+                //textBox4.Text = (WRRDMJournalBalCateg - Rcs.BanksClosedBalAdjWithErrors).ToString("#,##0.00");
+
+                if ((WRRDMJournalBalCateg - Temp1) == 0)
                 {
-                    Er.ReadAllErrorsTableForCounters(WOperator, WCategory, "");
-
-                    if (Er.NumOfErrors == Er.ErrUnderAction)
+                    label32.Hide();
+                    panel6.Hide(); 
+                 
+                    Er.ReadAllErrorsTableForCounters(WOperator, WRecCategory, "", 0, "");
+                    if (textBoxGrandDIFF_Value == 0)
+                    //if (Er.NumOfErrors == Er.ErrUnderAction + Er.ErrDisputeAction + Er.NumOfOpenErrorsLess100 + Er.NumOfOpenErrorsBetween200And300 )
                     {
-                        UpdateReconcStatus(1);
+                        UpdateReconcStatus(1); // Reconciled 
                     }
                     else
                     {
-                        UpdateReconcStatus(2);
+                        UpdateReconcStatus(2); // Not Reconciled 
                     }
                 }
-                else UpdateReconcStatus(2);
+                else
+                {
+                    //label15.Text = "OUTSTANDING DIFF : " + (WRRDMJournalBalCateg 
+                    //    - (Rcs.BanksClosedBalAdjWithErrors + Mpa.TotalForcedMatchedAmount)).ToString("#,##0.00");
+                    label15.Text = "OUTSTANDING DIFF : " + (WRRDMJournalBalCateg
+                       - Rcs.BanksClosedBalAdjWithErrors).ToString("#,##0.00");
+                    label32.Show();
+                    panel6.Show();
+                    UpdateReconcStatus(2);
+
+                    textBox9.Text = RAtms.ReadReconcCategoriesATMsRMCycleToFindATMInDiff(WOperator, WRecCategory, WRunningJobNo, 3);
+                   
+                }
+                
             }
 
 
-            WCurrNm = Rs.GlCurrency;
+         ///   WCurrNm = Rcs.GlCurrency;
 
             try
             {
                 // Show errors table 
-                if (WCategory == "EWB102") 
-                    errfilter = "CategoryId='" + WCategory + "' AND CurDes ='" + WCurrNm
-                    + "'" + " AND (ErrType = 1 OR ErrType = 2 OR ErrType = 5) AND SesNo<=" + WCategMatchingSession + " AND (OpenErr=1 OR (OpenErr=0 AND ActionSes =" + WCategMatchingSession + "))  ";
+                if (WMainCateg == "RECA")
+                    errfilter = "CategoryId='" + WRecCategory + "' AND CurDes ='" + WCcy
+                    //+ "'" + " AND (ErrType = 1 OR ErrType = 2 OR ErrType = 5) AND RMCycle<=" + WRunningJobNo + " AND (OpenErr=1 OR (OpenErr=0 AND ActionRMCycle =" + WRunningJobNo + "))  ";
+                + "'" + " AND (ErrType = 2 OR ErrType = 4 OR ErrType = 5) "
+                + " AND RMCycle<=" + WRunningJobNo + " AND (OpenErr=1 OR (OpenErr=0 AND ActionRMCycle =" + WRunningJobNo + "))  ";
 
-                if (WCategory == "EWB311") 
-                    errfilter = "CategoryId='" + WCategory + "' AND CurDes ='" + WCurrNm
-                  + "'" + " AND (ErrType = 1 OR ErrType = 2 OR ErrType = 5) AND RMCycle<=" + WCategMatchingSession + " AND (OpenErr=1 OR (OpenErr=0 AND ActionSes =" + WCategMatchingSession + "))  ";
+                if (WRecCategory == "EWB311") 
+                    errfilter = "CategoryId='" + WRecCategory + "' AND CurDes ='" + WCcy
+                  + "'" + " AND (ErrType = 2 OR ErrType = 5) AND RMCycle<=" + WRunningJobNo + " AND (OpenErr=1 OR (OpenErr=0 AND ActionRMCycle =" + WRunningJobNo + "))  ";
 
-                Er.ReadErrorsAndFillTable(WOperator, errfilter);
+                Er.ReadErrorsAndFillTable(WOperator, WSignedId, errfilter);
 
                 dataGridView1.DataSource = Er.ErrorsTable.DefaultView;
 
-                dataGridView1.Columns[0].Width = 40; // ExcNo
+                dataGridView1.Columns[0].Width = 60; // ExcNo
                 dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                dataGridView1.Columns[1].Width = 80; // Desc
-                dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridView1.Columns[1].Width = 80; // AtmNo
+                dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-                dataGridView1.Columns[2].Width = 70; //  Card
+                dataGridView1.Columns[2].Width = 120; //  Desc
+                dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 //dataGridView1.Sort(dataGridView1.Columns[2], ListSortDirection.Ascending);
 
-                dataGridView1.Columns[3].Width = 50; // Ccy
+                dataGridView1.Columns[3].Width = 80; // Card
+                dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-                dataGridView1.Columns[4].Width = 80; // Amount
+                dataGridView1.Columns[4].Width = 50; // Ccy
                 //dataGridView1.Sort(dataGridView1.Columns[4], ListSortDirection.Ascending);
+                dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                dataGridView1.Columns[5].Width = 50; // NeedAction
-                dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridView1.Columns[5].Width = 60; // Amount
+                dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-                dataGridView1.Columns[6].Width = 50; // UnderAction 
+                dataGridView1.Columns[6].Width = 50; // NeedAction
                 dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                //dataGridView1.Columns[7].Width = 50; // ManualAct
+                dataGridView1.Columns[7].Width = 50; // UnderAction
+                dataGridView1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                dataGridView1.Columns[7].Width = 90; // DateTime
+                //dataGridView1.Columns[7].Width = 50; //DisputeAct
 
-                dataGridView1.Columns[8].Width = 80; // TransDescr
-                
+                dataGridView1.Columns[8].Width = 40; // ManualAct
+                dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[9].Width = 80; // 
+
                 //dataGridView1.Sort(dataGridView1.Columns[3], ListSortDirection.Ascending);
 
-        
+                //ErrorsTable.Columns.Add("ExcNo", typeof(int));
+                //ErrorsTable.Columns.Add("AtmNo", typeof(string));
+                //ErrorsTable.Columns.Add("Desc", typeof(string));
+                //ErrorsTable.Columns.Add("Card", typeof(string));
+                //ErrorsTable.Columns.Add("Ccy", typeof(string));
+                //ErrorsTable.Columns.Add("Amount", typeof(string));
+                //ErrorsTable.Columns.Add("NeedAction", typeof(string));
+                //ErrorsTable.Columns.Add("UnderAction", typeof(string));
+                //ErrorsTable.Columns.Add("DisputeAct", typeof(string));
+                ////ErrorsTable.Columns.Add("ManualAct", typeof(bool));
+                //ErrorsTable.Columns.Add("DateTime", typeof(DateTime));
+                //ErrorsTable.Columns.Add("TransDescr", typeof(string));
+                //ErrorsTable.Columns.Add("UserComment", typeof(string));
+
+
             }
             catch (Exception ex)
             {
@@ -278,11 +323,11 @@ namespace RRDM4ATMsWin
                 guidanceMsg = "View only!";
                 ChangeBoardMessage(this, new EventArgs());
                 buttonApplyAction.Enabled = false; // Apply
-                buttonUndoAction.Enabled = false; // Undo
+                //buttonUndoAction.Enabled = false; // Undo
                 buttonCreateError.Enabled = false; // Create error 
 
                 buttonApplyAction.Hide();
-                buttonUndoAction.Hide();
+                //buttonUndoAction.Hide();
                 buttonCreateError.Hide();
                 pictureBox3.Hide();
             }
@@ -315,11 +360,11 @@ namespace RRDM4ATMsWin
 
             label6.Text = "ATM : " + Er.AtmNo + " BEFORE ACTION/S";  
 
-            if (WCategory == Er.CategoryId)
+            if (WRecCategory == Er.CategoryId)
             {
                 textBox2.Hide();
 
-                WTranNo = Er.TransNo;
+                WTranNo = Er.UniqueRecordId;
 
                 WTraceNo = Er.TraceNo;
 
@@ -337,7 +382,7 @@ namespace RRDM4ATMsWin
 
                     if (HostRecordForThisError == true)
                     {
-                        Ht.ReadHostTransTraceNo(WOperator, WCategory, WTraceNo);
+                        Ht.ReadHostTransTraceNo(WOperator, WRecCategory, WTraceNo);
 
                         if (Ht.RecordFound == true)
                         {
@@ -351,7 +396,6 @@ namespace RRDM4ATMsWin
                         {
                             Er.FullCard = false;
                         }
-
                     }
                 }
 
@@ -368,11 +412,11 @@ namespace RRDM4ATMsWin
                 if (Er.ErrId != 198) // 198 is the correction for suspense has nothing to do with transactions 
                 {
                     // VALIDATION OF TRACES STATUS 
-                    Tc.ReadInPoolTransSpecific(Er.TransNo);
-                    // Check to see if in Host for Errors reported in ATM 
-                   
+                    //MessageBox.Show("Check if needed");
+                    //Tc.ReadInPoolTransSpecific(Er.UniqueRecordId);
+                    //// Check to see if in Host for Errors reported in ATM 
 
-                    buttonShowTrans.Show();
+                    //buttonShowTrans.Show();
                     textBox25.Text = Er.CardNo;
                     textBox26.Text = Er.CustAccNo;
                 }
@@ -428,9 +472,12 @@ namespace RRDM4ATMsWin
 
                 if (Er.TraceNo > 0)
                 {
-                    Tc.ReadInPoolAtmTrace(WCategory, Er.TraceNo);
+                    string SelectionCriteria = "Where UniqueRecordId = " + Er.UniqueRecordId; 
+                    Mpa.ReadMatchingTxnsMasterPoolBySelectionCriteria(SelectionCriteria,1);
+                    
+                    //Tc.ReadInPoolAtmTrace(WCategory, Er.TraceNo);
 
-                    Gp.ReadParametersSpecificId(WOperator, "705", Tc.SystemTarget.ToString(), "", "");
+                    Gp.ReadParametersSpecificId(WOperator, "705", Mpa.TargetSystem.ToString(), "", "");
                     textBox1.Text = Gp.OccuranceNm;
                 }
 
@@ -441,7 +488,7 @@ namespace RRDM4ATMsWin
 
                 textBox32.Text = Er.UserComment;
 
-                if (Er.UnderAction == true)
+                if (Er.UnderAction == true || Er.DisputeAct == true || Er.ManualAct)
                 {
                     if (Er.DisputeAct)
                     {
@@ -460,7 +507,7 @@ namespace RRDM4ATMsWin
                     label8.Text = "Action Taken"; // DONE
                     pictureBox3.Hide(); // Take Action
                     buttonApplyAction.Hide();
-                    buttonUndoAction.Show();
+                    //buttonUndoAction.Show();
                     guidanceMsg = "Action taken. Undo if you have changed your mind.";
                     ChangeBoardMessage(this, new EventArgs());
                    
@@ -477,7 +524,7 @@ namespace RRDM4ATMsWin
                     label8.Text = "Action Not Taken"; 
                     pictureBox3.Show(); // Take Action
                     buttonApplyAction.Show();
-                    buttonUndoAction.Hide();
+                    //buttonUndoAction.Hide();
                     guidanceMsg = "Study error and decide action.";
                     ChangeBoardMessage(this, new EventArgs());
                     
@@ -485,7 +532,7 @@ namespace RRDM4ATMsWin
 
                 // Show Dispute 
 
-                Dt.ReadDisputeTranForInPool(Er.MaskRecordId);
+                Dt.ReadDisputeTranByUniqueRecordId(Er.UniqueRecordId);
                 if (Dt.RecordFound == true)
                 {
                     labelDisputeId.Show();
@@ -501,42 +548,51 @@ namespace RRDM4ATMsWin
                 }
 
                 //   if (Pa.TraceNo > Na.MaxTraceTarget) textBoxMsgBoard.Text = "DECIDE ACTION NOTING CORRESPONDING HOST TRANS not AVAIL";
-
-
             }
 
             // SHOW BALANCES 
 
-            if (WCategory == "EWB102")
+            if (WMainCateg == "RECA")
             {
-                RAtms.ReadReconcCategoriesATMsRMCycleSpecific(WOperator, WCategory, WCategMatchingSession, Er.AtmNo);
+                RAtms.ReadReconcCategoriesATMsRMCycleSpecificAtmforReconcCatTOTALS(WOperator, WRecCategory, WRunningJobNo, Er.AtmNo);
 
                 WProcess = 4; // Include corrected errors 
 
-                //ReadAllErrorsTableFromCategSessionForATM(string InCategoryId, int InActionSes, string InAtmNo,  decimal InBanksClosedBal, int InFunction)
+                //ReadAllErrorsTableFromCategSessionForATM(string InCategoryId, int InActionRMCycle, string InAtmNo,  decimal InBanksClosedBal, int InFunction)
                 RAtms.ReadAllErrorsTableFromCategSessionForATMAddErrors
-                    (WCategory, WCategMatchingSession, Er.AtmNo, (RAtms.OpeningBalance + RAtms.TotalMatchedAmt), WProcess);
+                    (WRecCategory, WRunningJobNo, Er.AtmNo, (RAtms.TotOpeningBalance + RAtms.TotMatchedAmtAtMatching + RAtms.TotMatchedAmtAtDefault), WProcess);
+
+                // GETthe Forced Matched
+             
+                string SelectionCriteria = " WHERE Operator ='" + WOperator + "' AND RMCateg ='"
+                           + WRecCategory + "' AND MatchingAtRMCycle =" + WRunningJobNo 
+                           + " AND TerminalId ='" + Er.AtmNo +"'"
+                           + " AND IsMatchingDone = 1 ";
+
+                Mpa.ReadMatchingTxnsMasterPoolATMsTotals(SelectionCriteria,2);
 
                 labelCurr.Text = RAtms.Currency;
 
-                textBox3.Text = RAtms.OpeningBalance.ToString("#,##0.00");
-                WRRDMJournalBal = RAtms.OpeningBalance + RAtms.TotalJournalAmt;
+                textBox3.Text = RAtms.TotOpeningBalance.ToString("#,##0.00");
+                WRRDMJournalBal = RAtms.TotOpeningBalance + RAtms.TotJournalAmt;
                 textBox5.Text = WRRDMJournalBal.ToString("#,##0.00");
-                textBox33.Text = (RAtms.OpeningBalance + RAtms.TotalMatchedAmt) .ToString("#,##0.00");
-                //textBox33.Text = RAtms.BanksClosedBalAdjWithErrors.ToString("#,##0.00");
-                textBox34.Text = (WRRDMJournalBal - (RAtms.OpeningBalance + RAtms.TotalMatchedAmt)).ToString("#,##0.00");
-
+                textBox33.Text = (RAtms.TotOpeningBalance + RAtms.TotMatchedAmtAtMatching + RAtms.TotMatchedAmtAtDefault) .ToString("#,##0.00");
+          
+                textBox34.Text = (WRRDMJournalBal - (RAtms.TotOpeningBalance + RAtms.TotMatchedAmtAtMatching + RAtms.TotMatchedAmtAtDefault)).ToString("#,##0.00");
 
                 // Working fields
 
-                WCurrNm = RAtms.Currency;
-                WGlOpenBalance = RAtms.OpeningBalance;
-                WBalanceWithActions = RAtms.BanksClosedBalAdjWithErrors;
+                //WCurrNm = RAtms.Currency;
+                WGlOpenBalance = RAtms.TotOpeningBalance;
+                //WBalanceWithActions = RAtms.BanksClosedBalAdjWithErrors + Mpa.TotalForcedMatchedAmount;
+                WBalanceWithActions = RAtms.BanksClosedBalAdjWithErrors 
+                    + Mpa.TotalForcedMatchedAmountAndInJournal
+                    + Mpa.TotalMoveToDisputeAmt; 
 
                 textBox19.Text = WGlOpenBalance.ToString("#,##0.00");
                 textBox18.Text = WRRDMJournalBal.ToString("#,##0.00");
                 textBox36.Text = WBalanceWithActions.ToString("#,##0.00");
-                textBox35.Text = (WRRDMJournalBal - WBalanceWithActions).ToString("#,##0.00");
+                textBoxDiffForAtm.Text = (WRRDMJournalBal - WBalanceWithActions).ToString("#,##0.00");
 
 
                 //panel3.Hide(); // HIDE REFRESHED BALANCES 
@@ -549,38 +605,64 @@ namespace RRDM4ATMsWin
             {
                 // Category EWB311
 
-                Rs.ReadReconcCategoriesMatchingSessionsByRmCycle(WOperator, WCategMatchingSession);
+                Rcs.ReadReconcCategorySessionByCatAndRunningJobNo(WOperator, WRecCategory, WRunningJobNo);
 
                 // Hide First Set of balances
                 label6.Hide();
                 panel2.Hide();
-                labelCurr.Text = Rs.GlCurrency;
+                labelCurr.Text = WCcy;
 
                 WProcess = 4; // Include corrected errors 
-                Rs.ReadAllErrorsTableFromCategSessionGL
-                    (WCategory, WCategMatchingSession, Rs.MatchedTransAmt, Rs.GlTodaysBalance, WProcess);
+                Rcs.ReadAllErrorsFromCategSessionGL
+                    (WRecCategory, WRunningJobNo, (Rcs.MatchedTransAmt + Rcs.SettledUnMatchedAmtDefault), Rcs.GlTodaysBalance, WProcess);
 
                 // Journal is the GL
-                textBox19.Text = Rs.GlYesterdaysBalance.ToString("#,##0.00");
-                decimal WOpenAndMatched = Rs.GlYesterdaysBalance + Rs.MatchedTransAdjWithErrors;
+                textBox19.Text = Rcs.GlYesterdaysBalance.ToString("#,##0.00");
+                WOpenAndMatched = Rcs.GlYesterdaysBalance + Rcs.MatchedTransAdjWithErrors;
                 textBox18.Text = WOpenAndMatched.ToString("#,##0.00");
 
-                textBox36.Text = Rs.BanksClosedBalAdjWithErrors.ToString("#,##0.00");
+                textBox36.Text = Rcs.BanksClosedBalAdjWithErrors.ToString("#,##0.00");
                 //textBox6.Text = Rs.GlTodaysBalance.ToString("#,##0.00");
-                textBox35.Text = (WOpenAndMatched - Rs.BanksClosedBalAdjWithErrors).ToString("#,##0.00");
+                textBoxDiffForAtm.Text = (WOpenAndMatched - Rcs.BanksClosedBalAdjWithErrors).ToString("#,##0.00");
 
 
                 // Working fields
 
-                WCurrNm = Rs.GlCurrency;
-                WGlOpenBalance = Rs.GlYesterdaysBalance;
-                WBalanceWithActions = Rs.GlTodaysBalance;
+                //WCurrNm = WCcy;
+                WGlOpenBalance = Rcs.GlYesterdaysBalance;
+                WBalanceWithActions = Rcs.GlTodaysBalance;
 
 
                 panel3.Show(); // HIDE REFRESHED BALANCES 
                 label22.Show();
 
                 panel4.Show(); // HIDE ERROR DETAILS 
+
+
+                if ((WOpenAndMatched - Rcs.BanksClosedBalAdjWithErrors) == 0)
+                {
+                    label32.Hide();
+                    panel6.Hide();
+                    Er.ReadAllErrorsTableForCounters(WOperator, WRecCategory, "", 0, "");
+
+                    if (textBoxGrandDIFF_Value == 0)
+                        //if (Er.NumOfErrors == Er.ErrUnderAction)
+                    {
+                        UpdateReconcStatus(1); // Reconciled 
+                    }
+                    else
+                    {
+                        UpdateReconcStatus(2); // NOT Reconciled 
+                    }
+
+                }
+                else
+                {
+                    label15.Text = "OUTSTANDING DIFF : " + (WOpenAndMatched - Rcs.BanksClosedBalAdjWithErrors).ToString("#,##0.00");
+                    label32.Show();
+                    panel6.Show();
+                    UpdateReconcStatus(2);
+                }
             }
 
         }
@@ -660,7 +742,7 @@ namespace RRDM4ATMsWin
             {
                 WRow = dataGridView1.SelectedRows[0].Index;
 
-                Dt.ReadDisputeTranForInPool(Er.MaskRecordId);
+                Dt.ReadDisputeTranByUniqueRecordId(Er.UniqueRecordId);
                 if (Dt.RecordFound == true)
                 {
                     MessageBox.Show(" Dispute already open for this Error");
@@ -668,13 +750,13 @@ namespace RRDM4ATMsWin
                 }
 
                 int From = 7; // From pre - dispute investigation 
-                NForm5 = new Form5(WSignedId, WSignRecordNo, WOperator, Er.CardNo, Er.MaskRecordId, Er.ErrAmount, 0, textBox32.Text, From, "ATM");
+                NForm5 = new Form5(WSignedId, WSignRecordNo, WOperator, Er.CardNo, Er.UniqueRecordId, Er.ErrAmount, 0, textBox32.Text, From, "ATM");
                 NForm5.FormClosed += NForm5_FormClosed;
                 NForm5.ShowDialog();
 
-                if (DisputeOpenned == false)
+                if (DisputeOpened == false)
                 {
-                    MessageBox.Show("Dispute was not oppenned! ");
+                    MessageBox.Show("Dispute was not opened! ");
                     return;
                 }
 
@@ -752,10 +834,10 @@ namespace RRDM4ATMsWin
         void NForm5_FormClosed(object sender, FormClosedEventArgs e)
         {
 
-            Dt.ReadDisputeTranForInPool(Er.MaskRecordId);
+            Dt.ReadDisputeTranByUniqueRecordId(Er.UniqueRecordId);
             if (Dt.RecordFound == true)
             {
-                DisputeOpenned = true;
+                DisputeOpened = true;
                 labelDisputeId.Show();
                 textBoxDisputeId.Show();
                 //buttonMoveToDispute.Hide();
@@ -764,7 +846,7 @@ namespace RRDM4ATMsWin
             else
             {
 
-                DisputeOpenned = false;
+                DisputeOpened = false;
                 //labelDisputeId.Hide();
                 //textBoxDisputeId.Hide();
                 //buttonMoveToDispute.Show();
@@ -880,7 +962,7 @@ namespace RRDM4ATMsWin
                 ChangeBoardMessage(this, new EventArgs());
 
             }
-            Dt.ReadDisputeTranForInPool(Er.MaskRecordId);
+            Dt.ReadDisputeTranByUniqueRecordId(Er.UniqueRecordId);
             if (Dt.RecordFound == true)
             {
                 Di.ReadDispute(Dt.DisputeNumber);
@@ -903,7 +985,7 @@ namespace RRDM4ATMsWin
         {
             Form80b NForm80b;
 
-            NForm80b = new Form80b(WSignedId, WSignRecordNo, WOperator, WCategory, WCategMatchingSession,Er.MaskRecordId,"View");
+            NForm80b = new Form80b(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate, "", WRecCategory, WRunningJobNo,"",Er.UniqueRecordId,4,"View","", 0);
             NForm80b.ShowDialog();
         }
 
@@ -911,14 +993,33 @@ namespace RRDM4ATMsWin
 
         private void buttonCreateError_Click(object sender, EventArgs e)
         {
-            if (WRRDMJournalBal - WBalanceWithActions != 0)
+            // error to be created has no relation with any atm. it moves overall difference to suspense
+            // If it is known to be related with any ATM or error move to disputes then write it in notes 
+
+            AmountForSuspense = decimal.Parse(textBoxDiffForAtm.Text); 
+
+            if (AmountForSuspense > 0)
             {
-                AmountForSuspense = WRRDMJournalBal - WBalanceWithActions;
-                NForm14 = new Form14a(WSignedId, WCategory, WCategMatchingSession, WOperator, AmountForSuspense, WCurrNm);
+                int MaskRecordId = 0;
+               
+                NForm14 = new Form14a(WSignedId, WRecCategory, WRunningJobNo, MaskRecordId, Er.AtmNo, Er.SesNo, 
+                                                                                         WOperator, AmountForSuspense, WCcy);
                 NForm14.FormClosed += NForm14_FormClosed;
                 NForm14.Show();
             }
-            else MessageBox.Show("NO AMOUNT FOR SUSPENSE", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else
+            {
+                RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+                Usi.ReadSignedActivityByKey(WSignRecordNo);
+                if (Usi.ReconcDifferenceStatus > 1 )
+                {
+                    MessageBox.Show("NO AMOUNT FOR SUSPENSE FOR THIS ATM . Choose the ATM shown in ATTENTION Panel", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+               
+                return;
+            }
+
+           
         }
 
         // FORM14 HAS CREATED THE SUSPENSE ERROR 
@@ -938,9 +1039,63 @@ namespace RRDM4ATMsWin
         // Update Reconciliation Status 
         public void UpdateReconcStatus(int InReconStatus)
         {
-            Us.ReadSignedActivityByKey(WSignRecordNo);
-            Us.ReconcDifferenceStatus = InReconStatus;
-            Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ReconcDifferenceStatus = InReconStatus;
+            Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+        }
+// Print Actions 
+        private void buttonPrint_Click(object sender, EventArgs e)
+        {
+            // Matching is done but not Settled 
+            string SelectionCriteria = " WHERE Operator ='" + WOperator + "' AND RMCateg ='" + WRecCategory + "'"
+                      + "  AND MatchingAtRMCycle =" + WRunningJobNo
+                      + " AND IsMatchingDone = 1 AND Matched = 0  "
+                      //+ " AND IsMatchingDone = 1 AND Matched = 0 AND SettledRecord = 0 "
+                      + " AND ActionType != '07' ";
+
+            string WSortCriteria = "Order By TerminalId, SeqNo ";
+
+            Mpa.ReadMatchingTxnsMasterPoolAndFillTableFastTrack(WOperator, WSignedId, SelectionCriteria,
+                                                                                     WSortCriteria,1);
+
+            string P1 = "Transactions For Reconciliation :" + WRecCategory
+                         + " AND Cycle : " + WRunningJobNo.ToString();
+
+            string P2 = "";
+            string P3 = "";
+            if (ViewWorkFlow == true)
+            {
+
+                RRDMAuthorisationProcess Ap = new RRDMAuthorisationProcess();
+              
+                Ap.ReadAuthorizationForReplenishmentReconcSpecificForCategoryAndCycle(WRecCategory, WRunningJobNo, "ReconciliationCat");
+
+                if (Ap.RecordFound == true)
+                {
+                    Us.ReadUsersRecord(Ap.Requestor);
+                    P2 = Us.UserName;
+                    Us.ReadUsersRecord(Ap.Authoriser);
+                    P3 = Us.UserName;
+                }
+                else
+                {
+                    //ReconciliationAuthorNoRecordYet = true;
+                }
+
+            }
+            else
+            {
+                Us.ReadUsersRecord(WSignedId);
+                P2 = Us.UserName;
+                P3 = "N/A";
+            }
+
+            string P4 = WOperator;
+            string P5 = WSignedId;
+
+            Form56R55ATMS ReportATMS55 = new Form56R55ATMS(P1, P2, P3, P4, P5);
+            ReportATMS55.Show();
         }
     }
 }

@@ -1,35 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using RRDM4ATMs;
 
 // Alecos
-using System.Configuration;
-using System.Diagnostics;
 
 namespace RRDM4ATMsWin
 {
     public partial class Form80a2 : Form
     {
 
-        RRDMReconcCategories Rc = new RRDMReconcCategories();
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMReconcCategories Rc = new RRDMReconcCategories(); 
+
+        RRDMReconcCategoriesSessions Rcs = new RRDMReconcCategoriesSessions();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
         RRDMAuthorisationProcess Ap = new RRDMAuthorisationProcess();
 
-        RRDMReconcCategoriesMatchingSessions Rms = new RRDMReconcCategoriesMatchingSessions();
-
         RRDMTurboReconcClass Tuc = new RRDMTurboReconcClass();
+
+        //RRDMMatchingCategories Mc = new RRDMMatchingCategories();
 
         DateTime NullPastDate = new DateTime(1900, 01, 01);
 
         string WMainCateg;
-        int WRMCycleNo;
+        int WReconcCycleNo;
+
+        int WGroup; 
 
         int WRowIndexLeft;
 
@@ -41,7 +38,9 @@ namespace RRDM4ATMsWin
 
         string WFunction;
         string WRMCategory;
-        public Form80a2(string InSignedId, int SignRecordNo, string InOperator, string InFunction, string InRMCategory)
+        string WhatBankId;
+
+        public Form80a2(string InSignedId, int SignRecordNo, string InOperator, string InFunction, string InRMCategory, string InWhatBankId)
         {
             WSignedId = InSignedId;
             WSignRecordNo = SignRecordNo;
@@ -49,122 +48,80 @@ namespace RRDM4ATMsWin
             WFunction = InFunction; // Reconc , View
 
             WRMCategory = InRMCategory; // Specific or "ALL"
+            WhatBankId = InWhatBankId;
 
             InitializeComponent();
 
+            // Set Working Date 
+           
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
             label1UserId.Text = WSignedId;
 
+            //ShowDetails(1116);
 
-            if (WFunction == "Reconc")
-            {
-                textBoxMsgBoard.Text = "Go to Reconcile";
-
-                buttonNext.Text = "Reconcile";
-
-                panel4.Hide();
-                //panel6.Hide();
-                //button6.Hide();
-                button1.Hide();
-
-                if (InRMCategory == "EWB110")
-                {
-                    labelStep1.Text = "ATMs Cash Reconciliation";
-                    labelLeft.Text = "ATM CASH CATEGORY";
-                    labelRight.Text = "ATMs CASH RECONC DAILY CYCLES";
-
-                    Tuc.ReadTotalsForATMsCashReconciliation(WSignedId, WSignRecordNo, WOperator);
-
-                    //TotalATMsReady = 0; // Replenishment Done and no UnMatched Records
-                    //TotalATMsWithUnMatched = 0; // Replenishment Done but there are UnMatched Records
-
-                    //TotalErrorsAtATMs = 0; // Total Errors to be handle 
-
-                    //TotalAmountErrors = 0; // Total Errors amount
-
-                    //TotalAmountUnMatched = 0; // Total  
-
-                    //TotalUnMatchedAtms = 0; // 
-                    //TotalUnMatchedRecords = 0; // 
-
-                    labelATM1.Text = "Ready for Reconciliation...: " + Tuc.TotalATMsReady.ToString();
-                    labelATM2.Text = "Total Exceptions...........: " + Tuc.TotalErrorsAtATMs.ToString();
-                    labelATM3.Text = "Total Amount for Exceptions: " + Tuc.TotalAmountErrors.ToString("#,##0.00");
-
-                    labelUnMatch1.Text = "ATMs with UnMatched........: " + Tuc.TotalAtmsWithUnMatchedRecords.ToString();
-                    labelUnMatch2.Text = "UnMatched Records..........: " + Tuc.TotalUnMatchedRecords.ToString();
-                    labelUnMatch3.Text = "Amount for UnMatched.......: " + Tuc.TotalAmountUnMatched.ToString("#,##0.00");
-
-                    if (Tuc.TotalUnMatchedRecords > 0 )
-                    {
-                        pictureBox2.BackgroundImage = Properties.Resources.RED_LIGHT_Repl;
-
-                        Color Red = Color.Red;
-
-                        label22.ForeColor = Red;
-
-                        label22.Show();
-
-                        pictureBox2.Show(); 
-                    }
-                    else
-                    {
-                        label22.Hide();
-
-                        pictureBox2.Hide(); 
-                    }
-                }
-
-            }
-
-            if (WFunction == "View")
+            if (WFunction == "VIEW")
             {
                 textBoxMsgBoard.Text = "View Details of Reconciliation and Matching Cycles";
 
                 labelStep1.Text = "RM Categories History";
 
-                buttonNext.Hide();
-
+                buttonNext.Text = "VIEW HIST";
             }
-
         }
 
-// ON LOAD
+        // ON LOAD
         private void Form80a2_Load(object sender, EventArgs e)
         {
-            string WOrigin = "ALL";
 
-            Rc.ReadReconcCategories(WOperator, WOrigin, WRMCategory);
+            Rc.ReadReconcCategoriesAndFillTableWithDiscrepancies(WOperator, WSignedId, 0);
 
+            dataGridView1.DataSource = Rc.TableReconcCateg.DefaultView;
 
+            if (dataGridView1.Rows.Count == 0)
+            {
+                Form2 MessageForm = new Form2("No Entries available for this user.");
+                MessageForm.ShowDialog();
 
-            dataGridView1.DataSource = Rc.ReconcCateg.DefaultView;
+                this.Dispose();
+                return;
+            }
 
-            dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+            dataGridView1.Columns[0].Width = 60; // SeqNo
+            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView1.Columns[0].Visible = false;
 
-            dataGridView1.Columns[0].Width = 60; // Id
-            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView1.Columns[1].Width = 90; // Identity 
+            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            dataGridView1.Columns[1].Width = 70; // id 
-            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridView1.Columns[1].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
-            //dataGridView1.Columns[1].DefaultCellStyle.ForeColor = Color.Red; 
+            dataGridView1.Columns[2].Width = 140; // Category-Name
+            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            dataGridView1.Columns[2].Width = 250; // Name
+            dataGridView1.Columns[3].Width = 80; // Exceptions
+            dataGridView1.Columns[3].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
+            dataGridView1.Columns[3].DefaultCellStyle.ForeColor = Color.Red;
+            dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[4].Width = 80; // Origin 
+            dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
         }
-// Row Enter for Datagridview1
+        // Row Enter for Datagridview1
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
             WCategoryId = rowSelected.Cells[1].Value.ToString();
 
+            Rc.ReadReconcCategorybyCategId(WOperator, WCategoryId);
+
+            WGroup = Rc.AtmGroup; 
+
             WMainCateg = WCategoryId.Substring(0, 4);
 
-            Rms.ReadReconcCategoriesMatchingSessionsSpecificCat(WOperator, WCategoryId);
+            Rcs.ReadReconcCategoriesSessionsSpecificCat_GL(WOperator, WCategoryId);
 
-            dataGridView2.DataSource = Rms.TableMatchingSessionsPerCategory.DefaultView;
+            dataGridView2.DataSource = Rcs.TableReconcSessionsPerCategory.DefaultView;
 
             if (dataGridView2.Rows.Count == 0)
             {
@@ -178,108 +135,92 @@ namespace RRDM4ATMsWin
                 panel3.Show();
             }
 
-            dataGridView2.Columns[0].Width = 70; // 
+            ShowDetails(Rc.AtmGroup);
+
+            dataGridView2.Columns[0].Width = 90; // RunningJobNo
             dataGridView2.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridView2.Columns[0].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
             //dataGridView2.Sort(dataGridView2.Columns[0], ListSortDirection.Ascending);
 
-            dataGridView2.Columns[1].Width = 70; // 
-            dataGridView2.Columns[1].DefaultCellStyle.ForeColor = Color.LightSlateGray;
+            dataGridView2.Columns[1].Width = 90; // Cut_Off_Date
+            dataGridView2.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView2.Columns[1].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
 
-            dataGridView2.Columns[2].Width = 100; // 
+            dataGridView2.Columns[2].Width = 70; // CategoryId
+            dataGridView2.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridView2.Columns[2].DefaultCellStyle.ForeColor = Color.LightSlateGray;
+            dataGridView2.Columns[2].Visible = false;
 
-            dataGridView2.Columns[3].Width = 100; // 
+            dataGridView2.Columns[3].Width = 120; // StartDateTm
+            dataGridView2.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridView2.Columns[3].DefaultCellStyle.ForeColor = Color.LightSlateGray;
+
+            dataGridView2.Columns[4].Width = 120; // EndDateTm 
+            dataGridView2.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView2.Columns[4].DefaultCellStyle.ForeColor = Color.LightSlateGray;
+
+            dataGridView2.Columns[5].Width = 60; // Atms_GL_Diff 
+            dataGridView2.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView2.Columns[5].HeaderText = "ATMs In Diff";
+            //dataGridView2.Columns[4].DefaultCellStyle.ForeColor = Color.LightSlateGray;
+
+            dataGridView2.Columns[6].Width = 60; // Pending
+            dataGridView2.Columns[6].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
+            dataGridView2.Columns[6].DefaultCellStyle.ForeColor = Color.Red;
+            dataGridView2.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
-// Row enter for Datagridview2
+        // Row enter for Datagridview2
         private void dataGridView2_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow rowSelected = dataGridView2.Rows[e.RowIndex];
 
-            WRMCycleNo = (int)rowSelected.Cells[0].Value;
+            WReconcCycleNo = (int)rowSelected.Cells[0].Value;
 
-            Rms.ReadReconcCategoriesMatchingSessionsByRmCycle(WOperator, WRMCycleNo);
+            Rcs.ReadReconcCategorySessionByCatAndRunningJobNo(WOperator, WCategoryId, WReconcCycleNo);
 
-            label3.Text = "DETAILS FOR CYCLE : " + WRMCycleNo.ToString();
+            if (Rcs.GL_Original_Atms_Cash_Diff == 0) buttonNext.Enabled = false;
+                                             else buttonNext.Enabled = true;
 
+            labelDetails.Text = "PENDINGS FOR THIS GROUP:.." + Rc.AtmGroup;
 
-
-            //---------------------------------------------------------------------
-            // MATCHING  
-            //---------------------------------------------------------------------
-
-            //labelDateStart.Text = "Date Start : " + Rms.StartDateTm.ToString();
-            //label12.Text = "Date End  : " + Rms.EndDateTm.ToString();
-            //label21.Text = "Records Matched : " + Rms.NumberOfMatchedRecs.ToString("#,##0");
-
-            //TimeSpan Remain1 = Rms.EndDateTm - Rms.StartDateTm;
-            //label13.Text = "Time Duration in Minutes : " + Remain1.Minutes.ToString("#,##0.00");
-
-            //label15.Text = "Exceptions : " + Rms.NumberOfUnMatchedRecs.ToString();
-
-            //if (Remain1.Minutes > 25)
-            //{
-            //    pictureBox2.BackgroundImage = Properties.Resources.YELLOW_Repl;
-            //}
-
-            //if (Remain1.Minutes > 30)
-            //{
-            //    pictureBox2.BackgroundImage = Properties.Resources.RED_LIGHT_Repl;
-
-            //    Color Red = Color.Red;
-
-            //    label13.ForeColor = Red;
-            //}
-            //else
-            //{
-            //    Color Black = Color.Black;
-
-            //    label13.ForeColor = Black;
-            //}
-
-            //if (Remain1.Minutes < 25)
-            //{
-            //    pictureBox2.BackgroundImage = Properties.Resources.GREEN_LIGHT_Repl;
-            //}
             //---------------------------------------------------------------------
             // RECONCILIATION 
             //---------------------------------------------------------------------
-            if (Rms.StartReconcDtTm == NullPastDate)
+            if (Rcs.GL_StartReconcDtTm == NullPastDate)
             {
-                label20.Text = "Reconciliation didnt start";
-                label19.Text = "Reconciliation didnt start";
+                labelDateStart.Text = "Reconciliation didnt start";
+                labelDateEnd.Text = "Reconciliation didnt start";
                 panel4.Hide();
 
             }
             else
             {
-                if (Rms.EndReconcDtTm == NullPastDate)
+                if (Rcs.GL_EndReconcDtTm == NullPastDate)
                 {
                     panel4.Hide();
-                    label20.Text = "Date Start : " + Rms.StartReconcDtTm.ToString();
-                    label19.Text = "Reconciliation is in progess";
+                    labelDateStart.Text = "Date Start : " + Rcs.GL_StartReconcDtTm.ToString();
+                    labelDateEnd.Text = "Reconciliation is in progess";
                 }
                 else
                 {
                     panel4.Show();
 
-                    label20.Text = "Date Start : " + Rms.StartReconcDtTm.ToString();
-                    label19.Text = "Date End  : " + Rms.EndReconcDtTm.ToString();
+                    labelDateStart.Text = "Date Start : " + Rcs.GL_StartReconcDtTm.ToString();
+                    labelDateEnd.Text = "Date End  : " + Rcs.GL_EndReconcDtTm.ToString();
 
-                    TimeSpan Remain2 = Rms.EndReconcDtTm - Rms.StartReconcDtTm;
+                    TimeSpan Remain2 = Rcs.GL_EndReconcDtTm - Rcs.GL_StartReconcDtTm;
                     label18.Text = "Duration in Minutes : " + Remain2.Minutes.ToString("#,##0.00");
 
-                    label16.Text = "Remaining Exceptions : " + Rms.RemainReconcExceptions.ToString();
+                    //label16.Text = "Remaining Exceptions : " + Rcs.RemainReconcExceptions.ToString();
 
                     if (Remain2.Minutes > 20)
                     {
-                        pictureBox3.BackgroundImage = Properties.Resources.YELLOW_Repl;
+                        pictureBox3.BackgroundImage = appResImg.YELLOW_Repl;
                     }
 
                     if (Remain2.Minutes > 20)
                     {
-                        pictureBox3.BackgroundImage = Properties.Resources.RED_LIGHT_Repl;
+                        pictureBox3.BackgroundImage = appResImg.RED_LIGHT_Repl;
 
                         Color Red = Color.Red;
 
@@ -294,116 +235,156 @@ namespace RRDM4ATMsWin
 
                     if (Remain2.Minutes < 20)
                     {
-                        pictureBox3.BackgroundImage = Properties.Resources.GREEN_LIGHT_Repl;
+                        pictureBox3.BackgroundImage = appResImg.GREEN_LIGHT_Repl;
                     }
 
-                    if (Rms.RemainReconcExceptions > 0)
-                    {
-                        pictureBox3.BackgroundImage = Properties.Resources.RED_LIGHT_Repl;
+                    //if (Rcs.RemainReconcExceptions > 0)
+                    //{
+                    //    pictureBox3.BackgroundImage = appResImg.RED_LIGHT_Repl;
 
-                        Color Red = Color.Red;
+                    //    Color Red = Color.Red;
 
-                        label16.ForeColor = Red;
-                    }
-                    else
-                    {
-                        Color Black = Color.Black;
+                    //    label16.ForeColor = Red;
+                    //}
+                    //else
+                    //{
+                    //    Color Black = Color.Black;
 
-                        label16.ForeColor = Black;
-                    }
-
+                    //    label16.ForeColor = Black;
+                    //}
                 }
-
-            }            
+            }
         }
-// NEXT 
+
+        // SHOW DETAILS 
+        private void ShowDetails(int InAtmsReconcGroup)
+        {
+            //if (WFunction == "Reconc")
+            //{
+            if (WFunction == "Reconc")
+            {
+              textBoxMsgBoard.Text = "Go to Reconcile";
+            }
+            else
+            {
+                textBoxMsgBoard.Text = "View History"; 
+            }
+            
+
+            //buttonNext.Text = "Reconcile";
+
+            panel4.Hide();
+
+            button1.Hide();
+
+            labelStep1.Text = "ATMs Cash Reconciliation";
+            labelLeft.Text = "ATM CASH CATEGORY";
+            labelRight.Text = "ATMs CASH RECONC DAILY CYCLES";
+
+            Tuc.ReadTotalsForATMsCashReconciliation(WSignedId, WSignRecordNo, WOperator, InAtmsReconcGroup);
+
+            labelATM1.Text = "Ready for Reconciliation...: " + Tuc.TotalATMsReady.ToString();
+            labelATM2.Text = "Total Exceptions...........: " + Tuc.TotalErrorsAtATMs.ToString();
+            labelATM3.Text = "Total Amount for Exceptions: " + Tuc.TotalAmountErrors.ToString("#,##0.00");
+
+            labelUnMatch1.Text = "ATMs with UnMatched........: " + Tuc.TotalAtmsWithUnMatchedRecords.ToString();
+            labelUnMatch2.Text = "UnMatched Records..........: " + Tuc.TotalUnMatchedRecords.ToString();
+            labelUnMatch3.Text = "Amount for UnMatched.......: " + Tuc.TotalAmountUnMatched.ToString("#,##0.00");
+
+            if (Tuc.TotalUnMatchedRecords > 0)
+            {
+                pictureBox2.BackgroundImage = appResImg.RED_LIGHT_Repl;
+
+                Color Red = Color.Red;
+
+                label22.ForeColor = Red;
+
+                label22.Show();
+
+                pictureBox2.Show();
+            }
+            else
+            {
+                label22.Hide();
+
+                pictureBox2.Hide();
+            }
+
+        //}
+            
+        }
+        // NEXT 
         private void buttonNext_Click(object sender, EventArgs e)
         {
             WRowIndexLeft = dataGridView1.SelectedRows[0].Index;
 
-            if (WCategoryId == "EWB110")
+            bool WViewHistory = false;
+            if (WFunction == "VIEW")
             {
-                Ap.ReadAuthorizationsUserTotal(WSignedId); // User is requestor or Authoriser 
-                if (Ap.RecordFound)
-                {
-                    MessageBox.Show("Please take care with Authorisation record");
-                    return;
-                }
-
-                Us.ReadSignedActivityByKey(WSignRecordNo);
-
-                Us.ProcessNo = 5;
-
-                Us.WFieldChar1 = WCategoryId;
-                Us.WFieldNumeric1 = WRMCycleNo;
-
-                Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
-
-                int WAction = 11; // Reconciliation for Group of ATMs
-
-                //MessageBox.Show(" YOU ARE NOT AUTHORIZED FOR MASS RECONCILIATION ");
-                //return;
-                Form52b NForm52b;
-
-                NForm52b = new Form52b(WSignedId, WSignRecordNo, WOperator, WAction);
-                NForm52b.FormClosed += NForm52b_FormClosed;
-                NForm52b.ShowDialog(); ;
+                WViewHistory = true;
             }
-            //else
-            //{
-            //    if (WFunction == "Reconc")
-            //    {
+            else
+            {
+                WViewHistory = false;
+            }
 
-            //        Ap.ReadAuthorizationsUserTotal(WSignedId); // User is requestor or Authoriser 
-            //        if (Ap.RecordFound)
-            //        {
-            //            MessageBox.Show("Please take care with Authorisation record");
-            //            return;
-            //        }
+            if (Tuc.TotalATMsReady == 0 & WViewHistory == false)
+            {
+                MessageBox.Show("No Atms ready to reconcile");
+                return;
+            } 
 
-            //        if (Rms.RemainReconcExceptions == 0 & Rms.StartReconcDtTm != NullPastDate & Rms.EndReconcDtTm != NullPastDate)
-            //        {
-            //            MessageBox.Show("No Exceptions to Reconcile!");
-            //            return;
-            //        }
-            //        //TEST
-            //        if (WCategoryId == "EWB311")
-            //        {
-            //            WRMCycleNo = 106;
-            //        }
+            Ap.ReadAuthorizationsUserTotal(WSignedId); // User is requestor or Authoriser 
+            if (Ap.RecordFound)
+            {
+                MessageBox.Show("Please take care with Authorisation record");
+                return;
+            }
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            //        // Update Us Process number
-            //        Us.ReadSignedActivityByKey(WSignRecordNo);
-            //        Us.ProcessNo = 2; // Reconciliation 
-            //        Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+            if (WFunction == "VIEW")
+            {
+                Usi.ProcessNo = 54;
+            }
+            else
+            {
+                Usi.ProcessNo = 5;
+            }
+                
+            Usi.WFieldChar1 = WCategoryId;
+            Usi.WFieldNumeric1 = WReconcCycleNo;
 
-            //        Form271 NForm271;
+            Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
-            //        NForm271 = new Form271(WSignedId, WSignRecordNo, WOperator, WCategoryId, WRMCycleNo);
-            //        NForm271.FormClosed += NForm271_FormClosed;
-            //        NForm271.ShowDialog(); ;
-            //    }
+            int WAction = 11; // Reconciliation for Group of ATMs
 
-            //    if (WFunction == "Interactive A")
-            //    {
-            //        Form80b NForm80b;
-            //        NForm80b = new Form80b(WSignedId, WSignRecordNo, WOperator, WCategoryId, WRMCycleNo, 0, WFunction);
-            //        NForm80b.ShowDialog();
-            //    }
+            //MessageBox.Show(" YOU ARE NOT AUTHORIZED FOR MASS RECONCILIATION ");
+            //return;
+            if (WhatBankId == "")
+            {
+                //Form52b NForm52b;
 
-            //    if (WFunction == "Interactive B")
-            //    {
-            //        // Update Us Process number
+                //NForm52b = new Form52b(WSignedId, WSignRecordNo, WOperator, WAction, WCategoryId, WReconcCycleNo);
+                //NForm52b.FormClosed += NForm52b_FormClosed;
+                //NForm52b.ShowDialog();
+            }
 
-            //        Form19b NForm19b;
+            if (WhatBankId == "TEST")
+            {
+                MessageBox.Show("ALL ATMs in Difference for this category will be reconciled " + Environment.NewLine
+                                + "For:" + Environment.NewLine
+                                + "General Ledger Reconciliation" + Environment.NewLine
+                                + "Presenter Errors Handling."
+                                );
+                           
+                Form52c NForm52c;
+               
+                NForm52c = new Form52c(WSignedId, WSignRecordNo, WOperator, WCategoryId, WReconcCycleNo, WViewHistory);
+                NForm52c.FormClosed += NForm52b_FormClosed;
+                NForm52c.ShowDialog();
+            }
 
-            //        int Actions = 1;
-
-            //        NForm19b = new Form19b(WSignedId, WSignRecordNo, WOperator, WCategoryId, WRMCycleNo, Actions);
-            //        NForm19b.ShowDialog(); ;
-            //    }
-
-            //}    
         }
 
         void NForm52b_FormClosed(object sender, FormClosedEventArgs e)
@@ -418,11 +399,20 @@ namespace RRDM4ATMsWin
             dataGridView1.FirstDisplayedScrollingRowIndex = scrollPosition;
         }
 
+        // Show ATMs Cash Status 
+        private void buttonCashStatus_Click(object sender, EventArgs e)
+        {
+            Form68_Atms_Main NForm68_Atms_Main;
+            int TempGroup = WGroup; // If this Zero and Mode = 2 the it shows all ATMs
+            int TempMode = 10; // ALL ATMs this Group
+            NForm68_Atms_Main = new Form68_Atms_Main(WSignedId, WSignRecordNo, WOperator, TempGroup, TempMode);
+            NForm68_Atms_Main.Show();
+        }
+
         private void buttonBack_Click(object sender, EventArgs e)
         {
             this.Dispose();
         }
-
 
     }
 }

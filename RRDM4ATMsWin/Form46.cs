@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -19,15 +13,12 @@ namespace RRDM4ATMsWin
         string WSignedId;
         int WSignRecordNo;
         string WOperator;
-   //     bool WPrive;
+ 
         int WChosenGroup;
         int WFunctionNo;
 
-      //  int WUserName; 
-        
-    //    bool InsertUpdateMade; 
 
-        RRDMUsersAndSignedRecord Xa = new RRDMUsersAndSignedRecord(); // Make class availble 
+        RRDMUsersRecords Xa = new RRDMUsersRecords(); // Make class availble 
 
         RRDMGroups Ga = new RRDMGroups();
 
@@ -44,8 +35,10 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
+            // Set Working Date 
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             button6.Hide();
             button4.Hide();
@@ -67,7 +60,7 @@ namespace RRDM4ATMsWin
                 checkBox5.Checked = Ga.Stats;
                 checkBox4.Checked = Ga.Replenishment;
                 checkBox6.Checked = Ga.Reconciliation;
-                textBox2.Text = Ga.Description;
+                textBoxGroupDescr.Text = Ga.Description;
                 checkBox2.Checked = Ga.Inactive; 
 
             if (WFunctionNo == 1 ) textBoxMsgBoard.Text = " UPDATE FIELDS AND PRESS THE UPDATE BUTTON ";
@@ -79,12 +72,11 @@ namespace RRDM4ATMsWin
 
         
                 textBox3.Text= WOperator;
-              //  checkBox1.Checked = true
-
+                //  checkBox1.Checked = true
+                textBox1.Text = ""; 
                 textBox1.Hide();
                 label1.Hide();
 
-             //   textBoxMsg.Text = " INPUT DATA FOR THE NEW Group ";
             }
 
         }
@@ -109,6 +101,11 @@ namespace RRDM4ATMsWin
                 return;
             }
 
+            if (textBoxGroupDescr.Text == "")
+            {
+                MessageBox.Show("Please Fill in the Description.");
+                return;
+            }
 
             Ga.BankId = WOperator;
           
@@ -117,7 +114,7 @@ namespace RRDM4ATMsWin
             Ga.Stats = checkBox5.Checked;
             Ga.Replenishment = checkBox4.Checked;
             Ga.Reconciliation = checkBox6.Checked;
-            Ga.Description = textBox2.Text;
+            Ga.Description = textBoxGroupDescr.Text;
             Ga.DtTmCreated = DateTime.Now;
             Ga.Inactive = checkBox2.Checked;
 
@@ -147,6 +144,17 @@ namespace RRDM4ATMsWin
                 MessageBox.Show(" YOU HAVE CHOSEN THE WRONG BUTTON ");
                 return;
             }
+            if (textBox1.Text !="")
+            {
+                MessageBox.Show("Group with this Id already opened.");
+                return;
+            }
+
+            if (textBoxGroupDescr.Text == "")
+            {
+                MessageBox.Show("Please Fill in the Description.");
+                return;
+            }
 
 
             Ga.BankId = WOperator;
@@ -158,7 +166,7 @@ namespace RRDM4ATMsWin
             Ga.Stats = checkBox5.Checked;
             Ga.Replenishment = checkBox4.Checked;
             Ga.Reconciliation = checkBox6.Checked;
-            Ga.Description = textBox2.Text;
+            Ga.Description = textBoxGroupDescr.Text;
             Ga.DtTmCreated = DateTime.Now;
             Ga.Inactive = checkBox2.Checked;
 
@@ -241,14 +249,10 @@ namespace RRDM4ATMsWin
             }
 
         }
-
-        // 
-        // Cancel 
-        //
-        private void Cancel_Click(object sender, EventArgs e)
+// Finish 
+        private void button1_Click(object sender, EventArgs e)
         {
-                this.Close(); 
+            this.Dispose();
         }
-
     }
 }

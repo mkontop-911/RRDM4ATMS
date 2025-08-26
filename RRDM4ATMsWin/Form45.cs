@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -25,7 +18,10 @@ namespace RRDM4ATMsWin
         string WSignedId;
         int WSignRecordNo;
         string WOperator;
-      //  bool WPrive;
+
+        string SelectionCriteria; 
+
+        RRDMGroups Gr = new RRDMGroups(); 
 
         public Form45(string InSignedId, int SignRecordNo, string InOperator)
         {
@@ -33,11 +29,14 @@ namespace RRDM4ATMsWin
             WSignRecordNo = SignRecordNo;
             WOperator = InOperator;
        
-
             InitializeComponent();
 
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
         }
 
         // Load Command 
@@ -45,17 +44,31 @@ namespace RRDM4ATMsWin
         private void Form45_Load(object sender, EventArgs e)
         {
             
-                string errfilter = "Operator = '" + WOperator + "'";
+                SelectionCriteria = " WHERE Operator = '" + WOperator + "'";
 
-                groupsBindingSource.Filter = errfilter;
-       
+                Gr.ReadGroupsAndFillTable(SelectionCriteria);
+            if (Gr.HasErrors)
+            {
+                MessageBox.Show(Gr.ErrorDetails);
+                return;
+            }
 
-                this.groupsTableAdapter.Fill(this.aTMSDataSet52.Groups);
+            dataGridView1.DataSource = Gr.TableGroupsOfAtms.DefaultView;
 
-                dataGridView1.Rows[WRowIndex].Selected = true;
-                dataGridView1_RowEnter(this, new DataGridViewCellEventArgs(1, WRowIndex));
+               if (dataGridView1.Rows.Count == 0)
+               {
+                //MessageBox.Show("No transactions to be posted");
+                Form2 MessageForm = new Form2("No Groups To Display");
+                MessageForm.ShowDialog();
+
+                return;
+               }
+               else
+            {
+                // ELSE SHOW GRID
+                ShowGridFields01();
+            }
            
-
         }
 
 
@@ -63,17 +76,37 @@ namespace RRDM4ATMsWin
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-           
-                ChosenGroupNo = int.Parse(textBox1.Text);
-                string errfilter = "Operator= '" + WOperator + "'" + " AND GroupNo =" + ChosenGroupNo.ToString();
 
-                groupsBindingSource.Filter = errfilter;
+            if (int.TryParse(textBox1.Text, out ChosenGroupNo))
+            {
+            }
+            else
+            {
+                MessageBox.Show(textBox1.Text, "Please enter a valid number!");
 
-                this.groupsTableAdapter.Fill(this.aTMSDataSet52.Groups);
+                return;
+            }
+           // ChosenGroupNo = int.Parse(textBox1.Text);
 
-                dataGridView1.Rows[WRowIndex].Selected = true;
-                dataGridView1_RowEnter(this, new DataGridViewCellEventArgs(1, WRowIndex));
-           
+                SelectionCriteria = " WHERE Operator= '" + WOperator + "'" + " AND GroupNo =" + ChosenGroupNo.ToString();
+
+                Gr.ReadGroupsAndFillTable(SelectionCriteria);
+
+                dataGridView1.DataSource = Gr.TableGroupsOfAtms.DefaultView;
+
+               if (dataGridView1.Rows.Count == 0)
+               {
+                //MessageBox.Show("No transactions to be posted");
+                //Form2 MessageForm = new Form2("No Groups To Display");
+                //MessageForm.ShowDialog();
+
+                return;
+               }
+               else
+               {
+                // ELSE SHOW GRID
+                 ShowGridFields01();
+               }
 
         }
 
@@ -116,13 +149,9 @@ namespace RRDM4ATMsWin
 
             NForm46 = new Form46(WSignedId, WSignRecordNo, WOperator, ChosenGroupNo, WFunctionNo);
             NForm46 . FormClosed +=NForm46_FormClosed;
-            NForm46.Show();
+            NForm46.ShowDialog();
 
-          
-         //   this.Dispose();
         }
-
-        
 
 
         // GO TO OPEN A NEW GROUP
@@ -135,7 +164,7 @@ namespace RRDM4ATMsWin
 
             NForm46 = new Form46(WSignedId, WSignRecordNo, WOperator, ChosenGroupNo, WFunctionNo);
             NForm46.FormClosed += NForm46_FormClosed;
-            NForm46.Show();
+            NForm46.ShowDialog();
             //   this.Hide();
         }
 
@@ -162,32 +191,56 @@ namespace RRDM4ATMsWin
 
             NForm46 = new Form46(WSignedId, WSignRecordNo, WOperator, ChosenGroupNo, WFunctionNo);
             NForm46 .FormClosed += NForm46_FormClosed;
-            NForm46.Show();
-        //    this.Dispose(); 
-           
+            NForm46.ShowDialog();
 
         }
-
-        // REFRESED TABLE 
-
-        private void button8_Click(object sender, EventArgs e)
+        // Show Grid Left 
+        public void ShowGridFields01()
         {
-           
-                string errfilter = "Operator = '" + WOperator + "'";
+            //DataGridViewCellStyle style = new DataGridViewCellStyle();
+            //style.Format = "N2";
 
-                groupsBindingSource.Filter = errfilter;
+            //GroupNo = (int)rdr["GroupNo"];
+            //BankId = (string)rdr["BankId"];
+            //MoreThanOneBank = (bool)rdr["MoreThanOneBank"];
+            //Stats = (bool)rdr["Stats"];
+            //Replenishment = (bool)rdr["Replenishment"];
+            //Reconciliation = (bool)rdr["Reconciliation"];
+            //Description = (string)rdr["Description"];
+            //DtTmCreated = (DateTime)rdr["DtTmCreated"];
+            //Inactive = (bool)rdr["Inactive"];
+            //Operator = (string)rdr["Operator"];
 
-                this.groupsTableAdapter.Fill(this.aTMSDataSet52.Groups);
-          
+            dataGridView1.Columns[0].Width = 65; // "GroupNo"
+            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[1].Width = 60; // "BankId"
+            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView1.Columns[1].Visible = false;
+
+            dataGridView1.Columns[2].Width = 60; // /MoreThanOneBank
+            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView1.Columns[2].Visible = false;
+
+            dataGridView1.Columns[3].Width = 100; //  Stats
+            dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView1.Columns[3].HeaderText = "Statistics";
+
+            dataGridView1.Columns[4].Width = 100; // Replenishment
+            dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[5].Width = 100; // Reconciliation
+            dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[6].Width = 200; // Description
+            dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
         }
-        
 
-        // Go Back 
-
+        // Finish 
         private void button5_Click(object sender, EventArgs e)
         {
-            
+            this.Dispose(); 
         }
-
     }
 }

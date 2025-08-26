@@ -1,105 +1,135 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
+using RRDM4ATMsClasses;
 
 namespace RRDM4ATMsWin
 {
     public partial class Form120 : Form
     {
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
-        RRDMUserVsAuthorizers Ua = new RRDMUserVsAuthorizers(); 
+        
+        RRDMUsersRecords Us = new RRDMUsersRecords();
+        RRDMUserVsAuthorizers Ua = new RRDMUserVsAuthorizers();
+        RRDMUsers_Applications_Roles Usr = new RRDMUsers_Applications_Roles(); 
 
-        string WAuthoriser;
-    //    int WSeqNumber; 
-        string WBranch; 
+        string WAuthoriserLeft;
+        string WAuthoriserRight;
+        //    int WSeqNumber; 
+        string WBranch;
+        DateTime NullPastDate = new DateTime(1900, 01, 01);
+
+        bool Is_FirstCycle; 
 
         string WSignedId;
         int WSignRecordNo;
         string WOperator;
-        string WorkingUserId; 
+        string WorkingUserId;
+        string WApplication;
+        bool WUser_Is_Maker;
 
-        public Form120(string InSignedId, int InSignRecordNo, string InOperator, string InWorkingUserId)
+        public Form120(string InSignedId, int InSignRecordNo, string InOperator, string InWorkingUserId
+            , string InApplication, bool In_User_Is_Maker)
         {
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
             WOperator = InOperator;
-            WorkingUserId = InWorkingUserId; 
+            WorkingUserId = InWorkingUserId;
+            WApplication = InApplication;
+            WUser_Is_Maker = In_User_Is_Maker;
 
             InitializeComponent();
 
+            // Set Working Date 
+          
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
 
-            comboBox1.Text = "0"; 
+            pictureBox1.BackgroundImage = appResImg.logo2;
+
+            Is_FirstCycle = true;
 
             comboBox2.Items.Add("Branch"); // Branch Authorisers 
             comboBox2.Items.Add("All"); // All Authorisers 
 
-            comboBox2.Text = "Branch"; 
+            Us.ReadUsersRecord(WorkingUserId);
 
-            Us.ReadUsersRecord(WorkingUserId); 
-            
-            WBranch = Us.Branch; 
+            WBranch = Us.Branch;
 
             textBox1.Text = "AUTHORISERS FOR USER : " + WorkingUserId;
-            textBoxMsgBoard.Text = "Select Authoriser to be moved to the user Authorisers"; 
+            textBoxMsgBoard.Text = "Select Authoriser to be moved to the user Authorisers";
+
+            comboBox2.Text = "Branch";
+
         }
 
         private void Form120_Load(object sender, EventArgs e)
         {
-           // AUTHORISERS FOR HIS BRANCH
+            Is_FirstCycle = false; 
+            // AUTHORISERS FOR HIS BRANCH
             if (comboBox2.Text == "Branch")
             {
-                usersTableBindingSource.Filter = "Operator = '" + WOperator + "' "
-                                             + " AND Authoriser = 1 " + " AND Branch = '" + WBranch + "' ";
-                this.usersTableTableAdapter.Fill(this.aTMSDataSet47.UsersTable);
+                int Mode = 2; // Authorisers 
+
+                string SelectionCriteria = " WHERE Application ='" + WApplication + "' AND Authoriser = 1 ";
+                Usr.ReadUsersVsApplicationsVsRolesAndFillTable(SelectionCriteria, Mode, WBranch);
+
             }
 
             // AUTHORISERS FOR ALL BRANCHES 
 
             if (comboBox2.Text == "All")
             {
-                usersTableBindingSource.Filter = "Operator = '" + WOperator + "' "
-                                             + " AND Authoriser = 1 " ;
-                this.usersTableTableAdapter.Fill(this.aTMSDataSet47.UsersTable);
+                int Mode = 2; // Authorisers 
+
+                string SelectionCriteria = " WHERE Application ='" + WApplication + "' AND Authoriser = 1 ";
+                Usr.ReadUsersVsApplicationsVsRolesAndFillTable(SelectionCriteria, Mode, "");
             }
 
-            // AUTHORISERS FOR THIS USER 
-            userVsAuthorizersBindingSource.Filter = "Operator = '" + WOperator + "' "
-                + " AND UserId ='" + WorkingUserId + "'" + " AND OpenRecord = 1 "; 
-            this.userVsAuthorizersTableAdapter.Fill(this.aTMSDataSet56.UserVsAuthorizers);
+            dataGridView1.DataSource = Usr.UsersVsApplicationsVsRolesDataTable.DefaultView;
+            ShowGrid1();
 
+            // SHOW The Authorisers 
+
+            string filterAutho = "Operator = '" + WOperator + "' "
+                                       + " AND UserId ='" + WorkingUserId + "'" + " AND OpenRecord = 1 ";
+
+            Ua.ReadUserVsAuthorizersFillDataTable(filterAutho);
+
+            if (Ua.RecordFound == true)
+            {
+                ShowGrid2();
+            }
+            
         }
+        int SeqLeft;
 
+
+        // ROW ENTER
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
-            WAuthoriser = rowSelected.Cells[0].Value.ToString();
+            SeqLeft = (int)rowSelected.Cells[0].Value;
 
-            Us.ReadUsersRecord(WAuthoriser);
+            Usr.ReadUsersVsApplicationsVsRolesBySeqNo(SeqLeft);
 
-            LabelUserId.Text = Us.UserId;
-            LabelUserNm.Text = Us.UserName; 
+            WAuthoriserLeft = LabelUserId.Text = Usr.UserId;
 
-        }      
+            Us.ReadUsersRecord(Usr.UserId);
+            LabelUserNm.Text = Us.UserName;
+        }
 
         private void dataGridView2_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow rowSelected = dataGridView2.Rows[e.RowIndex];
-            WAuthoriser = rowSelected.Cells[0].Value.ToString();
-        
-            Ua.ReadUserVsAuthorizationSpecific(WorkingUserId,WAuthoriser); 
-            label3.Text = Ua.Authoriser;
-            label4.Text = Ua.AuthorName; 
-
+            WAuthoriserRight = rowSelected.Cells[2].Value.ToString();
+            //string WAuthoriserRight_Name = rowSelected.Cells[1].Value.ToString();
+            //string WAuthoriserRight_Name_2 = rowSelected.Cells[2].Value.ToString();
+            Ua.ReadUserVsAuthorizationSpecific(WorkingUserId, WAuthoriserRight);
+            label3.Text = WAuthoriserRight;
+            label4.Text = Ua.AuthorName;
         }
+
+
         // ADD Record 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
@@ -117,7 +147,7 @@ namespace RRDM4ATMsWin
 
             }
 
-            Ua.ReadUserVsAuthorizationSpecific(WorkingUserId, WAuthoriser);
+            Ua.ReadUserVsAuthorizationSpecific(WorkingUserId, WAuthoriserLeft);
             if (Ua.RecordFound == true)
             {
                 MessageBox.Show("Authoriser already exist in user's authorisers");
@@ -125,16 +155,31 @@ namespace RRDM4ATMsWin
             }
               
             Ua.UserId = WorkingUserId;
-            Ua.Authoriser = WAuthoriser;
+            Ua.Authoriser = WAuthoriserLeft;
             Ua.AuthorName = Us.UserName;
-            Ua.TypeOfAuth = int.Parse(comboBox1.Text);
+            Ua.TypeOfAuth = 0 ;
             Ua.DateOfInsert = DateTime.Now;
             Ua.Operator = WOperator; 
 
-            Ua.InsertUserVsAuthorizationRecord();
+            if (WorkingUserId != WAuthoriserLeft)
+            {
+                Ua.InsertUserVsAuthorizationRecord();
 
-            userVsAuthorizersBindingSource.Filter = "Operator = '" + WOperator + "' " + " AND UserId ='" + WorkingUserId + "'";
-            this.userVsAuthorizersTableAdapter.Fill(this.aTMSDataSet56.UserVsAuthorizers);
+                // update User with Maker Information 
+                UpdateUserRecordByMaker(WorkingUserId);
+            }
+            else
+            {
+                // Equal is not allowed
+                MessageBox.Show("You cannot assign yourself as authoriser.");
+                return; 
+            }
+
+            // Load 
+            Form120_Load(this, new EventArgs());
+
+            //userVsAuthorizersBindingSource.Filter = "Operator = '" + WOperator + "' " + " AND UserId ='" + WorkingUserId + "'";
+            //this.userVsAuthorizersTableAdapter.Fill(this.aTMSDataSet2.UserVsAuthorizers);
 
             textBoxMsgBoard.Text = "Authoriser moved from Pool to User . "; 
         }
@@ -143,13 +188,135 @@ namespace RRDM4ATMsWin
         {
             Ua.DeleteUserAuthoriserRecord(Ua.UserId, Ua.Authoriser);
 
-            userVsAuthorizersBindingSource.Filter = "Operator = '" + WOperator + "' "
-                + " AND UserId ='" + WorkingUserId + "'" + " AND OpenRecord = 1 ";
-            this.userVsAuthorizersTableAdapter.Fill(this.aTMSDataSet56.UserVsAuthorizers);
+            //userVsAuthorizersBindingSource.Filter = "Operator = '" + WOperator + "' "
+            //    + " AND UserId ='" + WorkingUserId + "'" + " AND OpenRecord = 1 ";
+            //this.userVsAuthorizersTableAdapter.Fill(this.aTMSDataSet2.UserVsAuthorizers);
+       
+            // Load 
+            Form120_Load(this, new EventArgs());
 
             textBoxMsgBoard.Text = "Authoriser removed from User . "; 
         }
-//FINISH
+        // Show first Grid
+        private void ShowGrid1()
+        {
+            if (dataGridView1.Rows.Count == 0)
+            {
+                // buttonAdd.Hide();
+                return;
+            }
+            //UsersVsApplicationsVsRolesDataTable.Columns.Add("SeqNo", typeof(int));
+            //UsersVsApplicationsVsRolesDataTable.Columns.Add("UserId", typeof(string));
+            //UsersVsApplicationsVsRolesDataTable.Columns.Add("Authoriser", typeof(bool));
+            //UsersVsApplicationsVsRolesDataTable.Columns.Add("Application", typeof(string));
+            //UsersVsApplicationsVsRolesDataTable.Columns.Add("SecLevel", typeof(string));
+            //UsersVsApplicationsVsRolesDataTable.Columns.Add("RoleName", typeof(string));
+            dataGridView1.Columns[0].Width = 60; // Seq No
+            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView1.Columns[0].Visible = false;
+
+            dataGridView1.Columns[1].Width = 90; // UserId
+            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[2].Width = 90; // Authoriser
+            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[3].Width = 110; // Application
+            dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[4].Width = 90; // SecLevel
+            dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[5].Width = 180; // RoleName
+            dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        }
+
+        // Show second Grid
+        private void ShowGrid2()
+        {
+            dataGridView2.DataSource = Ua.UsersToAuthorDataTable.DefaultView;
+
+            if (dataGridView2.Rows.Count == 0)
+            {
+                return;
+            }
+
+            dataGridView2.Columns[0].Width = 50; // SeqNo
+            dataGridView2.Columns[0].Visible = false;
+
+            dataGridView2.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[1].Visible = false;
+
+            dataGridView2.Columns[2].Width = 100; //  AuthorId
+            dataGridView2.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[3].Width = 150; // AuthoriserName
+            dataGridView2.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[4].Width = 50; // TypeOfAuthor
+            dataGridView2.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[5].Width = 100; // Date of insert 
+            dataGridView2.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+        }
+
+        private void UpdateUserRecordByMaker(string WUserId)
+        {
+            if (WUser_Is_Maker == true)
+            {
+                // DO ... 
+
+                // Means that changed took place 
+                // We must update the USER record
+                Us.ReadUsersRecord_FULL(WUserId);
+
+                // Initialised Checker information on User Record
+
+                if (Us.Is_Approved == false)
+                {
+                    // Maker already in operation
+                    // just set up what is needed
+                    Us.Is_NewAuthoriser = true;
+
+                    Us.DtTimeOfChange = DateTime.Now;
+
+                    Us.UpdateTail_For_Maker_Work(WUserId);
+                }
+
+                if (Us.Is_Approved == true)
+                {
+                    // Open Case 
+                    Us.ApprovedByWhatChecker = "";
+                    Us.ApproveOR_Reject = "";
+                    Us.DtTimeOfApproving = NullPastDate;
+                    Us.Is_Approved = false;
+                    Us.UserInactive = true;
+
+                    // UPDATE CHECKER INFORMATION
+
+                    Us.UpdateTail_For_Checker_Work(WUserId);
+
+                    // Initialised Maker information on User Record
+                    Us.ChangedByWhatMaker = WSignedId; // is the Designated Maker
+                    Us.DtTimeOfChange = DateTime.Now;
+
+                    Us.Is_New_User = false;
+                    Us.Is_NewAccessRights = false;
+                    Us.Is_NewCategory = false;
+                    Us.Is_NewAuthoriser = true;
+
+                    // UPDATE MAKER INFORMATION
+
+                    Us.UpdateTail_For_Maker_Work(WUserId);
+                }
+
+
+            }
+        }
+
+        //FINISH
         private void buttonNext_Click(object sender, EventArgs e)
         {
             this.Dispose(); 
@@ -157,7 +324,31 @@ namespace RRDM4ATMsWin
 // Selection criteria has changed 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Form120_Load(this, new EventArgs()); 
+            if (comboBox2.Text == "Branch")
+            {
+                labelBranchName.Show(); 
+                labelBranchName.Text = WBranch; 
+            }
+            else
+            {
+                labelBranchName.Hide();              
+            }
+
+            if (Is_FirstCycle == true)
+            {
+                // DO NOT ALLOW THE LOAD 
+            }
+            else
+            {
+                Form120_Load(this, new EventArgs()); 
+            }
+            //Form120_Load(this, new EventArgs()); 
         }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
     }
 }

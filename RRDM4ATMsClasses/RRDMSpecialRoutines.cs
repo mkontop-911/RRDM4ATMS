@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
-using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMSpecialRoutines
+    public class RRDMSpecialRoutines : Logger
     {
-       private int[] TypeOfNotes;
+        public RRDMSpecialRoutines() : base() { }
+
+        private int[] TypeOfNotes;
         private int tempAmount=0;
 
         private int[] SortedResults;

@@ -174,19 +174,19 @@ FROM
                   <Width>2.5cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5cm</Width>
+                  <Width>3.10854cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5cm</Width>
+                  <Width>4.11396cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5cm</Width>
+                  <Width>4.59146cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5cm</Width>
+                  <Width>4.0875cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5cm</Width>
+                  <Width>4.77542cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -586,7 +586,7 @@ FROM
             <Top>2.06057cm</Top>
             <Left>0.34396cm</Left>
             <Height>1.2cm</Height>
-            <Width>15cm</Width>
+            <Width>23.17687cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -665,6 +665,6 @@ FROM
     </ReportParameter>
   </ReportParameters>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportServerUrl>http://acer-laptop/ReportServer</rd:ReportServerUrl>
+  <rd:ReportServerUrl>http://rrdmdemo-pc/ReportServer</rd:ReportServerUrl>
   <rd:ReportID>3532a185-8966-4721-bf0e-c5ef012837c7</rd:ReportID>
 </Report>

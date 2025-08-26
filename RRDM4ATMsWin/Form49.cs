@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -16,14 +10,16 @@ namespace RRDM4ATMsWin
     {
         // ERRORS MANAGEMENT 
         //
-         RRDMErrorsClassWithActions Ea = new RRDMErrorsClassWithActions();
-         RRDMNotesBalances Na = new RRDMNotesBalances();
-         RRDMNewSession Sa = new RRDMNewSession();
-         RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate();
+         RRDMErrorsClassWithActions Er = new RRDMErrorsClassWithActions();
+         RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
+         RRDMSessionsNewSession Sa = new RRDMSessionsNewSession();
+         RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
 
-         RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+         RRDMUsersRecords Us = new RRDMUsersRecords();
 
          string WUserBankId;
+
+        int WRowIndex; 
 
          Bitmap SCREENinitial;
          string AuditTrailUniqueID = "";
@@ -37,28 +33,38 @@ namespace RRDM4ATMsWin
          int WErrNo;
 
          int WFunction;
-
-         string WSignedId;
+        string WOperator;
+        string WSignedId;
         int WSignRecordNo;
         string WBankId;
-      //  bool WPrive;
+   
         string WAtmNo;
 
         string errfilter; 
        // int WSesNo;
 
-        public Form49(string InSignedId, int InSignRecordNo, string InBankId,  string InAtmNo)
+        public Form49(string InOperator, string InSignedId, int InSignRecordNo, string InBankId,  string InAtmNo)
         {
+            WOperator = InOperator;
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
             WBankId = InBankId;
-      //      WPrive = InPrive; 
+  
             WAtmNo = InAtmNo;
           
             InitializeComponent();
 
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             // ================USER BANK =============================
             Us.ReadUsersRecord(WSignedId); // Read USER record for the signed user
@@ -78,16 +84,9 @@ namespace RRDM4ATMsWin
 
             errfilter = "BankId = '" + WBankId + "'" + " AND " + "AtmNo = '" + WAtmNo + "' AND OpenErr=1";
 
-                errorsTableBindingSource.Filter = errfilter;
+            Er.ReadErrorsAndFillTable(WBankId, WSignedId, errfilter);
 
-                dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Descending); 
-
-                this.errorsTableTableAdapter.Fill(this.aTMSDataSet2.ErrorsTable);
-
-                if (dataGridView1.Rows.Count == 0)
-                {
-                    MessageBox.Show("No open errors! If you wish push the appropriate button to view the closed ones. ");
-                }
+            ShowGrid();           
 
                 System.Drawing.Bitmap memoryImage;
                 memoryImage = new System.Drawing.Bitmap(tableLayoutPanelMain.Width, tableLayoutPanelMain.Height);
@@ -98,21 +97,20 @@ namespace RRDM4ATMsWin
         // ON ROW ENTER 
         private void dataGridView1_RowEnter_1(object sender, DataGridViewCellEventArgs e)
         {
-
-            DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
-            label7.Text = rowSelected.Cells[0].Value.ToString();
-            WErrNo = (int)rowSelected.Cells[0].Value;
+            DataGridViewRow WRowIndex = dataGridView1.Rows[e.RowIndex];
+            label7.Text = WRowIndex.Cells[0].Value.ToString();
+            WErrNo = (int)WRowIndex.Cells[0].Value;
             label7.Text = WErrNo.ToString();
 
-            Ea.ReadErrorsTableSpecific(WErrNo);
+            Er.ReadErrorsTableSpecific(WErrNo);
 
           //  WAtmNo = Ea.WAtmNo;
 
-            checkBox1Open.Checked = Ea.OpenErr;
-            checkBox2UnderAction.Checked = Ea.UnderAction;
-            checkBox3ManualAct.Checked = Ea.ManualAct;
+            checkBox1Open.Checked = Er.OpenErr;
+            checkBox2UnderAction.Checked = Er.UnderAction;
+            checkBox3ManualAct.Checked = Er.ManualAct;
 
-            textBox3usercommentold.Text = Ea.UserComment;
+            textBox3usercommentold.Text = Er.UserComment;
             textBox2Newcomment.Text = ""; 
         }
         
@@ -123,6 +121,8 @@ namespace RRDM4ATMsWin
 
         private void button2_Click_1(object sender, EventArgs e)
         {
+            WRowIndex = dataGridView1.SelectedRows[0].Index;
+
             if (String.IsNullOrEmpty(textBox2Newcomment.Text))
             {
                 MessageBox.Show("FILL IN THE USER COMMENT Please");
@@ -148,13 +148,13 @@ namespace RRDM4ATMsWin
             else StartInDiff = true;
 
 
-            Ea.OpenErr = checkBox1update.Checked;
-            Ea.UnderAction = checkBox2update.Checked;
-            Ea.ManualAct = checkBox3update.Checked;
+            Er.OpenErr = checkBox1update.Checked;
+            Er.UnderAction = checkBox2update.Checked;
+            Er.ManualAct = checkBox3update.Checked;
 
-            Ea.UserComment = textBox2Newcomment.Text;
+            Er.UserComment = textBox2Newcomment.Text;
 
-            Ea.UpdateErrorsTableSpecific(WErrNo);
+            Er.UpdateErrorsTableSpecific(WErrNo);
 
             if (StartInDiff == false)
             {
@@ -242,7 +242,7 @@ namespace RRDM4ATMsWin
         {
             DateTime NullPastDate = new DateTime(1900, 01, 01);
             int Action = 25;
-            string SingleChoice = Ea.TraceNo.ToString();
+            string SingleChoice = Er.TraceNo.ToString();
             NForm62 = new Form62(WSignedId, WSignRecordNo, WBankId, WAtmNo, WSesNo, Action,
                 NullPastDate, NullPastDate, SingleChoice);
             NForm62.Show();
@@ -250,32 +250,78 @@ namespace RRDM4ATMsWin
         // SHOW ALL ACTIVE ERRORS 
         private void button1_Click(object sender, EventArgs e)
         {
+            WRowIndex = dataGridView1.SelectedRows[0].Index;
+
             label2.Text = "LIST OF ACTIVE ERRORS FOR ATM : " + WAtmNo;
 
             errfilter = "BankId = '" + WBankId + "'" + " AND " + "AtmNo = '" + WAtmNo + "' AND OpenErr=1";
 
-            errorsTableBindingSource.Filter = errfilter;
+            Er.ReadErrorsAndFillTable(WBankId, WSignedId, errfilter);
 
-            dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Descending);
-
-            this.errorsTableTableAdapter.Fill(this.aTMSDataSet2.ErrorsTable);
+            ShowGrid();
 
         }
         // SHow all closed erros 
         private void button3_Click(object sender, EventArgs e)
         {
+
+            WRowIndex = dataGridView1.SelectedRows[0].Index;
+
             label2.Text = "LIST OF CLOSED ERRORS FOR ATM : " + WAtmNo;
 
             errfilter = "BankId = '" + WBankId + "'" + " AND " + "AtmNo = '" + WAtmNo + "' AND OpenErr=0";
 
-            errorsTableBindingSource.Filter = errfilter;
+            Er.ReadErrorsAndFillTable(WBankId, WSignedId, errfilter);
 
-            dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Descending);
-
-            this.errorsTableTableAdapter.Fill(this.aTMSDataSet2.ErrorsTable);
+            ShowGrid();
         }
+        // Show Grid 
+        //******************
+        // SHOW GRID
+        //******************
+        private void ShowGrid()
+        {
+            dataGridView1.DataSource = Er.ErrorsTable.DefaultView;
 
-        
+            dataGridView1.Columns[0].Width = 40; // ExcNo
+            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
+            dataGridView1.Columns[1].Width = 80; // Desc
+            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[2].Width = 90; //  Card
+            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[3].Width = 50; // Ccy
+            dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[4].Width = 80; // Amount
+            dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[5].Width = 50; // NeedAction
+            dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[6].Width = 50; // UnderAction 
+            dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[7].Width = 90; // DateTime
+
+            dataGridView1.Columns[8].Width = 80; // TransDescr
+
+            dataGridView1.Columns[9].Width = 140; // TransDescr
+
+            if (dataGridView1.Rows.Count == 0)
+            {
+                MessageBox.Show("No available errors with this search! ");
+            }
+
+            dataGridView1.Rows[WRowIndex].Selected = true;
+            dataGridView1_RowEnter_1(this, new DataGridViewCellEventArgs(1, WRowIndex));
+        }
+// Finish 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Dispose(); 
+        }
     }
 }

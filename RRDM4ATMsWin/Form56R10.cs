@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
 using System.Collections;
 using Microsoft.Reporting.WinForms;
-
 using System.Configuration;
 
 
@@ -18,49 +9,60 @@ namespace RRDM4ATMsWin
 {
     public partial class Form56R10 : Form
     {
-        string WOperator; 
+        string WR1;
+        string WR2;
+        string WR3;
+        string WR4;
+        string WR5;
 
-        public Form56R10(string InOperator)
+        public Form56R10(string R1, string R2, string R3, string R4, string R5)
         {
-            WOperator = InOperator; 
+            WR1 = R1;
+            WR2 = R2;
+            WR3 = R3;
+            WR4 = R4;
+            WR5 = R5;
+
             InitializeComponent();
         }
 
         private void Form56R10_Load(object sender, EventArgs e)
         {
+            //ShowReport();
+            ArrayList reportParam = new ArrayList();
+            reportParam = ReportDefaultPatam();
+            ReportParameter[] param = new ReportParameter[reportParam.Count];
+            for (int k = 0; k < reportParam.Count; k++)
+            {
+                param[k] = (ReportParameter)reportParam[k];
+            }
+
             try
             {
                 string RSUri = ConfigurationManager.AppSettings["ReportServerUri"];
-                string RSReportName = "/CurrentAtmsStatus";
-
+                string RsDir = ConfigurationManager.AppSettings["ReportsDir"];
+                string RSReportName = RsDir + "/CurrentAtmsStatus";
+               
                 // Set the processing mode for the ReportViewer to Remote
                 reportViewer1.ProcessingMode = ProcessingMode.Remote;
 
                 ServerReport serverReport = reportViewer1.ServerReport;
 
-                //// Get a reference to the default credentials
-                //System.Net.ICredentials credentials = System.Net.CredentialCache.DefaultCredentials;
-
-                //// Get a reference to the report server credentials
-                //ReportServerCredentials rsCredentials = serverReport.ReportServerCredentials;
-
-                //// Set the credentials for the server report
-                //rsCredentials.NetworkCredentials = credentials;
-
                 // Set the report server URL and report path
                 serverReport.ReportServerUrl = new Uri(RSUri);
                 serverReport.ReportPath = RSReportName;
 
-                //pass parmeters to report
-                serverReport.SetParameters(new ReportParameter("Operator", WOperator));
+                // ***********************
 
-                // Set page settings
+                reportViewer1.ServerReport.SetParameters(param); //Set Report Parameters
+                reportViewer1.ShowParameterPrompts = false;
+                //this.reportViewer1.RefreshReport();
+
                 System.Drawing.Printing.PageSettings pp = new System.Drawing.Printing.PageSettings();
                 pp.Margins = new System.Drawing.Printing.Margins(20, 3, 20, 20);
                 this.reportViewer1.SetPageSettings(pp);
 
                 this.reportViewer1.RefreshReport();
-
             }
             catch (Exception ex)
             {
@@ -70,7 +72,24 @@ namespace RRDM4ATMsWin
                 MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
 
             }
-           
+
+        }
+
+        private ArrayList ReportDefaultPatam()
+        {
+            ArrayList arrLstDefaultParam = new ArrayList();
+            arrLstDefaultParam.Add(CreateReportParameter("Par1", WR1));
+            arrLstDefaultParam.Add(CreateReportParameter("Par2", WR2));
+            arrLstDefaultParam.Add(CreateReportParameter("Par3", WR3));
+            arrLstDefaultParam.Add(CreateReportParameter("InBankIdLogo", WR4));
+            arrLstDefaultParam.Add(CreateReportParameter("InUserId", WR5));
+
+            return arrLstDefaultParam;
+        }
+        private ReportParameter CreateReportParameter(string paramName, string pramValue)
+        {
+            ReportParameter aParam = new ReportParameter(paramName, pramValue);
+            return aParam;
         }
     }
 }

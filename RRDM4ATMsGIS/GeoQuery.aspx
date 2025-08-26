@@ -6,8 +6,7 @@
             var div1 = document.getElementById("DivGrid");
             var div1_position = document.getElementById("DivGrid_Pos");
             var position1 = parseInt('<%=Request.Form["DivGrid_Pos"] %>');
-
-
+//
             if (isNaN(position1)) {
                 position1 = 0;
             }
@@ -95,7 +94,7 @@
         </table>
 
         <asp:Button ID="btReload" runat="server" BorderColor="#2377C0" BorderStyle="Solid" BorderWidth="1px" OnClick="btReload_Click" Style="z-index: 1; left: 95px; top: 334px; position: absolute; width: 131px; margin: 1px; height: 28px;" Text="Reload the data" ToolTip="Reload this page to start again (changes will be lost)" />
-        <asp:Button ID="btShow" runat="server" BorderColor="#2377C0" BorderStyle="Solid" BorderWidth="1px" OnClick="btShow_Click" Style="z-index: 1; left: 59px; top: 257px; position: absolute; width: 210px; margin: 1px; height: 28px;" Text="Show Lat/Lon on Map" ToolTip="Show Lat/Lon on the map" />
+        <asp:Button ID="btShow" runat="server" BorderColor="#2377C0" BorderStyle="Solid" BorderWidth="1px" OnClick="btShow_Click" Style="z-index: 1; left: 59px; top: 257px; position: absolute; width: 210px; margin: 1px; height: 28px;" Text="Show ATM on Map" ToolTip="Show the ATM on the map using Lat/Lon" />
         <asp:Button ID="btFind" runat="server" BorderColor="#2377C0" BorderStyle="Solid" BorderWidth="1px" OnClick="btFind_Click" Style="z-index: 1; left: 57px; top: 296px; position: absolute; width: 210px; margin: 1px; height: 28px;" Text="Find Coordinates from Address" ToolTip="Use the address fields to locate the ATM on the map" />
         <asp:Button ID="btSave" runat="server" BorderColor="#2377C0" BorderStyle="Solid" BorderWidth="1px" OnClick="btSave_Click" Style="z-index: 1; left: 96px; top: 377px; position: absolute; width: 131px; margin: 1px; height: 45px;" Text="Save" ToolTip="Update the data in the database" />
         

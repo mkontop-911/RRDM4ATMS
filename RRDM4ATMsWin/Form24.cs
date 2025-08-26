@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -25,26 +19,36 @@ namespace RRDM4ATMsWin
         // 
 
         int WTraceNo;
-        int WErrNo; 
-        Form62 NForm62; 
-        int Action ; 
+        int WMasterTraceNo;
+        int WErrNo;
+        Form62 NForm62;
+        int Action;
 
-        string WFilter; 
+        int WRowIndex;
 
+        string WFilter;
+
+        RRDMErrorsClassWithActions Ea = new RRDMErrorsClassWithActions();
+
+        RRDMErrorsClassWithActions Er = new RRDMErrorsClassWithActions();
+
+        RRDMMatchingTxns_MasterPoolATMs Mpa = new RRDMMatchingTxns_MasterPoolATMs();
+
+      
         string WSignedId;
         int WSignRecordNo;
         string WOperator;
-      //  bool WPrive;
-        string WAtmNo; 
+
+        string WAtmNo;
         int WSesNo;
 
-        public Form24(string InSignedId, int InSignRecordNo, string InOperator,  string InAtmNo, int InSesNo,
+        public Form24(string InSignedId, int InSignRecordNo, string InOperator, string InAtmNo, int InSesNo,
             string CurrNm, bool Replenishment, string InFilter)
         {
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
             WOperator = InOperator;
-   
+
             WAtmNo = InAtmNo;
             WSesNo = InSesNo;
             WFilter = InFilter;
@@ -52,16 +56,15 @@ namespace RRDM4ATMsWin
             InitializeComponent();
             // Call Procedures 
             textBox1.Text = InAtmNo;
-            textBox2.Text = InSesNo.ToString();   
+            textBox2.Text = InSesNo.ToString();
         }
 
         private void Form24_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'aTMSDataSet22.ErrorsTable' table. You can move, or remove it, as needed.
-            this.errorsTableTableAdapter.Fill(this.aTMSDataSet22.ErrorsTable);
-            errorsTableBindingSource.Filter = WFilter;
-            dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Descending);
-            this.errorsTableTableAdapter.Fill(this.aTMSDataSet22.ErrorsTable);
+
+            Ea.ReadErrorsAndFillTable(WOperator, WSignedId, WFilter);
+
+            ShowGrid();
 
             //dataGridView1.Columns[0].HeaderText = LocRM.GetString("ErrorsTableHeader1", culture);;
         }
@@ -69,65 +72,118 @@ namespace RRDM4ATMsWin
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
-
+          
             WErrNo = (int)rowSelected.Cells[0].Value;
 
-            RRDMErrorsClassWithActions Er = new RRDMErrorsClassWithActions();
+            Er.ReadErrorsTableSpecific(WErrNo);
 
-            Er.ReadErrorsTableSpecific(WErrNo); 
+            string WFilter = " Where  UniqueRecordId = " + Er.UniqueRecordId;
+            Mpa.ReadMatchingTxnsMasterPoolBySelectionCriteria(WFilter,2);
+         
+            WMasterTraceNo = Mpa.MasterTraceNo;
 
             WTraceNo = Er.TraceNo;
         }
         // Show Journal 
         private void button7_Click(object sender, EventArgs e)
         {
-            if (WAtmNo == "AB102" || WAtmNo == "AB104" || WAtmNo == "EWB102")
+            // Show Lines of journal 
+            string SelectionCriteria = " WHERE UniqueRecordId =" + Mpa.UniqueRecordId;
+
+            Mpa.ReadMatchingTxnsMasterPoolBySelectionCriteria(SelectionCriteria, 1);
+
+            if (Mpa.MatchMask == "001"
+                || Mpa.MatchMask == "011"
+                || Mpa.MatchMask == "010"
+                || Mpa.MatchMask == "01"
+                )
             {
-                //Form67 NForm67;
-                //String JournalId = "[ATMS_Journals].[dbo].[tblHstEjText]";
-                if (WAtmNo == "AB102" || WAtmNo == "EWB102")
-                {
-                    WAtmNo = "AB104";
-                    WSesNo = 7759;
-                    WTraceNo = 10042990;
-                }
-              
-                //int Mode = 1; // Specific
-
-                //NForm67 = new Form67(WSignedId, WSignRecordNo, WOperator, JournalId, 0, WAtmNo, WTraceNo, WTraceNo, Mode);
-                //NForm67.ShowDialog();
-
-                DateTime NullPastDate = new DateTime(1900, 01, 01);
-                Action = 25;
-                string SingleChoice = WTraceNo.ToString();
-                NForm62 = new Form62(WSignedId, WSignRecordNo, WOperator, WAtmNo, WSesNo, Action,
-                    NullPastDate, NullPastDate, SingleChoice);
-                NForm62.ShowDialog();
-
-                return; 
+                MessageBox.Show("This Txn has no journal entry" + Environment.NewLine
+                                 + "Select Journal Lines Near To this"
+                                 );
+                return;
             }
 
-            if (WAtmNo == "EWB311")
+            int WSeqNoA = 0;
+            int WSeqNoB = 0;
+
+            if (Mpa.TraceNoWithNoEndZero == 0)
             {
-                Form67 NForm67; 
-                String JournalId = "[ATMS_Journals].[dbo].[tblHstEjText]";
-
-                WAtmNo = "AB104";
-                WSesNo = 7759;
-                WTraceNo = 10043180;
-
-                int Mode = 1; // Specific
-
-                NForm67 = new Form67(WSignedId, WSignRecordNo, WOperator, JournalId, 0, WAtmNo, WTraceNo, WTraceNo, Mode);
-                NForm67.ShowDialog();
+                MessageBox.Show("No Available Trace to show the Journal Lines for this Txn/Category ");
+                return;
             }
             else
             {
-                MessageBox.Show("Not available data for thid case "); 
+                // Assign Seq number for Pambos Journal table
+                WSeqNoA = Mpa.OriginalRecordId;
+                WSeqNoB = Mpa.OriginalRecordId;
             }
-          
+
+            //
+            // Bank De Caire
+            //
+            Form67_BDC NForm67_BDC;
+
+            int Mode = 5; // Specific
+            string WTraceRRNumber = Mpa.TraceNoWithNoEndZero.ToString();
+            if (Mpa.TraceNoWithNoEndZero == 0 & Mpa.RRNumber != "") WTraceRRNumber = Mpa.RRNumber;
+            NForm67_BDC = new Form67_BDC(WSignedId, 0, WOperator, Mpa.FuID, WTraceRRNumber, Mpa.TerminalId, WSeqNoA, WSeqNoB, Mpa.TransDate, Mpa.TransDate, Mode);
+            NForm67_BDC.ShowDialog();
+
         }
 
-        
+        //******************
+        // SHOW GRID
+        //******************
+        private void ShowGrid()
+        {
+            dataGridView1.DataSource = Ea.ErrorsTable.DefaultView;
+      
+            if (dataGridView1.Rows.Count == 0)
+            {
+                MessageBox.Show("No available errors with this search! ");
+                return;
+            }
+            WRowIndex = dataGridView1.SelectedRows[0].Index;
+
+            dataGridView1.Columns[0].Width = 50; // ExcNo
+            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[1].Width = 50; // ATM No 
+            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[2].Width = 100; //  Desc
+            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            //dataGridView1.Sort(dataGridView1.Columns[2], ListSortDirection.Ascending);
+
+            dataGridView1.Columns[3].Width = 100; // card
+            dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[4].Width = 50; // Ccy
+            dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[5].Width = 80; // amount
+            dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dataGridView1.Columns[6].Width = 60; // Need ACtion
+            dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+          
+            dataGridView1.Columns[7].Width = 60; // under Action
+            dataGridView1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[8].Width = 60; // dispute act  
+            dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView1.Columns[9].Width = 100; // Date
+            dataGridView1.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Rows[WRowIndex].Selected = true;
+            dataGridView1_RowEnter(this, new DataGridViewCellEventArgs(1, WRowIndex));
+        }
+// Finish 
+        private void buttonFinish_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
     }
 }

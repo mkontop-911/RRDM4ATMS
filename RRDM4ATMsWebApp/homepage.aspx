@@ -61,7 +61,7 @@
                             <nav class="homepage-menu pull-right">
                                 <ul>
                                     <li>
-                                        <asp:Button ID="Button1" CssClass="btn btn-info" runat="server" Text="Login" OnClick="Button1_Click"></asp:Button>
+                                        <asp:Button ID="Button1" CssClass="btn btn-info" runat="server" Text="Go_To_Login" OnClick="Button1_Click"></asp:Button>
                                     </li>
                                 </ul>
                             </nav>

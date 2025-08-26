@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -40,22 +33,20 @@ namespace RRDM4ATMsWin
       //  bool RecordFound;
         //     bool SeriousMsg = false;
        
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate();
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
 
-        RRDMNotesBalances Na = new RRDMNotesBalances (); 
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances (); 
 
         RRDMErrorsClassWithActions Ec = new RRDMErrorsClassWithActions();
 
         RRDMAtmsMainClass Am = new RRDMAtmsMainClass();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
+        RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
 
         RRDMGasParameters Gp = new RRDMGasParameters();
 
         RRDMAuthorisationProcess Ap = new RRDMAuthorisationProcess(); 
-
-
-
 
  //       string WUserBankId;
 
@@ -78,22 +69,31 @@ namespace RRDM4ATMsWin
             InitializeComponent();
 
             // ================USER BANK =============================
-       //     Us.ReadUsersRecord(WSignedId); // Read USER record for the signed user
-        //    WUserBankId = Us.Operator;
+            //     Us.ReadUsersRecord(WSignedId); // Read USER record for the signed user
+            //    WUserBankId = Us.Operator;
             // ========================================================
 
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             labelATMno.Text = WAtmNo;
             labelSessionNo.Text = WSesNo.ToString();
 
             // STEPLEVEL
 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            Us.StepLevel = 0;
-            Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+            Usi.StepLevel = 0;
+            Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
             int WProcess = 4; // INCLUDE IN BALANCES ANY CORRECTED ERRORS 
 
@@ -143,11 +143,11 @@ namespace RRDM4ATMsWin
             WAuthoriser = false;   // 55
             WRequestor = false;    // 56 
 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            if (Us.ProcessNo == 54) WViewFunction = true;// ViewOnly 
-            if (Us.ProcessNo == 55) WAuthoriser = true;// Authoriser from author management 
-            if (Us.ProcessNo == 56) WRequestor = true; // Requestor
+            if (Usi.ProcessNo == 54) WViewFunction = true;// ViewOnly 
+            if (Usi.ProcessNo == 55) WAuthoriser = true;// Authoriser from author management 
+            if (Usi.ProcessNo == 56) WRequestor = true; // Requestor
 
             //------------------------------------------------------------
 
@@ -184,7 +184,7 @@ namespace RRDM4ATMsWin
                // READ AND UPDATE REJECT BEFORE AUTH RECORD CLOSES 
 
                 Reject = false;
-                Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "Reconciliation");
+                Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtm(WAtmNo, WSesNo, "Reconciliation");
 
                 if (Ap.RecordFound == true & Ap.OpenRecord == true)
                 {
@@ -219,10 +219,10 @@ namespace RRDM4ATMsWin
                 buttonNext.Visible = true;
             }
 
-            if (Us.ProcessNo == 2 || Us.ProcessNo == 5) // Follow Reconciliation Workflow - NORMAL 2 is for single and 5 for bulk 
+            if (Usi.ProcessNo == 2 || Usi.ProcessNo == 5) // Follow Reconciliation Workflow - NORMAL 2 is for single and 5 for bulk 
             {
                
-                Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+                Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
                 // START RECONCILIATION 
                 Ta.UpdateTracesStartReconc(WOperator, WSignedId, WAtmNo, WSesNo); // UPDATE TRACES THAT RECONCILIATION HAD STARTED
                 // UPDATE OLD ERRORS WITH MAIN ONLY 
@@ -239,7 +239,7 @@ namespace RRDM4ATMsWin
                 Step71a.SetScreen();
                 textBoxMsgBoard.Text = Step71a.guidanceMsg;
 
-                if (Us.ProcessNo == 2 || Us.ProcessNo == 5) textBoxMsgBoard.Text = "Review and go to Next";
+                if (Usi.ProcessNo == 2 || Usi.ProcessNo == 5) textBoxMsgBoard.Text = "Review and go to Next";
                 if (WViewFunction == true || WAuthoriser == true || WRequestor == true) textBoxMsgBoard.Text = "View only";
 
                 buttonNext.Visible = true;
@@ -265,11 +265,11 @@ namespace RRDM4ATMsWin
             WAuthoriser = false;   // 55
             WRequestor = false;    // 56 
 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
             //Us.WFieldChar1 = "ViewFromBULK"; 
-            if (Us.ProcessNo == 54) WViewFunction = true;// ViewOnly 
-            if (Us.ProcessNo == 55) WAuthoriser = true;// Authoriser from author management 
-            if (Us.ProcessNo == 56) WRequestor = true; // Requestor
+            if (Usi.ProcessNo == 54) WViewFunction = true;// ViewOnly 
+            if (Usi.ProcessNo == 55) WAuthoriser = true;// Authoriser from author management 
+            if (Usi.ProcessNo == 56) WRequestor = true; // Requestor
 
             //-----------------------------------------------------------
 
@@ -324,7 +324,7 @@ namespace RRDM4ATMsWin
                     Step71b2.SetScreen();
                     textBoxMsgBoard.Text = Step71b2.guidanceMsg;
 
-                    if (Us.ProcessNo == 2 || Us.ProcessNo == 5) textBoxMsgBoard.Text = "Apply MetaExceptions";
+                    if (Usi.ProcessNo == 2 || Usi.ProcessNo == 5) textBoxMsgBoard.Text = "Apply MetaExceptions";
                     if (WViewFunction == true || WAuthoriser == true || WRequestor == true) 
                     {
                         textBoxMsgBoard.Text = "View only";
@@ -343,7 +343,7 @@ namespace RRDM4ATMsWin
                 buttonBack.Visible = true;
                 buttonNext.Visible = true;
                 
-                if (Us.ProcessNo == 5 || Us.WFieldChar1 == "ViewFromBULK")
+                if (Usi.ProcessNo == 5 || Usi.WFieldChar1 == "ViewFromBULK")
                 {
                     buttonNext.Visible = true;
                     buttonNext.Text = "Finish";
@@ -363,7 +363,7 @@ namespace RRDM4ATMsWin
                     //    return;
                     //}
 
-                    if (Us.StepLevel == 2 & Us.ProcessStatus>1)
+                    if (Usi.StepLevel == 2 & Usi.ProcessStatus>1)
                     {
                         if (MessageBox.Show("You Still have differences...Are you sure you want to move to next step?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
                               == DialogResult.Yes)
@@ -376,7 +376,7 @@ namespace RRDM4ATMsWin
                     GetMainBodyImage("UCForm71b");
                     tableLayoutPanelMain.GetControlFromPosition(0, 0).Dispose();
 
-                    if (Us.ProcessNo == 5 || Us.WFieldChar1 == "ViewFromBULK")
+                    if (Usi.ProcessNo == 5 || Usi.WFieldChar1 == "ViewFromBULK")
                     {
 
                         this.Close();
@@ -392,7 +392,7 @@ namespace RRDM4ATMsWin
                     Step71c.UCForm71cPar(WSignedId, WSignRecordNo, WOperator, WAtmNo, WSesNo);
                     textBoxMsgBoard.Text = Step71c.guidanceMsg;
 
-                    if (Us.ProcessNo == 2) textBoxMsgBoard.Text = "Complete the Reconciliation Process";
+                    if (Usi.ProcessNo == 2) textBoxMsgBoard.Text = "Complete the Reconciliation Process";
                    
                     if (WViewFunction == true ) textBoxMsgBoard.Text = "View only";
 
@@ -432,7 +432,7 @@ namespace RRDM4ATMsWin
                             {
                               //  ReconciliationAuthorNeeded = true;
 
-                                Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "Reconciliation");
+                                Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtm(WAtmNo, WSesNo, "Reconciliation");
                                 if (Ap.RecordFound == true)
                                 {
                                     ReconciliationAuthorNoRecordYet = false;
@@ -463,7 +463,7 @@ namespace RRDM4ATMsWin
                                     return;
                                 }
 
-                                if (Us.ProcessNo == 2 & ReconciliationAuthorNoRecordYet == true) // Cancel by originator without request for authorisation 
+                                if (Usi.ProcessNo == 2 & ReconciliationAuthorNoRecordYet == true) // Cancel by originator without request for authorisation 
                                 {
                                     MessageBox.Show("MSG946 - Authorisation outstanding");
                                     return; 
@@ -482,7 +482,7 @@ namespace RRDM4ATMsWin
 
                                 }
 
-                                if (Us.ProcessNo == 2 & ReconciliationAuthorOutstanding == true) // Cancel with repl outstanding 
+                                if (Usi.ProcessNo == 2 & ReconciliationAuthorOutstanding == true) // Cancel with repl outstanding 
                                 {
 
                                     MessageBox.Show("MSG946 - Authorisation outstanding");
@@ -500,7 +500,7 @@ namespace RRDM4ATMsWin
 
                                 }
 
-                                if ((Us.ProcessNo == 2 || WRequestor == true) & ReconciliationAuthorDone == true) // Everything is fined .
+                                if ((Usi.ProcessNo == 2 || WRequestor == true) & ReconciliationAuthorDone == true) // Everything is fined .
                                 {
                                    
 
@@ -529,7 +529,7 @@ namespace RRDM4ATMsWin
                         // Create the transactions as a result of actions taken on Errors
                         //
                         // THE BELOW METHOD CREATES THE TRANSACTIONS TO BE POSTED 
-                            Ec.ReadAllErrorsTableForPostingTrans(WOperator, "EWB110", WAtmNo, WSignedId, Ap.Authoriser, WSesNo); 
+                         //   Ec.ReadAllErrorsTableForPostingTrans(WOperator, "", WAtmNo, WSignedId, Ap.Authoriser, WSesNo, ""); 
                         //
                         // Update Traces at Finish
                         //
@@ -546,23 +546,23 @@ namespace RRDM4ATMsWin
 
                         if (Ta.Recon1.DiffReconcEnd == true)
                         {
-                            Am.ReconcDiff = true;
+                            Am.GL_ReconcDiff = true;
                         }
                         else
                         {
-                            Am.ReconcDiff = false;
+                            Am.GL_ReconcDiff = false;
                         }
 
                         Am.SessionsInDiff = Ta.SessionsInDiff;
 
-                        Ec.ReadAllErrorsTableForCounters(WOperator, "EWB110", WAtmNo);
+                        Ec.ReadAllErrorsTableForCounters(WOperator, "", WAtmNo, WSesNo, "");
                         Am.ErrOutstanding = Ec.NumOfErrors;
 
                         Am.ReconcCycleNo = Ta.SesNo;
                         Am.ReconcDt = Ta.Recon1.RecFinDtTm;
                             // Register the amount 
-                        Am.CurrNm1 = Ta.Diff1.CurrNm1;
-                        Am.DiffCurr1 = Ta.Diff1.DiffCurr1;
+                        Am.GL_CurrNm1 = Ta.Diff1.CurrNm1;
+                        Am.GL_DiffCurr1 = Ta.Diff1.DiffCurr1;
 
                         Am.LastUpdated = DateTime.Now;
 
@@ -573,28 +573,28 @@ namespace RRDM4ATMsWin
 
                         Am.UpdateAtmsMain(WAtmNo); 
 
-                        if (Ta.Recon1.DiffReconcEnd == false & Ta.UpdatedBatch == true)
+                        if (Ta.Recon1.DiffReconcEnd == false & Ta.Is_Updated_GL == true)
                         {
                             // There differences to reconcile
 
                             //  ReconcComment = "EVERYTHING INCLUDING HOST FILES RECONCILE";
                         }
 
-                        if (Ta.Recon1.DiffReconcEnd == true & Ta.UpdatedBatch == true)
+                        if (Ta.Recon1.DiffReconcEnd == true & Ta.Is_Updated_GL == true)
                         {
                             // There differences to reconcile
 
                             //  ReconcComment = "NEED TO GO TO RECONCILIATION PROCESS";
                         }
 
-                        if (Ta.Recon1.DiffReconcEnd == true & Ta.UpdatedBatch == false)
+                        if (Ta.Recon1.DiffReconcEnd == true & Ta.Is_Updated_GL == false)
                         {
                             // There differences to reconcile
 
                             //    ReconcComment = "NEED OF RECONCILIATION BUT HOST FILES NOT AVAILABLE YET";
                         }
 
-                        if (Ta.Recon1.DiffReconcEnd == false & Ta.UpdatedBatch == false)
+                        if (Ta.Recon1.DiffReconcEnd == false & Ta.Is_Updated_GL == false)
                         {
                             // There differences to reconcile
 
@@ -620,9 +620,9 @@ namespace RRDM4ATMsWin
                         {
                             // STEPLEVEL// Check Feasibility to move to next step 
 
-                            Us.ReadSignedActivityByKey(WSignRecordNo);
+                            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-                            if (Us.StepLevel < 4)
+                            if (Usi.StepLevel < 4)
                             {
                                 MessageBox.Show("YOU MUST UPDATE THIS STEP BEFORE YOU MOVE TO NEXT");
                                 return;
@@ -635,7 +635,7 @@ namespace RRDM4ATMsWin
                 }
 
             }
-            if (StepNumber == 1 & Us.ProcessNo == 8)
+            if (StepNumber == 1 & Usi.ProcessNo == 8)
             {
               //  GetMainBodyImage("UCForm51d");
 
@@ -685,11 +685,11 @@ namespace RRDM4ATMsWin
             WAuthoriser = false;   // 55
             WRequestor = false;    // 56 
 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            if (Us.ProcessNo == 54) WViewFunction = true;// ViewOnly 
-            if (Us.ProcessNo == 55) WAuthoriser = true;// Authoriser from author management 
-            if (Us.ProcessNo == 56) WRequestor = true; // Requestor
+            if (Usi.ProcessNo == 54) WViewFunction = true;// ViewOnly 
+            if (Usi.ProcessNo == 55) WAuthoriser = true;// Authoriser from author management 
+            if (Usi.ProcessNo == 56) WRequestor = true; // Requestor
 
             //-----------------------------------------------------------
 
@@ -705,7 +705,7 @@ namespace RRDM4ATMsWin
                 Step71a.SetScreen();
                 textBoxMsgBoard.Text = Step71a.guidanceMsg;
 
-                if (Us.ProcessNo == 2) textBoxMsgBoard.Text = "Review Information";
+                if (Usi.ProcessNo == 2) textBoxMsgBoard.Text = "Review Information";
                 if (WViewFunction == true || WAuthoriser == true || WRequestor == true) textBoxMsgBoard.Text = "View only";
 
                 labelStep2.ForeColor = labelStep3.ForeColor;
@@ -733,7 +733,7 @@ namespace RRDM4ATMsWin
                     Step71b1.SetScreen();
                     textBoxMsgBoard.Text = Step71b1.guidanceMsg;
 
-                    if (Us.ProcessNo == 2) textBoxMsgBoard.Text = "Review Information";
+                    if (Usi.ProcessNo == 2) textBoxMsgBoard.Text = "Review Information";
                     if (WViewFunction == true || WAuthoriser == true || WRequestor == true) textBoxMsgBoard.Text = "View only";
 
                     labelStep3.ForeColor = labelStep2.ForeColor;
@@ -752,7 +752,7 @@ namespace RRDM4ATMsWin
                         Step71b2.SetScreen();
                         textBoxMsgBoard.Text = Step71b2.guidanceMsg;
 
-                        if (Us.ProcessNo == 2) textBoxMsgBoard.Text = "Review Information";
+                        if (Usi.ProcessNo == 2) textBoxMsgBoard.Text = "Review Information";
                         if (WViewFunction == true || WAuthoriser == true || WRequestor == true) textBoxMsgBoard.Text = "View only";
 
                         labelStep3.ForeColor = labelStep2.ForeColor;

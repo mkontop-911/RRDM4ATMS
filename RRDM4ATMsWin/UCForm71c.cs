@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
-using System.Configuration;
 using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
@@ -22,7 +14,7 @@ namespace RRDM4ATMsWin
         Form110 NForm110;
         Form112 NForm112; 
        
-        bool ReconciliationAuthor;
+        //bool ReconciliationAuthor;
         string StageDescr;
         int WAuthorSeqNumber;
 
@@ -49,7 +41,7 @@ namespace RRDM4ATMsWin
 
         //RRDMNotesBalances Na = new RRDMNotesBalances(); // Activate Class 
 
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); // Activate Class 
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); // Activate Class 
 
         RRDMGasParameters Gp = new RRDMGasParameters();
 
@@ -57,7 +49,8 @@ namespace RRDM4ATMsWin
 
    //     ErrorsClass Pa = new ErrorsClass(); // Make class availble 
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
+        RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
 
         RRDMCaseNotes Cn = new RRDMCaseNotes(); 
 
@@ -87,9 +80,9 @@ namespace RRDM4ATMsWin
             WDifStatus = Ta.Recon1.WFlowDifStatus;
             Ta.UpdateSessionsStatusTraces(WAtmNo, WSesNo); 
            // Update Step
-            Us.ReadSignedActivityByKey(WSignRecordNo);
-            Us.StepLevel = 3;
-            Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.StepLevel = 3;
+            Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
         
             if (WDifStatus == 1) // Everything is in Order 
             {
@@ -118,11 +111,11 @@ namespace RRDM4ATMsWin
             WRequestor = false;    // 56 
             NormalProcess = false; 
 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            if (Us.ProcessNo == 54) WViewFunction = true;// ViewOnly 
-            if (Us.ProcessNo == 55) WAuthoriser = true;// Authoriser from author management          
-            if (Us.ProcessNo == 56) WRequestor = true; // Requestor
+            if (Usi.ProcessNo == 54) WViewFunction = true;// ViewOnly 
+            if (Usi.ProcessNo == 55) WAuthoriser = true;// Authoriser from author management          
+            if (Usi.ProcessNo == 56) WRequestor = true; // Requestor
 
             if (WViewFunction || WAuthoriser || WRequestor)
             {
@@ -166,7 +159,7 @@ namespace RRDM4ATMsWin
             // ................................
             // Handle View ONLY 
             // ''''''''''''''''''''''''''''''''
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
             if (WViewFunction == true || WAuthoriser == true || WRequestor == true) // THIS is not normal process 
             {
@@ -200,12 +193,12 @@ namespace RRDM4ATMsWin
 
             if (Gp.OccuranceNm == "YES") // Electronic needed 
             {
-                ReconciliationAuthor = true;
+                //ReconciliationAuthor = true;
                 buttonAuthor.Show();
             }
             else
             {
-                ReconciliationAuthor = false;
+                //ReconciliationAuthor = false;
                 buttonAuthor.Hide();
             }
 
@@ -213,7 +206,7 @@ namespace RRDM4ATMsWin
             {
                 // Check Authorisation 
 
-                Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "ReconciliationCat");
+                Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtm(WAtmNo, WSesNo, "ReconciliationCat");
 
                 if (Ap.RecordFound == true & Ap.OpenRecord == true)
                 {
@@ -223,9 +216,9 @@ namespace RRDM4ATMsWin
                     }
                     if (Ap.Stage == 4 & Ap.AuthDecision == "NO")
                     {
-                        Us.ReadSignedActivityByKey(WSignRecordNo);
-                        Us.ProcessNo = 2; // Return to stage 2  
-                        Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+                        Usi.ReadSignedActivityByKey(WSignRecordNo);
+                        Usi.ProcessNo = 2; // Return to stage 2  
+                        Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
                         NormalProcess = true; // TURN TO NORMAL TO SHOW WHAT IS NEEDED 
 
@@ -245,7 +238,7 @@ namespace RRDM4ATMsWin
         private void ShowAuthorisationInfo()
         {
 
-            Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "ReconciliationBulk");
+            Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtm(WAtmNo, WSesNo, "ReconciliationBulk");
             if ((Ap.RecordFound == true & Ap.OpenRecord == true)
                    || (Ap.RecordFound == true & Ap.OpenRecord == false & Ap.Stage == 5))
             {
@@ -375,7 +368,7 @@ namespace RRDM4ATMsWin
 
             // Check if Already in authorization process
 
-            Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "Reconciliation");
+            Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtm(WAtmNo, WSesNo, "Reconciliation");
 
             if (Ap.RecordFound == true & Ap.Stage < 5 & Ap.OpenRecord == true) // Already exist Repl authorisation 
             {
@@ -394,7 +387,7 @@ namespace RRDM4ATMsWin
             string WOrigin = "Reconciliation";
 
             int AuthorSeqNumber = 0; // This is used >0 when calling from Authorization management 
-            NForm110 = new Form110(WSignedId, WSignRecordNo, WOperator, WOrigin, WTranNo, WAtmNo, WSesNo, AuthorSeqNumber, "Normal");
+            NForm110 = new Form110(WSignedId, WSignRecordNo, WOperator, WOrigin, WTranNo, WAtmNo, WSesNo, AuthorSeqNumber,0,"",0 ,"Normal");
             NForm110.FormClosed += NForm110_FormClosed;
             NForm110.ShowDialog();
              
@@ -414,12 +407,12 @@ namespace RRDM4ATMsWin
             WRequestor = false;
             NormalProcess = false;
 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            if (Us.ProcessNo == 56) WRequestor = true; // Requestor
+            if (Usi.ProcessNo == 56) WRequestor = true; // Requestor
             else NormalProcess = true;
 
-            Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "Reconciliation"); 
+            Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtm(WAtmNo, WSesNo, "Reconciliation"); 
 
             if (WRequestor == true & Ap.Stage == 1)
             {
@@ -513,7 +506,7 @@ namespace RRDM4ATMsWin
         {
             int WDisputeNo = 0 ;
             int WDisputeTranNo = 0 ;
-            NForm112 = new Form112(WSignedId, WSignRecordNo, WOperator, "History", WAtmNo, WSesNo, WDisputeNo, WDisputeTranNo);
+            NForm112 = new Form112(WSignedId, WSignRecordNo, WOperator, "History", WAtmNo, WSesNo, WDisputeNo, WDisputeTranNo, "",0);
             NForm112.ShowDialog();
         }
 
@@ -526,7 +519,7 @@ namespace RRDM4ATMsWin
             string SearchP4 = "";
             if (ViewWorkFlow == true) WMode = "Read";
             else WMode = "Update";
-            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, WParameter3, WParameter4, WMode, SearchP4);
+            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, "", WParameter3, WParameter4, WMode, SearchP4);
             NForm197.ShowDialog();
             SetScreen(); 
         }

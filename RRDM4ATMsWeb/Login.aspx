@@ -100,7 +100,7 @@
             <asp:Label ID="Label3" runat="server" CssClass="auto-style4" Text="Password"></asp:Label>
             <asp:TextBox ID="TextBoxPassword" runat="server" CssClass="auto-style5" BackColor="White" ForeColor="#996633"></asp:TextBox>
             <asp:DropDownList ID="DropDownListUsers" runat="server" CssClass="auto-style6">
-                <asp:ListItem Value="1005">1005</asp:ListItem>
+                <asp:ListItem Value="PILOT_005">PILOT_005</asp:ListItem>
                 <asp:ListItem Value="487116">487116</asp:ListItem>
                 <asp:ListItem>Blank</asp:ListItem>
             </asp:DropDownList>

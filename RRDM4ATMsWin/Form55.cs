@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
     public partial class Form55 : Form
     {
+
+        RRDMControllerMsgClass Cm = new RRDMControllerMsgClass();
+
         public Form55(string filter1, string userId)
         {
             InitializeComponent();
@@ -24,13 +21,38 @@ namespace RRDM4ATMsWin
 
             
             DataView dv;
-            dv = new DataView(aTMSDataSet11.ControlerMSGs, "ToUser = "+userId, "DtTm", DataViewRowState.CurrentRows);
+            dv = new DataView(aTMSDataSet11.ControlerMSGs, "ToUser = '"+userId +"'", "DtTm", DataViewRowState.CurrentRows);
             dataGridView1.DataSource = dv;
 
-            DataView dv2;
-            dv2 = new DataView(aTMSDataSet11.ControlerMSGs, "FromUser = " + userId, "DtTm", DataViewRowState.CurrentRows);
-            dataGridView2.DataSource = dv2;
+            string SelectionFilter = "FromUser = '" + userId +"'"; 
+            Cm.ReadControlerMSGsToFillTable(userId);
 
+            dataGridView2.DataSource = Cm.TableControllerMsgs.DefaultView;
+
+            dataGridView2.Columns[0].Width = 50; //  MesNo
+            dataGridView2.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[1].Width = 60; // FromUser
+            dataGridView2.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView2.Columns[1].Visible = false;
+
+            dataGridView2.Columns[2].Width = 60; // ToUser
+            dataGridView2.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            
+            dataGridView2.Columns[3].Width = 110;  // DtTm 
+            dataGridView2.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[4].Width = 100;  // Type
+            dataGridView2.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[5].Width = 320;  // Message
+            dataGridView2.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[6].Width = 70;  // Open Msg
+            dataGridView2.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView2.Columns[7].Width = 50;  // ReadMsg
+            dataGridView2.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -62,7 +84,7 @@ namespace RRDM4ATMsWin
             }
         }
 
-        private int x = 0;
+        private int x = -1;
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -91,9 +113,9 @@ namespace RRDM4ATMsWin
             this.controlerMSGsTableAdapter.Fill(this.aTMSDataSet11.ControlerMSGs);
             dataGridView1.Refresh();
             SetMsgStatus();
+            if (x >=0) dataGridView1.Rows[x].Selected = true;
 
-            dataGridView1.Rows[x].Selected = true;
-            dataGridView2.Rows[y].Selected = true;
+            if (y >=0) dataGridView2.Rows[y].Selected = true;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -106,29 +128,51 @@ namespace RRDM4ATMsWin
 
         }
 
-        private int y = 0;
+        private int y = -1;
         private void dataGridView2_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             y = e.RowIndex;
 
-            Form55a NForm55a = new Form55a((int)dataGridView2["MesNo", y].Value, (string)dataGridView2["ToUser", y].Value,
-                (string)dataGridView2["FromUser", y].Value, (string)dataGridView2["BankId", y].Value, 
-                (string)dataGridView2["BranchId", y].Value, (bool)dataGridView2["SeriousMsg", y].Value,
-                (bool)dataGridView2["OpenMsg", y].Value, true, (string)dataGridView2["Message", y].Value);
+            Cm.ReadControlerMSGsSeqNo(WSeqNo);
 
-   /*         Form55a NForm55a = new Form55a((int)dataGridView2["MesNo2", y].Value, ((string)dataGridView2["ToUser2", y].Value).ToString(),
-                ((string)dataGridView2["FromUser2", y].Value).ToString(), (string)dataGridView2["BankId2", y].Value,
-                (string)dataGridView2["BranchId2", y].Value, (bool)dataGridView2["SeriousMsg2", y].Value,
-                (bool)dataGridView2["OpenMsg2", y].Value, true,
-              (string)dataGridView2["Message2", y].Value);
-     */          NForm55a.Disposed += NForm55a_Disposed;
+            Form55a NForm55a = new Form55a(Cm.MesNo, Cm.ToUser,
+                                           Cm.FromUser, Cm.BankId,
+                                           Cm.BranchId, Cm.SeriousMsg,
+                                           Cm.OpenMsg, Cm.ReadMsg, Cm.Message);
+            NForm55a.Disposed += NForm55a_Disposed;
             NForm55a.Show();
+
+            //(int MesNo, string to,
+            //string from, string BankId, 
+            //string BranchId, bool SeriousMessage,
+            //bool OpenMessage, bool Read, string Message)
+
+            //Form55a NForm55a = new Form55a((int)dataGridView2["MesNo", y].Value, (string)dataGridView2["ToUser", y].Value,
+            //    (string)dataGridView2["FromUser", y].Value, (string)dataGridView2["BankId", y].Value, 
+            //    (string)dataGridView2["BranchId", y].Value, (bool)dataGridView2["SeriousMsg", y].Value,
+            //    (bool)dataGridView2["OpenMsg", y].Value, true, (string)dataGridView2["Message", y].Value);
+
+            /*         Form55a NForm55a = new Form55a((int)dataGridView2["MesNo2", y].Value, ((string)dataGridView2["ToUser2", y].Value).ToString(),
+                         ((string)dataGridView2["FromUser2", y].Value).ToString(), (string)dataGridView2["BankId2", y].Value,
+                         (string)dataGridView2["BranchId2", y].Value, (bool)dataGridView2["SeriousMsg2", y].Value,
+                         (bool)dataGridView2["OpenMsg2", y].Value, true,
+                       (string)dataGridView2["Message2", y].Value);
+              */
         }
 
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
-    
+        // ON ROW ENTER FOR GRID 2
+        int WSeqNo;
+        private void dataGridView2_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridViewRow rowSelected = dataGridView2.Rows[e.RowIndex];
+
+            WSeqNo = (int)rowSelected.Cells[0].Value;
+
+         
+        }
     }
 }

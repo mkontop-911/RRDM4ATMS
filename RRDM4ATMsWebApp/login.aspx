@@ -57,8 +57,7 @@
                                 <div class="form-group">
                                     <label><asp:Label ID="Label2" runat="server" Text="USER ID"></asp:Label></label>
                                     <asp:DropDownList CssClass="form-control" ID="DropDownListUsers" runat="server">
-                                        <asp:ListItem>1005</asp:ListItem>
-                                        <asp:ListItem>487116</asp:ListItem>
+                                        <asp:ListItem Value="PILOT_001"></asp:ListItem>
                                     </asp:DropDownList>
                                 </div>
                                 <div class="form-group">

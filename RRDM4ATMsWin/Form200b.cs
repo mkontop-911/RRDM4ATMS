@@ -1,27 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using RRDM4ATMs;
 
 // Alecos
-using System.Configuration;
-using System.Diagnostics;
 
 namespace RRDM4ATMsWin
 {
     public partial class Form200b : Form
     {
-        RRDMReconcCategories Rc = new RRDMReconcCategories();
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
-        RRDMReconcCategoriesVsSourcesFiles Rmf = new RRDMReconcCategoriesVsSourcesFiles(); 
+        RRDMMatchingCategories Rc = new RRDMMatchingCategories();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
+        RRDMMatchingCategoriesVsSourcesFiles Rmf = new RRDMMatchingCategoriesVsSourcesFiles(); 
 
-        RRDMReconcCategoriesMatchingSessions Rms = new RRDMReconcCategoriesMatchingSessions();
+        //RRDMMatchingCategoriesSessions Rms = new RRDMMatchingCategoriesSessions();
 
         DateTime NullPastDate = new DateTime(1900, 01, 01);
 
@@ -48,8 +41,17 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
             label1UserId.Text = WSignedId;
 
 
@@ -62,9 +64,9 @@ namespace RRDM4ATMsWin
 // LOAD FORM 
         private void Form200b_Load(object sender, EventArgs e)
         {
-            Rc.ReadReconcCategoriesForMatchingStatus(WOperator);
+            Rc.ReadMatchingCategoriesForMatchingStatus(WOperator);
 
-            dataGridView1.DataSource = Rc.ReconcCateg.DefaultView;
+            dataGridView1.DataSource = Rc.TableMatchingCateg.DefaultView;
 
             dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
 
@@ -86,7 +88,7 @@ namespace RRDM4ATMsWin
             DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
             WCategoryId = rowSelected.Cells[0].Value.ToString();
 
-            Rc.ReadReconcCategorybyCategId(WOperator, WCategoryId);
+            Rc.ReadMatchingCategorybyActiveCategId(WOperator, WCategoryId);
 
 
             if (Rc.HasOwner == true)
@@ -102,9 +104,11 @@ namespace RRDM4ATMsWin
                 //buttonChangeOwner.Text = "Assign Owner";
             }
 
-            Rmf.ReadReconcCategoryVsSourcesANDFillTable(WCategoryId);
+            string WSelectionCriteria = " CategoryId = '" + WCategoryId + "'"; 
 
-            dataGridView2.DataSource = Rmf.RMCategoryFiles.DefaultView;
+            Rmf.ReadReconcCategoryVsSourcesANDFillTable(WSelectionCriteria);
+
+            dataGridView2.DataSource = Rmf.RMCategoryFilesDataFiles.DefaultView;
 
             if (dataGridView2.Rows.Count == 0)
             {

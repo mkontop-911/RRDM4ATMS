@@ -1,10 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Diagnostics;
 
 using RRDM4ATMs;
@@ -44,7 +39,7 @@ namespace RRDMJTMClasses
     {
         // JTM Parameters, Initialized by the constructor at instantiation
         public static int JTM_MaxThreadCount;
-        public static int JTM_FETCH_RetryTimeout; // sec
+        public static int JTM_FETCH_RetryWaitTime; // sec
         public static int JTM_FETCH_Retries;
         public static int JTM_SleepWaitNewRequest; // ms
         public static int JTM_SleepWaitEmptyThreadSlot; //ms
@@ -56,6 +51,9 @@ namespace RRDMJTMClasses
         public static string JTM_ArchiveRoot;
         public static string JTM_ParserSP;
         public static int JTM_MaxJournalBackups;
+        public static string JTM_PSExecPath;
+        public static string JTM_InitEJPath;
+        public static string JTM_SQLRelativeFilePoolPath;
 
         // Thread object for the JTMServerThread
         public static volatile Thread oJTMServerThread;
@@ -127,12 +125,15 @@ namespace RRDMJTMClasses
                                  string FilePoolRoot,
                                  string ArchiveRoot,
                                  int MaxJournalBackups,
-                                 string ParserSP)
+                                 string ParserSP,
+                                 string JTMPSExecPath,
+                                 string JTMInitEJPath,
+                                 string SQLRelativeFilePoolPath)
         {
             // Assign values to operational parameters
             JTM_MaxThreadCount = ThreadCount;
             JTM_FETCH_Retries = FETCH_Retries;
-            JTM_FETCH_RetryTimeout = FETCH_RetryTimeout;
+            JTM_FETCH_RetryWaitTime = FETCH_RetryTimeout;
             JTM_SleepWaitNewRequest = SleepWaitNewRequest;
             JTM_SleepWaitEmptyThreadSlot = SleepWaitEmptyThreadSlot;
             JTM_StartWorkerThreadTimeout = StartThreadTimeout;
@@ -143,6 +144,9 @@ namespace RRDMJTMClasses
             JTM_ArchiveRoot = ArchiveRoot;
             JTM_MaxJournalBackups = MaxJournalBackups;
             JTM_ParserSP = ParserSP;
+            JTM_PSExecPath = JTMPSExecPath;
+            JTM_InitEJPath = JTMInitEJPath;
+            JTM_SQLRelativeFilePoolPath = SQLRelativeFilePoolPath;
 
             // Create the ThreadArray
             ThreadArray = new ThreadRec[ThreadCount]; // as many slots as ThreadCount
@@ -157,12 +161,12 @@ namespace RRDMJTMClasses
             ThreadArrayLock = new object();
             SQLLockSP = new object();
             ConsoleDisplayLock = new object();
-            
+
             // thread handles; will be set when the threads are created
             oJTMServerThread = null;
             oJTMThreadMonitor = null;
             oJTMConsoleDisplayThread = null;
-            
+
             // raised for the controlled termination of the threads and the program
             Abort_Abort = false;
         }
@@ -198,6 +202,28 @@ namespace RRDMJTMClasses
                 return (Index);
             }
         }
+
+
+        public static bool ATM_HasRequestInProgress(string AtmNo)
+        {
+            lock (ThreadArrayLock) // serialize access
+            {
+                bool ret = false;
+
+                for (int i = 0; i < JTM_MaxThreadCount; i++)
+                {
+                    //if (ThreadArray[i].Status == StatusOfThread.Available || ThreadArray[i].Status == StatusOfThread.Finished)
+                    if (ThreadArray[i].Req.AtmNo == AtmNo)
+                    {
+                        if (ThreadArray[i].Status != StatusOfThread.Available)
+                            ret = true;
+                        break;
+                    }
+                }
+                return (ret);
+            }
+        }
+
 
         /// <summary> ChangeThreadStatus
         /// Change the status of the thread in the ThreadArray
@@ -298,12 +324,12 @@ namespace RRDMJTMClasses
                 if (JTMThreadRegistry.Abort_Abort == true)
                 {
                     AbortAllWorkerThreads();
-                    
+
                     // Kill the ConsoleDisplayThread, if alive;
                     if (JTMThreadRegistry.oJTMConsoleDisplayThread != null)
                         if (JTMThreadRegistry.oJTMConsoleDisplayThread.IsAlive)
                             JTMThreadRegistry.oJTMConsoleDisplayThread.Abort();
-                    
+
                     return;
                 }
 
@@ -450,7 +476,7 @@ namespace RRDMJTMClasses
                 Thread.Sleep(JTMThreadRegistry.JTM_ThreadMonitorInterval);
             }
         }
-        
+
         public static void DisplayThreadInfo(int JTM_MaxThreadNumber)
         {
             string sOut = "";

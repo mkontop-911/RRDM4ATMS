@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form80a));
             this.tableLayoutPanelHeader = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -49,6 +50,8 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.panel7 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
@@ -88,6 +91,7 @@
             this.panel1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -113,7 +117,7 @@
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1008, 80);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1102, 80);
             this.tableLayoutPanelHeader.TabIndex = 267;
             // 
             // tableLayoutPanel4
@@ -131,7 +135,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1004, 80);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1098, 80);
             this.tableLayoutPanel4.TabIndex = 249;
             // 
             // tableLayoutPanel1
@@ -140,7 +144,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(863, 2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(957, 2);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
@@ -283,7 +287,7 @@
             this.buttonNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonNext.ForeColor = System.Drawing.Color.White;
-            this.buttonNext.Location = new System.Drawing.Point(923, 2);
+            this.buttonNext.Location = new System.Drawing.Point(1017, 2);
             this.buttonNext.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(71, 27);
@@ -304,7 +308,7 @@
             this.textBoxMsgBoard.Multiline = true;
             this.textBoxMsgBoard.Name = "textBoxMsgBoard";
             this.textBoxMsgBoard.ReadOnly = true;
-            this.textBoxMsgBoard.Size = new System.Drawing.Size(743, 32);
+            this.textBoxMsgBoard.Size = new System.Drawing.Size(837, 32);
             this.textBoxMsgBoard.TabIndex = 242;
             this.textBoxMsgBoard.TabStop = false;
             this.textBoxMsgBoard.Text = "No guidance information available.";
@@ -317,7 +321,7 @@
             this.buttonBack.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonBack.ForeColor = System.Drawing.Color.White;
-            this.buttonBack.Location = new System.Drawing.Point(840, 2);
+            this.buttonBack.Location = new System.Drawing.Point(934, 2);
             this.buttonBack.Margin = new System.Windows.Forms.Padding(2);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(76, 27);
@@ -340,7 +344,7 @@
             this.panel1.ForeColor = System.Drawing.Color.Black;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1002, 684);
+            this.panel1.Size = new System.Drawing.Size(1096, 684);
             this.panel1.TabIndex = 243;
             // 
             // panel5
@@ -377,6 +381,8 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
+            this.panel3.Controls.Add(this.label1);
+            this.panel3.Controls.Add(this.dataGridView3);
             this.panel3.Controls.Add(this.panel7);
             this.panel3.Controls.Add(this.panel6);
             this.panel3.Controls.Add(this.panel4);
@@ -384,8 +390,36 @@
             this.panel3.Controls.Add(this.label5);
             this.panel3.Location = new System.Drawing.Point(420, 119);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(551, 549);
+            this.panel3.Size = new System.Drawing.Size(667, 562);
             this.panel3.TabIndex = 343;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.label1.Location = new System.Drawing.Point(20, 427);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(182, 18);
+            this.label1.TabIndex = 369;
+            this.label1.Text = "ATMs IN DIFFERENCE";
+            // 
+            // dataGridView3
+            // 
+            this.dataGridView3.AllowUserToAddRows = false;
+            this.dataGridView3.AllowUserToDeleteRows = false;
+            this.dataGridView3.BackgroundColor = System.Drawing.Color.White;
+            this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView3.GridColor = System.Drawing.Color.LightGray;
+            this.dataGridView3.Location = new System.Drawing.Point(17, 448);
+            this.dataGridView3.MultiSelect = false;
+            this.dataGridView3.Name = "dataGridView3";
+            this.dataGridView3.ReadOnly = true;
+            this.dataGridView3.RowHeadersVisible = false;
+            this.dataGridView3.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView3.Size = new System.Drawing.Size(510, 101);
+            this.dataGridView3.TabIndex = 368;
+            this.dataGridView3.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView3_RowEnter);
             // 
             // panel7
             // 
@@ -396,9 +430,9 @@
             this.panel7.Controls.Add(this.label19);
             this.panel7.Controls.Add(this.label12);
             this.panel7.Controls.Add(this.label20);
-            this.panel7.Location = new System.Drawing.Point(18, 207);
+            this.panel7.Location = new System.Drawing.Point(18, 152);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(509, 136);
+            this.panel7.Size = new System.Drawing.Size(509, 91);
             this.panel7.TabIndex = 3;
             // 
             // label3
@@ -416,7 +450,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label14.Location = new System.Drawing.Point(15, 43);
+            this.label14.Location = new System.Drawing.Point(15, 32);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(130, 13);
             this.label14.TabIndex = 346;
@@ -425,7 +459,7 @@
             // labelDateStart
             // 
             this.labelDateStart.AutoSize = true;
-            this.labelDateStart.Location = new System.Drawing.Point(15, 73);
+            this.labelDateStart.Location = new System.Drawing.Point(15, 51);
             this.labelDateStart.Name = "labelDateStart";
             this.labelDateStart.Size = new System.Drawing.Size(74, 13);
             this.labelDateStart.TabIndex = 343;
@@ -435,7 +469,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label17.Location = new System.Drawing.Point(294, 43);
+            this.label17.Location = new System.Drawing.Point(294, 32);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(169, 13);
             this.label17.TabIndex = 351;
@@ -444,7 +478,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(294, 102);
+            this.label19.Location = new System.Drawing.Point(294, 69);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(71, 13);
             this.label19.TabIndex = 349;
@@ -453,7 +487,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(15, 102);
+            this.label12.Location = new System.Drawing.Point(15, 70);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(71, 13);
             this.label12.TabIndex = 344;
@@ -462,7 +496,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(294, 73);
+            this.label20.Location = new System.Drawing.Point(294, 50);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(74, 13);
             this.label20.TabIndex = 348;
@@ -477,9 +511,9 @@
             this.panel6.Controls.Add(this.label15);
             this.panel6.Controls.Add(this.pictureBox2);
             this.panel6.Controls.Add(this.label22);
-            this.panel6.Location = new System.Drawing.Point(18, 352);
+            this.panel6.Location = new System.Drawing.Point(18, 249);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(203, 188);
+            this.panel6.Size = new System.Drawing.Size(203, 174);
             this.panel6.TabIndex = 367;
             // 
             // label21
@@ -510,7 +544,7 @@
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.button6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button6.Location = new System.Drawing.Point(55, 155);
+            this.button6.Location = new System.Drawing.Point(55, 140);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(141, 27);
             this.button6.TabIndex = 365;
@@ -529,7 +563,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.BackgroundImage = global::RRDM4ATMsWin.Properties.Resources.RED_LIGHT_Repl;
+            this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox2.Location = new System.Drawing.Point(27, 104);
             this.pictureBox2.Name = "pictureBox2";
@@ -544,9 +578,9 @@
             this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.label22.Location = new System.Drawing.Point(3, 87);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(158, 13);
+            this.label22.Size = new System.Drawing.Size(141, 13);
             this.label22.TabIndex = 355;
-            this.label22.Text = "ALERT LEVEL MATCHING";
+            this.label22.Text = "MATCHING DURATION";
             // 
             // panel4
             // 
@@ -556,9 +590,9 @@
             this.panel4.Controls.Add(this.label16);
             this.panel4.Controls.Add(this.pictureBox3);
             this.panel4.Controls.Add(this.label24);
-            this.panel4.Location = new System.Drawing.Point(309, 352);
+            this.panel4.Location = new System.Drawing.Point(305, 245);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(219, 188);
+            this.panel4.Size = new System.Drawing.Size(219, 178);
             this.panel4.TabIndex = 366;
             // 
             // button1
@@ -571,7 +605,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button1.Location = new System.Drawing.Point(57, 155);
+            this.button1.Location = new System.Drawing.Point(47, 140);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(141, 27);
             this.button1.TabIndex = 366;
@@ -599,9 +633,9 @@
             // 
             // pictureBox3
             // 
-            this.pictureBox3.BackgroundImage = global::RRDM4ATMsWin.Properties.Resources.RED_LIGHT_Repl;
+            this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox3.Location = new System.Drawing.Point(37, 104);
+            this.pictureBox3.Location = new System.Drawing.Point(37, 107);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(75, 30);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -612,11 +646,11 @@
             // 
             this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label24.Location = new System.Drawing.Point(2, 85);
+            this.label24.Location = new System.Drawing.Point(14, 91);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(144, 13);
+            this.label24.Size = new System.Drawing.Size(111, 13);
             this.label24.TabIndex = 358;
-            this.label24.Text = "ALERT LEVEL RECONC";
+            this.label24.Text = "RECONC STATUS";
             // 
             // dataGridView2
             // 
@@ -631,7 +665,7 @@
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(510, 183);
+            this.dataGridView2.Size = new System.Drawing.Size(646, 128);
             this.dataGridView2.TabIndex = 3;
             this.dataGridView2.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_RowEnter);
             // 
@@ -708,7 +742,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1004, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1098, 36);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
             // tableLayoutPanelMain
@@ -727,14 +761,14 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1008, 730);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1102, 730);
             this.tableLayoutPanelMain.TabIndex = 266;
             // 
             // Form80a
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 730);
+            this.ClientSize = new System.Drawing.Size(1102, 730);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.ForeColor = System.Drawing.Color.White;
@@ -757,6 +791,7 @@
             this.panel5.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
             this.panel6.ResumeLayout(false);
@@ -827,5 +862,7 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridView dataGridView3;
     }
 }

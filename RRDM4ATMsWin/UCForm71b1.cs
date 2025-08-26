@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -26,11 +20,11 @@ namespace RRDM4ATMsWin
    
         bool ExistanceOfDiff; 
         
-        RRDMNotesBalances Na = new RRDMNotesBalances(); // Activate Class 
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances(); // Activate Class 
 
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); // Activate Class 
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); // Activate Class 
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         string WSignedId;
         int WSignRecordNo;
@@ -296,8 +290,9 @@ namespace RRDM4ATMsWin
         void NForm174_FormClosed(object sender, FormClosedEventArgs e)
         {
             SetScreen();
-            Us.ReadSignedActivityByKey(WSignRecordNo);
-            if (Us.ProcessNo == 54 || Us.ProcessNo == 55 || Us.ProcessNo == 56) guidanceMsg = "View only";
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
+            if (Usi.ProcessNo == 54 || Usi.ProcessNo == 55 || Usi.ProcessNo == 56) guidanceMsg = "View only";
             ChangeBoardMessage(this, new EventArgs()); 
         }
 

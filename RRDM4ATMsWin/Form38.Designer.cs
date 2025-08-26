@@ -83,11 +83,13 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.labelDisputeId = new System.Windows.Forms.Label();
+            this.textBoxDisputeId = new System.Windows.Forms.TextBox();
             this.textBox18 = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.buttonMoveToDispute = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
-            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.textBoxMyComments = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
@@ -101,8 +103,6 @@
             this.toolTipMessages = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipController = new System.Windows.Forms.ToolTip(this.components);
             this.label2 = new System.Windows.Forms.Label();
-            this.labelDisputeId = new System.Windows.Forms.Label();
-            this.textBoxDisputeId = new System.Windows.Forms.TextBox();
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -755,7 +755,7 @@
             this.panel3.Controls.Add(this.button3);
             this.panel3.Controls.Add(this.buttonMoveToDispute);
             this.panel3.Controls.Add(this.button5);
-            this.panel3.Controls.Add(this.textBox11);
+            this.panel3.Controls.Add(this.textBoxMyComments);
             this.panel3.Controls.Add(this.label21);
             this.panel3.Controls.Add(this.textBox10);
             this.panel3.Controls.Add(this.label20);
@@ -769,6 +769,28 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(542, 182);
             this.panel3.TabIndex = 323;
+            // 
+            // labelDisputeId
+            // 
+            this.labelDisputeId.AutoSize = true;
+            this.labelDisputeId.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelDisputeId.ForeColor = System.Drawing.Color.Red;
+            this.labelDisputeId.Location = new System.Drawing.Point(17, 148);
+            this.labelDisputeId.Name = "labelDisputeId";
+            this.labelDisputeId.Size = new System.Drawing.Size(69, 13);
+            this.labelDisputeId.TabIndex = 340;
+            this.labelDisputeId.Text = "Dispute Id ";
+            // 
+            // textBoxDisputeId
+            // 
+            this.textBoxDisputeId.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.textBoxDisputeId.ForeColor = System.Drawing.Color.Red;
+            this.textBoxDisputeId.Location = new System.Drawing.Point(100, 145);
+            this.textBoxDisputeId.Name = "textBoxDisputeId";
+            this.textBoxDisputeId.ReadOnly = true;
+            this.textBoxDisputeId.Size = new System.Drawing.Size(80, 20);
+            this.textBoxDisputeId.TabIndex = 339;
+            this.textBoxDisputeId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // textBox18
             // 
@@ -830,15 +852,15 @@
             this.button5.UseVisualStyleBackColor = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // textBox11
+            // textBoxMyComments
             // 
-            this.textBox11.Location = new System.Drawing.Point(277, 41);
-            this.textBox11.MaxLength = 50;
-            this.textBox11.Multiline = true;
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(253, 56);
-            this.textBox11.TabIndex = 1;
-            this.textBox11.TextChanged += new System.EventHandler(this.textBox11_TextChanged);
+            this.textBoxMyComments.Location = new System.Drawing.Point(277, 41);
+            this.textBoxMyComments.MaxLength = 50;
+            this.textBoxMyComments.Multiline = true;
+            this.textBoxMyComments.Name = "textBoxMyComments";
+            this.textBoxMyComments.Size = new System.Drawing.Size(253, 56);
+            this.textBoxMyComments.TabIndex = 1;
+            this.textBoxMyComments.TextChanged += new System.EventHandler(this.textBox11_TextChanged);
             // 
             // label21
             // 
@@ -963,28 +985,6 @@
             this.label2.Size = new System.Drawing.Size(0, 18);
             this.label2.TabIndex = 335;
             // 
-            // labelDisputeId
-            // 
-            this.labelDisputeId.AutoSize = true;
-            this.labelDisputeId.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.labelDisputeId.ForeColor = System.Drawing.Color.Red;
-            this.labelDisputeId.Location = new System.Drawing.Point(17, 148);
-            this.labelDisputeId.Name = "labelDisputeId";
-            this.labelDisputeId.Size = new System.Drawing.Size(69, 13);
-            this.labelDisputeId.TabIndex = 340;
-            this.labelDisputeId.Text = "Dispute Id ";
-            // 
-            // textBoxDisputeId
-            // 
-            this.textBoxDisputeId.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.textBoxDisputeId.ForeColor = System.Drawing.Color.Red;
-            this.textBoxDisputeId.Location = new System.Drawing.Point(100, 145);
-            this.textBoxDisputeId.Name = "textBoxDisputeId";
-            this.textBoxDisputeId.ReadOnly = true;
-            this.textBoxDisputeId.Size = new System.Drawing.Size(80, 20);
-            this.textBoxDisputeId.TabIndex = 339;
-            this.textBoxDisputeId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // Form38
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1076,7 +1076,7 @@
         private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.TextBox textBoxMyComments;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label label23;

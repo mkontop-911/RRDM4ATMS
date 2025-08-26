@@ -38,14 +38,14 @@
             this.reportViewer1.Name = "reportViewer1";
             this.reportViewer1.ProcessingMode = Microsoft.Reporting.WinForms.ProcessingMode.Remote;
             this.reportViewer1.ServerReport.ReportServerUrl = new System.Uri("", System.UriKind.Relative);
-            this.reportViewer1.Size = new System.Drawing.Size(807, 742);
+            this.reportViewer1.Size = new System.Drawing.Size(807, 825);
             this.reportViewer1.TabIndex = 0;
             // 
             // Form56R3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(807, 742);
+            this.ClientSize = new System.Drawing.Size(807, 825);
             this.Controls.Add(this.reportViewer1);
             this.Name = "Form56R3";
             this.Text = "Form56R3";

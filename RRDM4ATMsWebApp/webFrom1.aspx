@@ -230,19 +230,19 @@
                     <div class="col-md-1 col-sm-3 home-padd">
                         <div class="row">
                             <h5 class="ttl col-md-12"><asp:Label ID="Label18" runat="server" Text="Disputes"></asp:Label></h5>
-                            <asp:HyperLink NavigateUrl="#" CssClass="col-xs-6 col-sm-6 col-md-12 bg-purple" ID="HyperLink9" runat="server">
+                             <asp:LinkButton CssClass="col-xs-6 col-sm-6 col-md-12 bg-purple" ID="lnkToDisp" runat="server" OnClick="lnkToDISP_Click">
                                 <span class="square">
-                                    <asp:Label ID="Label11" runat="server" Text="Define Banks"></asp:Label>
+                                    <asp:Label ID="Label66" runat="server" Text="Disputes Pre Investigation"></asp:Label>
                                 </span>
-                            </asp:HyperLink>
+                            </asp:LinkButton>
                             <asp:HyperLink NavigateUrl="#" CssClass="col-xs-6 col-sm-6 col-md-12 bg-purple" ID="HyperLink40" runat="server">
                                 <span class="square">
-                                    <asp:Label ID="Label48" runat="server" Text="Define Banks"></asp:Label>
+                                    <asp:Label ID="Label48" runat="server" Text="Dispute Registration"></asp:Label>
                                 </span>
                             </asp:HyperLink>
                             <asp:HyperLink NavigateUrl="#" CssClass="col-xs-6 col-sm-6 col-md-12 bg-pink" ID="HyperLink41" runat="server">
                                 <span class="square">
-                                    <asp:Label ID="Label49" runat="server" Text="Define Banks"></asp:Label>
+                                    <asp:Label ID="Label49" runat="server" Text="Dispute Management"></asp:Label>
                                 </span>
                             </asp:HyperLink>
                         </div>
@@ -250,7 +250,9 @@
                     <div class="clearfix visible-sm"></div>
                     <div class="col-md-2 col-sm-3 home-padd">
                         <div class="row">
-                            <h5 class="ttl col-md-12"><asp:Label ID="Label19" runat="server" Text="MIS"></asp:Label></h5>
+                            <h5 class="ttl col-md-12"><asp:Label ID="Label19" runat="server" Text="MIS"></asp:Label>
+                           
+                            </h5>
                             <asp:HyperLink NavigateUrl="#" CssClass="col-xs-6 bg-dark-red" ID="HyperLink10" runat="server">
                                 <span class="square">
                                     <asp:Label ID="Label12" runat="server" Text="Define Banks"></asp:Label>

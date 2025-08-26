@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
-using System.IO;
 
 namespace RRDM4ATMsWin
 {
@@ -29,7 +20,7 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             textBoxMsgBoard.Text = "Make choices in order to view the audit trails of specific screens.";
 

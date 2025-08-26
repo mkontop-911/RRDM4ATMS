@@ -38,17 +38,15 @@
             this.labelStep2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.labelStep3 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.labelStep4 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.labelATMno = new System.Windows.Forms.Label();
-            this.labelSessionNo = new System.Windows.Forms.Label();
-            this.labelToday = new System.Windows.Forms.Label();
+            this.labelCatId = new System.Windows.Forms.Label();
+            this.labelCycleNo = new System.Windows.Forms.Label();
+            this.labelCutOffDate = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.toolTipMessages = new System.Windows.Forms.ToolTip(this.components);
             this.buttonNext = new System.Windows.Forms.Button();
@@ -86,7 +84,7 @@
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1008, 83);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1284, 83);
             this.tableLayoutPanelHeader.TabIndex = 260;
             // 
             // tableLayoutPanel4
@@ -104,7 +102,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1004, 80);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1280, 80);
             this.tableLayoutPanel4.TabIndex = 249;
             // 
             // flowLayoutPanel1
@@ -114,8 +112,6 @@
             this.flowLayoutPanel1.Controls.Add(this.labelStep2);
             this.flowLayoutPanel1.Controls.Add(this.label4);
             this.flowLayoutPanel1.Controls.Add(this.labelStep3);
-            this.flowLayoutPanel1.Controls.Add(this.label3);
-            this.flowLayoutPanel1.Controls.Add(this.labelStep4);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(294, 6);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 6, 2, 2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -183,35 +179,9 @@
             this.labelStep3.Location = new System.Drawing.Point(181, 37);
             this.labelStep3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelStep3.Name = "labelStep3";
-            this.labelStep3.Size = new System.Drawing.Size(78, 17);
+            this.labelStep3.Size = new System.Drawing.Size(91, 17);
             this.labelStep3.TabIndex = 244;
-            this.labelStep3.Text = "Verification";
-            // 
-            // label3
-            // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(263, 36);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(27, 20);
-            this.label3.TabIndex = 247;
-            this.label3.Text = ">>";
-            // 
-            // labelStep4
-            // 
-            this.labelStep4.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.labelStep4.AutoSize = true;
-            this.labelStep4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelStep4.ForeColor = System.Drawing.Color.LightSteelBlue;
-            this.labelStep4.Location = new System.Drawing.Point(294, 37);
-            this.labelStep4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelStep4.Name = "labelStep4";
-            this.labelStep4.Size = new System.Drawing.Size(91, 17);
-            this.labelStep4.TabIndex = 248;
-            this.labelStep4.Text = "Authorisation";
+            this.labelStep3.Text = "Authorisation";
             // 
             // tableLayoutPanel1
             // 
@@ -219,7 +189,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 63F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 292F));
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(863, 2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(1139, 2);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -242,7 +212,7 @@
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 67F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(288, 67);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(287, 67);
             this.tableLayoutPanel5.TabIndex = 251;
             // 
             // pictureBox1
@@ -264,9 +234,9 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 127F));
             this.tableLayoutPanel3.Controls.Add(this.label8, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.labelATMno, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.labelSessionNo, 1, 1);
-            this.tableLayoutPanel3.Controls.Add(this.labelToday, 1, 2);
+            this.tableLayoutPanel3.Controls.Add(this.labelCatId, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.labelCycleNo, 1, 1);
+            this.tableLayoutPanel3.Controls.Add(this.labelCutOffDate, 1, 2);
             this.tableLayoutPanel3.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(78, 2);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2);
@@ -275,7 +245,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(228, 63);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(227, 63);
             this.tableLayoutPanel3.TabIndex = 248;
             // 
             // label8
@@ -285,9 +255,9 @@
             this.label8.Location = new System.Drawing.Point(2, 46);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 3, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(30, 13);
+            this.label8.Size = new System.Drawing.Size(66, 13);
             this.label8.TabIndex = 250;
-            this.label8.Text = "Date";
+            this.label8.Text = "Cut Off Date";
             // 
             // label2
             // 
@@ -296,44 +266,44 @@
             this.label2.Location = new System.Drawing.Point(2, 23);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(93, 23);
+            this.label2.Size = new System.Drawing.Size(50, 13);
             this.label2.TabIndex = 104;
-            this.label2.Text = "Latest Repl.Cycle No";
+            this.label2.Text = "RMCycle";
             // 
-            // labelATMno
+            // labelCatId
             // 
-            this.labelATMno.AutoSize = true;
-            this.labelATMno.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelATMno.ForeColor = System.Drawing.Color.White;
-            this.labelATMno.Location = new System.Drawing.Point(104, 0);
-            this.labelATMno.Name = "labelATMno";
-            this.labelATMno.Size = new System.Drawing.Size(53, 13);
-            this.labelATMno.TabIndex = 244;
-            this.labelATMno.Text = "ATM No";
+            this.labelCatId.AutoSize = true;
+            this.labelCatId.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCatId.ForeColor = System.Drawing.Color.White;
+            this.labelCatId.Location = new System.Drawing.Point(104, 0);
+            this.labelCatId.Name = "labelCatId";
+            this.labelCatId.Size = new System.Drawing.Size(37, 13);
+            this.labelCatId.TabIndex = 244;
+            this.labelCatId.Text = "CatId";
             // 
-            // labelSessionNo
+            // labelCycleNo
             // 
-            this.labelSessionNo.AutoSize = true;
-            this.labelSessionNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSessionNo.ForeColor = System.Drawing.Color.White;
-            this.labelSessionNo.Location = new System.Drawing.Point(104, 23);
-            this.labelSessionNo.Name = "labelSessionNo";
-            this.labelSessionNo.Size = new System.Drawing.Size(71, 13);
-            this.labelSessionNo.TabIndex = 244;
-            this.labelSessionNo.Text = "Session No";
+            this.labelCycleNo.AutoSize = true;
+            this.labelCycleNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCycleNo.ForeColor = System.Drawing.Color.White;
+            this.labelCycleNo.Location = new System.Drawing.Point(104, 23);
+            this.labelCycleNo.Name = "labelCycleNo";
+            this.labelCycleNo.Size = new System.Drawing.Size(73, 13);
+            this.labelCycleNo.TabIndex = 244;
+            this.labelCycleNo.Text = "RMCycleNo";
             // 
-            // labelToday
+            // labelCutOffDate
             // 
-            this.labelToday.AutoSize = true;
-            this.labelToday.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelToday.ForeColor = System.Drawing.Color.White;
-            this.labelToday.Location = new System.Drawing.Point(103, 46);
-            this.labelToday.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelToday.Name = "labelToday";
-            this.labelToday.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.labelToday.Size = new System.Drawing.Size(42, 13);
-            this.labelToday.TabIndex = 117;
-            this.labelToday.Text = "Today";
+            this.labelCutOffDate.AutoSize = true;
+            this.labelCutOffDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCutOffDate.ForeColor = System.Drawing.Color.White;
+            this.labelCutOffDate.Location = new System.Drawing.Point(103, 46);
+            this.labelCutOffDate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelCutOffDate.Name = "labelCutOffDate";
+            this.labelCutOffDate.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.labelCutOffDate.Size = new System.Drawing.Size(73, 13);
+            this.labelCutOffDate.TabIndex = 117;
+            this.labelCutOffDate.Text = "Cut Off Day";
             // 
             // label1
             // 
@@ -341,9 +311,9 @@
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 13);
+            this.label1.Size = new System.Drawing.Size(64, 13);
             this.label1.TabIndex = 103;
-            this.label1.Text = "ATM No";
+            this.label1.Text = "Reconc Cat";
             // 
             // toolTipMessages
             // 
@@ -366,7 +336,7 @@
             this.buttonNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonNext.ForeColor = System.Drawing.Color.White;
-            this.buttonNext.Location = new System.Drawing.Point(910, 2);
+            this.buttonNext.Location = new System.Drawing.Point(1186, 2);
             this.buttonNext.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(84, 32);
@@ -387,7 +357,7 @@
             this.textBoxMsgBoard.Multiline = true;
             this.textBoxMsgBoard.Name = "textBoxMsgBoard";
             this.textBoxMsgBoard.ReadOnly = true;
-            this.textBoxMsgBoard.Size = new System.Drawing.Size(743, 32);
+            this.textBoxMsgBoard.Size = new System.Drawing.Size(1019, 32);
             this.textBoxMsgBoard.TabIndex = 242;
             this.textBoxMsgBoard.TabStop = false;
             this.textBoxMsgBoard.Text = "No guidance information available.";
@@ -401,7 +371,7 @@
             this.buttonBack.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonBack.ForeColor = System.Drawing.Color.White;
-            this.buttonBack.Location = new System.Drawing.Point(840, 2);
+            this.buttonBack.Location = new System.Drawing.Point(1116, 2);
             this.buttonBack.Margin = new System.Windows.Forms.Padding(2);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(66, 32);
@@ -420,7 +390,7 @@
             this.Cancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.Cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Cancel.ForeColor = System.Drawing.Color.White;
-            this.Cancel.Location = new System.Drawing.Point(765, 2);
+            this.Cancel.Location = new System.Drawing.Point(1041, 2);
             this.Cancel.Margin = new System.Windows.Forms.Padding(10, 2, 2, 2);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(71, 32);
@@ -442,12 +412,12 @@
             this.tableLayoutPanel2.Controls.Add(this.buttonBack, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.Cancel, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 609);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 580);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1004, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1280, 36);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
             // tableLayoutPanelMain
@@ -464,7 +434,7 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1008, 647);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1284, 618);
             this.tableLayoutPanelMain.TabIndex = 259;
             // 
             // Form271
@@ -472,7 +442,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1008, 730);
+            this.ClientSize = new System.Drawing.Size(1284, 701);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.ForeColor = System.Drawing.Color.White;
@@ -510,9 +480,9 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label labelATMno;
-        private System.Windows.Forms.Label labelSessionNo;
-        private System.Windows.Forms.Label labelToday;
+        private System.Windows.Forms.Label labelCatId;
+        private System.Windows.Forms.Label labelCycleNo;
+        private System.Windows.Forms.Label labelCutOffDate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolTip toolTipMessages;
         private System.Windows.Forms.Button buttonNext;
@@ -521,7 +491,5 @@
         private System.Windows.Forms.Button Cancel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label labelStep4;
     }
 }

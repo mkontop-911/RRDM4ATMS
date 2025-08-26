@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Drawing;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
 using Artem.Google.UI;
 using Artem.Google.Net;
+using System.Configuration;
+
 using RRDM4ATMs;
 
 namespace RRDM4ATMsGIS
@@ -18,7 +13,7 @@ namespace RRDM4ATMsGIS
     {
         /* The list of ATMs displayed in GridView
          * from which we position the markers on Map */
-        private static List<ATMGeo> ListOfAddrs = new List<ATMGeo>();
+        private static List<RRDMTempAtmsLocation.ATMGeo> ListOfAddrs = new List<RRDMTempAtmsLocation.ATMGeo>();
 
         /* The marker position on the Map when in Single-Marker mode */
         private static Marker MarkerShown = new Marker();
@@ -84,7 +79,7 @@ namespace RRDM4ATMsGIS
 #if DEBUG
             PrintLog("Populate Details()..");
 #endif
-            RRDMTempAtmLocation DetRec = new RRDMTempAtmLocation();
+            RRDMTempAtmsLocation DetRec = new RRDMTempAtmsLocation();
             DetRec.ReadTempAtmLocationSpecificBySeqNo(ATMId);
 
 
@@ -171,7 +166,7 @@ namespace RRDM4ATMsGIS
             int id;
             double Lat = 0;
             double Lon = 0;
-            ATMGeo Rec = new ATMGeo();
+            RRDMTempAtmsLocation.ATMGeo Rec = new RRDMTempAtmsLocation.ATMGeo();
 
             id = Convert.ToInt16(key.Value);
             Rec = ListOfAddrs[id];
@@ -217,6 +212,15 @@ namespace RRDM4ATMsGIS
             {
                 if (MarkerShown.Position.Latitude != 0)
                 {
+                    string ConfigZoom;
+                    int ZoomLevel;
+
+                    ConfigZoom = ConfigurationManager.AppSettings["SingleMarkerInitialZoomIn"];
+                    if (!Int32.TryParse(ConfigZoom, out ZoomLevel))
+                    {
+                        ZoomLevel = 17;
+                    }
+
                     GoogleMarkers1.Markers.Clear();
 
                     if (LocMode == 2)
@@ -231,7 +235,7 @@ namespace RRDM4ATMsGIS
                     GoogleMarkers1.Markers.Add(MarkerShown);
 
                     GoogleMap1.Bounds = null;
-                    GoogleMap1.Zoom = 17;
+                    GoogleMap1.Zoom = ZoomLevel;
                     GoogleMap1.Center.Latitude = MarkerShown.Position.Latitude;
                     GoogleMap1.Center.Longitude = MarkerShown.Position.Longitude;
 
@@ -244,7 +248,7 @@ namespace RRDM4ATMsGIS
         //        protected void btClear_Click(object sender, EventArgs e)
         //        {
         //#if DEBUG
-        //            PrintLog("btClear_Click()..");
+        //            PrintLog("   btClear_Click()..");
         //#endif
         //            TextBox1.Text = "";
         //            lblStatus.Text = "";
@@ -294,7 +298,7 @@ namespace RRDM4ATMsGIS
             double dLat = 0;
             double dLon = 0;
             Int32 SeqNo = Convert.ToInt32(txAtmId.Text);
-            RRDMTempAtmLocation TmpAtmRec = new RRDMTempAtmLocation();
+            RRDMTempAtmsLocation TmpAtmRec = new RRDMTempAtmsLocation();
 
             try
             {
@@ -431,7 +435,7 @@ namespace RRDM4ATMsGIS
 
                         for (Indx = 0; Indx < Count; Indx++)
                         {
-                            ATMGeo Addr = new ATMGeo();
+                            RRDMTempAtmsLocation.ATMGeo Addr = new RRDMTempAtmsLocation.ATMGeo();
                             Addr.Id = Indx;
                             Addr.FormattedAddress = response.Results[Indx].FormattedAddress;
                             //Addr.AddressType = response.Results[Indx].Types[0];

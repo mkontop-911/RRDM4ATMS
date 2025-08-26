@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows.Forms;
-using System.Data.SqlClient;
-using System.Configuration;
 using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
@@ -32,7 +25,7 @@ namespace RRDM4ATMsWin
 
         bool NormalProcess;
 
-
+        string WBankId;
         bool ViewWorkFlow;
         string WMode;
 
@@ -42,19 +35,23 @@ namespace RRDM4ATMsWin
         string WParameter4;
         string WSearchP4;
 
+        DateTime NullPastDate = new DateTime(1900, 01, 01);
+
         int WOutstandingErrors;
         int WOutstandingUnMatched;
-        string WMessage; 
+        string WMessage;
 
         RRDMGasParameters Gp = new RRDMGasParameters();
 
         RRDMAuthorisationProcess Ap = new RRDMAuthorisationProcess();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         RRDMErrorsClassWithActions Ec = new RRDMErrorsClassWithActions();
 
-        RRDMReconcMatchedUnMatchedVisaAuthorClass Rm = new RRDMReconcMatchedUnMatchedVisaAuthorClass(); 
+        RRDMMatchingTxns_MasterPoolATMs Mpa = new RRDMMatchingTxns_MasterPoolATMs();
+
+        RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
 
         RRDMCaseNotes Cn = new RRDMCaseNotes();
 
@@ -65,91 +62,56 @@ namespace RRDM4ATMsWin
         int WSignRecordNo;
         string WOperator;
 
-        string WAtmNo;
-        int WSesNo;
+        //string WAtmNo;
+        //int WSesNo;
 
-        string WCategory;
-        int WRMCycle; 
+        string WCategoryId;
+        int WRMCycle;
 
-        public void UCForm271dPar(string InSignedId, int SignRecordNo, string InOperator, string InAtmNo, int InSesNo)
+        public void UCForm271dPar(string InSignedId, int SignRecordNo, string InOperator, string InAtmNo, int InSesNo, string InCategory, int InRMCycle)
         {
 
             WSignedId = InSignedId;
             WSignRecordNo = SignRecordNo;
             WOperator = InOperator;
 
-            WAtmNo = InAtmNo;
-            WSesNo = InSesNo;
+            //WAtmNo = InAtmNo;
+            //WSesNo = InSesNo;
 
-            WCategory = WAtmNo;
-            WRMCycle = WSesNo; 
+            WCategoryId = InCategory;
+            WRMCycle = InRMCycle;
 
             InitializeComponent();
 
+            if (WOperator == "BDACEGCA")
+            {
+                // ABE
+                buttonAllAccounting.Hide();
+            }
+
+            Us.ReadUsersRecord(WSignedId);
+            WBankId = Us.BankId;
+
             WMessage = "";
 
-            Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "ReconciliationCat"); //
+            // Check if outstanding not taken action by Maker 
 
-            if (Ap.RecordFound == true & Ap.Stage < 5 & Ap.OpenRecord == true) // Already exist Repl authorisation 
-            {
+            string SearchingStringLeft = " WHERE Operator ='" + WOperator
+                                          + "' AND RMCateg ='" + WCategoryId + "'  "
+                                          + "  AND MatchingAtRMCycle = " + WRMCycle
+                                          + "  AND IsMatchingDone = 1 AND Matched = 0 "
+                                          + "  AND (ActionType = '00' AND MetaExceptionId <> 55 )  ";
 
-                WDifStatus = Ap.DifferenceStatus;
-            }
-            else
-            {
-                Us.ReadSignedActivityByKey(WSignRecordNo);
-                WDifStatus = Us.ReconcDifferenceStatus;
+            string WSortValue = "";
+            Mpa.ReadMatchingTxnsMasterPoolByRangeAndFillTable(WOperator, WSignedId, 1, SearchingStringLeft, WSortValue,
+                                                             NullPastDate, NullPastDate, 1);
 
-            }
-
-            // Check if outstanding Unmatched or Outstanding exceptions
-
-            Ec.ReadAllErrorsTableForCounters(WOperator, WCategory, "");
-
-            WOutstandingErrors = Ec.NumOfErrors - (Ec.ErrUnderAction + Ec.ErrUnderManualAction);
-
-            if (WOutstandingErrors > 0)
-            {
-                WDifStatus = 8;
-                WMessage = "There are Outstanding Meta Exceptions. "; 
-            }
-
-            string SearchingStringLeft = "Operator ='" + WOperator
-                                         + "' AND RMCateg ='" + WCategory + "' AND OpenRecord = 1 AND MetaExceptionNo = 0 ";
-
-            string WhatFile = "UnMatched";
-            string WSortValue = "SeqNo";
-            Rm.ReadMatchedORUnMatchedFileTableLeft(WOperator, SearchingStringLeft, WhatFile, WSortValue);
-
-            WOutstandingUnMatched = Rm.TotalSelected;
+            WOutstandingUnMatched = Mpa.TotalSelected;
 
             if (WOutstandingUnMatched > 0)
             {
-                WDifStatus = 9;
-                if (WOutstandingErrors > 0)
-                {
-                    WMessage = "There are Outstanding UnMatched Records. " + WMessage;
-                }
-                else
-                {
-                    WMessage = "There are Outstanding UnMatched Records. " + WMessage;
-                }
-                
-            }
-            
-            if (WDifStatus == 1 ) // Everything is in Order 
-            {
-                textBox1.Show();
-                textBox4.Hide();
-                //guidanceMsg = " Well Done !!! No differences. ";
 
-                ////STAVROS
-                //ChangeBoardMessage(this, new EventArgs());
-            }
-
-            if (WDifStatus > 1) // ERRORS STILL 
-            {
-                //   textBoxMsg.Text = " THERE IS WORK TO BE DONE! SOME OUTSTANDING ARE REMAINING ";
+                WMessage = "There are Outstanding UnMatched Records. " + WMessage;
                 textBox1.Hide();
                 textBox4.Show();
 
@@ -160,12 +122,18 @@ namespace RRDM4ATMsWin
                     textBox4.ForeColor = Color.Red;
                 }
             }
+            else
+            {
+                textBox1.Show();
+                textBox4.Hide();
+            }
 
             // Update Step
-            Us.ReadSignedActivityByKey(WSignRecordNo);
-            WDifStatus = Us.ReconcDifferenceStatus;
-            Us.StepLevel = 3;
-            Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
+            WDifStatus = Usi.ReconcDifferenceStatus;
+            Usi.StepLevel = 3;
+            Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
             //************************************************************
             //************************************************************
             // AUTHOR PART 
@@ -176,11 +144,11 @@ namespace RRDM4ATMsWin
             WRequestor = false;    // 56 
             NormalProcess = false;
 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            if (Us.ProcessNo == 54) WViewFunction = true;// ViewOnly 
-            if (Us.ProcessNo == 55) WAuthoriser = true;// Authoriser from author management          
-            if (Us.ProcessNo == 56) WRequestor = true; // Requestor
+            if (Usi.ProcessNo == 54) WViewFunction = true;// ViewOnly 
+            if (Usi.ProcessNo == 55) WAuthoriser = true;// Authoriser from author management          
+            if (Usi.ProcessNo == 56) WRequestor = true; // Requestor
 
             if (WViewFunction || WAuthoriser || WRequestor)
             {
@@ -192,11 +160,9 @@ namespace RRDM4ATMsWin
             if (WAuthoriser || WRequestor)
             {
                 bool Reject = false;
-                Ap.GetMessageOne(WAtmNo, WSesNo, "Reconciliation", WAuthoriser, WRequestor, Reject);
+                Ap.GetMessageReconCateg(WCategoryId, WRMCycle, "ReconciliationCat", WAuthoriser, WRequestor, Reject);
                 guidanceMsg = Ap.MessageOut;
             }
-
-
             //************************************************************
             //************************************************************
 
@@ -212,7 +178,7 @@ namespace RRDM4ATMsWin
             if (WAuthoriser || WRequestor)
             {
                 bool Reject = false;
-                Ap.GetMessageOne(WAtmNo, WSesNo, "ReconciliationCat", WAuthoriser, WRequestor, Reject);
+                Ap.GetMessageReconCateg(WCategoryId, WRMCycle, "ReconciliationCat", WAuthoriser, WRequestor, Reject);
                 guidanceMsg = Ap.MessageOut;
                 ////STAVROS
                 ChangeBoardMessage(this, new EventArgs());
@@ -220,7 +186,7 @@ namespace RRDM4ATMsWin
 
             // NOTES for final comment 
             Order = "Descending";
-            WParameter4 = "Reconc closing stage for" + " Category: " + WAtmNo + " Matching SesNo: " + WSesNo;
+            WParameter4 = "Reconc closing stage for" + " Category: " + WCategoryId + " Reconc Cycle: " + WRMCycle;
             WSearchP4 = "";
             Cn.ReadAllNotes(WParameter4, WSignedId, Order, WSearchP4);
             if (Cn.RecordFound == true)
@@ -232,7 +198,8 @@ namespace RRDM4ATMsWin
             // ................................
             // Handle View ONLY 
             // ''''''''''''''''''''''''''''''''
-            Us.ReadSignedActivityByKey(WSignRecordNo);
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
             if (WViewFunction == true || WAuthoriser == true || WRequestor == true) // THIS is not normal process 
             {
@@ -249,7 +216,6 @@ namespace RRDM4ATMsWin
                 {
                     buttonNotes2.Show();
                     labelNumberNotes2.Show();
-
                 }
             }
             else
@@ -258,13 +224,11 @@ namespace RRDM4ATMsWin
                 labelNumberNotes2.Show();
             }
 
-          
-
             if (WRequestor == true) // Comes from Author management Requestor
             {
                 // Check Authorisation 
 
-                Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo,"ReconciliationCat");
+                Ap.ReadAuthorizationForReplenishmentReconcSpecificForCategoryAndCycle(WCategoryId, WRMCycle, "ReconciliationCat"); //
 
                 if (Ap.RecordFound == true & Ap.OpenRecord == true)
                 {
@@ -274,9 +238,10 @@ namespace RRDM4ATMsWin
                     }
                     if (Ap.Stage == 4 & Ap.AuthDecision == "NO")
                     {
-                        Us.ReadSignedActivityByKey(WSignRecordNo);
-                        Us.ProcessNo = 2; // Return to stage 2  
-                        Us.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+
+                        Usi.ReadSignedActivityByKey(WSignRecordNo);
+                        Usi.ProcessNo = 2; // Return to stage 2  
+                        Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
                         NormalProcess = true; // TURN TO NORMAL TO SHOW WHAT IS NEEDED 
 
@@ -284,15 +249,12 @@ namespace RRDM4ATMsWin
                         labelNumberNotes2.Show();
                     }
 
-                   
                 }
 
             }
 
             // Show Authorisation record 
             ShowAuthorisationInfo();
-
-         
 
         }
 
@@ -301,8 +263,17 @@ namespace RRDM4ATMsWin
         //
         private void ShowAuthorisationInfo()
         {
-
-            Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "ReconciliationCat");
+            if (WViewFunction == true)
+            {
+                // Close Record just for viewing 
+                Ap.ReadAuthorizationForReplenishmentReconcSpecificForCategoryAndCycleVIEW_close(WCategoryId, WRMCycle, "ReconciliationCat");
+            }
+            else
+            {
+                // Open Record
+                Ap.ReadAuthorizationForReplenishmentReconcSpecificForCategoryAndCycle(WCategoryId, WRMCycle, "ReconciliationCat");
+            }
+             //
             if ((Ap.RecordFound == true & Ap.OpenRecord == true)
                    || (Ap.RecordFound == true & Ap.OpenRecord == false & Ap.Stage == 5))
             {
@@ -310,12 +281,13 @@ namespace RRDM4ATMsWin
 
                 if (Ap.Stage == 1) StageDescr = "Authoriser Not Available yet.";
                 if (Ap.Stage == 2) StageDescr = "Authoriser got the message. He will get action.";
-                if (Ap.Stage == 3) StageDescr = "Authoriser took action. Requestor must act. ";
+                if (Ap.Stage == 3) StageDescr = "Authoriser took action. Authoriser to press Finish. ";
+
                 if (Ap.Stage == 4 & Ap.AuthDecision == "YES")
                 {
                     StageDescr = "Authorization accepted. Ready for Finish";
                 }
-                if (Ap.Stage == 4 & Ap.AuthDecision == "NO")
+                if ((Ap.Stage == 3 || Ap.Stage == 4) & Ap.AuthDecision == "NO")
                 {
                     StageDescr = "Authorization REJECTED. ";
                     Color Red = Color.Red;
@@ -323,6 +295,12 @@ namespace RRDM4ATMsWin
                 }
 
                 if (Ap.Stage == 5) StageDescr = "Authorisation process is completed";
+                if (Ap.Stage == 5 & Ap.AuthDecision == "NO")
+                {
+                    StageDescr = "Authorization REJECTED. ";
+                    Color Red = Color.Red;
+                    labelAuthStatus.ForeColor = Red;
+                }
 
                 labelAuthStatus.Text = "Current Status : " + StageDescr;
 
@@ -336,7 +314,7 @@ namespace RRDM4ATMsWin
 
                 WAuthorSeqNumber = Ap.SeqNumber;
                 labelAuthHeading.Show();
-                labelAuthHeading.Text = "AUTHORISER's SECTION FOR ATM : " + WAtmNo;
+                labelAuthHeading.Text = "AUTHORISER's SECTION FOR CATEGORY : " + WCategoryId;
                 panelAuthor.Show();
 
                 if (WViewFunction == true) // For View only 
@@ -430,30 +408,33 @@ namespace RRDM4ATMsWin
         private void buttonAuthor_Click(object sender, EventArgs e)
         {
 
-            // Check if Already in authorization process
+            //// Check if Already in authorization process
+            ///THIS HAS BEEN MOVED
 
-            Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "ReconciliationCat");
+            //Ap.ReadAuthorizationRecordByRMCategoryAndRMCycle(WCategoryId, WRMCycle);
+            ////Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "ReconciliationCat");
 
-            if (Ap.RecordFound == true & Ap.OpenRecord == true)
-            {
-                if (Ap.Stage == 4 & Ap.AuthDecision == "NO")
-                {
-                    Ap.Stage = 5;
-                    Ap.OpenRecord = false;
+            //if (Ap.RecordFound == true & Ap.OpenRecord == true)
+            //{
+            //    if (Ap.Stage == 4 & Ap.AuthDecision == "NO")
+            //    {
+            //        Ap.Stage = 5;
+            //        Ap.OpenRecord = false;
 
-                    Ap.UpdateAuthorisationRecord(Ap.SeqNumber);
-                }
-            }
+            //        Ap.UpdateAuthorisationRecord(Ap.SeqNumber);
+            //    }
+            //}
 
-            Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "ReconciliationCat");
+            //Ap.ReadAuthorizationRecordByRMCategoryAndRMCycle(WCategoryId, WRMCycle);
+            ////Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "ReconciliationCat");
 
-            if (Ap.RecordFound == true & Ap.Stage < 5 & Ap.OpenRecord == true) // Already exist Repl authorisation 
-            {
-                MessageBox.Show("This Replenishment Cycle Already has authorization record!" + Environment.NewLine
-                                         + "Go to Pending Authorisations process."
-                                                          );
-                return;
-            }
+            //if (Ap.RecordFound == true & Ap.Stage < 5 & Ap.OpenRecord == true) // Already exist Repl authorisation 
+            //{
+            //    MessageBox.Show("This Reconciliation Cycle Already has authorization record!" + Environment.NewLine
+            //                             + "Go to Pending Authorisations process."
+            //                                              );
+            //    return;
+            //}
 
             // Validate input 
             //    InputValidationAndUpdate("Authorisation");
@@ -463,19 +444,22 @@ namespace RRDM4ATMsWin
 
             string WOrigin = "ReconciliationCat";
 
+            int AuthorSeqNumber = 0; // This is used >0 when calling from Authorization management
 
-            int AuthorSeqNumber = 0; // This is used >0 when calling from Authorization management 
-            NForm110 = new Form110(WSignedId, WSignRecordNo, WOperator, WOrigin, WTranNo, WAtmNo, WSesNo, AuthorSeqNumber, "Normal");
-            NForm110.FormClosing += NForm110_FormClosing;
+            NForm110 = new Form110(WSignedId, WSignRecordNo, WOperator, WOrigin, WTranNo, "", 0, AuthorSeqNumber,
+                   WDifStatus, WCategoryId , WRMCycle,
+                   "Normal");
+            //NForm110.FormClosing += NForm110_FormClosing;
             NForm110.FormClosed += NForm110_FormClosed;
             NForm110.ShowDialog();
 
-           guidanceMsg = "A message was sent to authoriser. Refresh for progress monitoring.";
+            guidanceMsg = "A message was sent to authoriser. Refresh for progress monitoring.";
             ChangeBoardMessage(this, e);
         }
 
-        void NForm110_FormClosing(object sender, FormClosingEventArgs e)
+        void NForm110_FormClosed(object sender, FormClosedEventArgs e)
         {
+
             //************************************************************
             //************************************************************
             // AUTHOR PART
@@ -484,13 +468,13 @@ namespace RRDM4ATMsWin
             WAuthoriser = false;
             WRequestor = false;
             NormalProcess = false;
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
-
-            if (Us.ProcessNo == 56) WRequestor = true; // Requestor
+            if (Usi.ProcessNo == 56) WRequestor = true; // Requestor
             else NormalProcess = true;
 
-            Ap.ReadAuthorizationForReplenishmentReconcSpecific(WAtmNo, WSesNo, "ReconciliationCat");
+            Ap.ReadAuthorizationForReplenishmentReconcSpecificForCategoryAndCycle(WCategoryId, WRMCycle, "ReconciliationCat"); //
 
             if (WRequestor == true & Ap.Stage == 1)
             {
@@ -513,14 +497,18 @@ namespace RRDM4ATMsWin
             SetScreen();
 
         }
-
-        void NForm110_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            
-        }
         // REFRESH 
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
+            Ap.ReadAuthorizationForReplenishmentReconcSpecificForCategoryAndCycle
+                (WCategoryId, WRMCycle, "ReconciliationCat"); //
+
+            if (Ap.Stage < 3)
+            {
+                MessageBox.Show("Authoriser didn't take action yet.");
+                return;
+            }
+
             ShowAuthorisationInfo();
         }
 
@@ -591,7 +579,7 @@ namespace RRDM4ATMsWin
         {
             int WDisputeNo = 0;
             int WDisputeTranNo = 0;
-            NForm112 = new Form112(WSignedId, WSignRecordNo, WOperator, "History", WAtmNo, WSesNo, WDisputeNo, WDisputeTranNo);
+            NForm112 = new Form112(WSignedId, WSignRecordNo, WOperator, "History", "", 0, WDisputeNo, WDisputeTranNo, WCategoryId, WRMCycle);
             NForm112.ShowDialog();
         }
 
@@ -600,14 +588,168 @@ namespace RRDM4ATMsWin
         {
             Form197 NForm197;
             string WParameter3 = "";
-            WParameter4 = "Reconc closing stage for" + " Category: " + WAtmNo + " Matching SesNo: " + WSesNo;
+            WParameter4 = "Reconc closing stage for" + " Category: " + WCategoryId + " Reconc Cycle: " + WRMCycle;
             string SearchP4 = "";
             if (ViewWorkFlow == true) WMode = "Read";
             else WMode = "Update";
-            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, WParameter3, WParameter4, WMode, SearchP4);
+            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, "", WParameter3, WParameter4, WMode, SearchP4);
             NForm197.ShowDialog();
-            SetScreen(); 
+            SetScreen();
         }
+        // Print Actions 
+        private void buttonPrintActions_Click(object sender, EventArgs e)
+        {
+            // Matching is done but not Settled 
+            string WSelectionCriteria = " WHERE Operator ='" + WOperator + "' AND RMCateg ='" + WCategoryId + "'"
+                      + "  AND MatchingAtRMCycle =" + WRMCycle
+                      + " AND IsMatchingDone = 1 AND Matched = 0  "
+                      //+ " AND IsMatchingDone = 1 AND Matched = 0 AND SettledRecord = 0 "
+                      + " AND ActionType != '07' ";
 
+            string WSortCriteria = " Order By TerminalId ";
+
+            Mpa.ReadMatchingTxnsMasterPoolAndFillTableFastTrack(WOperator, WSignedId, WSelectionCriteria,
+                                                                                     WSortCriteria, 1);
+
+            string P1 = "Transactions For Reconciliation :" + WCategoryId + " AND Cycle : " + WRMCycle.ToString();
+
+            string P2 = "";
+            string P3 = "";
+
+            if (ViewWorkFlow == true)
+            {
+
+                RRDMAuthorisationProcess Ap = new RRDMAuthorisationProcess();
+
+                Ap.ReadAuthorizationForReplenishmentReconcSpecificForCategoryAndCycle(WCategoryId, WRMCycle, "ReconciliationCat");
+
+                if (Ap.RecordFound == true)
+                {
+                    Us.ReadUsersRecord(Ap.Requestor);
+                    P2 = Us.UserName;
+                    Us.ReadUsersRecord(Ap.Authoriser);
+                    P3 = Us.UserName;
+                }
+                else
+                {
+                    //ReconciliationAuthorNoRecordYet = true;
+                }
+
+            }
+            else
+            {
+                Us.ReadUsersRecord(WSignedId);
+                P2 = Us.UserName;
+                P3 = "N/A";
+            }
+
+            string P4 = WBankId;
+            string P5 = WSignedId;
+
+            Form56R55ATMS ReportATMS55 = new Form56R55ATMS(P1, P2, P3, P4, P5);
+            ReportATMS55.Show();
+        }
+        // All Actions 
+        private void buttonAllActions_Click(object sender, EventArgs e)
+        {
+            string WSelectionCriteria = "";
+            int WMode;
+
+           
+
+            WSelectionCriteria = "WHERE RMCateg='" + WCategoryId + "' AND MatchingAtRMCycle =" + WRMCycle + " AND (OriginWorkFlow ='Reconciliation' OR OriginWorkFlow ='Dispute') "; ;
+          
+            RRDMActions_Occurances Aoc = new RRDMActions_Occurances();
+            
+            // Auto Creation Of Transactions
+            //
+            bool Is_GL_Creation_Auto; 
+
+            string ParId = "945";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+
+            if (Gp.OccuranceNm == "YES")
+            {
+                Is_GL_Creation_Auto = true;
+                buttonAllAccounting.Show();
+            }
+            else
+            {
+                Is_GL_Creation_Auto = false;
+                buttonAllAccounting.Hide();
+            }
+
+            if (Is_GL_Creation_Auto == true)
+            {
+                WMode = 3;
+                Aoc.ReadActionsOccurancesAndFillTable_Small(WSelectionCriteria);
+            }
+            else
+            {
+                // Manual operation 
+                WMode = 4;
+                Aoc.ReadActionsOccurancesAndFillTable_Small_Manual(WSelectionCriteria);
+            }
+
+            //string WUniqueRecordIdOrigin = "Master_Pool";
+            // PROVIDE TABLE to FORM
+            Form14b_All_Actions NForm14b_All_Actions;
+
+            NForm14b_All_Actions = new Form14b_All_Actions(WSignedId, WOperator, Aoc.TableActionOccurances_Small, WMode);
+            NForm14b_All_Actions.ShowDialog();
+
+        }
+        // All Transactions 
+        private void buttonAllAccounting_Click(object sender, EventArgs e)
+        {
+
+            RRDMActions_Occurances Aoc = new RRDMActions_Occurances();
+
+            string WSelectionCriteria = "";
+
+            string SelectionCriteria = "WHERE RMCateg='" + WCategoryId + "' AND MatchingAtRMCycle =" + WRMCycle + " AND OriginWorkFlow ='Reconciliation'";
+            // SelectionCriteria = "WHERE RMCateg='" + WRMCategoryId + "' AND MatchingAtRMCycle =" + WRMCycleNo;
+            Aoc.ReadActionsOccurancesAndFillTable_Big(SelectionCriteria);
+
+            Aoc.ClearTableTxnsTableFromAction();
+
+            int I = 0;
+
+            while (I <= (Aoc.TableActionOccurances_Big.Rows.Count - 1))
+            {
+                //    RecordFound = true;
+                int WSeqNo = (int)Aoc.TableActionOccurances_Big.Rows[I]["SeqNo"];
+
+                Aoc.ReadActionsOccuarnceBySeqNo(WSeqNo);
+
+                if (Aoc.Is_GL_Action == true)
+                {
+
+                    int WMode2 = 1; // DO NOT Create transaction in pool 
+                    string WCallerProcess = Aoc.OriginWorkFlow;
+                    Aoc.ReadActionsTxnsCreateTableByUniqueKey(Aoc.UniqueKeyOrigin, Aoc.UniqueKey,
+                                                                 Aoc.ActionId, Aoc.Occurance, WCallerProcess, WMode2);
+                }
+
+                I = I + 1;
+            }
+
+            DataTable TempTxnsTableFromAction;
+
+            string WUniqueRecordIdOrigin = "Master_Pool";
+
+            Form14b_All_Actions NForm14b_All_Actions;
+
+            // Aoc.ReadActionsTxnsCreateTableByUniqueKey(WUniqueRecordIdOrigin, Dt.UniqueRecordId, "All");
+
+            TempTxnsTableFromAction = Aoc.TxnsTableFromAction;
+            //Form14b_All_Actions NForm14b_All_Actions;
+            NForm14b_All_Actions = new Form14b_All_Actions(WSignedId, WOperator, TempTxnsTableFromAction, 1);
+            NForm14b_All_Actions.ShowDialog();
+
+
+            
+        }
     }
 }

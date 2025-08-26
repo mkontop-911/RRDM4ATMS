@@ -1,22 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using RRDM4ATMs;
-using System.Configuration;
-using System.Diagnostics;
 
 namespace RRDM4ATMsWin
 {
     public partial class Form3_DispOwnersHistory : Form
     {
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
         RRDMDisputesTableClass Di = new RRDMDisputesTableClass();
         RRDMDisputesOwnersHistory Dh = new RRDMDisputesOwnersHistory();
 
@@ -75,18 +66,17 @@ namespace RRDM4ATMsWin
 // ON ROW ENTER 
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-
             DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
 
             int WSeqNumber = (int)rowSelected.Cells[0].Value;
 
             Dh.ReadDisputeOwnersRecordSpecificSeqNo(WOperator, WSeqNumber); 
 
-            Us.ReadUsersRecord(Dh.OwnerId);
+            Us.ReadUsersRecord(Dh.OwnerId); 
 
             labelOfficerId.Text = "Officer Id   : " + Us.UserId;
-            labelOfficerName.Text = "Officer Name : " + Us.UserName; 
-
+            labelOfficerName.Text = "Officer Name : " + Us.UserName;
+            label1.Text = "Reason of Assignment :.. " + Dh.Reason; 
         }
 // Finish 
         private void buttonCancel_Click(object sender, EventArgs e)

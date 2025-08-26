@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using RRDM4ATMs;
-using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMsWin
@@ -33,14 +25,14 @@ namespace RRDM4ATMsWin
 
         int WErrNo;
         int WTraceNo;
-        int WTranNo;
+        int WUniqueRecordId;
         int WErrId;
 
         //decimal WTempAdj; 
 
         int WProcess;
 
-        bool DisputeOpenned;
+        bool DisputeOpened;
 
         bool ViewWorkFlow;
         //    bool Secondary; 
@@ -56,25 +48,30 @@ namespace RRDM4ATMsWin
         string connectionString = ConfigurationManager.ConnectionStrings
             ["ATMSConnectionString"].ConnectionString;
 
-        RRDMNotesBalances Na = new RRDMNotesBalances(); // Activate Class 
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances(); // Activate Class 
 
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); // Activate Class 
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); // Activate Class 
 
-        RRDMErrorsClassWithActions Pa = new RRDMErrorsClassWithActions(); // Make class availble 
+        RRDMErrorsClassWithActions Er = new RRDMErrorsClassWithActions(); // Make class availble 
 
         RRDMGasParameters Gp = new RRDMGasParameters();
 
         RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass();
 
-        RRDMHostTransClass Ht = new RRDMHostTransClass();
+        RRDMMatchingTxns_MasterPoolATMs Mpa = new RRDMMatchingTxns_MasterPoolATMs(); 
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         RRDMDisputesTableClass Di = new RRDMDisputesTableClass();
 
-        RRDMDisputeTrasactionClass Dt = new RRDMDisputeTrasactionClass();
+        RRDMDisputeTransactionsClass Dt = new RRDMDisputeTransactionsClass();
 
         RRDMAccountsClass Acc = new RRDMAccountsClass();
+
+        RRDMAtmsClass Ac = new RRDMAtmsClass();
+        RRDMReconcCategories Rc = new RRDMReconcCategories();
+
+        string WReconcCategoryId;
 
         //RRDMPostedTrans Pt = new RRDMPostedTrans(); 
 
@@ -101,10 +98,10 @@ namespace RRDM4ATMsWin
             WReconcile = 1; // 1 = firsts set of OF BALANCE ... We only have one
 
             InitializeComponent();
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
-
-            if (Us.ProcessNo == 54 || Us.ProcessNo == 55 || Us.ProcessNo == 56)
+            if (Usi.ProcessNo == 54 || Usi.ProcessNo == 55 || Usi.ProcessNo == 56)
             {
                 ViewWorkFlow = true;
             }
@@ -133,7 +130,6 @@ namespace RRDM4ATMsWin
                 textBox3.Text = Na.Balances1.CountedBal.ToString("#,##0.00");
                 textBox5.Text = Na.Balances1.MachineBal.ToString("#,##0.00");
               
-
                 textBox33.Text = Na.Balances1.HostBalAdj.ToString("#,##0.00");
 
                 textBox8.Text = Na.BalDiff1.Machine.ToString("#,##0.00");
@@ -143,8 +139,7 @@ namespace RRDM4ATMsWin
                 WCountedBal = Na.Balances1.CountedBal;
                 WAtmBalance = Na.Balances1.MachineBal;
                 WRepToReplBal = Na.Balances1.ReplToRepl;
-                WBalGel = Na.Balances1.HostBalAdj;
-                
+                WBalGel = Na.Balances1.HostBalAdj;              
                
             }
 
@@ -164,8 +159,19 @@ namespace RRDM4ATMsWin
                 // Show errors table 
                 errfilter = "AtmNo='" + WAtmNo + "' AND CurDes ='" + WCurrNm
                     + "'" + " AND (ErrType = 1 OR ErrType = 2 OR ErrType = 5) AND SesNo<=" + WSesNo + " AND (OpenErr=1 OR (OpenErr=0 AND ActionSes =" + WSesNo + "))  ";
-                errorsTableBindingSource.Filter = errfilter;
-                this.errorsTableTableAdapter.Fill(this.aTMSDataSet65.ErrorsTable);
+
+                Er.ReadErrorsAndFillTable(WOperator, WSignedId, errfilter);
+
+                dataGridView1.DataSource = Er.ErrorsTable.DefaultView;
+
+                if (dataGridView1.Rows.Count == 0)
+                {
+                    Form2 MessageForm = new Form2("No Entries availble");
+                    MessageForm.ShowDialog();
+
+                    this.Dispose();
+                    return;
+                }
 
             }
             catch (Exception ex)
@@ -193,13 +199,13 @@ namespace RRDM4ATMsWin
             }
         }
 
-          
+
 
         // 
         // SHOW SELECTED ERROR 
         //
         // SHOW SELECTED ERROR 
-
+      
         // ROW ENTER 
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
@@ -210,17 +216,23 @@ namespace RRDM4ATMsWin
             WErrNo = (int)rowSelected.Cells[0].Value;
 
             // Find Errors details 
-            Pa.ReadErrorsTableSpecific(WErrNo);
+            Er.ReadErrorsTableSpecific(WErrNo);
 
-            if (WAtmNo == Pa.AtmNo)
+            Ac.ReadAtm(Er.AtmNo);
+
+            Rc.ReadReconcCategorybyGroupId(Ac.AtmsReconcGroup);
+
+            WReconcCategoryId = Rc.CategoryId; 
+
+            if (WAtmNo == Er.AtmNo)
             {
                 textBox2.Hide();
 
-                WTranNo = Pa.TransNo;
+                WUniqueRecordId = Er.UniqueRecordId;
 
-                WTraceNo = Pa.TraceNo;
+                WTraceNo = Er.TraceNo;
 
-                WErrId = Pa.ErrId;
+                WErrId = Er.ErrId;
 
                 if (WErrId > 100)
                 {
@@ -234,40 +246,42 @@ namespace RRDM4ATMsWin
 
                     if (HostRecordForThisError == true)
                     {
-                        Ht.ReadHostTransTraceNo(WOperator, WAtmNo, WTraceNo);
-
-                        if (Ht.RecordFound == true)
+                        Mpa.ReadInPoolTransSpecificUniqueRecordId(WUniqueRecordId,1); 
+                     
+                        if (Mpa.RecordFound == true)
                         {
-                            Pa.CardNo = Ht.CardNo;
-                            Pa.CustAccNo = Ht.AccNo;
-                            Pa.FullCard = true;
+                            Er.CardNo = Mpa.CardNumber;
+                            Er.CustAccNo = Mpa.AccNumber; 
+                            Er.FullCard = true;
 
-                            Pa.UpdateErrorsTableSpecific(WErrNo);
+                            Er.UpdateErrorsTableSpecific(WErrNo);
                         }
                         else
                         {
-                            Pa.FullCard = false;
+                            Er.FullCard = false;
                         }
 
                     }
                 }
 
+                // Find Recnciliation 
+                
                 textBox29.Text = " OPEN ";
-                textBox22.Text = Pa.ErrDesc;
-                textBox27.Text = Pa.DateTime.ToString();
-                textBox37.Text = Pa.TraceNo.ToString();
-                textBox21.Text = Pa.CircularDesc;
+                textBox22.Text = Er.ErrDesc;
+                textBox27.Text = Er.DateTime.ToString();
+                textBox37.Text = Er.TraceNo.ToString();
+                textBox21.Text = Er.CircularDesc;
 
-                textBox23.Text = Pa.ErrAmount.ToString("#,##0.00");
-                textBox24.Text = Pa.CurDes.ToString();
+                textBox23.Text = Er.ErrAmount.ToString("#,##0.00");
+                textBox24.Text = Er.CurDes.ToString();
 
                 // Read to find transactions
-                if (Pa.ErrId != 198) // 198 is the correction for suspense has nothing to do with transactions 
+                if (Er.ErrId != 198) // 198 is the correction for suspense has nothing to do with transactions 
                 {
                     // VALIDATION OF TRACES STATUS 
-                    Tc.ReadInPoolTransSpecific(Pa.TransNo);
+                    //Tc.ReadInPoolTransSpecific(Er.UniqueRecordId);
                     // Check to see if in Host for Errors reported in ATM 
-                    if (Tc.RecordFound == true & (Pa.ErrId == 55 || Pa.ErrId == 175 || Pa.ErrId == 185)) // 55 is presenter error and 175 = missing at Host
+                    if (Tc.RecordFound == true & (Er.ErrId == 55 || Er.ErrId == 175 || Er.ErrId == 185)) // 55 is presenter error and 175 = missing at Host
                     {
                         if (Tc.SystemTarget == 1) LastTrace = Na.SystemTargets1.LastTrace;
                         if (Tc.SystemTarget == 2) LastTrace = Na.SystemTargets2.LastTrace;
@@ -275,26 +289,25 @@ namespace RRDM4ATMsWin
                         if (Tc.SystemTarget == 4) LastTrace = Na.SystemTargets4.LastTrace;
                         if (Tc.SystemTarget == 5) LastTrace = Na.SystemTargets5.LastTrace;
 
-                        if (Pa.TraceNo > LastTrace) // This only happens for presenter error
+                        if (Er.TraceNo > LastTrace) // This only happens for presenter error
                         {
                             //   MessageBox.Show(" HOST files Not Available yet ");
                             textBox2.Show();
                             textBox2.Text = "HOST files Not Available yet. You can still take action provided you check Host posting.";
                             HostRecordForThisError = false;
                         }
-                        if (Pa.TraceNo <= LastTrace & Pa.ErrId == 55) // Presenter Error read Host File 
+                        if (Er.TraceNo <= LastTrace & Er.ErrId == 55) // Presenter Error read Host File 
                         {
                             // Trace No is within Host file . Check if record exist 
-                            Ht.ReadHostTransTraceNo(WOperator, WAtmNo, Pa.TraceNo);
+                            Mpa.ReadInPoolTransSpecificUniqueRecordId(WUniqueRecordId,1);
 
-                            if (Ht.RecordFound == true)
+                            if (Mpa.RecordFound == true)
                             {
-                                Pa.CardNo = Ht.CardNo;
-                                Pa.CustAccNo = Ht.AccNo;
-                                Pa.FullCard = true;
+                                Er.CardNo = Mpa.CardNumber;
+                                Er.CustAccNo = Mpa.AccNumber;
+                                Er.FullCard = true;
 
-                                Pa.UpdateErrorsTableSpecific(WErrNo);
-
+                                Er.UpdateErrorsTableSpecific(WErrNo);
                             }
                             else // RECORD FOUND IN HOST 
                             {
@@ -306,23 +319,21 @@ namespace RRDM4ATMsWin
                             }
                         }
 
-                        if (Pa.TraceNo <= LastTrace & (Pa.ErrId == 175 & Pa.FullCard == false))// Missing at Host  
+                        if (Er.TraceNo <= LastTrace & (Er.ErrId == 175 & Er.FullCard == false))// Missing at Host  
                         {
 
                             WRow = dataGridView1.SelectedRows[0].Index;
                             // Update Error with Full Card
-                            NForm79 = new Form79(WErrNo, Pa.ErrDesc, Pa.CardNo, Pa.CustAccNo);
+                            NForm79 = new Form79(WErrNo, Er.ErrDesc, Er.CardNo, Er.CustAccNo);
                             NForm79.FormClosed += NForm79_FormClosed;
                             NForm79.Show();
                         }
-
                     }
 
                     button6.Show();
-                    textBox25.Text = Pa.CardNo;
-                    textBox26.Text = Pa.CustAccNo;
+                    textBox25.Text = Er.CardNo;
+                    textBox26.Text = Er.CustAccNo;
                 }
-
                 else // Error = 198
                 {
                     textBox37.Text = " N/A ";
@@ -333,71 +344,71 @@ namespace RRDM4ATMsWin
                 }
 
 
-                if (Pa.DrCust == true)
+                if (Er.DrCust == true)
                 {
                     textBox38.Text = " DEBIT CUSTOMER ";
                 }
-                if (Pa.CrCust == true)
+                if (Er.CrCust == true)
                 {
                     textBox38.Text = " CREDIT CUSTOMER ";
                 }
-                if (Pa.DrAtmCash == true)
+                if (Er.DrAtmCash == true)
                 {
                     textBox39.Text = " DEBIT HOST CASH ";
                 }
-                if (Pa.CrAtmCash == true)
+                if (Er.CrAtmCash == true)
                 {
                     textBox39.Text = " CREDIT HOST CASH ";
                 }
 
-                if (Pa.DrCust == false & Pa.CrCust == false)
+                if (Er.DrCust == false & Er.CrCust == false)
                 {
-                    if (Pa.DrAtmCash == true)
+                    if (Er.DrAtmCash == true)
                     {
                         textBox38.Text = " DEBIT HOST CASH ";
                     }
-                    if (Pa.CrAtmCash == true)
+                    if (Er.CrAtmCash == true)
                     {
                         textBox38.Text = " CREDIT HOST CASH ";
                     }
 
-                    if (Pa.DrAtmSusp == true)
+                    if (Er.DrAtmSusp == true)
                     {
                         textBox39.Text = " DEBIT HOST SUSPENSE";
                     }
-                    if (Pa.CrAtmSusp == true)
+                    if (Er.CrAtmSusp == true)
                     {
                         textBox39.Text = " CREDIT HOST SUSPENSE";
                     }
 
                 }
 
-                if (Pa.TraceNo > 0)
+                if (Er.TraceNo > 0)
                 {
-                    Tc.ReadInPoolAtmTrace(WAtmNo, Pa.TraceNo);
+                    Tc.ReadInPoolAtmTrace(WAtmNo, Er.TraceNo);
 
                     Gp.ReadParametersSpecificId(WOperator, "705", Tc.SystemTarget.ToString(), "", "");
                     textBox1.Text = Gp.OccuranceNm;
                 }
 
-                if (Pa.TraceNo == 0) // ERROR CREATED FOR SUSPENSE 
+                if (Er.TraceNo == 0) // ERROR CREATED FOR SUSPENSE 
                 {
                     textBox1.Text = "Suspense";
                 }
 
-                textBox32.Text = Pa.UserComment;
+                textBox32.Text = Er.UserComment;
 
-                if (Pa.UnderAction == true || Pa.DisputeAct == true || Pa.ManualAct)
+                if (Er.UnderAction == true || Er.DisputeAct == true || Er.ManualAct)
                 {
-                    if (Pa.DisputeAct)
+                    if (Er.DisputeAct)
                     {
                         radioButtonMoveToDispute.Checked = true;
                     }
-                    if (Pa.ManualAct)
+                    if (Er.ManualAct)
                     {
                         radioButtonPostpone.Checked = true;
                     }
-                    if (Pa.ManualAct != true & Pa.DisputeAct != true)
+                    if (Er.ManualAct != true & Er.DisputeAct != true)
                     {
                         radioSystemSuggest.Checked = true;
                     }
@@ -433,7 +444,7 @@ namespace RRDM4ATMsWin
 
                 // Show Dispute 
 
-                Dt.ReadDisputeTranForInPool(Pa.MaskRecordId);
+                Dt.ReadDisputeTranByUniqueRecordId(Er.UniqueRecordId);
                 if (Dt.RecordFound == true)
                 {
                     labelDisputeId.Show();
@@ -474,7 +485,7 @@ namespace RRDM4ATMsWin
                     return;
                 }
             }
-            if (Pa.UnderAction == true)
+            if (Er.UnderAction == true)
             {
                 MessageBox.Show(" Action Was already taken. UNDO first and Then Take a new action ");
                 return;
@@ -490,7 +501,7 @@ namespace RRDM4ATMsWin
                 // check Dispute 
 
 
-                if (Pa.TraceNo > LastTrace) // This only happens for presenter error
+                if (Er.TraceNo > LastTrace) // This only happens for presenter error
                 {
                     MessageBox.Show(" HOST files Not Available yet. You cannot take action on this error. ");
                     textBox2.Show();
@@ -499,27 +510,27 @@ namespace RRDM4ATMsWin
                     return;
                 }
 
-                if (Pa.ErrId == 55 & WSesNo != Pa.SesNo) // Presenter Error
+                if (Er.ErrId == 55 & WSesNo != Er.SesNo) // Presenter Error
                 {
                     // This an old Error
                     MessageBox.Show(" This is an Old Error. Transactions will be created but Balances will not be affected.");
 
                     // Update Error Table
                     // 
-                    Pa.OpenErr = true;
-                    Pa.UnderAction = true;
+                    Er.OpenErr = true;
+                    Er.UnderAction = true;
                     if (radioButtonMoveToDispute.Checked == true)
                     {
-                        Pa.DisputeAct = true;
+                        Er.DisputeAct = true;
                     }
-                    Pa.ManualAct = false;
+                    Er.ManualAct = false;
                     if (String.IsNullOrEmpty(textBox32.Text))
                     {
-                        Pa.UserComment = "";
+                        Er.UserComment = "";
                     }
-                    else Pa.UserComment = textBox32.Text;
+                    else Er.UserComment = textBox32.Text;
 
-                    Pa.UpdateErrorsTableSpecific(WErrNo); // Update errors 
+                    Er.UpdateErrorsTableSpecific(WErrNo); // Update errors 
 
                     SetScreen();
 
@@ -529,20 +540,20 @@ namespace RRDM4ATMsWin
 
                 }
 
-                if ((Pa.DrCust == true & Pa.CrAtmCash == true) || (Pa.CrAtmCash == true & Pa.DrAtmSusp == true))
+                if ((Er.DrCust == true & Er.CrAtmCash == true) || (Er.CrAtmCash == true & Er.DrAtmSusp == true))
                 {
-                    Pa.ErrAmount = -Pa.ErrAmount;
+                    Er.ErrAmount = -Er.ErrAmount;
                 }
 
-                if (Pa.MainOnly == false) // eg Presenter Error 
+                if (Er.MainOnly == false) // eg Presenter Error 
                 {
-                    WAtmBalance = WAtmBalance + Pa.ErrAmount;
-                    WRepToReplBal = WRepToReplBal + Pa.ErrAmount;
-                    WBalGel = WBalGel + Pa.ErrAmount;
+                    WAtmBalance = WAtmBalance + Er.ErrAmount;
+                    WRepToReplBal = WRepToReplBal + Er.ErrAmount;
+                    WBalGel = WBalGel + Er.ErrAmount;
                 }
-                if (Pa.MainOnly == true) // eg ONLY MAINFRAME AFFECTED 
+                if (Er.MainOnly == true) // eg ONLY MAINFRAME AFFECTED 
                 {
-                    WBalGel = WBalGel + Pa.ErrAmount;
+                    WBalGel = WBalGel + Er.ErrAmount;
                 }
                 // SHOW REFRESHED BALANCES 
                 panel3.Show();
@@ -559,23 +570,23 @@ namespace RRDM4ATMsWin
 
                 // Update Error Table
                 // 
-                Pa.OpenErr = true;
-                Pa.UnderAction = true;
+                Er.OpenErr = true;
+                Er.UnderAction = true;
              
-                Pa.DisputeAct = false;
+                Er.DisputeAct = false;
                 
-                Pa.ManualAct = false;
+                Er.ManualAct = false;
                 if (String.IsNullOrEmpty(textBox32.Text))
                 {
-                    Pa.UserComment = "";
+                    Er.UserComment = "";
                 }
-                else Pa.UserComment = textBox32.Text;
+                else Er.UserComment = textBox32.Text;
 
-                Pa.UpdateErrorsTableSpecific(WErrNo); // Update errors 
+                Er.UpdateErrorsTableSpecific(WErrNo); // Update errors 
 
-                if (Pa.ErrAmount < 0)
+                if (Er.ErrAmount < 0)
                 {
-                    Pa.ErrAmount = -Pa.ErrAmount; // Turn it to its original value 
+                    Er.ErrAmount = -Er.ErrAmount; // Turn it to its original value 
                 }
 
                 SetScreen();
@@ -622,7 +633,7 @@ namespace RRDM4ATMsWin
             {
                 WRow = dataGridView1.SelectedRows[0].Index;
 
-                    Dt.ReadDisputeTranForInPool(Pa.MaskRecordId);
+                    Dt.ReadDisputeTranByUniqueRecordId(Er.UniqueRecordId);
                     if (Dt.RecordFound == true)
                     {
                         MessageBox.Show(" Dispute already open for this Error");
@@ -630,29 +641,29 @@ namespace RRDM4ATMsWin
                     }
 
                     int From = 5; // From reconciliation for cash
-                    NForm5 = new Form5(WSignedId, WSignRecordNo, WOperator, Pa.CardNo, Pa.TransNo, Pa.ErrAmount, 0, textBox32.Text, From, "ATM");
+                    NForm5 = new Form5(WSignedId, WSignRecordNo, WOperator, Er.CardNo, Er.UniqueRecordId, Er.ErrAmount, 0, textBox32.Text, From, "ATM");
                     NForm5.FormClosed += NForm5_FormClosed;
                     NForm5.ShowDialog();
 
-                    if (DisputeOpenned == false)
+                    if (DisputeOpened == false)
                     {
-                        MessageBox.Show("Dispute was not oppenned! ");
+                        MessageBox.Show("Dispute was not opened! ");
                         return;
                     }
 
                     // Update Error Table
                     // 
-                    Pa.OpenErr = true;
-                    Pa.UnderAction = false;
-                    Pa.DisputeAct = true;
-                    Pa.ManualAct = false;
+                    Er.OpenErr = true;
+                    Er.UnderAction = false;
+                    Er.DisputeAct = true;
+                    Er.ManualAct = false;
                     if (String.IsNullOrEmpty(textBox32.Text))
                     {
-                        Pa.UserComment = "";
+                        Er.UserComment = "";
                     }
-                    else Pa.UserComment = textBox32.Text;
+                    else Er.UserComment = textBox32.Text;
 
-                    Pa.UpdateErrorsTableSpecific(WErrNo); // Update errors 
+                    Er.UpdateErrorsTableSpecific(WErrNo); // Update errors 
 
                     SetScreen();
 
@@ -666,7 +677,7 @@ namespace RRDM4ATMsWin
             if (radioButtonPostpone.Checked)
             {
 
-                if (Pa.UnderAction == true)
+                if (Er.UnderAction == true)
                 {
                     MessageBox.Show(" Action Was already taken. UNDO if you want a new action ");
                     return;
@@ -675,12 +686,12 @@ namespace RRDM4ATMsWin
                 WRow = dataGridView1.SelectedRows[0].Index;
                 // Update Error Table
                 // FOR THIS MANUAL ACTION
-                Pa.OpenErr = true;
-                Pa.UnderAction = true;
-                Pa.DisputeAct = false;
-                Pa.ManualAct = true;
+                Er.OpenErr = true;
+                Er.UnderAction = true;
+                Er.DisputeAct = false;
+                Er.ManualAct = true;
 
-                Pa.UpdateErrorsTableSpecific(WErrNo);
+                Er.UpdateErrorsTableSpecific(WErrNo);
 
                 guidanceMsg = " YOU have decided that for this error a manual action will be taken ";
                 ChangeBoardMessage(this, new EventArgs());
@@ -697,7 +708,7 @@ namespace RRDM4ATMsWin
             {
                 MessageBox.Show("Function not develop yet.");
 
-                if (Pa.UnderAction == true)
+                if (Er.UnderAction == true)
                 {
                     MessageBox.Show(" Action Was already taken. UNDO if you want a new action");
                     return;
@@ -714,10 +725,10 @@ namespace RRDM4ATMsWin
         {
             // Show Dispute 
 
-            Dt.ReadDisputeTranForInPool(Pa.MaskRecordId);
+            Dt.ReadDisputeTranByUniqueRecordId(Er.UniqueRecordId);
             if (Dt.RecordFound == true)
             {
-                DisputeOpenned = true;
+                DisputeOpened = true;
                 labelDisputeId.Show();
                 textBoxDisputeId.Show();
                 //buttonMoveToDispute.Hide();
@@ -726,7 +737,7 @@ namespace RRDM4ATMsWin
             else
             {
 
-                DisputeOpenned = false;
+                DisputeOpened = false;
                 //labelDisputeId.Hide();
                 //textBoxDisputeId.Hide();
                 //buttonMoveToDispute.Show();
@@ -746,7 +757,7 @@ namespace RRDM4ATMsWin
 
             WRow = dataGridView1.SelectedRows[0].Index;
 
-            if (Pa.ErrId == 55 & WSesNo != Pa.SesNo) // Presenter Error
+            if (Er.ErrId == 55 & WSesNo != Er.SesNo) // Presenter Error
             {
                 // This an old Error
                 MessageBox.Show(" This is an Old Error.");
@@ -757,14 +768,14 @@ namespace RRDM4ATMsWin
 
                 // Update Error Table
                 // 
-                Pa.OpenErr = true;
-                Pa.UnderAction = false;
-                Pa.DisputeAct = false;
-                Pa.ManualAct = false;
-                Pa.UserComment = "";
-                Pa.FullCard = false;
+                Er.OpenErr = true;
+                Er.UnderAction = false;
+                Er.DisputeAct = false;
+                Er.ManualAct = false;
+                Er.UserComment = "";
+                Er.FullCard = false;
 
-                Pa.UpdateErrorsTableSpecific(WErrNo); // Update errors 
+                Er.UpdateErrorsTableSpecific(WErrNo); // Update errors 
 
                 SetScreen();
 
@@ -778,24 +789,24 @@ namespace RRDM4ATMsWin
 
             WRow = dataGridView1.SelectedRows[0].Index;
 
-            if (Pa.UnderAction == true & Pa.ManualAct == false)
+            if (Er.UnderAction == true & Er.ManualAct == false)
             {
-                if ((Pa.DrCust == true & Pa.CrAtmCash == true) || (Pa.CrAtmCash == true & Pa.DrAtmSusp == true))
+                if ((Er.DrCust == true & Er.CrAtmCash == true) || (Er.CrAtmCash == true & Er.DrAtmSusp == true))
                 {
                     // leave balance as is 
                 }
-                else Pa.ErrAmount = -Pa.ErrAmount;
+                else Er.ErrAmount = -Er.ErrAmount;
 
-                if (Pa.MainOnly == false) // eg Presenter Error 
+                if (Er.MainOnly == false) // eg Presenter Error 
                 {
-                    WAtmBalance = WAtmBalance + Pa.ErrAmount;
-                    WRepToReplBal = WRepToReplBal + Pa.ErrAmount;
-                    WBalGel = WBalGel + Pa.ErrAmount;
+                    WAtmBalance = WAtmBalance + Er.ErrAmount;
+                    WRepToReplBal = WRepToReplBal + Er.ErrAmount;
+                    WBalGel = WBalGel + Er.ErrAmount;
                     //WABalGel = WABalGel + Pa.ErrAmount;
                 }
-                if (Pa.MainOnly == true) // eg Double Entry 
+                if (Er.MainOnly == true) // eg Double Entry 
                 {
-                    WBalGel = WBalGel + Pa.ErrAmount;
+                    WBalGel = WBalGel + Er.ErrAmount;
                     //WABalGel = WABalGel + Pa.ErrAmount;
                 }
 
@@ -828,13 +839,13 @@ namespace RRDM4ATMsWin
 
                 // Update Error Table
                 // 
-                Pa.OpenErr = true;
-                Pa.UnderAction = false;
-                Pa.DisputeAct = false;
-                Pa.ManualAct = false;
-                Pa.UserComment = "";
-                Pa.FullCard = false;
-                Pa.UpdateErrorsTableSpecific(WErrNo);
+                Er.OpenErr = true;
+                Er.UnderAction = false;
+                Er.DisputeAct = false;
+                Er.ManualAct = false;
+                Er.UserComment = "";
+                Er.FullCard = false;
+                Er.UpdateErrorsTableSpecific(WErrNo);
 
                 // Return Value back to possitive 
                 //   ErrAmount = -ErrAmount; 
@@ -846,9 +857,9 @@ namespace RRDM4ATMsWin
                 dataGridView1_RowEnter(this, new DataGridViewCellEventArgs(1, WRow));
                 // Return Error Amount to its original value
 
-                if (Pa.ErrAmount < 0)
+                if (Er.ErrAmount < 0)
                 {
-                    Pa.ErrAmount = -Pa.ErrAmount; // Make it possitive 
+                    Er.ErrAmount = -Er.ErrAmount; // Make it possitive 
                 }
 
                 // Show Panel 3 if hidden.
@@ -870,17 +881,18 @@ namespace RRDM4ATMsWin
             {
                 // Update Error Table
                 // 
-                Pa.OpenErr = true;
-                Pa.UnderAction = false;
-                Pa.DisputeAct = false;
-                Pa.ManualAct = false;
-                Pa.UserComment = "";
-                Pa.UpdateErrorsTableSpecific(WErrNo); // UPDATE ERROR TABLE 
+                Er.OpenErr = true;
+                Er.UnderAction = false;
+                Er.DisputeAct = false;
+                Er.ManualAct = false;
+                Er.UserComment = "";
+                Er.UpdateErrorsTableSpecific(WErrNo); // UPDATE ERROR TABLE 
 
                 // Show errors table 
 
-                errorsTableBindingSource.Filter = errfilter;
-                this.errorsTableTableAdapter.Fill(this.aTMSDataSet65.ErrorsTable);
+                Er.ReadErrorsAndFillTable(WOperator, WSignedId, errfilter);
+
+                dataGridView1.DataSource = Er.ErrorsTable.DefaultView;
 
                 // SET ROW Selection POSITIONING 
                 dataGridView1.Rows[WRow].Selected = true;
@@ -908,7 +920,7 @@ namespace RRDM4ATMsWin
                 ChangeBoardMessage(this, new EventArgs());
 
             }
-            Dt.ReadDisputeTranForInPool(Pa.MaskRecordId);
+            Dt.ReadDisputeTranByUniqueRecordId(Er.UniqueRecordId);
             if (Dt.RecordFound == true)
             {
                 Di.ReadDispute(Dt.DisputeNumber);
@@ -936,13 +948,9 @@ namespace RRDM4ATMsWin
                 return;
             }
 
-            string FilterATM = "AtmNo='" + WAtmNo + "'" + " AND SesNo =" + WSesNo + " AND AtmTraceNo=" + WTraceNo;
-
-            String FilterHost = "AtmNo='" + WAtmNo + "'" + " AND TraceNumber=" + WTraceNo;
-
             if (WErrId < 200)
             {
-                NForm75 = new Form75(WSignedId, WSignRecordNo, WOperator, WAtmNo, WSesNo, FilterATM, FilterHost, WTranNo);
+                NForm75 = new Form75(WSignedId, WSignRecordNo, WOperator, WAtmNo, WSesNo, WUniqueRecordId);
                 NForm75.Show();
             }
             else
@@ -961,7 +969,9 @@ namespace RRDM4ATMsWin
             if (WCountedBal - WBalGel != 0)
             {
                 AmountForSuspense = WCountedBal - WBalGel;
-                NForm14 = new Form14a(WSignedId, WAtmNo, WSesNo, WOperator, AmountForSuspense, WCurrNm);
+                int RMCycle = 0;
+                NForm14 = new Form14a(WSignedId, "EWB110", Er.RMCycle, Er.UniqueRecordId, WAtmNo, WSesNo, WOperator, AmountForSuspense, WCurrNm);
+            
                 NForm14.FormClosed += NForm14_FormClosed;
                 NForm14.Show();
             }

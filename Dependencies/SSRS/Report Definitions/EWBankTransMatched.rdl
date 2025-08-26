@@ -235,7 +235,7 @@ FROM
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>East West Bank MATCHED Transactions </Value>
+                    <Value>Bank MATCHED Transactions </Value>
                     <Style>
                       <FontFamily>Verdana</FontFamily>
                       <FontSize>20pt</FontSize>
@@ -261,8 +261,8 @@ FROM
             </Style>
           </Textbox>
           <Image Name="EWBLogo">
-            <Source>Embedded</Source>
-            <Value>EastWest</Value>
+            <Source>External</Source>
+            <Value>file:///C:/VBoxShared/BankLogo/Logo.png</Value>
             <Sizing>FitProportional</Sizing>
             <Top>0.44662cm</Top>
             <Left>14.91933cm</Left>
@@ -822,7 +822,7 @@ FROM
             <Top>2.32516cm</Top>
             <Left>1.00224cm</Left>
             <Height>1.2cm</Height>
-            <Width>22.37276cm</Width>
+            <Width>22.37277cm</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -948,6 +948,6 @@ pkvwA1oAAgwwBFhArV0QnE5wlXJABkwAAj8p7yHgRjfAADPw7v9gA21vBW+0AyOwANmYxmTQGhkP2RzP
     </EmbeddedImage>
   </EmbeddedImages>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportServerUrl>http://acer-laptop/ReportServer</rd:ReportServerUrl>
+  <rd:ReportServerUrl>http://rrdmdemo-pc/ReportServer</rd:ReportServerUrl>
   <rd:ReportID>3532a185-8966-4721-bf0e-c5ef012837c7</rd:ReportID>
 </Report>

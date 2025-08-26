@@ -1,31 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
-using System.Configuration;
 namespace RRDM4ATMs
 {
-    public class RRDMCashInOut
+    public class RRDMCashInOut : Logger
     {
+        public RRDMCashInOut() : base() { }
+
         // This Class creates transactions for cash out. 
         // ONE For Atm Statement and 
         // one for CIT Provider 
         // 
-        RRDMNotesBalances Na = new RRDMNotesBalances();
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
         RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass();
         RRDMAtmsClass Ac = new RRDMAtmsClass();
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate();
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
         RRDMPostedTrans Cs = new RRDMPostedTrans();
         RRDMAccountsClass Acc = new RRDMAccountsClass();
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
-
-        
+        RRDMUsersRecords Us = new RRDMUsersRecords();       
 
         string WCitId; 
 
@@ -45,7 +36,7 @@ namespace RRDM4ATMs
         public string ErrorOutput; 
 
         public void InsertTranForCashOut(string InSignedId, int InSignRecordNo, string InBankId, 
-            string InAtmNo, int InSesNo, int InStartTrxn, int InEndTrxn)
+            string InAtmNo, int InSesNo, int InStartTrxn, int InEndTrxn, int InMasterTraceNo)
         {
             
             ErrorFound = false;
@@ -70,7 +61,7 @@ namespace RRDM4ATMs
          //   WUserBankId = Us.UserBankId;
             // ========================================================
 
-            Na.ReadSessionsNotesAndValues(InAtmNo, InSesNo, 2);
+            Na.ReadSessionsNotesAndValues(InAtmNo, InSesNo, 12);
 
             Ta.ReadSessionsStatusTraces(InAtmNo, InSesNo); 
               
@@ -79,7 +70,7 @@ namespace RRDM4ATMs
                 TraceNoCashOut = Ta.LastTraceNo + 1;
                 Ta.LastTraceNo = TraceNoCashOut;
                 Ta.UpdateSessionsStatusTraces(InAtmNo, InSesNo); 
-                InsertTranInPool(InAtmNo, InSesNo, TraceNoCashOut,
+                InsertTranInPool(InAtmNo, InSesNo, TraceNoCashOut, InMasterTraceNo,
                     Na.Balances1.CurrNm, Na.Balances1.MachineBal);
 
                 //if (WCitId !="1000")
@@ -97,7 +88,7 @@ namespace RRDM4ATMs
                 Ta.LastTraceNo = TraceNoCashOut;
                 Ta.UpdateSessionsStatusTraces(InAtmNo, InSesNo); 
 
-                InsertTranInPool(InAtmNo, InSesNo, TraceNoCashOut,
+                InsertTranInPool(InAtmNo, InSesNo, TraceNoCashOut, InMasterTraceNo,
                      Na.Balances2.CurrNm, Na.Balances2.MachineBal);
                 //if (WCitId != "1000")
                 //{
@@ -113,7 +104,7 @@ namespace RRDM4ATMs
                 Ta.LastTraceNo = TraceNoCashOut;
                 Ta.UpdateSessionsStatusTraces(InAtmNo, InSesNo); 
 
-                InsertTranInPool(InAtmNo, InSesNo, TraceNoCashOut, 
+                InsertTranInPool(InAtmNo, InSesNo, TraceNoCashOut, InMasterTraceNo,
                      Na.Balances3.CurrNm, Na.Balances3.MachineBal);
             }
 
@@ -123,7 +114,7 @@ namespace RRDM4ATMs
                 Ta.LastTraceNo = TraceNoCashOut;
                 Ta.UpdateSessionsStatusTraces(InAtmNo, InSesNo); 
 
-                InsertTranInPool(InAtmNo, InSesNo, TraceNoCashOut, 
+                InsertTranInPool(InAtmNo, InSesNo, TraceNoCashOut, InMasterTraceNo,
                       Na.Balances4.CurrNm, Na.Balances4.MachineBal);
             }
         }
@@ -187,13 +178,14 @@ namespace RRDM4ATMs
         // Insert Build and Insert Transaction 
         //
 
-        private void InsertTranInPool(string InAtmNo, int InSesNo, int InTraceNo,
+        private void InsertTranInPool(string InAtmNo, int InSesNo, int InTraceNo, int InMasterTraceNo,
                                       string InCurrNm, decimal InTranAmount)
-        {         
+        {
             //
             // BUILD THE TRANSACTION 
             //
 
+            return; 
             ErrorFound = false;
             ErrorOutput = ""; 
 
@@ -203,9 +195,11 @@ namespace RRDM4ATMs
             Tc.TranAmount = InTranAmount;
 
             Tc.AtmTraceNo = InTraceNo;
+            Tc.MasterTraceNo = InMasterTraceNo; 
             Tc.EJournalTraceNo = InTraceNo;
 
-            Tc.OriginName = "OurATMs-Repl : " + InAtmNo; 
+            Tc.OriginName = "OurATMs-Repl : " + InAtmNo;
+            Tc.RMCateg = "EWB110"; 
 
             Tc.AtmNo = InAtmNo;
             Tc.SesNo = InSesNo;
@@ -222,16 +216,20 @@ namespace RRDM4ATMs
             Tc.CardNo = "";
             Tc.CardOrigin = 1;
 
-            Acc.ReadAndFindAccount("1000", Ac.Operator, InAtmNo, InCurrNm, "ATM Cash");
+            Acc.ReadAndFindAccount("1000","","", Ac.Operator, InAtmNo, InCurrNm, "ATM Cash");
             if (Acc.RecordFound == false)
             {
-                ErrorFound = true;
-                ErrorOutput = "Account not found for ATMNo: " + InAtmNo;
-                return; 
-             //   MessageBox.Show("Account not found for ATMNo: " + InAtmNo);
+                Tc.AccNo = "NoATMCashAcc";
+                if (Environment.UserInteractive)
+                {
+                  //  System.Windows.Forms.MessageBox.Show("Account not found for ATMNo: " + InAtmNo);
+                }
             }
-            Tc.AccNo = Acc.AccNo;  // Cash account No
-
+            else
+            {
+                Tc.AccNo = Acc.AccNo;  // Cash account No
+            }
+            
             Tc.AuthCode = 0;
             Tc.RefNumb = 0;
             Tc.RemNo = 0;
@@ -246,7 +244,7 @@ namespace RRDM4ATMs
             Tc.Operator = Ac.Operator; 
 
             // ADD THE TRANSACTION 
-            Tc.InsertTransInPool(InAtmNo);
+            Tc.InsertTransInPool(Tc.Operator, InAtmNo);
         }
 
         //

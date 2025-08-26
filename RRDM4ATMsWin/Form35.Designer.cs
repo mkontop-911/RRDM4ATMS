@@ -45,7 +45,7 @@
             this.panel1.ForeColor = System.Drawing.Color.Black;
             this.panel1.Location = new System.Drawing.Point(1, 68);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(848, 435);
+            this.panel1.Size = new System.Drawing.Size(909, 523);
             this.panel1.TabIndex = 0;
             // 
             // chart1
@@ -54,13 +54,13 @@
             this.chart1.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(11, 20);
+            this.chart1.Location = new System.Drawing.Point(17, 20);
             this.chart1.Name = "chart1";
             series1.ChartArea = "ChartArea1";
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(828, 402);
+            this.chart1.Size = new System.Drawing.Size(873, 493);
             this.chart1.TabIndex = 397;
             this.chart1.Text = "chart1";
             // 
@@ -81,7 +81,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(852, 515);
+            this.ClientSize = new System.Drawing.Size(922, 593);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.panel1);
             this.ForeColor = System.Drawing.Color.White;

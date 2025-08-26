@@ -1,25 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Collections;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
-using RRDM4ATMs; 
+using System.Data;
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
-    class RRDMCaseNotes
+    public class RRDMCaseNotes
     {
         //      
         //
         public int SeqNumber;
 
+        public string Parameter2;
         public string Parameter3;
         public string Parameter4;
 
@@ -44,7 +40,11 @@ namespace RRDM4ATMsWin
 
         string SortType;
 
-        string SqlString; 
+        string SqlString;
+
+        // Define the data table 
+        public DataTable NotesDataTable = new DataTable();
+        public int TotalSelected;
 
         public ArrayList NoteControlsArray = new ArrayList();
 
@@ -53,10 +53,31 @@ namespace RRDM4ATMsWin
         string connectionString = ConfigurationManager.ConnectionStrings
            ["ATMSConnectionString"].ConnectionString;
 
+        // Reader Fields
+        private void ReaderFields(SqlDataReader rdr)
+        {
+            SeqNumber = (int)rdr["SeqNumber"];
+
+            Parameter2 = (string)rdr["Parameter2"];
+            Parameter3 = (string)rdr["Parameter3"];
+            Parameter4 = (string)rdr["Parameter4"];
+
+            DateCreated = (DateTime)rdr["DateCreated"];
+
+            UserId = (string)rdr["UserId"];
+            UserName = (string)rdr["UserName"];
+            Notes = (string)rdr["Notes"];
+            PrivateForUser = (bool)rdr["PrivateForUser"];
+
+            AttachmentPath = (string)rdr["AttachmentPath"];
+
+            OpenRecord = (bool)rdr["OpenRecord"];
+            Operator = (string)rdr["Operator"];
+        }
+
         //
         // READ CaseNotes  for a SequenceNumber 
         //
- 
         public void ReadCaseNotesSpecific(int InSeqNumber)
         {
             RecordFound = false;
@@ -86,22 +107,7 @@ namespace RRDM4ATMsWin
 
                             RecordFound = true;
 
-                            SeqNumber = (int)rdr["SeqNumber"];
-
-                            Parameter3 = (string)rdr["Parameter3"];
-                            Parameter4 = (string)rdr["Parameter4"];
-
-                            DateCreated = (DateTime)rdr["DateCreated"];
-
-                            UserId = (string)rdr["UserId"];
-                            UserName = (string)rdr["UserName"];
-                            Notes = (string)rdr["Notes"];
-                            PrivateForUser = (bool)rdr["PrivateForUser"];
-
-                            AttachmentPath = (string)rdr["AttachmentPath"];
-
-                            OpenRecord = (bool)rdr["OpenRecord"];
-                            Operator = (string)rdr["Operator"];
+                            ReaderFields(rdr);
 
                         }
 
@@ -115,10 +121,90 @@ namespace RRDM4ATMsWin
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in CaseNotes Class............. " + ex.Message;
+
+
+                    CatchDetails(ex);
                 }
         }
+
+        //
+        // READ NOTES AND FILL UP Table
+        //
+        public void ReadAllCaseNotesAndFillTableBySelectionCriteria(string InSelectionCriteria)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            NotesDataTable = new DataTable();
+            NotesDataTable.Clear();
+
+            TotalSelected = 0;
+
+            // DATA TABLE ROWS DEFINITION 
+            NotesDataTable.Columns.Add("SeqNo", typeof(int));
+            NotesDataTable.Columns.Add("Parameter3", typeof(string));
+            NotesDataTable.Columns.Add("Parameter4", typeof(string));
+            NotesDataTable.Columns.Add("DateCreated", typeof(DateTime));
+            NotesDataTable.Columns.Add("UserId", typeof(string));
+
+            string SqlString = "SELECT *"
+               + " FROM [ATMS].[dbo].[CaseNotes]"
+               + InSelectionCriteria ;
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        //cmd.Parameters.AddWithValue("@SeqNumber", InSeqNumber);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            TotalSelected = TotalSelected + 1;
+
+                            RecordFound = true;
+
+                            ReaderFields(rdr);
+                            //
+                            // Fill In Table
+                            //
+                            DataRow RowSelected = NotesDataTable.NewRow();
+
+                            RowSelected["SeqNo"] = SeqNumber;
+                            RowSelected["Parameter3"] = Parameter3;
+                            RowSelected["Parameter4"] = Parameter4;
+                            RowSelected["DateCreated"] = DateCreated;
+                            RowSelected["UserId"] = UserId;
+
+                            // ADD ROW
+                            NotesDataTable.Rows.Add(RowSelected);
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+
+                    CatchDetails(ex);
+                }
+        }
+
 
         //  
         // For a particular case read the notes and present them
@@ -183,32 +269,9 @@ namespace RRDM4ATMsWin
                         {
                             RecordFound = true;
 
-                            TotalNotes = TotalNotes + 1; 
+                            TotalNotes = TotalNotes + 1;
 
-                            SeqNumber = (int)rdr["SeqNumber"];
-
-                            Parameter3 = (string)rdr["Parameter3"];
-                            Parameter4 = (string)rdr["Parameter4"];
-
-                            DateCreated = (DateTime)rdr["DateCreated"];
-
-                            UserId = (string)rdr["UserId"];
-                            UserName = (string)rdr["UserName"];
-                            Notes = (string)rdr["Notes"];
-                            PrivateForUser = (bool)rdr["PrivateForUser"];
-                            AttachmentPath = (string)rdr["AttachmentPath"];
-
-                            OpenRecord = (bool)rdr["OpenRecord"];
-                            Operator = (string)rdr["Operator"];
-
-                            //if (PrivateForUser == true)
-                            //{
-                            //    WPrivate = "  PRIVATE"; 
-                            //}
-                            //else
-                            //{
-                            //    WPrivate = ""; 
-                            //}
+                            ReaderFields(rdr);
 
                             NoteControlsArray.Add(new Control197(SeqNumber.ToString(), Parameter3, UserId, UserName, 
                                                                 Notes, DateCreated.ToString(),AttachmentPath));
@@ -225,10 +288,9 @@ namespace RRDM4ATMsWin
                 }
                 catch (Exception ex)
                 {
-
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Repl Actions Class............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -242,9 +304,9 @@ namespace RRDM4ATMsWin
             ErrorOutput = "";
 
             string cmdinsert = "INSERT INTO [ATMS].[dbo].[CaseNotes]"
-                    + "( [Parameter3], [Parameter4], "
+                    + "( [Parameter2], [Parameter3], [Parameter4], "
                     + " [UserId], [UserName], [DateCreated], [Notes], [PrivateForUser], [Operator],[AttachmentPath] )"
-                    + " VALUES (@Parameter3, @Parameter4,"
+                    + " VALUES (@Parameter2, @Parameter3, @Parameter4,"
                     + " @UserId, @UserName, @DateCreated, @Notes, @PrivateForUser, @Operator,@AttachmentPath )";
 
             using (SqlConnection conn =
@@ -258,6 +320,7 @@ namespace RRDM4ATMsWin
                     {
                         TotalNotes = TotalNotes + 1;
 
+                        cmd.Parameters.AddWithValue("@Parameter2", Parameter2);
                         cmd.Parameters.AddWithValue("@Parameter3", Parameter3);
                         cmd.Parameters.AddWithValue("@Parameter4", InParameter4);
 
@@ -286,8 +349,9 @@ namespace RRDM4ATMsWin
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in CaseNotes Class............. " + ex.Message;
+
+
+                    CatchDetails(ex);
                 }
         }
         //
@@ -335,8 +399,9 @@ namespace RRDM4ATMsWin
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Authorization Update method Class............. " + ex.Message;
+
+
+                    CatchDetails(ex);
                 }
         }
         // READ LAST CaseNotes FOR These parameters 
@@ -367,22 +432,7 @@ namespace RRDM4ATMsWin
                         {
                             RecordFound = true;
 
-                            SeqNumber = (int)rdr["SeqNumber"];
-
-                            Parameter3 = (string)rdr["Parameter3"];
-                            Parameter4 = (string)rdr["Parameter4"];
-
-                            DateCreated = (DateTime)rdr["DateCreated"];
-
-                            UserId = (string)rdr["UserId"];
-                            UserName = (string)rdr["UserName"];
-                            Notes = (string)rdr["Notes"];
-                            PrivateForUser = (bool)rdr["PrivateForUser"];
-
-                            AttachmentPath = (string)rdr["AttachmentPath"];
-
-                            OpenRecord = (bool)rdr["OpenRecord"];
-                            Operator = (string)rdr["Operator"];
+                            ReaderFields(rdr);
 
                         }
 
@@ -397,14 +447,15 @@ namespace RRDM4ATMsWin
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Authorization Update method Class............. " + ex.Message;
+
+
+                    CatchDetails(ex);
 
                 }
         }
 
         //
-        // DELETE CaseNotes record 
+        // DELETE CaseNotes record by SeqNumber 
         //
         public void DeleteCaseNotesRecord(int InSeqNumber)
         {
@@ -437,210 +488,82 @@ namespace RRDM4ATMsWin
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in CaseNotes Class............. " + ex.Message;
+
+
+                    CatchDetails(ex);
                 }
 
         }
 
-        /*
         //
-        // READ Authorization Records to find if this user has to Authorize 
+        // DELETE CaseNotes record by SeqNumber 
         //
-        public void CheckOutstandingAuthorizationsStage1(string InSignedId)
+        public void DeleteCaseNotesRecordByParameter4(string InParameter4)
         {
-            RecordFound = false;
+
             ErrorFound = false;
             ErrorOutput = "";
 
-            string SqlString = "SELECT *"
-               + " FROM [ATMS].[dbo].[CaseNotes]"
-               + " WHERE Parameter2 = @InSignedId AND Stage = 1";
-
             using (SqlConnection conn =
-                          new SqlConnection(connectionString))
+                new SqlConnection(connectionString))
                 try
                 {
                     conn.Open();
                     using (SqlCommand cmd =
-                        new SqlCommand(SqlString, conn))
+                        new SqlCommand("DELETE FROM [ATMS].[dbo].[CaseNotes] "
+                            + " WHERE Parameter4 =  @Parameter4 ", conn))
                     {
-                        cmd.Parameters.AddWithValue("@InSignedId", InSignedId);
+                        cmd.Parameters.AddWithValue("@Parameter4", InParameter4);
+                        
+                        //rows number of record got updated
+                    
+                        int rows = cmd.ExecuteNonQuery();
+                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
+                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
 
-                        // Read table 
-
-                        SqlDataReader rdr = cmd.ExecuteReader();
-
-                        while (rdr.Read())
-                        {
-
-                            RecordFound = true;
-
-                            SeqNumber = (int)rdr["SeqNumber"];
-
-                            Parameter1 = (string)rdr["Parameter1"];
-                            Parameter2 = (string)rdr["Parameter2"];
-                            Parameter3 = (string)rdr["Parameter3"];
-                            Parameter4 = (string)rdr["Parameter4"];
-
-                            DateCreated = (DateTime)rdr["DateCreated"];
-
-                            UserId = (string)rdr["UserId"];
-                            UserName = (string)rdr["UserName"];
-                            Notes = (string)rdr["Notes"];
-
-                            OpenRecord = (bool)rdr["OpenRecord"];
-                            Operator = (string)rdr["Operator"];
-
-                        }
-
-                        // Close Reader
-                        rdr.Close();
                     }
-
                     // Close conn
                     conn.Close();
                 }
+
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in CaseNotes Class............. " + ex.Message;
+
+
+                    CatchDetails(ex);
                 }
+
         }
 
-        //
-        // READ Authorization Records to find if this user has to Authorize 
-        //
-        public void CheckOutstandingAuthorizationsStage3(string InSignedId)
+        // Catch Details
+        private static void CatchDetails(Exception ex)
         {
-            RecordFound = false;
-            ErrorFound = false;
-            ErrorOutput = "";
+            RRDMLog4Net Log = new RRDMLog4Net();
 
-            string SqlString = "SELECT *"
-               + " FROM [ATMS].[dbo].[CaseNotes]"
-               + " WHERE Parameter1 = @InSignedId AND Stage = 3";
+            StringBuilder WParameters = new StringBuilder();
 
-            using (SqlConnection conn =
-                          new SqlConnection(connectionString))
-                try
-                {
-                    conn.Open();
-                    using (SqlCommand cmd =
-                        new SqlCommand(SqlString, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@InSignedId", InSignedId);
+            WParameters.Append("User : ");
+            WParameters.Append("NotAssignYet");
+            WParameters.Append(Environment.NewLine);
 
-                        // Read table 
+            WParameters.Append("ATMNo : ");
+            WParameters.Append("NotDefinedYet");
+            WParameters.Append(Environment.NewLine);
 
-                        SqlDataReader rdr = cmd.ExecuteReader();
+            string Logger = "RRDM4Atms";
+            string Parameters = WParameters.ToString();
 
-                        while (rdr.Read())
-                        {
+            Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
 
-                            RecordFound = true;
+            System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                + " . Application will be aborted! Call controller to take care. ");
 
-                            SeqNumber = (int)rdr["SeqNumber"];
-
-                            Parameter1 = (string)rdr["Parameter1"];
-                            Parameter2 = (string)rdr["Parameter2"];
-                            Parameter3 = (string)rdr["Parameter3"];
-                            Parameter4 = (string)rdr["Parameter4"];
-
-                            DateCreated = (DateTime)rdr["DateCreated"];
-
-                            UserId = (string)rdr["UserId"];
-                            UserName = (string)rdr["UserName"];
-                            Notes = (string)rdr["Notes"];
-
-                            OpenRecord = (bool)rdr["OpenRecord"];
-                            Operator = (string)rdr["Operator"];
-
-                        }
-
-                        // Close Reader
-                        rdr.Close();
-                    }
-
-                    // Close conn
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in CaseNotes Class............. " + ex.Message;
-                }
+            //  Environment.Exit(0);
         }
-         */
-      
+
+
+    
+
     }
 }
-/*
-//
-        // READ Authorization Record for a Dispute and a transaction 
-        //
-        public void ReadAuthorizationForDisputeAndTransaction(int InDisputeNumber, int InDisputeTransaction)
-        {
-            RecordFound = false;
-            ErrorFound = false;
-            ErrorOutput = "";
-
-            string SqlString = "SELECT *"
-               + " FROM [ATMS].[dbo].[CaseNotes]"
-               + " WHERE DisputeNumber = @DisputeNumber AND DisputeTransaction = @DisputeTransaction ";
-
-            using (SqlConnection conn =
-                          new SqlConnection(connectionString))
-                try
-                {
-                    conn.Open();
-                    using (SqlCommand cmd =
-                        new SqlCommand(SqlString, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@DisputeNumber", InDisputeNumber);
-                        cmd.Parameters.AddWithValue("@DisputeTransaction", InDisputeTransaction);
-
-                        // Read table 
-
-                        SqlDataReader rdr = cmd.ExecuteReader();
-
-                        while (rdr.Read())
-                        {
-
-                            RecordFound = true;
-
-                            SeqNumber = (int)rdr["SeqNumber"];
-
-                            Parameter1 = (string)rdr["Parameter1"];
-                            Parameter2 = (string)rdr["Parameter2"];
-                            Parameter3 = (string)rdr["Parameter3"];
-                            Parameter4 = (string)rdr["Parameter4"];
-
-                            DateCreated = (DateTime)rdr["DateCreated"];
-
-                            UserId = (string)rdr["UserId"];
-                            UserName = (string)rdr["UserName"];
-                            Notes = (string)rdr["Notes"];
-
-                            OpenRecord = (bool)rdr["OpenRecord"];
-                            Operator = (string)rdr["Operator"];
-
-                        }
-
-                        // Close Reader
-                        rdr.Close();
-                    }
-
-                    // Close conn
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in CaseNotes Class............. " + ex.Message;
-                }
-        }
-*/

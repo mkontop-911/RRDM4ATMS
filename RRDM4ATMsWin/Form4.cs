@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -16,20 +10,20 @@ namespace RRDM4ATMsWin
      
         Form109 NForm109;
         Form60 NForm60;
-        Form67 NForm67;
-        Form71 NForm71; 
 
         RRDMDisputesTableClass Di = new RRDMDisputesTableClass();
-        RRDMDisputeTrasactionClass Dt = new RRDMDisputeTrasactionClass();
+        RRDMDisputeTransactionsClass Dt = new RRDMDisputeTransactionsClass();
         RRDMErrorsClassWithActions Ec = new RRDMErrorsClassWithActions();
         RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass();
 
         RRDMGasParameters Gp = new RRDMGasParameters(); 
 
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); 
+        //RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); 
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
         RRDMAuthorisationProcess Ap = new RRDMAuthorisationProcess();
+
+        DateTime NullPastDate = new DateTime(1900, 01, 01);
 
         // NOTES 
         string Order;
@@ -38,9 +32,8 @@ namespace RRDM4ATMsWin
         string WSearchP4;
         RRDMCaseNotes Cn = new RRDMCaseNotes();
 
-        int WTranNo;
-        string WAtmNo;
-        int WSesNo;
+        int WMaskRecordId;
+     
         string WCardNo;
   
         string WSignedId;
@@ -63,10 +56,19 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
-            radioButton1.Checked = true; 
+            radioButton1.Checked = true;
 
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             labelStep1.Text = "Investigation for Dispute No: " + WDispNo;
 
@@ -74,8 +76,7 @@ namespace RRDM4ATMsWin
         }
 
         private void Form4_Load(object sender, EventArgs e)
-        {
-            
+        {          
             // Totals of other disputes for this card
             Di.ReadDispute(WDispNo);
 
@@ -156,67 +157,65 @@ namespace RRDM4ATMsWin
                 label20.ForeColor = Black;
             }
 
-            // NOTES for Attachements 
-            Order = "Descending";
-            WParameter4 = "Notes For Dispute " + "DispNo: " + Di.DispId.ToString();
-            WSearchP4 = "";
-            Cn.ReadAllNotes(WParameter4, WSignedId, Order, WSearchP4);
-            if (Cn.RecordFound == true)
-            {
-                labelNumberNotes2.Text = Cn.TotalNotes.ToString();
-            }
-            else labelNumberNotes2.Text = "0";
+           
 
-            string Gridfilter = "DisputeNumber=" + WDispNo;
-            disputesTransTableBindingSource.Filter = Gridfilter;
-         //   dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Descending);
-            this.disputesTransTableTableAdapter.Fill(this.aTMSDataSet49.DisputesTransTable);
+            // Show GRID Of Dispute transactions 
+
+            //string Gridfilter = "DisputeNumber=" + WDispNo;
+
+            Dt.ReadDisputeTransDataTable(WDispNo);
+
+            ShowGridDisputeTrans();     
            
         }
 
         // Data Grid Row Enter 
+        int WTransNo; 
         private void dataGridView2_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow rowSelected = dataGridView2.Rows[e.RowIndex];
 
-            WTranNo = (int)rowSelected.Cells[0].Value;
+            WTransNo= Dt.DispTranNo = (int)rowSelected.Cells[0].Value;
 
             // Chosen Transaction
-            Dt.ReadDisputeTran(WTranNo); // READ TRANSACTION
+            Dt.ReadDisputeTran(WTransNo); // READ TRANSACTION
 
+            WMaskRecordId = Dt.UniqueRecordId;
+            textBoxTerminal.Text = Dt.AtmNo; 
             textBoxCard.Text = Dt.CardNo;
             textBoxAccNo.Text = Dt.AccNo;
             textBoxTransAmnt.Text = Dt.TranAmount.ToString("#,##0.00");        
             textBoxDispAmnt.Text = Dt.DisputedAmt.ToString("#,##0.00");
 
-            if (Dt.ErrNo > 0)
+            if (Dt.ClosedDispute == true)
             {
-                //// Read error to see if it is ATM or Host 
-
-                //Ec.ReadErrorsTableSpecific(Dt.ErrNo);
-
-                //if (Ec.ErrId < 100)
-                //{
-                //    //textBox1.Text = "1";
-                 
-                //}
-
-                //if (Ec.ErrId > 100 & Ec.ErrId < 200)
-                //{
-                //    textBox1.Text = "1";
-                //}
-
-                //if (Ec.ErrId > 200 )
-                //{
-                //    textBox1.Text = "1";
-                 
-                //}
-
-                //textBox5.Text = Ec.ActionDtTm.ToString(); 
-                //textBox10.Text = Ec.ErrDesc; 
+                // Dispute is settled 
+                buttonView.Show();
+                buttonNext.Hide();
+                textBoxSettledMsg.Show();
+            }
+            else
+            {
+                buttonView.Hide();
+                buttonNext.Show();
+                textBoxSettledMsg.Hide();
             }
 
-            Ap.ReadAuthorizationForDisputeAndTransaction(WDispNo, WTranNo);
+                if (Dt.ErrNo > 0)
+            {
+                // NOTES for Attachements 
+                Order = "Descending";
+                WParameter4 = "UniqueRecordId: " + Dt.UniqueRecordId;
+                WSearchP4 = "";
+                Cn.ReadAllNotes(WParameter4, WSignedId, Order, WSearchP4);
+                if (Cn.RecordFound == true)
+                {
+                    labelNumberNotes2.Text = Cn.TotalNotes.ToString();
+                }
+                else labelNumberNotes2.Text = "0";
+            }
+
+            Ap.ReadAuthorizationForDisputeAndTransaction(WDispNo, WMaskRecordId);
             if (Ap.RecordFound == true & Ap.OpenRecord == true )
             {
                 
@@ -241,27 +240,45 @@ namespace RRDM4ATMsWin
         {
             Form4_Load(this, new EventArgs());
         }
-       
-       
-      
+        
         // SHOW THE NUMBER OF OTHER DISPUTES 
         private void button4_Click(object sender, EventArgs e)
         {
-            
-            NForm60 = new Form60(WSignedId, WSignRecordNo, WOperator, WCardNo);
-            //   NForm71.FormClosed += NForm71_FormClosed;
-            NForm60.ShowDialog();
+            if (Di.TotalForCard > 0)
+            {
+                NForm60 = new Form60(WSignedId, WSignRecordNo, WOperator, WCardNo);
+                NForm60.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("No other Disputes for this card"); 
+            }  
         }
         //
         // Proceed to action 
         //
+
         private void buttonNext_Click(object sender, EventArgs e)
         {
-            if (Di.OwnerId != WSignedId & Di.Active == true)
+            
+            Di.ReadDispute(WDispNo);
+
+            //if (Di.OwnerId.Trim().Equals(WSignedId.Trim(), StringComparison.InvariantCultureIgnoreCase)
+            //       & Di.Active == true)
+            if (WSignedId.Trim().ToUpper() == Di.OwnerId.Trim().ToUpper())
             {
-                MessageBox.Show("Warning : You are not the owner of this Acive dispute. You cannot move to action!");
+                ///
+            }
+            else
+            {
+                MessageBox.Show("Warning : You are not the owner of this Active dispute. You cannot move to action!");
                 return;
             }
+            //if (Di.OwnerId.Trim() != WSignedId.Trim() & Di.Active == true)
+            //{
+            //    MessageBox.Show("Warning : You are not the owner of this Acive dispute. You cannot move to action!");
+            //    return;
+            //}
 
             if (Dt.OpenDispTran == 0)
             {
@@ -271,7 +288,7 @@ namespace RRDM4ATMsWin
                                == DialogResult.Yes)
                 {
                     int WOrigin = 1; // From Requestor 
-                    NForm109 = new Form109(WSignedId, WSignRecordNo, WOperator,WDispNo, Dt.DispTranNo, WTranNo, WOrigin);
+                    NForm109 = new Form109(WSignedId, WSignRecordNo, WOperator,WDispNo, Dt.DispTranNo, WMaskRecordId, WOrigin);
                  
                  //   NForm109.FormClosed += NForm109_FormClosed;
                     NForm109.ShowDialog();
@@ -284,18 +301,174 @@ namespace RRDM4ATMsWin
             }
             else
             {
-                //Ap.ReadAuthorizationForDisputeAndTransaction(WDispNo, WTranNo);
-                //if (Ap.RecordFound == true)
-                //{
-                //    WAuthSeqNumber = Ap.SeqNumber;
-                //}
-                //else
-                //{
-                //    WAuthSeqNumber = 0 ;
-                //}
+                // Check if Replenishment outstanding for this Dispute
+                // Rule: You take action only after Replenishment is done
+                Dt.ReadDisputeTran(Dt.DispTranNo);          
+
+                // Find Unique 
+                bool PresenterError = false; 
+                RRDMMatchingTxns_MasterPoolATMs Mpa = new RRDMMatchingTxns_MasterPoolATMs();
+                Mpa.ReadInPoolTransSpecificUniqueRecordId(Dt.UniqueRecordId, 2);
+
+                if (Mpa.MetaExceptionId == 55)
+                {
+                    PresenterError = true; 
+                }
+                RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
+                if (Mpa.ReplCycleNo ==0)
+                {
+                    // Check if status has been changed 
+                    
+                    Mpa.ReplCycleNo = Ta.ReadFindReplCycleForGivenDate(Mpa.TerminalId, Mpa.TransDate);
+
+                    // If there is value now  ...  update the cycle 
+                    if (Mpa.ReplCycleNo>0)
+                    {
+                        Mpa.UpdateMatchingTxnsMasterPoolATMsManual(Mpa.Operator, Mpa.SeqNo);
+                    }             
+                }
+               
+
+                if (Mpa.ReplCycleNo > 0)
+
+                    // Check if there is a Cycle for this transaction
+                    if (Mpa.ReplCycleNo > 0)
+                {
+                    // There is a replenishment Cycle 
+                }
+                else
+                {
+                    MessageBox.Show("There is no Replenishment Cycle for this transaction " + Environment.NewLine
+                       + "Wait till one is created " + Environment.NewLine
+                       + "Or act manually." + Environment.NewLine
+                       );
+
+                    return;
+                }
+
+                RRDMActions_Occurances Aoc = new RRDMActions_Occurances();
+                Aoc.ReadActionsOccurancesByUniqueRecordId(Mpa.UniqueRecordId); 
+
+                if (Aoc.RecordFound == true & Aoc.Is_GL_Action)
+                {
+                    MessageBox.Show("An action is under way for this transaction " + Environment.NewLine
+                        + "Action Id:" + Aoc.ActionId + Environment.NewLine
+                        + "Maker Id:" + Aoc.Maker + Environment.NewLine
+                        ); 
+                }
+
+                string WAtmNo = Mpa.TerminalId;
+                int WReplNo = Mpa.ReplCycleNo;
+
+                //RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); // Activate Class 
+
+                // Read Traces to Process
+                Ta.ReadSessionsStatusTraces(WAtmNo, WReplNo);
+
+                if (Ta.ProcessMode ==0 & WAtmNo != "00000550")
+                {
+                  if (Ta.Recon1.RecStartDtTm != NullPastDate)
+                    {
+                        if (PresenterError == true)
+                        {
+                            if (MessageBox.Show("The Replenishment Cycle is under process" + Environment.NewLine
+                                     + "Started at.."+ Ta.Recon1.RecStartDtTm.ToString() + Environment.NewLine
+                                     + "Do you want to proceed with risks?" + Environment.NewLine
+                                     + "Note that this is a presenter error" + Environment.NewLine
+                                     , "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                                    == DialogResult.Yes)
+                            {
+                                // YES
+
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+
+                            if (MessageBox.Show("The Replenishment Cycle is under process" + Environment.NewLine
+                                 + "Started at.." + Ta.Recon1.RecStartDtTm.ToString() + Environment.NewLine
+                                      + "Do you want to proceed with risks?" + Environment.NewLine
+                                    , "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                                   == DialogResult.Yes)
+                            {
+                                // YES
+
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (PresenterError == true)
+                        {
+                            if (MessageBox.Show("The Replenishment Cycle is under process" + Environment.NewLine
+                                     + "Started at.." + Ta.Recon1.RecStartDtTm.ToString() + Environment.NewLine
+                                     + "Do you want to proceed?" + Environment.NewLine
+                                     + "Note that this is a presenter error" + Environment.NewLine
+                                     , "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                                    == DialogResult.Yes)
+                            {
+                                // YES
+
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+
+                            if (MessageBox.Show("The Replenishment Cycle is under process" + Environment.NewLine
+                                 + "Started at.." + Ta.Recon1.RecStartDtTm.ToString() + Environment.NewLine
+                                      + "Do you want to proceed?" + Environment.NewLine
+                                    , "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                                   == DialogResult.Yes)
+                            {
+                                // YES
+
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                    }
+                  
+
+                }
+                if (Ta.ProcessMode > 0)
+                {
+                    
+                    if (PresenterError == true)
+                    {
+                        MessageBox.Show("Note that The Replenishment Cycle has been completed" + Environment.NewLine
+                                 + "Note that this is a presenter error"
+                                  );
+                    }
+                    else
+                    {
+                        MessageBox.Show("Note that The Replenishment Cycle has been completed"
+                                  + ""
+                                   );
+                    }
+                }
+
+                // Update Us Process number
+                RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+                Usi.ReadSignedActivityByKey(WSignRecordNo);
+                Usi.ProcessNo = 99; // View Only 
+                Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
                 int WOrigin = 1;
-                NForm109 = new Form109(WSignedId, WSignRecordNo, WOperator, WDispNo, Dt.DispTranNo, WTranNo, WOrigin);
+                NForm109 = new Form109(WSignedId, WSignRecordNo, WOperator, WDispNo, Dt.DispTranNo, WMaskRecordId, WOrigin);
 
                 NForm109.FormClosed += NForm109_FormClosed;
                 NForm109.ShowDialog();
@@ -314,9 +487,15 @@ namespace RRDM4ATMsWin
             //{
             //    WAuthSeqNumber = 0;
             //}
+            // Update Us Process number
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
+            Usi.ProcessNo = 54; // View Only 
+            Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
+
 
             int WOrigin = 11;
-            NForm109 = new Form109(WSignedId, WSignRecordNo, WOperator, WDispNo, Dt.DispTranNo, WTranNo, WOrigin);
+            NForm109 = new Form109(WSignedId, WSignRecordNo, WOperator, WDispNo, Dt.DispTranNo, WMaskRecordId, WOrigin);
 
             NForm109.FormClosed += NForm109_FormClosed;
             NForm109.ShowDialog();
@@ -329,12 +508,14 @@ namespace RRDM4ATMsWin
         {
             Form197 NForm197;
             string WParameter3 = "";
-            string WParameter4 = "Notes For Dispute " + "DispNo: " + Di.DispId.ToString();
+            string WParameter4 = "UniqueRecordId: " + Dt.UniqueRecordId;
+            //string WParameter4 = "Notes For Dispute " + "DispNo: " + Di.DispId.ToString();
+            // "UniqueRecordId: " + Mpa.UniqueRecordId;
             string SearchP4 = "";
             string WMode;
             if (Di.Active == true) WMode = "Update";
             else WMode = "Read";
-            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, WParameter3, WParameter4, WMode, SearchP4);
+            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, "", WParameter3, WParameter4, WMode, SearchP4);
             NForm197.FormClosed += NForm197_FormClosed;
             NForm197.ShowDialog();
         }
@@ -356,16 +537,59 @@ namespace RRDM4ATMsWin
 
             string WFunction = "Investigation";
 
-            NForm80b = new Form80b(WSignedId, WSignRecordNo, WOperator, "", 0, Dt.MaskRecordId ,WFunction);
+            //Form80b(string InSignedId, int InSignRecordNo, string InOperator, string InCategoryId, int InRMCycleNo,
+            //                                     string InStringUniqueId, int InIntUniqueId, int InUniqueIdType, string InFunction)
+
+            int UniqueIdType = 4;
+
+            NForm80b = new Form80b(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate,"" ,"", 0,"" ,Dt.UniqueRecordId , UniqueIdType, WFunction,"", 0);
 
             NForm80b.ShowDialog();    
         }
 
-
-      
-
         //**********************************************************************
         // END NOTES 
         //**********************************************************************  
+
+        //******************
+        // SHOW GRID dataGridView2
+        //******************
+        private void ShowGridDisputeTrans()
+        {
+            dataGridView2.DataSource = Dt.DisputeTransDataTable.DefaultView;
+
+            if (dataGridView2.Rows.Count == 0)
+            {
+                return;
+            }
+            dataGridView2.Columns[0].Width = 70; // DispTranNo
+            dataGridView2.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[1].Width = 70; // MaskRecordId
+            dataGridView2.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView2.Columns[2].Width = 100; //  TranDate
+            dataGridView2.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            //dataGridView1.Sort(dataGridView1.Columns[2], ListSortDirection.Ascending);
+
+            dataGridView2.Columns[3].Width = 80; // TranAmount
+            dataGridView2.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dataGridView2.Columns[4].Width = 80; // DisputedAmt
+            dataGridView2.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dataGridView2.Columns[5].Width = 80; // DecidedAmount 
+            dataGridView2.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            //
+            // DATA TABLE ROWS DEFINITION 
+            //
+            //ATMsDetailsDataTable.Columns.Add("DispTranNo", typeof(int));
+            //ATMsDetailsDataTable.Columns.Add("MaskRecordId", typeof(int));
+            //ATMsDetailsDataTable.Columns.Add("TranDate", typeof(DateTime));
+            //ATMsDetailsDataTable.Columns.Add("TranAmount", typeof(string));
+            //ATMsDetailsDataTable.Columns.Add("DisputedAmt", typeof(string));
+            //ATMsDetailsDataTable.Columns.Add("DecidedAmount", typeof(string));
+        }
     }
 }

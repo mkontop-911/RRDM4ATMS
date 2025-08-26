@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMUpdateGrids
+    public class RRDMUpdateGrids : Logger
     {
+        public RRDMUpdateGrids() : base() { }
         //
         // UPDATE WORKING AT THE TIME DATAGRID WITH AUTHRISED USER
         //
@@ -46,7 +42,7 @@ namespace RRDM4ATMs
 
         RRDMAtmsMainClass Am = new RRDMAtmsMainClass();
 
-        RRDMReplActionsClass Ra = new RRDMReplActionsClass(); 
+        RRDMReplOrdersClass Ra = new RRDMReplOrdersClass(); 
 
         // READ User RECORD and set ATMs Main Authorised User Field 
         //
@@ -130,8 +126,7 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UpdateGrids Class............. " + ex.Message;
+                    CatchDetails(ex);
 
                 }
         }
@@ -220,8 +215,7 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UpdateGrids Class............. " + ex.Message;
+                    CatchDetails(ex);
 
                 }
         }
@@ -300,8 +294,7 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UpdateGrids Class............. " + ex.Message;
+                    CatchDetails(ex);
 
                 }
 
@@ -344,8 +337,7 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UpdateGrids Class............. " + ex.Message;
+                    CatchDetails(ex);
 
                 }
         }
@@ -408,8 +400,7 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UpdateGrids Class............. " + ex.Message;
+                    CatchDetails(ex);
                 }
         }
         
@@ -421,7 +412,7 @@ namespace RRDM4ATMs
 
             int DtSize = IndtAtmsMain.Rows.Count;
 
-            string AtmNo; 
+            //string AtmNo; 
 
             int J = 0;
 

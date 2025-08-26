@@ -36,6 +36,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>RRDM4ATMsWin.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,26 +46,51 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>RRDM4ATMsWin.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>RRDM4ATMsWin.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="bulksms_dotnetlib">
-      <HintPath>..\SMS\bulksms_dotnetlib\bulksms_dotnetlib\bin\Debug\bulksms_dotnetlib.dll</HintPath>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Google.Api.Maps.Service">
-      <HintPath>bin\Google.Api.Maps.Service.dll</HintPath>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.2015.12.0.2.2403\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
-    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.2015.12.0.2.2403\lib\net40\Microsoft.ReportViewer.DataVisualization.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.2015.12.0.2.2403\lib\net40\Microsoft.ReportViewer.Design.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.2015.12.0.2.2403\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebDesign, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.2015.12.0.2.2403\lib\net40\Microsoft.ReportViewer.WebDesign.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.2015.12.0.2.2403\lib\net40\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.2015.12.0.2.2403\lib\net40\Microsoft.ReportViewer.WinForms.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.2015.12.0.2.2403\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
@@ -87,110 +113,50 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
+    <Compile Include="appResImg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>appResImg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ATMSDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ATMSDataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="ATMSDataSet11.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet11.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet12.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet12.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet16.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet16.xsd</DependentUpon>
     </Compile>
     <Compile Include="ATMSDataSet18.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet18.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ATMSDataSet20.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet20.xsd</DependentUpon>
-    </Compile>
     <Compile Include="ATMSDataSet21.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet21.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ATMSDataSet22.Designer.cs">
+    <Compile Include="ATMSDataSet241XXX.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet22.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet241.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet241.xsd</DependentUpon>
+      <DependentUpon>ATMSDataSet241XXX.xsd</DependentUpon>
     </Compile>
     <Compile Include="ATMSDataSet26.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet26.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ATMSDataSet3.Designer.cs">
+    <Compile Include="ATMSDataSet46XXX.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet3.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet351.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet351.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet36.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet36.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet40.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet40.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet46.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet46.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet47.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet47.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet5.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet5.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet53.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet53.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet54.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet54.xsd</DependentUpon>
+      <DependentUpon>ATMSDataSet46XXX.xsd</DependentUpon>
     </Compile>
     <Compile Include="ATMSDataSet55.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet55.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet56.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet56.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet57.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet57.xsd</DependentUpon>
     </Compile>
     <Compile Include="ATMSDataSet58.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -207,51 +173,587 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet6.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ATMSDataSet61.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet61.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet62.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet62.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet63.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet63.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet64.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet64.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet65.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet65.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet66.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet66.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet67.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet67.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet68.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet68.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Control197.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Control197.Designer.cs">
       <DependentUpon>Control197.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - ATMS - ADMIN_Users_Mgmt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - ATMS - ADMIN_Users_Mgmt.Designer.cs">
+      <DependentUpon>Form1 - ATMS - ADMIN_Users_Mgmt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Controller_EGA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Controller_EGA.Designer.cs">
+      <DependentUpon>Form1 - ATMS - Controller_EGA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - Reconciliator_EGATE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - Reconciliator_EGATE.Designer.cs">
+      <DependentUpon>Form1 - Reconciliator_EGATE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - Reconciliator_EWALLET.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - Reconciliator_EWALLET.Designer.cs">
+      <DependentUpon>Form1 - Reconciliator_EWALLET.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Reconciliator_EMR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Reconciliator_EMR.Designer.cs">
+      <DependentUpon>Form1 - ATMS - Reconciliator_EMR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Reconciliator_BDC_TYPE_2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Reconciliator_BDC_TYPE_2.Designer.cs">
+      <DependentUpon>Form1 - ATMS - Reconciliator_BDC_TYPE_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form13_NEW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form13_NEW.Designer.cs">
+      <DependentUpon>Form13_NEW.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form14b_Input_Key.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form14b_Input_Key.Designer.cs">
+      <DependentUpon>Form14b_Input_Key.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form154.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form154.Designer.cs">
+      <DependentUpon>Form154.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_CIT_ExcelOutput_Alerts _BDC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_CIT_ExcelOutput_Alerts _BDC.Designer.cs">
+      <DependentUpon>Form18_CIT_ExcelOutput_Alerts _BDC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_LoadedFilesStatus_GAPS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_LoadedFilesStatus_GAPS.Designer.cs">
+      <DependentUpon>Form18_LoadedFilesStatus_GAPS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1_ATMS _Controller_EMR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1_ATMS _Controller_EMR.Designer.cs">
+      <DependentUpon>Form1_ATMS _Controller_EMR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Controller.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Controller.Designer.cs">
+      <DependentUpon>Form1 - ATMS - Controller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - ATMS - ADMIN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - ATMS - ADMIN.Designer.cs">
+      <DependentUpon>Form1 - ATMS - ADMIN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Reconciliator_AUD_XXX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Reconciliator_AUD_XXX.Designer.cs">
+      <DependentUpon>Form1 - ATMS - Reconciliator_AUD_XXX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Reconciliator_ABE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Reconciliator_ABE.Designer.cs">
+      <DependentUpon>Form1 - ATMS - Reconciliator_ABE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Reconciliator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - ATMS - Reconciliator.Designer.cs">
+      <DependentUpon>Form1 - ATMS - Reconciliator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - ATMS - OPERATIONAL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - ATMS - OPERATIONAL.Designer.cs">
+      <DependentUpon>Form1 - ATMS - OPERATIONAL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - ITMX.Designer.cs">
+      <DependentUpon>Form1 - ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - E-FINANCE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - E-FINANCE.Designer.cs">
+      <DependentUpon>Form1 - E-FINANCE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - NOSTRO - OPERATIONAL - Copy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - NOSTRO - OPERATIONAL - Copy.Designer.cs">
+      <DependentUpon>Form1 - NOSTRO - OPERATIONAL - Copy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - NOSTRO - OPERATIONAL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - NOSTRO - OPERATIONAL.Designer.cs">
+      <DependentUpon>Form1 - NOSTRO - OPERATIONAL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - ITMX - Banks.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - ITMX - Banks.Designer.cs">
+      <DependentUpon>Form1 - ITMX - Banks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1 - ITMX-CBT.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1 - ITMX-CBT.Designer.cs">
+      <DependentUpon>Form1 - ITMX-CBT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form108_Cycles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form108_Cycles.Designer.cs">
+      <DependentUpon>Form108_Cycles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form12_YEAR_XXXX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form12_YEAR_XXXX.Designer.cs">
+      <DependentUpon>Form12_YEAR_XXXX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form14b_All_Actions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form14b_All_Actions.Designer.cs">
+      <DependentUpon>Form14b_All_Actions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form14b_POS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form14b_POS.Designer.cs">
+      <DependentUpon>Form14b_POS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_CIT_Orders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_CIT_Orders.Designer.cs">
+      <DependentUpon>Form18_CIT_Orders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_CIT_ExcelOutput_Alerts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_CIT_ExcelOutput_Alerts.Designer.cs">
+      <DependentUpon>Form18_CIT_ExcelOutput_Alerts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_CIT_LoadExcel_AUDI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_CIT_LoadExcel_AUDI.Designer.cs">
+      <DependentUpon>Form18_CIT_LoadExcel_AUDI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_CIT_ValidateUpdateExcel_AUDI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_CIT_ValidateUpdateExcel_AUDI.Designer.cs">
+      <DependentUpon>Form18_CIT_ValidateUpdateExcel_AUDI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form2-MessageContent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form2-MessageContent.Designer.cs">
+      <DependentUpon>Form2-MessageContent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form20_NEW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form20_NEW.Designer.cs">
+      <DependentUpon>Form20_NEW.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200JobCycles_GL_Mobile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200JobCycles_GL_Mobile.Designer.cs">
+      <DependentUpon>Form200JobCycles_GL_Mobile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200JobCycles_Presenter_Repl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200JobCycles_Presenter_Repl.Designer.cs">
+      <DependentUpon>Form200JobCycles_Presenter_Repl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200JobCycles_Reports_EWALLET.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200JobCycles_Reports_EWALLET.Designer.cs">
+      <DependentUpon>Form200JobCycles_Reports_EWALLET.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200JobCycles_Reports_Audi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200JobCycles_Reports_Audi.Designer.cs">
+      <DependentUpon>Form200JobCycles_Reports_Audi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200_SET_Vs_CAP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200_SET_Vs_CAP.Designer.cs">
+      <DependentUpon>Form200_SET_Vs_CAP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200JobCycles_GL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200JobCycles_GL.Designer.cs">
+      <DependentUpon>Form200JobCycles_GL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form21MIS_ATM_ROMANIA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form21MIS_ATM_ROMANIA.Designer.cs">
+      <DependentUpon>Form21MIS_ATM_ROMANIA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form21MIS_Excess_Reports.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form21MIS_Excess_Reports.Designer.cs">
+      <DependentUpon>Form21MIS_Excess_Reports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form276_CIT_Replenish_FirstStep.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form276_CIT_Replenish_FirstStep.Designer.cs">
+      <DependentUpon>Form276_CIT_Replenish_FirstStep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form277_EGATE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form277_EGATE.Designer.cs">
+      <DependentUpon>Form277_EGATE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form277_MOBILE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form277_MOBILE.Designer.cs">
+      <DependentUpon>Form277_MOBILE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form271FastTrack_OLD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form271FastTrack_OLD.Designer.cs">
+      <DependentUpon>Form271FastTrack_OLD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form276_AUDI_FirstStep.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form276_AUDI_FirstStep.Designer.cs">
+      <DependentUpon>Form276_AUDI_FirstStep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NV_MT_103.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NV_MT_103.Designer.cs">
+      <DependentUpon>Form291NV_MT_103.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200JobCycles_Reports.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200JobCycles_Reports.Designer.cs">
+      <DependentUpon>Form200JobCycles_Reports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200JobCycles_Presenter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200JobCycles_Presenter.Designer.cs">
+      <DependentUpon>Form200JobCycles_Presenter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form24_ByDates.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form24_ByDates.Designer.cs">
+      <DependentUpon>Form24_ByDates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form271.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form271.Designer.cs">
+      <DependentUpon>Form271.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form271View_Table.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form271View_Table.Designer.cs">
+      <DependentUpon>Form271View_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form276_NBG.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form276_NBG.Designer.cs">
+      <DependentUpon>Form276_NBG.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NVMatched_Visa_Manual.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NVMatched_Visa_Manual.Designer.cs">
+      <DependentUpon>Form291NVMatched_Visa_Manual.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form2MessageBox_SQL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form2MessageBox_SQL.Designer.cs">
+      <DependentUpon>Form2MessageBox_SQL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form38_CDM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form38_CDM.Designer.cs">
+      <DependentUpon>Form38_CDM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form3_Management.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form3_Management.Designer.cs">
+      <DependentUpon>Form3_Management.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form3_PreInv_MOBILE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form3_PreInv_MOBILE.Designer.cs">
+      <DependentUpon>Form3_PreInv_MOBILE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form3_PreInv_IST.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form3_PreInv_IST.Designer.cs">
+      <DependentUpon>Form3_PreInv_IST.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form40.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form40.Designer.cs">
+      <DependentUpon>Form40.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form40_Active_DIR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form40_Active_DIR.Designer.cs">
+      <DependentUpon>Form40_Active_DIR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form5.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form5.Designer.cs">
+      <DependentUpon>Form5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502aPOS_XXX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502aPOS_XXX.Designer.cs">
+      <DependentUpon>Form502aPOS_XXX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_BOC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_BOC.Designer.cs">
+      <DependentUpon>Form502_Load_And_Match_BOC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_MOBILE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_MOBILE.Designer.cs">
+      <DependentUpon>Form502_Load_And_Match_MOBILE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_ABE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_ABE.Designer.cs">
+      <DependentUpon>Form502_Load_And_Match_ABE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_AUD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_AUD.Designer.cs">
+      <DependentUpon>Form502_Load_And_Match_AUD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_BDC_MULTI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_BDC_MULTI.Designer.cs">
+      <DependentUpon>Form502_Load_And_Match_BDC_MULTI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_BDC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_BDC.Designer.cs">
+      <DependentUpon>Form502_Load_And_Match_BDC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_Actions_GL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_Actions_GL.Designer.cs">
+      <DependentUpon>Form502_Actions_GL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_V03_TablesOther.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_V03_TablesOther.Designer.cs">
+      <DependentUpon>Form502_V03_TablesOther.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_V03_REFORMAT.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_V03_REFORMAT.Designer.cs">
+      <DependentUpon>Form502_V03_REFORMAT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_V03.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_V03.Designer.cs">
+      <DependentUpon>Form502_V03.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form503_Maker_Checker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form503_Maker_Checker.Designer.cs">
+      <DependentUpon>Form503_Maker_Checker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form503_WALLET.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form503_WALLET.Designer.cs">
+      <DependentUpon>Form503_WALLET.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form503_Insert_Manual_To_Mpa.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form503_Insert_Manual_To_Mpa.Designer.cs">
+      <DependentUpon>Form503_Insert_Manual_To_Mpa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form503_GL_STATUS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form503_GL_STATUS.Designer.cs">
+      <DependentUpon>Form503_GL_STATUS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form503_SesCombined.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form503_SesCombined.Designer.cs">
+      <DependentUpon>Form503_SesCombined.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form51_Repl_For_IST.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form51_Repl_For_IST.designer.cs">
+      <DependentUpon>Form51_Repl_For_IST.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form51_Recycle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form51_Recycle.designer.cs">
+      <DependentUpon>Form51_Recycle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form51_FAB_Type.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form51_FAB_Type.designer.cs">
+      <DependentUpon>Form51_FAB_Type.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form51_CDM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form51_CDM.designer.cs">
+      <DependentUpon>Form51_CDM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form51_TXN_Cassettes_BAL_V2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form51_TXN_Cassettes_BAL_V2.Designer.cs">
+      <DependentUpon>Form51_TXN_Cassettes_BAL_V2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form51_TXN_Cassettes_BAL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form51_TXN_Cassettes_BAL.Designer.cs">
+      <DependentUpon>Form51_TXN_Cassettes_BAL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form52_GL_W2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form52_GL_W2.Designer.cs">
+      <DependentUpon>Form52_GL_W2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form271ViewAtmUnmatched.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form271ViewAtmUnmatched.Designer.cs">
+      <DependentUpon>Form271ViewAtmUnmatched.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form273_AUDI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form273_AUDI.Designer.cs">
+      <DependentUpon>Form273_AUDI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_CIT_ExcelOutputCycles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_CIT_ExcelOutputCycles.Designer.cs">
+      <DependentUpon>Form18_CIT_ExcelOutputCycles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_LoadedFilesStatus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_LoadedFilesStatus.Designer.cs">
+      <DependentUpon>Form18_LoadedFilesStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_ExcelMainMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_ExcelMainMenu.Designer.cs">
+      <DependentUpon>Form18_ExcelMainMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_CIT_LoadExcel_NBG_XXXX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_CIT_LoadExcel_NBG_XXXX.Designer.cs">
+      <DependentUpon>Form18_CIT_LoadExcel_NBG_XXXX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_CIT_LoadExcel_KFH.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_CIT_LoadExcel_KFH.Designer.cs">
+      <DependentUpon>Form18_CIT_LoadExcel_KFH.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form108MigrationExcel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form108MigrationExcel.Designer.cs">
+      <DependentUpon>Form108MigrationExcel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form109ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form109ITMX.Designer.cs">
+      <DependentUpon>Form109ITMX.cs</DependentUpon>
     </Compile>
     <Compile Include="Form10CIT.cs">
       <SubType>Form</SubType>
@@ -271,11 +773,11 @@
     <Compile Include="Form111.Designer.cs">
       <DependentUpon>Form111.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form112.cs">
+    <Compile Include="Form112_OLD.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form112.Designer.cs">
-      <DependentUpon>Form112.cs</DependentUpon>
+    <Compile Include="Form112_OLD.Designer.cs">
+      <DependentUpon>Form112_OLD.cs</DependentUpon>
     </Compile>
     <Compile Include="Form120.cs">
       <SubType>Form</SubType>
@@ -283,29 +785,29 @@
     <Compile Include="Form120.Designer.cs">
       <DependentUpon>Form120.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form14b.cs">
+    <Compile Include="Form14bITMX.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form14b.Designer.cs">
-      <DependentUpon>Form14b.cs</DependentUpon>
+    <Compile Include="Form14bITMX.Designer.cs">
+      <DependentUpon>Form14bITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_CIT_ViewBankRecords.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_CIT_ViewBankRecords.Designer.cs">
+      <DependentUpon>Form18_CIT_ViewBankRecords.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_CIT_ViewUpdatedExcelDetails_XXX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_CIT_ViewUpdatedExcelDetails_XXX.Designer.cs">
+      <DependentUpon>Form18_CIT_ViewUpdatedExcelDetails_XXX.cs</DependentUpon>
     </Compile>
     <Compile Include="Form197.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form197.Designer.cs">
       <DependentUpon>Form197.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Form19b.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form19b.Designer.cs">
-      <DependentUpon>Form19b.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Form19c.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form19c.Designer.cs">
-      <DependentUpon>Form19c.cs</DependentUpon>
     </Compile>
     <Compile Include="Form2.cs">
       <SubType>Form</SubType>
@@ -316,18 +818,980 @@
     <Compile Include="Form20.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form20.Designer.cs" />
+    <Compile Include="Form20.Designer.cs">
+      <DependentUpon>Form20.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200c ATMs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200c ATMs.Designer.cs">
+      <DependentUpon>Form200c ATMs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200b ATMs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200b ATMs.Designer.cs">
+      <DependentUpon>Form200b ATMs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200JobCycles_Output_Files.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200JobCycles_Output_Files.Designer.cs">
+      <DependentUpon>Form200JobCycles_Output_Files.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200JobCycles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200JobCycles.Designer.cs">
+      <DependentUpon>Form200JobCycles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200NOSTRO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200NOSTRO.Designer.cs">
+      <DependentUpon>Form200NOSTRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200c ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200c ITMX.Designer.cs">
+      <DependentUpon>Form200c ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200b ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200b ITMX.Designer.cs">
+      <DependentUpon>Form200b ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200 ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200 ITMX.Designer.cs">
+      <DependentUpon>Form200 ITMX.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form200b.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form200b.Designer.cs">
       <DependentUpon>Form200b.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form271.cs">
+    <Compile Include="Form291NV_E_FIN_Central.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form271.Designer.cs">
-      <DependentUpon>Form271.cs</DependentUpon>
+    <Compile Include="Form291NV_E_FIN_Central.Designer.cs">
+      <DependentUpon>Form291NV_E_FIN_Central.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form201ITMXFEES.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form201ITMXFEES.Designer.cs">
+      <DependentUpon>Form201ITMXFEES.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form201bITMXFEES.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form201bITMXFEES.Designer.cs">
+      <DependentUpon>Form201bITMXFEES.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form201bITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form201bITMX.Designer.cs">
+      <DependentUpon>Form201bITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form202ITMXFEES.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form202ITMXFEES.Designer.cs">
+      <DependentUpon>Form202ITMXFEES.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form202ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form202ITMX.Designer.cs">
+      <DependentUpon>Form202ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form21MISNOSTRO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form21MISNOSTRO.Designer.cs">
+      <DependentUpon>Form21MISNOSTRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form21MISITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form21MISITMX.Designer.cs">
+      <DependentUpon>Form21MISITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form22MISNOSTRO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form22MISNOSTRO.Designer.cs">
+      <DependentUpon>Form22MISNOSTRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NV_E_FIN_Totals_XXXXX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NV_E_FIN_Totals_XXXXX.Designer.cs">
+      <DependentUpon>Form291NV_E_FIN_Totals_XXXXX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form2Merchant.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form2Merchant.Designer.cs">
+      <DependentUpon>Form2Merchant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form18_CIT_ExcelLoadingCycles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form18_CIT_ExcelLoadingCycles.Designer.cs">
+      <DependentUpon>Form18_CIT_ExcelLoadingCycles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502AccessRights_E_FINANCE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502AccessRights_E_FINANCE.Designer.cs">
+      <DependentUpon>Form502AccessRights_E_FINANCE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502AccessRights_NOSTRO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502AccessRights_NOSTRO.Designer.cs">
+      <DependentUpon>Form502AccessRights_NOSTRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502ArchiveCycles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502ArchiveCycles.Designer.cs">
+      <DependentUpon>Form502ArchiveCycles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_V02_OUT.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_V02_OUT.Designer.cs">
+      <DependentUpon>Form502_V02_OUT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_V02.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_V02.Designer.cs">
+      <DependentUpon>Form502_V02.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_U_Str.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_U_Str.Designer.cs">
+      <DependentUpon>Form502_U_Str.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form20_Applications.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form20_Applications.Designer.cs">
+      <DependentUpon>Form20_Applications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form503_Visa.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form503_Visa.Designer.cs">
+      <DependentUpon>Form503_Visa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form503_Branch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form503_Branch.Designer.cs">
+      <DependentUpon>Form503_Branch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form52c.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form52c.Designer.cs">
+      <DependentUpon>Form52c.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R55_5.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R55_5.Designer.cs">
+      <DependentUpon>Form56R55_5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R55_4.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R55_4.Designer.cs">
+      <DependentUpon>Form56R55_4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R55_3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R55_3.Designer.cs">
+      <DependentUpon>Form56R55_3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R55_2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R55_2.Designer.cs">
+      <DependentUpon>Form56R55_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R59ATMS_M_LoadingFiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R59ATMS_M_LoadingFiles.Designer.cs">
+      <DependentUpon>Form56R59ATMS_M_LoadingFiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R59ATMS_Matching.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R59ATMS_Matching.Designer.cs">
+      <DependentUpon>Form56R59ATMS_Matching.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R64_RATES.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R64_RATES.Designer.cs">
+      <DependentUpon>Form56R64_RATES.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R68ATMS_W_Pool_Table.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R68ATMS_W_Pool_Table.Designer.cs">
+      <DependentUpon>Form56R68ATMS_W_Pool_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R68ATMS_W_General_Files.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R68ATMS_W_General_Files.Designer.cs">
+      <DependentUpon>Form56R68ATMS_W_General_Files.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R69ATMS_Repl_Cycles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R69ATMS_Repl_Cycles.Designer.cs">
+      <DependentUpon>Form56R69ATMS_Repl_Cycles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R69ATMS_Last_Traces.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R69ATMS_Last_Traces.Designer.cs">
+      <DependentUpon>Form56R69ATMS_Last_Traces.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R69ATMS_Repl_Orders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R69ATMS_Repl_Orders.Designer.cs">
+      <DependentUpon>Form56R69ATMS_Repl_Orders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R82.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R82.Designer.cs">
+      <DependentUpon>Form56R82.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R80.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R80.Designer.cs">
+      <DependentUpon>Form56R80.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R79.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R79.Designer.cs">
+      <DependentUpon>Form56R79.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R78.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R78.Designer.cs">
+      <DependentUpon>Form56R78.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R_E_FINANCE_Branch_Totals.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R_E_FINANCE_Branch_Totals.Designer.cs">
+      <DependentUpon>Form56R_E_FINANCE_Branch_Totals.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R76.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R76.Designer.cs">
+      <DependentUpon>Form56R76.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R_In_Mapping.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R_In_Mapping.Designer.cs">
+      <DependentUpon>Form56R_In_Mapping.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R_Out_Mapping.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R_Out_Mapping.Designer.cs">
+      <DependentUpon>Form56R_Out_Mapping.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R69ATMS_Bank.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R69ATMS_Bank.Designer.cs">
+      <DependentUpon>Form56R69ATMS_Bank.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R_TXNsFrom_CutOff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R_TXNsFrom_CutOff.Designer.cs">
+      <DependentUpon>Form56R_TXNsFrom_CutOff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R74.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R74.Designer.cs">
+      <DependentUpon>Form56R74.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R73.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R73.Designer.cs">
+      <DependentUpon>Form56R73.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R72.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R72.Designer.cs">
+      <DependentUpon>Form56R72.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R71.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R71.Designer.cs">
+      <DependentUpon>Form56R71.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R70.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R70.Designer.cs">
+      <DependentUpon>Form56R70.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R69ATMS_G4S.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R69ATMS_G4S.Designer.cs">
+      <DependentUpon>Form56R69ATMS_G4S.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R5Merchant.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R5Merchant.Designer.cs">
+      <DependentUpon>Form56R5Merchant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form62_b.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form62_b.Designer.cs">
+      <DependentUpon>Form62_b.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form67_ROM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form67_ROM.Designer.cs">
+      <DependentUpon>Form67_ROM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form67_Cycle_Rich_Picture_2_XXX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form67_Cycle_Rich_Picture_2_XXX.Designer.cs">
+      <DependentUpon>Form67_Cycle_Rich_Picture_2_XXX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form67_Cycle_Rich_Picture_2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form67_Cycle_Rich_Picture_2.Designer.cs">
+      <DependentUpon>Form67_Cycle_Rich_Picture_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form67_Cycle_Rich_Picture.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form67_Cycle_Rich_Picture.Designer.cs">
+      <DependentUpon>Form67_Cycle_Rich_Picture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form67_BDC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form67_BDC.Designer.cs">
+      <DependentUpon>Form67_BDC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form68_Atms_Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form68_Atms_Main.Designer.cs">
+      <DependentUpon>Form68_Atms_Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NV_E_FIN_Word_Table.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NV_E_FIN_Word_Table.Designer.cs">
+      <DependentUpon>Form291NV_E_FIN_Word_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form76_NEW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form76_NEW.Designer.cs">
+      <DependentUpon>Form76_NEW.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form77_NEW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form77_NEW.Designer.cs">
+      <DependentUpon>Form77_NEW.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_EGATE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_EGATE.Designer.cs">
+      <DependentUpon>Form78d_AllFiles_EGATE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_BDC_3_ROM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_BDC_3_ROM.Designer.cs">
+      <DependentUpon>Form78d_AllFiles_BDC_3_ROM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_BDC_3_MOBILE_TOTALS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_BDC_3_MOBILE_TOTALS.Designer.cs">
+      <DependentUpon>Form78d_AllFiles_BDC_3_MOBILE_TOTALS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_BDC_3_MOBILE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_BDC_3_MOBILE.Designer.cs">
+      <DependentUpon>Form78d_AllFiles_BDC_3_MOBILE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_Reversals.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_Reversals.designer.cs">
+      <DependentUpon>Form78d_AllFiles_Reversals.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_Pending.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_Pending.designer.cs">
+      <DependentUpon>Form78d_AllFiles_Pending.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_BasedOnDataTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_BasedOnDataTable.Designer.cs">
+      <DependentUpon>Form78d_BasedOnDataTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_BDC_TO_POST.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_BDC_TO_POST.Designer.cs">
+      <DependentUpon>Form78d_BDC_TO_POST.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_ATMRecords.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_ATMRecords.Designer.cs">
+      <DependentUpon>Form78d_ATMRecords.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_BULK_Records.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_BULK_Records.Designer.cs">
+      <DependentUpon>Form78d_BULK_Records.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_MOBILE_4_Grids.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_MOBILE_4_Grids.Designer.cs">
+      <DependentUpon>Form78d_MOBILE_4_Grids.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_MOBILE_2_Grids.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_MOBILE_2_Grids.Designer.cs">
+      <DependentUpon>Form78d_MOBILE_2_Grids.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_SHOW_MOBILE_RAW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_SHOW_MOBILE_RAW.Designer.cs">
+      <DependentUpon>Form78d_SHOW_MOBILE_RAW.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_SHOW_MOBILE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_SHOW_MOBILE.Designer.cs">
+      <DependentUpon>Form78d_SHOW_MOBILE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_Discre_MOBILE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_Discre_MOBILE.Designer.cs">
+      <DependentUpon>Form78d_Discre_MOBILE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_FileRecords_For_Date.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_FileRecords_For_Date.Designer.cs">
+      <DependentUpon>Form78d_FileRecords_For_Date.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_POS_Reconc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_POS_Reconc.Designer.cs">
+      <DependentUpon>Form78d_POS_Reconc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_CUT_OFF_GL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_CUT_OFF_GL.Designer.cs">
+      <DependentUpon>Form78d_CUT_OFF_GL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_FileRecords_Reversals.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_FileRecords_Reversals.Designer.cs">
+      <DependentUpon>Form78d_FileRecords_Reversals.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_FileRecords_IST_PRESENTER.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_FileRecords_IST_PRESENTER.Designer.cs">
+      <DependentUpon>Form78d_FileRecords_IST_PRESENTER.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_DepositedNotes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_DepositedNotes.Designer.cs">
+      <DependentUpon>Form78d_DepositedNotes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_SlaveCategories_Mobile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_SlaveCategories_Mobile.Designer.cs">
+      <DependentUpon>Form78d_SlaveCategories_Mobile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_UserVsAtms.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_UserVsAtms.Designer.cs">
+      <DependentUpon>Form78d_UserVsAtms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_SlaveCategories.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_SlaveCategories.Designer.cs">
+      <DependentUpon>Form78d_SlaveCategories.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_Matched.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_Matched.Designer.cs">
+      <DependentUpon>Form78d_Matched.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_FileRecords.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_FileRecords.Designer.cs">
+      <DependentUpon>Form78d_FileRecords.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_Discre.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_Discre.Designer.cs">
+      <DependentUpon>Form78d_Discre.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_IST.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_IST.Designer.cs">
+      <DependentUpon>Form78d_IST.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_BDC_3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_AllFiles_BDC_3.Designer.cs">
+      <DependentUpon>Form78d_AllFiles_BDC_3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78Rev2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78Rev2.Designer.cs">
+      <DependentUpon>Form78Rev2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NVConfirmed_Cards.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NVConfirmed_Cards.Designer.cs">
+      <DependentUpon>Form291NVConfirmed_Cards.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NVMakeSystemMatching_Cards.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NVMakeSystemMatching_Cards.Designer.cs">
+      <DependentUpon>Form291NVMakeSystemMatching_Cards.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NVMatched_Visa.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NVMatched_Visa.Designer.cs">
+      <DependentUpon>Form291NVMatched_Visa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form3_ErrorsAndDiscre.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form3_ErrorsAndDiscre.Designer.cs">
+      <DependentUpon>Form3_ErrorsAndDiscre.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form5-ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form5-ITMX.Designer.cs">
+      <DependentUpon>Form5-ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502aVisa.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502aVisa.Designer.cs">
+      <DependentUpon>Form502aVisa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502MigrationCycles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502MigrationCycles.Designer.cs">
+      <DependentUpon>Form502MigrationCycles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form504b.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form504b.Designer.cs">
+      <DependentUpon>Form504b.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R61ATMS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R61ATMS.Designer.cs">
+      <DependentUpon>Form56R61ATMS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R68ATMS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R68ATMS.Designer.cs">
+      <DependentUpon>Form56R68ATMS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R67ATMS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R67ATMS.Designer.cs">
+      <DependentUpon>Form56R67ATMS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R60ATMS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R60ATMS.Designer.cs">
+      <DependentUpon>Form56R60ATMS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R59ATMS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R59ATMS.Designer.cs">
+      <DependentUpon>Form56R59ATMS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R58ATMS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R58ATMS.Designer.cs">
+      <DependentUpon>Form56R58ATMS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502AccessRights.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502AccessRights.Designer.cs">
+      <DependentUpon>Form502AccessRights.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R66VISA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R66VISA.Designer.cs">
+      <DependentUpon>Form56R66VISA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78Rev.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78Rev.Designer.cs">
+      <DependentUpon>Form78Rev.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d_AllFiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d_AllFiles.Designer.cs">
+      <DependentUpon>Form78d_AllFiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78e.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78e.Designer.cs">
+      <DependentUpon>Form78e.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78d.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78d.Designer.cs">
+      <DependentUpon>Form78d.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form78c.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form78c.Designer.cs">
+      <DependentUpon>Form78c.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80a1_EWALLET.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80a1_EWALLET.Designer.cs">
+      <DependentUpon>Form80a1_EWALLET.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80a1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80a1.Designer.cs">
+      <DependentUpon>Form80a1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80a3_EWALLET.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80a3_EWALLET.Designer.cs">
+      <DependentUpon>Form80a3_EWALLET.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80a3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80a3.Designer.cs">
+      <DependentUpon>Form80a3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80aVisa_2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80aVisa_2.Designer.cs">
+      <DependentUpon>Form80aVisa_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80b2_Unmatched_ROM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80b2_Unmatched_ROM.Designer.cs">
+      <DependentUpon>Form80b2_Unmatched_ROM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80b_ROM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80b_ROM.Designer.cs">
+      <DependentUpon>Form80b_ROM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80b3_MOBILE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80b3_MOBILE.Designer.cs">
+      <DependentUpon>Form80b3_MOBILE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80b_IST.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80b_IST.Designer.cs">
+      <DependentUpon>Form80b_IST.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80b.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80b.Designer.cs">
+      <DependentUpon>Form80b.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80b3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80b3.Designer.cs">
+      <DependentUpon>Form80b3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form85_Visa.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form85_Visa.Designer.cs">
+      <DependentUpon>Form85_Visa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form8_Traces_Oper.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form8_Traces_Oper.Designer.cs">
+      <DependentUpon>Form8_Traces_Oper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form8_Traces.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form8_Traces.Designer.cs">
+      <DependentUpon>Form8_Traces.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80aVisa.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80aVisa.Designer.cs">
+      <DependentUpon>Form80aVisa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80dΙΤΜΧ.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80dΙΤΜΧ.Designer.cs">
+      <DependentUpon>Form80dΙΤΜΧ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_Files_Loaded.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_Files_Loaded.Designer.cs">
+      <DependentUpon>Form502_Files_Loaded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form153.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form153.Designer.cs">
+      <DependentUpon>Form153.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form14b.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form14b.Designer.cs">
+      <DependentUpon>Form14b.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form112.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form112.Designer.cs">
+      <DependentUpon>Form112.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form51_SM_Cassettes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form51_SM_Cassettes.Designer.cs">
+      <DependentUpon>Form51_SM_Cassettes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SWDForm502DashBoardAtms.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SWDForm502DashBoardAtms.Designer.cs">
+      <DependentUpon>SWDForm502DashBoardAtms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SWDForm502DashBoard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SWDForm502DashBoard.Designer.cs">
+      <DependentUpon>SWDForm502DashBoard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SWD_Form271.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SWD_Form271.Designer.cs">
+      <DependentUpon>SWD_Form271.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form281 - ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form281 - ITMX.Designer.cs">
+      <DependentUpon>Form281 - ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NVAccountStatusALL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NVAccountStatusALL.Designer.cs">
+      <DependentUpon>Form291NVAccountStatusALL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NVAlertsParam.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NVAlertsParam.Designer.cs">
+      <DependentUpon>Form291NVAlertsParam.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NVConfirmed.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NVConfirmed.Designer.cs">
+      <DependentUpon>Form291NVConfirmed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NVAccountStatus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NVAccountStatus.Designer.cs">
+      <DependentUpon>Form291NVAccountStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NVCcyRatesDefinition.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NVCcyRatesDefinition.Designer.cs">
+      <DependentUpon>Form291NVCcyRatesDefinition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NVMatchingRulesDefinition.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NVMatchingRulesDefinition.Designer.cs">
+      <DependentUpon>Form291NVMatchingRulesDefinition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NVMakeSystemMatching.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NVMakeSystemMatching.Designer.cs">
+      <DependentUpon>Form291NVMakeSystemMatching.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form291NVMatched.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291NVMatched.Designer.cs">
+      <DependentUpon>Form291NVMatched.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form2Grid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form2Grid.Designer.cs">
+      <DependentUpon>Form2Grid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form2MessageBoxITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form2MessageBoxITMX.Designer.cs">
+      <DependentUpon>Form2MessageBoxITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form300ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form300ITMX.Designer.cs">
+      <DependentUpon>Form300ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form36NOSTRO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form36NOSTRO.Designer.cs">
+      <DependentUpon>Form36NOSTRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form35NOSTRO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form35NOSTRO.Designer.cs">
+      <DependentUpon>Form35NOSTRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form35ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form35ITMX.Designer.cs">
+      <DependentUpon>Form35ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form3_NOSTRO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form3_NOSTRO.designer.cs">
+      <DependentUpon>Form3_NOSTRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form3_ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form3_ITMX.designer.cs">
+      <DependentUpon>Form3_ITMX.cs</DependentUpon>
     </Compile>
     <Compile Include="Form305.cs">
       <SubType>Form</SubType>
@@ -353,6 +1817,12 @@
     <Compile Include="Form350_Route.Designer.cs">
       <DependentUpon>Form350_Route.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form3_DispOwnersITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form3_DispOwnersITMX.Designer.cs">
+      <DependentUpon>Form3_DispOwnersITMX.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form3_DispOwners.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -377,11 +1847,47 @@
     <Compile Include="Form47.designer.cs">
       <DependentUpon>Form47.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form502.cs">
+    <Compile Include="Form5-NV.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form502.Designer.cs">
-      <DependentUpon>Form502.cs</DependentUpon>
+    <Compile Include="Form5-NV.Designer.cs">
+      <DependentUpon>Form5-NV.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SWDForm502Pac.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SWDForm502Pac.Designer.cs">
+      <DependentUpon>SWDForm502Pac.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SWDForm502Cat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SWDForm502Cat.Designer.cs">
+      <DependentUpon>SWDForm502Cat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form201ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form201ITMX.Designer.cs">
+      <DependentUpon>Form201ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502aNostroAdjALL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502aNostroAdjALL.Designer.cs">
+      <DependentUpon>Form502aNostroAdjALL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502aNostroAdj.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502aNostroAdj.Designer.cs">
+      <DependentUpon>Form502aNostroAdj.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502aNostro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502aNostro.Designer.cs">
+      <DependentUpon>Form502aNostro.cs</DependentUpon>
     </Compile>
     <Compile Include="Form502a.cs">
       <SubType>Form</SubType>
@@ -389,11 +1895,23 @@
     <Compile Include="Form502a.Designer.cs">
       <DependentUpon>Form502a.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form502bITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502bITMX.Designer.cs">
+      <DependentUpon>Form502bITMX.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form502b.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form502b.Designer.cs">
       <DependentUpon>Form502b.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form504.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form504.Designer.cs">
+      <DependentUpon>Form504.cs</DependentUpon>
     </Compile>
     <Compile Include="Form503.cs">
       <SubType>Form</SubType>
@@ -401,23 +1919,29 @@
     <Compile Include="Form503.Designer.cs">
       <DependentUpon>Form503.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form503Fees.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form503Fees.Designer.cs">
+      <DependentUpon>Form503Fees.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form503_CategOwners.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form503_CategOwners.Designer.cs">
       <DependentUpon>Form503_CategOwners.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form50b.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form50b.Designer.cs">
+      <DependentUpon>Form50b.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form51.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form51.designer.cs">
       <DependentUpon>Form51.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Form52b.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form52b.Designer.cs">
-      <DependentUpon>Form52b.cs</DependentUpon>
     </Compile>
     <Compile Include="Form56R-EWB001-Matched.cs">
       <SubType>Form</SubType>
@@ -443,6 +1967,108 @@
     <Compile Include="Form56R18.Designer.cs">
       <DependentUpon>Form56R18.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form56R30ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R30ITMX.Designer.cs">
+      <DependentUpon>Form56R30ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R57ATMS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R57ATMS.Designer.cs">
+      <DependentUpon>Form56R57ATMS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R56ATMS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R56ATMS.Designer.cs">
+      <DependentUpon>Form56R56ATMS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R55ATMS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R55ATMS.Designer.cs">
+      <DependentUpon>Form56R55ATMS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R65NOSTRO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R65NOSTRO.Designer.cs">
+      <DependentUpon>Form56R65NOSTRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R64NOSTRO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R64NOSTRO.Designer.cs">
+      <DependentUpon>Form56R64NOSTRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R54ATMS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R54ATMS.Designer.cs">
+      <DependentUpon>Form56R54ATMS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R42ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R42ITMX.Designer.cs">
+      <DependentUpon>Form56R42ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R45ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R45ITMX.Designer.cs">
+      <DependentUpon>Form56R45ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R44ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R44ITMX.Designer.cs">
+      <DependentUpon>Form56R44ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R43ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R43ITMX.Designer.cs">
+      <DependentUpon>Form56R43ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R41ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R41ITMX.Designer.cs">
+      <DependentUpon>Form56R41ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R34ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R34ITMX.Designer.cs">
+      <DependentUpon>Form56R34ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R33ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R33ITMX.Designer.cs">
+      <DependentUpon>Form56R33ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R32ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R32ITMX.Designer.cs">
+      <DependentUpon>Form56R32ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R31ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R31ITMX.Designer.cs">
+      <DependentUpon>Form56R31ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form56R3ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form56R3ITMX.Designer.cs">
+      <DependentUpon>Form56R3ITMX.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form56R_EWB002_UnMatched.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -455,11 +2081,23 @@
     <Compile Include="Form66.Designer.cs">
       <DependentUpon>Form66.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form271FastTrack.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form271FastTrack.Designer.cs">
+      <DependentUpon>Form271FastTrack.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form78b.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form78b.Designer.cs">
       <DependentUpon>Form78b.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80aNostro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80aNostro.Designer.cs">
+      <DependentUpon>Form80aNostro.cs</DependentUpon>
     </Compile>
     <Compile Include="Form80a.cs">
       <SubType>Form</SubType>
@@ -473,17 +2111,59 @@
     <Compile Include="Form80a2.Designer.cs">
       <DependentUpon>Form80a2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form80b.cs">
+    <Compile Include="Form80aITMX.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form80b.Designer.cs">
-      <DependentUpon>Form80b.cs</DependentUpon>
+    <Compile Include="Form80aITMX.Designer.cs">
+      <DependentUpon>Form80aITMX.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form80c.cs">
+    <Compile Include="Form80b2_Unmatched.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form80c.Designer.cs">
-      <DependentUpon>Form80c.cs</DependentUpon>
+    <Compile Include="Form80b2_Unmatched.Designer.cs">
+      <DependentUpon>Form80b2_Unmatched.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80bNV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80bNV.Designer.cs">
+      <DependentUpon>Form80bNV.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80cATMs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80cATMs.Designer.cs">
+      <DependentUpon>Form80cATMs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80cNV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80cNV.Designer.cs">
+      <DependentUpon>Form80cNV.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80bΙΤΜΧ.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80bΙΤΜΧ.Designer.cs">
+      <DependentUpon>Form80bΙΤΜΧ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form80cITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80cITMX.Designer.cs">
+      <DependentUpon>Form80cITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form82.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form82.Designer.cs">
+      <DependentUpon>Form82.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form85NV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form85NV.Designer.cs">
+      <DependentUpon>Form85NV.cs</DependentUpon>
     </Compile>
     <Compile Include="Form85.cs">
       <SubType>Form</SubType>
@@ -497,12 +2177,6 @@
     <Compile Include="Form85_1.Designer.cs">
       <DependentUpon>Form85_1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="RRDMAllowedAtmsAndUpdateFromJournal.cs" />
     <Compile Include="appRes.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -512,11 +2186,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet1.xsd</DependentUpon>
     </Compile>
     <Compile Include="ATMSDataSet10.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -563,11 +2232,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet121.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ATMSDataSet13.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet13.xsd</DependentUpon>
-    </Compile>
     <Compile Include="ATMSDataSet14.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -588,60 +2252,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet19.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ATMSDataSet2.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet2.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet23.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet23.xsd</DependentUpon>
-    </Compile>
     <Compile Include="ATMSDataSet25.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet25.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ATMSDataSet27.Designer.cs">
+    <Compile Include=".Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet27.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet29.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet29.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet30.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet30.xsd</DependentUpon>
+      <DependentUpon>.xsd</DependentUpon>
     </Compile>
     <Compile Include="ATMSDataSet31.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet31.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ATMSDataSet32.Designer.cs">
+    <Compile Include="ATMSDataSet37XXXX.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet32.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet33.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet33.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet34.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet34.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet37.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet37.xsd</DependentUpon>
+      <DependentUpon>ATMSDataSet37XXXX.xsd</DependentUpon>
     </Compile>
     <Compile Include="ATMSDataSet38.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -653,65 +2282,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet39.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ATMSDataSet4.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet4.xsd</DependentUpon>
-    </Compile>
     <Compile Include="ATMSDataSet41.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet41.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet42.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet42.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet43.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet43.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet44.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet44.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet45.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet45.xsd</DependentUpon>
     </Compile>
     <Compile Include="ATMSDataSet48.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet48.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ATMSDataSet49.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet49.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet50.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet50.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet52.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet52.xsd</DependentUpon>
-    </Compile>
     <Compile Include="ATMSDataSet7.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ATMSDataSet7.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ATMSDataSet8.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ATMSDataSet8.xsd</DependentUpon>
     </Compile>
     <Compile Include="ATMSDataSet9.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -724,6 +2308,967 @@
       <DependentUpon>ATMSDataSet99.xsd</DependentUpon>
     </Compile>
     <Compile Include="AuditTrailClass.cs" />
+    <Compile Include="Form291ITMX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form291ITMX.Designer.cs">
+      <DependentUpon>Form291ITMX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form9NV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form9NV.Designer.cs">
+      <DependentUpon>Form9NV.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form3_PreInv.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form3_PreInv.Designer.cs">
+      <DependentUpon>Form3_PreInv.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormHelp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHelp.Designer.cs">
+      <DependentUpon>FormHelp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormHelpAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHelpAdd.Designer.cs">
+      <DependentUpon>FormHelpAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormImages.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormImages.Designer.cs">
+      <DependentUpon>FormImages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.cs" />
+    <EmbeddedResource Include="appResImg.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>appResImg.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - ATMS - ADMIN_Users_Mgmt.resx">
+      <DependentUpon>Form1 - ATMS - ADMIN_Users_Mgmt.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - ATMS - Controller_EGA.resx">
+      <DependentUpon>Form1 - ATMS - Controller_EGA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - Reconciliator_EGATE.resx">
+      <DependentUpon>Form1 - Reconciliator_EGATE.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - Reconciliator_EWALLET.resx">
+      <DependentUpon>Form1 - Reconciliator_EWALLET.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - ATMS - Reconciliator_EMR.resx">
+      <DependentUpon>Form1 - ATMS - Reconciliator_EMR.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - ATMS - Reconciliator_BDC_TYPE_2.resx">
+      <DependentUpon>Form1 - ATMS - Reconciliator_BDC_TYPE_2.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form13_NEW.resx">
+      <DependentUpon>Form13_NEW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form14b_Input_Key.resx">
+      <DependentUpon>Form14b_Input_Key.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form154.resx">
+      <DependentUpon>Form154.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_CIT_ExcelOutput_Alerts _BDC.resx">
+      <DependentUpon>Form18_CIT_ExcelOutput_Alerts _BDC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_LoadedFilesStatus_GAPS.resx">
+      <DependentUpon>Form18_LoadedFilesStatus_GAPS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1_ATMS _Controller_EMR.resx">
+      <DependentUpon>Form1_ATMS _Controller_EMR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - ATMS - Controller.resx">
+      <DependentUpon>Form1 - ATMS - Controller.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - ATMS - ADMIN.resx">
+      <DependentUpon>Form1 - ATMS - ADMIN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - ATMS - Reconciliator_AUD_XXX.resx">
+      <DependentUpon>Form1 - ATMS - Reconciliator_AUD_XXX.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - ATMS - Reconciliator_ABE.resx">
+      <DependentUpon>Form1 - ATMS - Reconciliator_ABE.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - ATMS - Reconciliator.resx">
+      <DependentUpon>Form1 - ATMS - Reconciliator.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - ATMS - OPERATIONAL.resx">
+      <DependentUpon>Form1 - ATMS - OPERATIONAL.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - ITMX.resx">
+      <DependentUpon>Form1 - ITMX.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - E-FINANCE.resx">
+      <DependentUpon>Form1 - E-FINANCE.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - NOSTRO - OPERATIONAL - Copy.resx">
+      <DependentUpon>Form1 - NOSTRO - OPERATIONAL - Copy.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - NOSTRO - OPERATIONAL.resx">
+      <DependentUpon>Form1 - NOSTRO - OPERATIONAL.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - ITMX - Banks.resx">
+      <DependentUpon>Form1 - ITMX - Banks.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1 - ITMX-CBT.resx">
+      <DependentUpon>Form1 - ITMX-CBT.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form108_Cycles.resx">
+      <DependentUpon>Form108_Cycles.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form12_YEAR_XXXX.resx">
+      <DependentUpon>Form12_YEAR_XXXX.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form14b_All_Actions.resx">
+      <DependentUpon>Form14b_All_Actions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form14b_POS.resx">
+      <DependentUpon>Form14b_POS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_CIT_Orders.resx">
+      <DependentUpon>Form18_CIT_Orders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_CIT_ExcelOutput_Alerts.resx">
+      <DependentUpon>Form18_CIT_ExcelOutput_Alerts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_CIT_LoadExcel_AUDI.resx">
+      <DependentUpon>Form18_CIT_LoadExcel_AUDI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_CIT_ValidateUpdateExcel_AUDI.resx">
+      <DependentUpon>Form18_CIT_ValidateUpdateExcel_AUDI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form2-MessageContent.resx">
+      <DependentUpon>Form2-MessageContent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form20_NEW.resx">
+      <DependentUpon>Form20_NEW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200JobCycles_GL_Mobile.resx">
+      <DependentUpon>Form200JobCycles_GL_Mobile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200JobCycles_Presenter_Repl.resx">
+      <DependentUpon>Form200JobCycles_Presenter_Repl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200JobCycles_Reports_EWALLET.resx">
+      <DependentUpon>Form200JobCycles_Reports_EWALLET.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200JobCycles_Reports_Audi.resx">
+      <DependentUpon>Form200JobCycles_Reports_Audi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200_SET_Vs_CAP.resx">
+      <DependentUpon>Form200_SET_Vs_CAP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200JobCycles_GL.resx">
+      <DependentUpon>Form200JobCycles_GL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form21MIS_ATM_ROMANIA.resx">
+      <DependentUpon>Form21MIS_ATM_ROMANIA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form21MIS_Excess_Reports.resx">
+      <DependentUpon>Form21MIS_Excess_Reports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form276_CIT_Replenish_FirstStep.resx">
+      <DependentUpon>Form276_CIT_Replenish_FirstStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form277_EGATE.resx">
+      <DependentUpon>Form277_EGATE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form277_MOBILE.resx">
+      <DependentUpon>Form277_MOBILE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form271FastTrack_OLD.resx">
+      <DependentUpon>Form271FastTrack_OLD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form276_AUDI_FirstStep.resx">
+      <DependentUpon>Form276_AUDI_FirstStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NV_MT_103.resx">
+      <DependentUpon>Form291NV_MT_103.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200JobCycles_Reports.resx">
+      <DependentUpon>Form200JobCycles_Reports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200JobCycles_Presenter.resx">
+      <DependentUpon>Form200JobCycles_Presenter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form24_ByDates.resx">
+      <DependentUpon>Form24_ByDates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form271.resx">
+      <DependentUpon>Form271.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form271View_Table.resx">
+      <DependentUpon>Form271View_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form276_NBG.resx">
+      <DependentUpon>Form276_NBG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NVMatched_Visa_Manual.resx">
+      <DependentUpon>Form291NVMatched_Visa_Manual.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form2MessageBox_SQL.resx">
+      <DependentUpon>Form2MessageBox_SQL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form38_CDM.resx">
+      <DependentUpon>Form38_CDM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form3_Management.resx">
+      <DependentUpon>Form3_Management.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form3_PreInv_MOBILE.resx">
+      <DependentUpon>Form3_PreInv_MOBILE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form3_PreInv_IST.resx">
+      <DependentUpon>Form3_PreInv_IST.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form40.de.resx">
+      <DependentUpon>Form40.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form40.resx">
+      <DependentUpon>Form40.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form40_Active_DIR.de.resx">
+      <DependentUpon>Form40_Active_DIR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form40_Active_DIR.resx">
+      <DependentUpon>Form40_Active_DIR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form5.resx">
+      <DependentUpon>Form5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502aPOS_XXX.resx">
+      <DependentUpon>Form502aPOS_XXX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_Load_And_Match_BOC.resx">
+      <DependentUpon>Form502_Load_And_Match_BOC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_Load_And_Match_MOBILE.resx">
+      <DependentUpon>Form502_Load_And_Match_MOBILE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_Load_And_Match_ABE.resx">
+      <DependentUpon>Form502_Load_And_Match_ABE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_Load_And_Match_AUD.resx">
+      <DependentUpon>Form502_Load_And_Match_AUD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_Load_And_Match_BDC_MULTI.resx">
+      <DependentUpon>Form502_Load_And_Match_BDC_MULTI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_Load_And_Match_BDC.resx">
+      <DependentUpon>Form502_Load_And_Match_BDC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_Actions_GL.resx">
+      <DependentUpon>Form502_Actions_GL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_V03_TablesOther.resx">
+      <DependentUpon>Form502_V03_TablesOther.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_V03_REFORMAT.resx">
+      <DependentUpon>Form502_V03_REFORMAT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_V03.resx">
+      <DependentUpon>Form502_V03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form503_Maker_Checker.resx">
+      <DependentUpon>Form503_Maker_Checker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form503_WALLET.resx">
+      <DependentUpon>Form503_WALLET.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form503_Insert_Manual_To_Mpa.resx">
+      <DependentUpon>Form503_Insert_Manual_To_Mpa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form503_GL_STATUS.resx">
+      <DependentUpon>Form503_GL_STATUS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form503_SesCombined.resx">
+      <DependentUpon>Form503_SesCombined.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form51_Repl_For_IST.resx">
+      <DependentUpon>Form51_Repl_For_IST.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form51_Recycle.resx">
+      <DependentUpon>Form51_Recycle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form51_FAB_Type.resx">
+      <DependentUpon>Form51_FAB_Type.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form51_CDM.resx">
+      <DependentUpon>Form51_CDM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form51_TXN_Cassettes_BAL_V2.resx">
+      <DependentUpon>Form51_TXN_Cassettes_BAL_V2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form51_TXN_Cassettes_BAL.resx">
+      <DependentUpon>Form51_TXN_Cassettes_BAL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form52_GL_W2.resx">
+      <DependentUpon>Form52_GL_W2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form271ViewAtmUnmatched.resx">
+      <DependentUpon>Form271ViewAtmUnmatched.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form273_AUDI.resx">
+      <DependentUpon>Form273_AUDI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_CIT_ExcelOutputCycles.resx">
+      <DependentUpon>Form18_CIT_ExcelOutputCycles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_LoadedFilesStatus.resx">
+      <DependentUpon>Form18_LoadedFilesStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_ExcelMainMenu.resx">
+      <DependentUpon>Form18_ExcelMainMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_CIT_LoadExcel_NBG_XXXX.resx">
+      <DependentUpon>Form18_CIT_LoadExcel_NBG_XXXX.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_CIT_LoadExcel_KFH.resx">
+      <DependentUpon>Form18_CIT_LoadExcel_KFH.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form108MigrationExcel.resx">
+      <DependentUpon>Form108MigrationExcel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_CIT_ViewBankRecords.resx">
+      <DependentUpon>Form18_CIT_ViewBankRecords.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_CIT_ViewUpdatedExcelDetails_XXX.resx">
+      <DependentUpon>Form18_CIT_ViewUpdatedExcelDetails_XXX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200c ATMs.resx">
+      <DependentUpon>Form200c ATMs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200b ATMs.resx">
+      <DependentUpon>Form200b ATMs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200JobCycles_Output_Files.resx">
+      <DependentUpon>Form200JobCycles_Output_Files.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200JobCycles.resx">
+      <DependentUpon>Form200JobCycles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200NOSTRO.resx">
+      <DependentUpon>Form200NOSTRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200c ITMX.resx">
+      <DependentUpon>Form200c ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200b ITMX.resx">
+      <DependentUpon>Form200b ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NV_E_FIN_Central.resx">
+      <DependentUpon>Form291NV_E_FIN_Central.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form201ITMXFEES.resx">
+      <DependentUpon>Form201ITMXFEES.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form201bITMXFEES.resx">
+      <DependentUpon>Form201bITMXFEES.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form201bITMX.resx">
+      <DependentUpon>Form201bITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form202ITMXFEES.resx">
+      <DependentUpon>Form202ITMXFEES.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form202ITMX.resx">
+      <DependentUpon>Form202ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form21MISNOSTRO.resx">
+      <DependentUpon>Form21MISNOSTRO.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form21MISITMX.resx">
+      <DependentUpon>Form21MISITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form22MISNOSTRO.resx">
+      <DependentUpon>Form22MISNOSTRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NV_E_FIN_Totals_XXXXX.resx">
+      <DependentUpon>Form291NV_E_FIN_Totals_XXXXX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form2Merchant.resx">
+      <DependentUpon>Form2Merchant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form18_CIT_ExcelLoadingCycles.resx">
+      <DependentUpon>Form18_CIT_ExcelLoadingCycles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502AccessRights_E_FINANCE.resx">
+      <DependentUpon>Form502AccessRights_E_FINANCE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502AccessRights_NOSTRO.resx">
+      <DependentUpon>Form502AccessRights_NOSTRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502ArchiveCycles.resx">
+      <DependentUpon>Form502ArchiveCycles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_V02_OUT.resx">
+      <DependentUpon>Form502_V02_OUT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_V02.resx">
+      <DependentUpon>Form502_V02.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_U_Str.resx">
+      <DependentUpon>Form502_U_Str.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form20_Applications.resx">
+      <DependentUpon>Form20_Applications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form503_Visa.resx">
+      <DependentUpon>Form503_Visa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form503_Branch.resx">
+      <DependentUpon>Form503_Branch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form52c.resx">
+      <DependentUpon>Form52c.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R55_5.resx">
+      <DependentUpon>Form56R55_5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R55_4.resx">
+      <DependentUpon>Form56R55_4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R55_3.resx">
+      <DependentUpon>Form56R55_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R55_2.resx">
+      <DependentUpon>Form56R55_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R59ATMS_M_LoadingFiles.resx">
+      <DependentUpon>Form56R59ATMS_M_LoadingFiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R59ATMS_Matching.resx">
+      <DependentUpon>Form56R59ATMS_Matching.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R64_RATES.resx">
+      <DependentUpon>Form56R64_RATES.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R68ATMS_W_Pool_Table.resx">
+      <DependentUpon>Form56R68ATMS_W_Pool_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R68ATMS_W_General_Files.resx">
+      <DependentUpon>Form56R68ATMS_W_General_Files.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R69ATMS_Repl_Cycles.resx">
+      <DependentUpon>Form56R69ATMS_Repl_Cycles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R69ATMS_Last_Traces.resx">
+      <DependentUpon>Form56R69ATMS_Last_Traces.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R69ATMS_Repl_Orders.resx">
+      <DependentUpon>Form56R69ATMS_Repl_Orders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R82.resx">
+      <DependentUpon>Form56R82.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R80.resx">
+      <DependentUpon>Form56R80.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R79.resx">
+      <DependentUpon>Form56R79.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R78.resx">
+      <DependentUpon>Form56R78.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R_E_FINANCE_Branch_Totals.resx">
+      <DependentUpon>Form56R_E_FINANCE_Branch_Totals.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R76.resx">
+      <DependentUpon>Form56R76.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R_In_Mapping.resx">
+      <DependentUpon>Form56R_In_Mapping.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R_Out_Mapping.resx">
+      <DependentUpon>Form56R_Out_Mapping.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R69ATMS_Bank.resx">
+      <DependentUpon>Form56R69ATMS_Bank.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R_TXNsFrom_CutOff.resx">
+      <DependentUpon>Form56R_TXNsFrom_CutOff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R74.resx">
+      <DependentUpon>Form56R74.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R73.resx">
+      <DependentUpon>Form56R73.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R72.resx">
+      <DependentUpon>Form56R72.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R71.resx">
+      <DependentUpon>Form56R71.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R70.resx">
+      <DependentUpon>Form56R70.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R69ATMS_G4S.resx">
+      <DependentUpon>Form56R69ATMS_G4S.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R5Merchant.resx">
+      <DependentUpon>Form56R5Merchant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form62_b.resx">
+      <DependentUpon>Form62_b.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form67_ROM.resx">
+      <DependentUpon>Form67_ROM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form67_Cycle_Rich_Picture_2_XXX.resx">
+      <DependentUpon>Form67_Cycle_Rich_Picture_2_XXX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form67_Cycle_Rich_Picture_2.resx">
+      <DependentUpon>Form67_Cycle_Rich_Picture_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form67_Cycle_Rich_Picture.resx">
+      <DependentUpon>Form67_Cycle_Rich_Picture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form67_BDC.resx">
+      <DependentUpon>Form67_BDC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form68_Atms_Main.resx">
+      <DependentUpon>Form68_Atms_Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NV_E_FIN_Word_Table.resx">
+      <DependentUpon>Form291NV_E_FIN_Word_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form76_NEW.resx">
+      <DependentUpon>Form76_NEW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form77_NEW.resx">
+      <DependentUpon>Form77_NEW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_AllFiles_EGATE.resx">
+      <DependentUpon>Form78d_AllFiles_EGATE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_AllFiles_BDC_3_ROM.resx">
+      <DependentUpon>Form78d_AllFiles_BDC_3_ROM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_AllFiles_BDC_3_MOBILE_TOTALS.resx">
+      <DependentUpon>Form78d_AllFiles_BDC_3_MOBILE_TOTALS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_AllFiles_BDC_3_MOBILE.resx">
+      <DependentUpon>Form78d_AllFiles_BDC_3_MOBILE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_AllFiles_Reversals.resx">
+      <DependentUpon>Form78d_AllFiles_Reversals.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_AllFiles_Pending.resx">
+      <DependentUpon>Form78d_AllFiles_Pending.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_BasedOnDataTable.resx">
+      <DependentUpon>Form78d_BasedOnDataTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_BDC_TO_POST.resx">
+      <DependentUpon>Form78d_BDC_TO_POST.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_ATMRecords.resx">
+      <DependentUpon>Form78d_ATMRecords.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_BULK_Records.resx">
+      <DependentUpon>Form78d_BULK_Records.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_MOBILE_4_Grids.resx">
+      <DependentUpon>Form78d_MOBILE_4_Grids.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_MOBILE_2_Grids.resx">
+      <DependentUpon>Form78d_MOBILE_2_Grids.cs</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_SHOW_MOBILE_RAW.resx">
+      <DependentUpon>Form78d_SHOW_MOBILE_RAW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_SHOW_MOBILE.resx">
+      <DependentUpon>Form78d_SHOW_MOBILE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_Discre_MOBILE.resx">
+      <DependentUpon>Form78d_Discre_MOBILE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_FileRecords_For_Date.resx">
+      <DependentUpon>Form78d_FileRecords_For_Date.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_POS_Reconc.resx">
+      <DependentUpon>Form78d_POS_Reconc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_CUT_OFF_GL.resx">
+      <DependentUpon>Form78d_CUT_OFF_GL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_FileRecords_Reversals.resx">
+      <DependentUpon>Form78d_FileRecords_Reversals.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_FileRecords_IST_PRESENTER.resx">
+      <DependentUpon>Form78d_FileRecords_IST_PRESENTER.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_DepositedNotes.resx">
+      <DependentUpon>Form78d_DepositedNotes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_SlaveCategories_Mobile.resx">
+      <DependentUpon>Form78d_SlaveCategories_Mobile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_UserVsAtms.resx">
+      <DependentUpon>Form78d_UserVsAtms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_SlaveCategories.resx">
+      <DependentUpon>Form78d_SlaveCategories.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_Matched.resx">
+      <DependentUpon>Form78d_Matched.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_FileRecords.resx">
+      <DependentUpon>Form78d_FileRecords.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_Discre.resx">
+      <DependentUpon>Form78d_Discre.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_IST.resx">
+      <DependentUpon>Form78d_IST.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_AllFiles_BDC_3.resx">
+      <DependentUpon>Form78d_AllFiles_BDC_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78Rev2.resx">
+      <DependentUpon>Form78Rev2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NVConfirmed_Cards.resx">
+      <DependentUpon>Form291NVConfirmed_Cards.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NVMakeSystemMatching_Cards.resx">
+      <DependentUpon>Form291NVMakeSystemMatching_Cards.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NVMatched_Visa.resx">
+      <DependentUpon>Form291NVMatched_Visa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form3_ErrorsAndDiscre.resx">
+      <DependentUpon>Form3_ErrorsAndDiscre.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form5-ITMX.resx">
+      <DependentUpon>Form5-ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502aVisa.resx">
+      <DependentUpon>Form502aVisa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502MigrationCycles.resx">
+      <DependentUpon>Form502MigrationCycles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form504b.resx">
+      <DependentUpon>Form504b.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R61ATMS.resx">
+      <DependentUpon>Form56R61ATMS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R68ATMS.resx">
+      <DependentUpon>Form56R68ATMS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R67ATMS.resx">
+      <DependentUpon>Form56R67ATMS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R60ATMS.resx">
+      <DependentUpon>Form56R60ATMS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R59ATMS.resx">
+      <DependentUpon>Form56R59ATMS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R58ATMS.resx">
+      <DependentUpon>Form56R58ATMS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502AccessRights.resx">
+      <DependentUpon>Form502AccessRights.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R66VISA.resx">
+      <DependentUpon>Form56R66VISA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78Rev.resx">
+      <DependentUpon>Form78Rev.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d_AllFiles.resx">
+      <DependentUpon>Form78d_AllFiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78e.resx">
+      <DependentUpon>Form78e.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78d.resx">
+      <DependentUpon>Form78d.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form78c.resx">
+      <DependentUpon>Form78c.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80a1_EWALLET.resx">
+      <DependentUpon>Form80a1_EWALLET.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80a1.resx">
+      <DependentUpon>Form80a1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80a3_EWALLET.resx">
+      <DependentUpon>Form80a3_EWALLET.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80a3.resx">
+      <DependentUpon>Form80a3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80aVisa_2.resx">
+      <DependentUpon>Form80aVisa_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80b2_Unmatched_ROM.resx">
+      <DependentUpon>Form80b2_Unmatched_ROM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80b_ROM.resx">
+      <DependentUpon>Form80b_ROM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80b3_MOBILE.resx">
+      <DependentUpon>Form80b3_MOBILE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80b_IST.resx">
+      <DependentUpon>Form80b_IST.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80b.resx">
+      <DependentUpon>Form80b.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80b3.resx">
+      <DependentUpon>Form80b3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form85_Visa.resx">
+      <DependentUpon>Form85_Visa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form8_Traces_Oper.resx">
+      <DependentUpon>Form8_Traces_Oper.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form8_Traces.resx">
+      <DependentUpon>Form8_Traces.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80aVisa.resx">
+      <DependentUpon>Form80aVisa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80dΙΤΜΧ.resx">
+      <DependentUpon>Form80dΙΤΜΧ.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_Files_Loaded.resx">
+      <DependentUpon>Form502_Files_Loaded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form153.resx">
+      <DependentUpon>Form153.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form14b.resx">
+      <DependentUpon>Form14b.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form112.resx">
+      <DependentUpon>Form112.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form51_SM_Cassettes.resx">
+      <DependentUpon>Form51_SM_Cassettes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SWDForm502DashBoardAtms.resx">
+      <DependentUpon>SWDForm502DashBoardAtms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SWDForm502DashBoard.resx">
+      <DependentUpon>SWDForm502DashBoard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SWD_Form271.resx">
+      <DependentUpon>SWD_Form271.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NVAccountStatusALL.resx">
+      <DependentUpon>Form291NVAccountStatusALL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NVAlertsParam.resx">
+      <DependentUpon>Form291NVAlertsParam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NVConfirmed.resx">
+      <DependentUpon>Form291NVConfirmed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NVAccountStatus.resx">
+      <DependentUpon>Form291NVAccountStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NVCcyRatesDefinition.resx">
+      <DependentUpon>Form291NVCcyRatesDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NVMatchingRulesDefinition.resx">
+      <DependentUpon>Form291NVMatchingRulesDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NVMakeSystemMatching.resx">
+      <DependentUpon>Form291NVMakeSystemMatching.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291NVMatched.resx">
+      <DependentUpon>Form291NVMatched.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form2Grid.resx">
+      <DependentUpon>Form2Grid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form2MessageBoxITMX.resx">
+      <DependentUpon>Form2MessageBoxITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form36NOSTRO.resx">
+      <DependentUpon>Form36NOSTRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form35NOSTRO.resx">
+      <DependentUpon>Form35NOSTRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form35ITMX.resx">
+      <DependentUpon>Form35ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form3_NOSTRO.resx">
+      <DependentUpon>Form3_NOSTRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form3_DispOwnersITMX.resx">
+      <DependentUpon>Form3_DispOwnersITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form201ITMX.resx">
+      <DependentUpon>Form201ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form5-NV.resx">
+      <DependentUpon>Form5-NV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SWDForm502Pac.resx">
+      <DependentUpon>SWDForm502Pac.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SWDForm502Cat.resx">
+      <DependentUpon>SWDForm502Cat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502aNostroAdjALL.resx">
+      <DependentUpon>Form502aNostroAdjALL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502aNostroAdj.resx">
+      <DependentUpon>Form502aNostroAdj.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502aNostro.resx">
+      <DependentUpon>Form502aNostro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form504.resx">
+      <DependentUpon>Form504.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form503Fees.resx">
+      <DependentUpon>Form503Fees.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R30ITMX.resx">
+      <DependentUpon>Form56R30ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R57ATMS.resx">
+      <DependentUpon>Form56R57ATMS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R56ATMS.resx">
+      <DependentUpon>Form56R56ATMS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R55ATMS.resx">
+      <DependentUpon>Form56R55ATMS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R65NOSTRO.resx">
+      <DependentUpon>Form56R65NOSTRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R64NOSTRO.resx">
+      <DependentUpon>Form56R64NOSTRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R54ATMS.resx">
+      <DependentUpon>Form56R54ATMS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R42ITMX.resx">
+      <DependentUpon>Form56R42ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R45ITMX.resx">
+      <DependentUpon>Form56R45ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R44ITMX.resx">
+      <DependentUpon>Form56R44ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R43ITMX.resx">
+      <DependentUpon>Form56R43ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R41ITMX.resx">
+      <DependentUpon>Form56R41ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R34ITMX.resx">
+      <DependentUpon>Form56R34ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R33ITMX.resx">
+      <DependentUpon>Form56R33ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R32ITMX.resx">
+      <DependentUpon>Form56R32ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R31ITMX.resx">
+      <DependentUpon>Form56R31ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form56R3ITMX.resx">
+      <DependentUpon>Form56R3ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form271FastTrack.resx">
+      <DependentUpon>Form271FastTrack.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80aNostro.resx">
+      <DependentUpon>Form80aNostro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80aITMX.resx">
+      <DependentUpon>Form80aITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80b2_Unmatched.resx">
+      <DependentUpon>Form80b2_Unmatched.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80bNV.resx">
+      <DependentUpon>Form80bNV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80cATMs.resx">
+      <DependentUpon>Form80cATMs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80cNV.resx">
+      <DependentUpon>Form80cNV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form291ITMX.resx">
+      <DependentUpon>Form291ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form85NV.resx">
+      <DependentUpon>Form85NV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form9NV.resx">
+      <DependentUpon>Form9NV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form3_PreInv.resx">
+      <DependentUpon>Form3_PreInv.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHelp.resx">
+      <DependentUpon>FormHelp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHelpAdd.resx">
+      <DependentUpon>FormHelpAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormImages.resx">
+      <DependentUpon>FormImages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="RRDMCaseNotes.cs" />
     <Compile Include="Form2-EMailContent.cs">
       <SubType>Form</SubType>
@@ -791,7 +3336,6 @@
     <Compile Include="Form76.Designer.cs">
       <DependentUpon>Form76.cs</DependentUpon>
     </Compile>
-    <Compile Include="ClassLog4Net.cs" />
     <Compile Include="Form16.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -935,23 +3479,17 @@
     <Compile Include="Form15.Designer.cs">
       <DependentUpon>Form15.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form116.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form116.Designer.cs">
-      <DependentUpon>Form116.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form152.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form152.Designer.cs">
       <DependentUpon>Form152.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormAtmsModel.cs">
+    <Compile Include="Form_AtmsModel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormAtmsModel.Designer.cs">
-      <DependentUpon>FormAtmsModel.cs</DependentUpon>
+    <Compile Include="Form_AtmsModel.Designer.cs">
+      <DependentUpon>Form_AtmsModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Form174.cs">
       <SubType>Form</SubType>
@@ -1018,12 +3556,6 @@
     </Compile>
     <Compile Include="Form4.Designer.cs">
       <DependentUpon>Form4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Form5.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form5.Designer.cs">
-      <DependentUpon>Form5.cs</DependentUpon>
     </Compile>
     <Compile Include="Form53.cs">
       <SubType>Form</SubType>
@@ -1121,12 +3653,6 @@
     <Compile Include="Form63.Designer.cs">
       <DependentUpon>Form63.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form64.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form64.Designer.cs">
-      <DependentUpon>Form64.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form65.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1205,12 +3731,6 @@
     <Compile Include="FormProcessing.Designer.cs">
       <DependentUpon>FormProcessing.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form40.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form40.Designer.cs">
-      <DependentUpon>Form40.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form44.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1240,12 +3760,6 @@
     </Compile>
     <Compile Include="Form50.Designer.cs">
       <DependentUpon>Form50.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Form13.cs">
       <SubType>Form</SubType>
@@ -1279,6 +3793,144 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SWD_UCForm271a.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SWD_UCForm271a.Designer.cs">
+      <DependentUpon>SWD_UCForm271a.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SWD_UCForm271b.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SWD_UCForm271b.Designer.cs">
+      <DependentUpon>SWD_UCForm271b.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm271b_Copy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm271b_Copy.Designer.cs">
+      <DependentUpon>UCForm271b_Copy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm271b_FAB.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm271b_FAB.Designer.cs">
+      <DependentUpon>UCForm271b_FAB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm276b_AUDI_FirstStep.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm276b_AUDI_FirstStep.Designer.cs">
+      <DependentUpon>UCForm276b_AUDI_FirstStep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm276a_AUDI_FirstStep_Single.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm276a_AUDI_FirstStep_Single.Designer.cs">
+      <DependentUpon>UCForm276a_AUDI_FirstStep_Single.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm277b_EGA.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm277b_EGA.Designer.cs">
+      <DependentUpon>UCForm277b_EGA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm277d_MOB.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm277d_MOB.Designer.cs">
+      <DependentUpon>UCForm277d_MOB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm277b_MOB.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm277b_MOB.Designer.cs">
+      <DependentUpon>UCForm277b_MOB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm271b_POS.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm271b_POS.Designer.cs">
+      <DependentUpon>UCForm271b_POS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm276a_AUDI_FirstStep.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm276a_AUDI_FirstStep.Designer.cs">
+      <DependentUpon>UCForm276a_AUDI_FirstStep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm276c_AUDI_FirstStep.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm276c_AUDI_FirstStep.Designer.cs">
+      <DependentUpon>UCForm276c_AUDI_FirstStep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm276c_NBG.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm276c_NBG.Designer.cs">
+      <DependentUpon>UCForm276c_NBG.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm276b_NBG.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm276b_NBG.Designer.cs">
+      <DependentUpon>UCForm276b_NBG.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm276a_NBG.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm276a_NBG.Designer.cs">
+      <DependentUpon>UCForm276a_NBG.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm273b_AUDI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm273b_AUDI.Designer.cs">
+      <DependentUpon>UCForm273b_AUDI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm273c_AUDI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm273c_AUDI.Designer.cs">
+      <DependentUpon>UCForm273c_AUDI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm273a_AUDI .cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm273a_AUDI .Designer.cs">
+      <DependentUpon>UCForm273a_AUDI .cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm271a_JCC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm271a_JCC.Designer.cs">
+      <DependentUpon>UCForm271a_JCC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm271c_JCC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm271c_JCC.Designer.cs">
+      <DependentUpon>UCForm271c_JCC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm281b.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm281b.Designer.cs">
+      <DependentUpon>UCForm281b.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm281c.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm281c.Designer.cs">
+      <DependentUpon>UCForm281c.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm281a.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm281a.Designer.cs">
+      <DependentUpon>UCForm281a.cs</DependentUpon>
+    </Compile>
     <Compile Include="UCForm271a.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1303,17 +3955,101 @@
     <Compile Include="UCForm271d.Designer.cs">
       <DependentUpon>UCForm271d.cs</DependentUpon>
     </Compile>
+    <Compile Include="UCForm51a _Recycle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51a _Recycle.Designer.cs">
+      <DependentUpon>UCForm51a _Recycle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm51a_CDM.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51a_CDM.Designer.cs">
+      <DependentUpon>UCForm51a_CDM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm51b_AUD.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51b_AUD.Designer.cs">
+      <DependentUpon>UCForm51b_AUD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm51b_CDM.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51b_CDM.Designer.cs">
+      <DependentUpon>UCForm51b_CDM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm51c_FOREX.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51c_FOREX.Designer.cs">
+      <DependentUpon>UCForm51c_FOREX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm51c_SM_Recycle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51c_SM_Recycle.Designer.cs">
+      <DependentUpon>UCForm51c_SM_Recycle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm51c_SM.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51c_SM.Designer.cs">
+      <DependentUpon>UCForm51c_SM.cs</DependentUpon>
+    </Compile>
     <Compile Include="UCForm51d.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UCForm51d.designer.cs">
       <DependentUpon>UCForm51d.cs</DependentUpon>
     </Compile>
+    <Compile Include="UCForm51c_CDM.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51c_CDM.Designer.cs">
+      <DependentUpon>UCForm51c_CDM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm51d2_AUD.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51d2_AUD.Designer.cs">
+      <DependentUpon>UCForm51d2_AUD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm51d2_BDC_IST.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51d2_BDC_IST.Designer.cs">
+      <DependentUpon>UCForm51d2_BDC_IST.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm51d2_BDC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51d2_BDC.Designer.cs">
+      <DependentUpon>UCForm51d2_BDC.cs</DependentUpon>
+    </Compile>
     <Compile Include="UCForm51d2.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UCForm51d2.Designer.cs">
       <DependentUpon>UCForm51d2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm51d_CDM.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51d_CDM.Designer.cs">
+      <DependentUpon>UCForm51d_CDM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm51e_Recycle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51e_Recycle.Designer.cs">
+      <DependentUpon>UCForm51e_Recycle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCForm51b_IST_Based.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCForm51b_IST_Based.Designer.cs">
+      <DependentUpon>UCForm51b_IST_Based.cs</DependentUpon>
     </Compile>
     <Compile Include="UCForm51f.cs">
       <SubType>UserControl</SubType>
@@ -1371,6 +4107,7 @@
     </Compile>
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="appRes.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -1386,9 +4123,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Control197.resx">
       <DependentUpon>Control197.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Form10.resx">
@@ -1398,6 +4132,9 @@
     <EmbeddedResource Include="Form108.resx">
       <DependentUpon>Form108.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form109ITMX.resx">
+      <DependentUpon>Form109ITMX.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form109.resx">
       <DependentUpon>Form109.cs</DependentUpon>
@@ -1411,8 +4148,8 @@
     <EmbeddedResource Include="Form111.resx">
       <DependentUpon>Form111.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form112.resx">
-      <DependentUpon>Form112.cs</DependentUpon>
+    <EmbeddedResource Include="Form112_OLD.resx">
+      <DependentUpon>Form112_OLD.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form119.resx">
       <DependentUpon>Form119.cs</DependentUpon>
@@ -1437,14 +4174,11 @@
     <EmbeddedResource Include="Form143.resx">
       <DependentUpon>Form143.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form14b.resx">
-      <DependentUpon>Form14b.cs</DependentUpon>
+    <EmbeddedResource Include="Form14bITMX.resx">
+      <DependentUpon>Form14bITMX.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form15.resx">
       <DependentUpon>Form15.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form116.resx">
-      <DependentUpon>Form116.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form152.resx">
       <DependentUpon>Form152.cs</DependentUpon>
@@ -1458,24 +4192,29 @@
     <EmbeddedResource Include="Form197.resx">
       <DependentUpon>Form197.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form19b.resx">
-      <DependentUpon>Form19b.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form19c.resx">
-      <DependentUpon>Form19c.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form2-EMailContent.resx">
       <DependentUpon>Form2-EMailContent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form20.resx" />
+    <EmbeddedResource Include="Form20.resx">
+      <DependentUpon>Form20.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200 ITMX.resx">
+      <DependentUpon>Form200 ITMX.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form200b.resx">
       <DependentUpon>Form200b.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form271.resx">
-      <DependentUpon>Form271.cs</DependentUpon>
+    <EmbeddedResource Include="Form281 - ITMX.resx">
+      <DependentUpon>Form281 - ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form300ITMX.resx">
+      <DependentUpon>Form300ITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form3_ITMX.resx">
+      <DependentUpon>Form3_ITMX.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form300.resx">
       <DependentUpon>Form300.cs</DependentUpon>
@@ -1531,11 +4270,11 @@
     <EmbeddedResource Include="Form48.resx">
       <DependentUpon>Form48.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form502.resx">
-      <DependentUpon>Form502.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form502a.resx">
       <DependentUpon>Form502a.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502bITMX.resx">
+      <DependentUpon>Form502bITMX.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form502b.resx">
       <DependentUpon>Form502b.cs</DependentUpon>
@@ -1546,14 +4285,14 @@
     <EmbeddedResource Include="Form503_CategOwners.resx">
       <DependentUpon>Form503_CategOwners.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form50b.resx">
+      <DependentUpon>Form50b.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form51.resx">
       <DependentUpon>Form51.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form52.resx">
       <DependentUpon>Form52.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form52b.resx">
-      <DependentUpon>Form52b.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form56R-EWB001-Matched.resx">
       <DependentUpon>Form56R-EWB001-Matched.cs</DependentUpon>
@@ -1594,11 +4333,14 @@
     <EmbeddedResource Include="Form80a2.resx">
       <DependentUpon>Form80a2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form80b.resx">
-      <DependentUpon>Form80b.cs</DependentUpon>
+    <EmbeddedResource Include="Form80bΙΤΜΧ.resx">
+      <DependentUpon>Form80bΙΤΜΧ.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form80c.resx">
-      <DependentUpon>Form80c.cs</DependentUpon>
+    <EmbeddedResource Include="Form80cITMX.resx">
+      <DependentUpon>Form80cITMX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form82.resx">
+      <DependentUpon>Form82.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form85.resx">
       <DependentUpon>Form85.cs</DependentUpon>
@@ -1606,11 +4348,12 @@
     <EmbeddedResource Include="Form85_1.resx">
       <DependentUpon>Form85_1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormAtmsModel.resx">
-      <DependentUpon>FormAtmsModel.cs</DependentUpon>
+    <EmbeddedResource Include="Form_AtmsModel.resx">
+      <DependentUpon>Form_AtmsModel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form174.resx">
       <DependentUpon>Form174.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Form18.resx">
       <DependentUpon>Form18.cs</DependentUpon>
@@ -1651,12 +4394,6 @@
     <EmbeddedResource Include="Form4.resx">
       <DependentUpon>Form4.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form40.de.resx">
-      <DependentUpon>Form40.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form40.resx">
-      <DependentUpon>Form40.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form44.resx">
       <DependentUpon>Form44.cs</DependentUpon>
     </EmbeddedResource>
@@ -1668,9 +4405,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form49.resx">
       <DependentUpon>Form49.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form5.resx">
-      <DependentUpon>Form5.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form50.resx">
       <DependentUpon>Form50.cs</DependentUpon>
@@ -1739,9 +4473,6 @@
     <EmbeddedResource Include="Form63.resx">
       <DependentUpon>Form63.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form64.resx">
-      <DependentUpon>Form64.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form65.resx">
       <DependentUpon>Form65.cs</DependentUpon>
     </EmbeddedResource>
@@ -1791,13 +4522,82 @@
       <DependentUpon>FormProcessing.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Report1.rdlc" />
     <EmbeddedResource Include="Report2.rdlc" />
     <EmbeddedResource Include="Report3.rdlc" />
+    <EmbeddedResource Include="SWD_UCForm271a.resx">
+      <DependentUpon>SWD_UCForm271a.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SWD_UCForm271b.resx">
+      <DependentUpon>SWD_UCForm271b.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm271b_Copy.resx">
+      <DependentUpon>UCForm271b_Copy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm271b_FAB.resx">
+      <DependentUpon>UCForm271b_FAB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm276b_AUDI_FirstStep.resx">
+      <DependentUpon>UCForm276b_AUDI_FirstStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm276a_AUDI_FirstStep_Single.resx">
+      <DependentUpon>UCForm276a_AUDI_FirstStep_Single.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm277b_EGA.resx">
+      <DependentUpon>UCForm277b_EGA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm277d_MOB.resx">
+      <DependentUpon>UCForm277d_MOB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm277b_MOB.resx">
+      <DependentUpon>UCForm277b_MOB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm271b_POS.resx">
+      <DependentUpon>UCForm271b_POS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm276a_AUDI_FirstStep.resx">
+      <DependentUpon>UCForm276a_AUDI_FirstStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm276c_AUDI_FirstStep.resx">
+      <DependentUpon>UCForm276c_AUDI_FirstStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm276c_NBG.resx">
+      <DependentUpon>UCForm276c_NBG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm276b_NBG.resx">
+      <DependentUpon>UCForm276b_NBG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm276a_NBG.resx">
+      <DependentUpon>UCForm276a_NBG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm273b_AUDI.resx">
+      <DependentUpon>UCForm273b_AUDI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm273c_AUDI.resx">
+      <DependentUpon>UCForm273c_AUDI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm273a_AUDI .resx">
+      <DependentUpon>UCForm273a_AUDI .cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm271a_JCC.resx">
+      <DependentUpon>UCForm271a_JCC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm271c_JCC.resx">
+      <DependentUpon>UCForm271c_JCC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm281b.resx">
+      <DependentUpon>UCForm281b.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm281c.resx">
+      <DependentUpon>UCForm281c.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm281a.resx">
+      <DependentUpon>UCForm281a.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UCForm271a.resx">
       <DependentUpon>UCForm271a.cs</DependentUpon>
     </EmbeddedResource>
@@ -1810,11 +4610,53 @@
     <EmbeddedResource Include="UCForm271d.resx">
       <DependentUpon>UCForm271d.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51a _Recycle.resx">
+      <DependentUpon>UCForm51a _Recycle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51a_CDM.resx">
+      <DependentUpon>UCForm51a_CDM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51b_AUD.resx">
+      <DependentUpon>UCForm51b_AUD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51b_CDM.resx">
+      <DependentUpon>UCForm51b_CDM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51c_FOREX.resx">
+      <DependentUpon>UCForm51c_FOREX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51c_SM_Recycle.resx">
+      <DependentUpon>UCForm51c_SM_Recycle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51c_SM.resx">
+      <DependentUpon>UCForm51c_SM.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UCForm51d.resx">
       <DependentUpon>UCForm51d.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51c_CDM.resx">
+      <DependentUpon>UCForm51c_CDM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51d2_AUD.resx">
+      <DependentUpon>UCForm51d2_AUD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51d2_BDC_IST.resx">
+      <DependentUpon>UCForm51d2_BDC_IST.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51d2_BDC.resx">
+      <DependentUpon>UCForm51d2_BDC.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UCForm51d2.resx">
       <DependentUpon>UCForm51d2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51d_CDM.resx">
+      <DependentUpon>UCForm51d_CDM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51e_Recycle.resx">
+      <DependentUpon>UCForm51e_Recycle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCForm51b_IST_Based.resx">
+      <DependentUpon>UCForm51b_IST_Based.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UCForm51f.resx">
       <DependentUpon>UCForm51f.cs</DependentUpon>
@@ -1953,17 +4795,6 @@
     <None Include="ATMSDataSet116.xss">
       <DependentUpon>ATMSDataSet116.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet12.xsc">
-      <DependentUpon>ATMSDataSet12.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet12.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet12.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet12.xss">
-      <DependentUpon>ATMSDataSet12.xsd</DependentUpon>
-    </None>
     <None Include="ATMSDataSet120.xsc">
       <DependentUpon>ATMSDataSet120.xsd</DependentUpon>
     </None>
@@ -1986,17 +4817,6 @@
     <None Include="ATMSDataSet121.xss">
       <DependentUpon>ATMSDataSet121.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet13.xsc">
-      <DependentUpon>ATMSDataSet13.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet13.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet13.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet13.xss">
-      <DependentUpon>ATMSDataSet13.xsd</DependentUpon>
-    </None>
     <None Include="ATMSDataSet14.xsc">
       <DependentUpon>ATMSDataSet14.xsd</DependentUpon>
     </None>
@@ -2018,17 +4838,6 @@
     </None>
     <None Include="ATMSDataSet151.xss">
       <DependentUpon>ATMSDataSet151.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet16.xsc">
-      <DependentUpon>ATMSDataSet16.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet16.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet16.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet16.xss">
-      <DependentUpon>ATMSDataSet16.xsd</DependentUpon>
     </None>
     <None Include="ATMSDataSet17.xsc">
       <DependentUpon>ATMSDataSet17.xsd</DependentUpon>
@@ -2063,28 +4872,6 @@
     <None Include="ATMSDataSet19.xss">
       <DependentUpon>ATMSDataSet19.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet2.xsc">
-      <DependentUpon>ATMSDataSet2.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet2.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet2.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet2.xss">
-      <DependentUpon>ATMSDataSet2.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet20.xsc">
-      <DependentUpon>ATMSDataSet20.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet20.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet20.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet20.xss">
-      <DependentUpon>ATMSDataSet20.xsd</DependentUpon>
-    </None>
     <None Include="ATMSDataSet21.xsc">
       <DependentUpon>ATMSDataSet21.xsd</DependentUpon>
     </None>
@@ -2096,38 +4883,16 @@
     <None Include="ATMSDataSet21.xss">
       <DependentUpon>ATMSDataSet21.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet22.xsc">
-      <DependentUpon>ATMSDataSet22.xsd</DependentUpon>
+    <None Include="ATMSDataSet241XXX.xsc">
+      <DependentUpon>ATMSDataSet241XXX.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet22.xsd">
+    <None Include="ATMSDataSet241XXX.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet22.Designer.cs</LastGenOutput>
+      <LastGenOutput>ATMSDataSet241XXX.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="ATMSDataSet22.xss">
-      <DependentUpon>ATMSDataSet22.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet23.xsc">
-      <DependentUpon>ATMSDataSet23.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet23.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet23.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet23.xss">
-      <DependentUpon>ATMSDataSet23.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet241.xsc">
-      <DependentUpon>ATMSDataSet241.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet241.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet241.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet241.xss">
-      <DependentUpon>ATMSDataSet241.xsd</DependentUpon>
+    <None Include="ATMSDataSet241XXX.xss">
+      <DependentUpon>ATMSDataSet241XXX.xsd</DependentUpon>
     </None>
     <None Include="ATMSDataSet25.xsc">
       <DependentUpon>ATMSDataSet25.xsd</DependentUpon>
@@ -2151,49 +4916,16 @@
     <None Include="ATMSDataSet26.xss">
       <DependentUpon>ATMSDataSet26.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet27.xsc">
-      <DependentUpon>ATMSDataSet27.xsd</DependentUpon>
+    <None Include=".xsc">
+      <DependentUpon>.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet27.xsd">
+    <None Include=".xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet27.Designer.cs</LastGenOutput>
+      <LastGenOutput>.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="ATMSDataSet27.xss">
-      <DependentUpon>ATMSDataSet27.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet29.xsc">
-      <DependentUpon>ATMSDataSet29.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet29.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet29.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet29.xss">
-      <DependentUpon>ATMSDataSet29.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet3.xsc">
-      <DependentUpon>ATMSDataSet3.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet3.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet3.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet3.xss">
-      <DependentUpon>ATMSDataSet3.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet30.xsc">
-      <DependentUpon>ATMSDataSet30.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet30.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet30.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet30.xss">
-      <DependentUpon>ATMSDataSet30.xsd</DependentUpon>
+    <None Include=".xss">
+      <DependentUpon>.xsd</DependentUpon>
     </None>
     <None Include="ATMSDataSet31.xsc">
       <DependentUpon>ATMSDataSet31.xsd</DependentUpon>
@@ -2206,71 +4938,16 @@
     <None Include="ATMSDataSet31.xss">
       <DependentUpon>ATMSDataSet31.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet32.xsc">
-      <DependentUpon>ATMSDataSet32.xsd</DependentUpon>
+    <None Include="ATMSDataSet37XXXX.xsc">
+      <DependentUpon>ATMSDataSet37XXXX.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet32.xsd">
+    <None Include="ATMSDataSet37XXXX.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet32.Designer.cs</LastGenOutput>
+      <LastGenOutput>ATMSDataSet37XXXX.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="ATMSDataSet32.xss">
-      <DependentUpon>ATMSDataSet32.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet33.xsc">
-      <DependentUpon>ATMSDataSet33.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet33.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet33.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet33.xss">
-      <DependentUpon>ATMSDataSet33.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet34.xsc">
-      <DependentUpon>ATMSDataSet34.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet34.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet34.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet34.xss">
-      <DependentUpon>ATMSDataSet34.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet351.xsc">
-      <DependentUpon>ATMSDataSet351.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet351.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet351.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet351.xss">
-      <DependentUpon>ATMSDataSet351.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet36.xsc">
-      <DependentUpon>ATMSDataSet36.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet36.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet36.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet36.xss">
-      <DependentUpon>ATMSDataSet36.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet37.xsc">
-      <DependentUpon>ATMSDataSet37.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet37.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet37.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet37.xss">
-      <DependentUpon>ATMSDataSet37.xsd</DependentUpon>
+    <None Include="ATMSDataSet37XXXX.xss">
+      <DependentUpon>ATMSDataSet37XXXX.xsd</DependentUpon>
     </None>
     <None Include="ATMSDataSet38.xsc">
       <DependentUpon>ATMSDataSet38.xsd</DependentUpon>
@@ -2294,28 +4971,6 @@
     <None Include="ATMSDataSet39.xss">
       <DependentUpon>ATMSDataSet39.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet4.xsc">
-      <DependentUpon>ATMSDataSet4.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet4.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet4.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet4.xss">
-      <DependentUpon>ATMSDataSet4.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet40.xsc">
-      <DependentUpon>ATMSDataSet40.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet40.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet40.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet40.xss">
-      <DependentUpon>ATMSDataSet40.xsd</DependentUpon>
-    </None>
     <None Include="ATMSDataSet41.xsc">
       <DependentUpon>ATMSDataSet41.xsd</DependentUpon>
     </None>
@@ -2327,71 +4982,16 @@
     <None Include="ATMSDataSet41.xss">
       <DependentUpon>ATMSDataSet41.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet42.xsc">
-      <DependentUpon>ATMSDataSet42.xsd</DependentUpon>
+    <None Include="ATMSDataSet46XXX.xsc">
+      <DependentUpon>ATMSDataSet46XXX.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet42.xsd">
+    <None Include="ATMSDataSet46XXX.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet42.Designer.cs</LastGenOutput>
+      <LastGenOutput>ATMSDataSet46XXX.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="ATMSDataSet42.xss">
-      <DependentUpon>ATMSDataSet42.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet43.xsc">
-      <DependentUpon>ATMSDataSet43.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet43.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet43.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet43.xss">
-      <DependentUpon>ATMSDataSet43.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet44.xsc">
-      <DependentUpon>ATMSDataSet44.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet44.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet44.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet44.xss">
-      <DependentUpon>ATMSDataSet44.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet45.xsc">
-      <DependentUpon>ATMSDataSet45.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet45.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet45.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet45.xss">
-      <DependentUpon>ATMSDataSet45.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet46.xsc">
-      <DependentUpon>ATMSDataSet46.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet46.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet46.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet46.xss">
-      <DependentUpon>ATMSDataSet46.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet47.xsc">
-      <DependentUpon>ATMSDataSet47.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet47.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet47.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet47.xss">
-      <DependentUpon>ATMSDataSet47.xsd</DependentUpon>
+    <None Include="ATMSDataSet46XXX.xss">
+      <DependentUpon>ATMSDataSet46XXX.xsd</DependentUpon>
     </None>
     <None Include="ATMSDataSet48.xsc">
       <DependentUpon>ATMSDataSet48.xsd</DependentUpon>
@@ -2404,72 +5004,6 @@
     <None Include="ATMSDataSet48.xss">
       <DependentUpon>ATMSDataSet48.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet49.xsc">
-      <DependentUpon>ATMSDataSet49.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet49.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet49.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet49.xss">
-      <DependentUpon>ATMSDataSet49.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet5.xsc">
-      <DependentUpon>ATMSDataSet5.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet5.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet5.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet5.xss">
-      <DependentUpon>ATMSDataSet5.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet50.xsc">
-      <DependentUpon>ATMSDataSet50.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet50.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet50.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet50.xss">
-      <DependentUpon>ATMSDataSet50.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet52.xsc">
-      <DependentUpon>ATMSDataSet52.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet52.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet52.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet52.xss">
-      <DependentUpon>ATMSDataSet52.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet53.xsc">
-      <DependentUpon>ATMSDataSet53.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet53.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet53.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet53.xss">
-      <DependentUpon>ATMSDataSet53.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet54.xsc">
-      <DependentUpon>ATMSDataSet54.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet54.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet54.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet54.xss">
-      <DependentUpon>ATMSDataSet54.xsd</DependentUpon>
-    </None>
     <None Include="ATMSDataSet55.xsc">
       <DependentUpon>ATMSDataSet55.xsd</DependentUpon>
     </None>
@@ -2480,28 +5014,6 @@
     </None>
     <None Include="ATMSDataSet55.xss">
       <DependentUpon>ATMSDataSet55.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet56.xsc">
-      <DependentUpon>ATMSDataSet56.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet56.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet56.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet56.xss">
-      <DependentUpon>ATMSDataSet56.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet57.xsc">
-      <DependentUpon>ATMSDataSet57.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet57.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet57.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet57.xss">
-      <DependentUpon>ATMSDataSet57.xsd</DependentUpon>
     </None>
     <None Include="ATMSDataSet58.xsc">
       <DependentUpon>ATMSDataSet58.xsd</DependentUpon>
@@ -2536,94 +5048,6 @@
     <None Include="ATMSDataSet6.xss">
       <DependentUpon>ATMSDataSet6.xsd</DependentUpon>
     </None>
-    <None Include="ATMSDataSet61.xsc">
-      <DependentUpon>ATMSDataSet61.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet61.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet61.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet61.xss">
-      <DependentUpon>ATMSDataSet61.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet62.xsc">
-      <DependentUpon>ATMSDataSet62.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet62.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet62.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet62.xss">
-      <DependentUpon>ATMSDataSet62.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet63.xsc">
-      <DependentUpon>ATMSDataSet63.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet63.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet63.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet63.xss">
-      <DependentUpon>ATMSDataSet63.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet64.xsc">
-      <DependentUpon>ATMSDataSet64.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet64.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet64.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet64.xss">
-      <DependentUpon>ATMSDataSet64.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet65.xsc">
-      <DependentUpon>ATMSDataSet65.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet65.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet65.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet65.xss">
-      <DependentUpon>ATMSDataSet65.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet66.xsc">
-      <DependentUpon>ATMSDataSet66.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet66.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet66.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet66.xss">
-      <DependentUpon>ATMSDataSet66.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet67.xsc">
-      <DependentUpon>ATMSDataSet67.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet67.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet67.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet67.xss">
-      <DependentUpon>ATMSDataSet67.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet68.xsc">
-      <DependentUpon>ATMSDataSet68.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet68.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet68.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet68.xss">
-      <DependentUpon>ATMSDataSet68.xsd</DependentUpon>
-    </None>
     <None Include="ATMSDataSet7.xsc">
       <DependentUpon>ATMSDataSet7.xsd</DependentUpon>
     </None>
@@ -2634,17 +5058,6 @@
     </None>
     <None Include="ATMSDataSet7.xss">
       <DependentUpon>ATMSDataSet7.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet8.xsc">
-      <DependentUpon>ATMSDataSet8.xsd</DependentUpon>
-    </None>
-    <None Include="ATMSDataSet8.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ATMSDataSet8.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ATMSDataSet8.xss">
-      <DependentUpon>ATMSDataSet8.xsd</DependentUpon>
     </None>
     <None Include="ATMSDataSet9.xsc">
       <DependentUpon>ATMSDataSet9.xsd</DependentUpon>
@@ -2669,6 +5082,8 @@
       <DependentUpon>ATMSDataSet99.xsd</DependentUpon>
     </None>
     <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -2678,6 +5093,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="RRDM4ATMsWin.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -2819,10 +5235,10 @@
     <None Include="Resources\RRDM -Logo-2.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\logo1.png" />
+    <Resource Include="Resources\logo1.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\logo2.png" />
+    <Resource Include="Resources\logo2.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Maria400.png" />
@@ -2836,6 +5252,27 @@
     <None Include="Resources\Pafos-Route.jpg" />
     <None Include="Resources\BancNet Route1.jpg" />
     <None Include="Resources\EastWest.gif" />
+    <None Include="Resources\confirmed1[1].jpg" />
+    <None Include="Resources\Confirmed.jpg" />
+    <None Include="Resources\thC4MW10FA.jpg" />
+    <None Include="Resources\Investingationpng.png" />
+    <None Include="Resources\Investigate.bmp" />
+    <None Include="Resources\Investigatejpg.jpg" />
+    <None Include="Resources\ThaiITMX.jpg" />
+    <None Include="Resources\ThaiITMX1.jpg" />
+    <None Include="Resources\ThaiRiver.jpg" />
+    <Resource Include="Resources\logo2Copy.png" />
+    <None Include="Resources\Image1.bmp" />
+    <None Include="Resources\infoicon.bmp" />
+    <None Include="Resources\Image1.png" />
+    <None Include="Resources\call-centre-sales-banner.jpg" />
+    <None Include="Resources\imageBranch.jpg" />
+    <None Include="Resources\CallCentre1.jpg" />
+    <None Include="Resources\BackOffice.jpg" />
+    <None Include="Resources\alert-04.jpg" />
+    <None Include="Resources\block-id-icon-44128.png" />
+    <None Include="Resources\bingo.png" />
+    <Content Include="Resources\XMLFile1.xml" />
     <Content Include="RRDM-ATMs in Need-1024.jpg" />
     <Content Include="RRDM-ATMs in Need.jpg" />
     <Content Include="RRDM-CIT Providers-1024.jpg" />
@@ -2848,8 +5285,24 @@
       <Project>{7ac63154-20ab-4abe-bb75-57da8db8427e}</Project>
       <Name>RRDM4ATMsClasses</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RRDMAgent_Classes\RRDMAgent_Classes.csproj">
+      <Project>{74ee63e2-5832-4783-a7b4-e6a847491cc5}</Project>
+      <Name>RRDMAgent_Classes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RRDM_Encryption\RRDM_Encryption.csproj">
+      <Project>{c6ea7faf-ab36-40e2-af40-89be851b4bb0}</Project>
+      <Name>RRDM_Encryption</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y $(TargetDir)$(ProjectName).exe* C:\RRDM\RRDMExec</PostBuildEvent>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties Reactor_Enabled="1" Reactor_Commands="" Reactor_Project="" Reactor_Configuration="" Reactor_Output="&lt;AssemblyLocation&gt;\&lt;AssemblyFileName&gt;" Reactor_Deploy="0" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

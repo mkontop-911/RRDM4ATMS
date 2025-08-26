@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Security;
+using System.Diagnostics;
 using System.Security.Principal;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
@@ -11,8 +9,9 @@ using System.DirectoryServices.AccountManagement;
 
 namespace RRDM4ATMs
 {
-    public class RRDMActiveDirectoryHelper
+    public class RRDMActiveDirectoryHelper : Logger
     {
+        public RRDMActiveDirectoryHelper() : base() { }
 
         #region Properties
         public string usrLogonName = "";            // e.g: Alex
@@ -87,7 +86,7 @@ namespace RRDM4ATMs
                     usrDistinguishedName = UserPrincipal.Current.DistinguishedName;
                     usrMiddleName = UserPrincipal.Current.MiddleName;
 
-                    DirectoryEntry ldapDE = (DirectoryEntry) UserPrincipal.Current.GetUnderlyingObject();
+                    DirectoryEntry ldapDE = (DirectoryEntry)UserPrincipal.Current.GetUnderlyingObject();
                     if (ldapDE.Properties["mobile"].Count > 0)
                     {
                         usrMobilePhone = ldapDE.Properties["mobile"][0].ToString();
@@ -134,6 +133,29 @@ namespace RRDM4ATMs
                 exceptionErrorCode = 0xffff;
                 exceptionSource = ex.Source;
                 exceptionMessage = "LoggedOnUserException: " + ex.Message;
+
+                RRDMLog4Net Log = new RRDMLog4Net();
+
+                StringBuilder WParameters = new StringBuilder();
+
+                WParameters.Append("User : ");
+                WParameters.Append("NotAssignYet");
+                WParameters.Append(Environment.NewLine);
+
+                WParameters.Append("ATMNo : ");
+                WParameters.Append("NotDefinedYet");
+                WParameters.Append(Environment.NewLine);
+
+                string Logger = "RRDM4Atms";
+                string Parameters = WParameters.ToString();
+
+                Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+                if (Environment.UserInteractive)
+                {
+                    System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                                                             + " . Application will be aborted! Call controller to take care. ");
+                }
             }
             return (success);
         }
@@ -188,6 +210,29 @@ namespace RRDM4ATMs
                 exceptionErrorCode = 0xffff;
                 exceptionSource = ex.Source;
                 exceptionMessage = "isDirectMemberOfGroupException: " + ex.Message;
+
+                RRDMLog4Net Log = new RRDMLog4Net();
+
+                StringBuilder WParameters = new StringBuilder();
+
+                WParameters.Append("User : ");
+                WParameters.Append("NotAssignYet");
+                WParameters.Append(Environment.NewLine);
+
+                WParameters.Append("ATMNo : ");
+                WParameters.Append("NotDefinedYet");
+                WParameters.Append(Environment.NewLine);
+
+                string Logger = "RRDM4Atms";
+                string Parameters = WParameters.ToString();
+
+                Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+                if (Environment.UserInteractive)
+                {
+                    System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                                                             + " . Application will be aborted! Call controller to take care. ");
+                }
             }
 
             return result;
@@ -260,9 +305,144 @@ namespace RRDM4ATMs
                 exceptionErrorCode = 0xffff;
                 exceptionSource = ex.Source;
                 exceptionMessage = "isMemberOfGroupException: " + ex.Message;
+
+                RRDMLog4Net Log = new RRDMLog4Net();
+
+                StringBuilder WParameters = new StringBuilder();
+
+                WParameters.Append("User : ");
+                WParameters.Append("NotAssignYet");
+                WParameters.Append(Environment.NewLine);
+
+                WParameters.Append("ATMNo : ");
+                WParameters.Append("NotDefinedYet");
+                WParameters.Append(Environment.NewLine);
+
+                string Logger = "RRDM4Atms";
+                string Parameters = WParameters.ToString();
+
+                Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+                if (Environment.UserInteractive)
+                {
+                    System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                                                             + " . Application will be aborted! Call controller to take care. ");
+                }
             }
             return (result);
         }
         #endregion
+
+        #region isUserInAD
+        public bool isUserInAD(string userName)
+        {
+            bool success = false;
+            using (var ctx = new PrincipalContext(ContextType.Domain))
+            {
+                try
+                {
+                    using (var user = UserPrincipal.FindByIdentity(ctx, userName))
+                    {
+                        if (user != null)
+                        {
+                            success = true;
+                            usrIdentity = user.Name;    // e.g: CYLEDRA\Alex
+
+                            string[] splt = usrIdentity.Split('\\');
+                            if (splt.Length > 1)
+                            {
+                                usrDomainName = splt[0]; // e.g: CYLEDRA (the domain 'friendly name')       
+                                usrLogonName = splt[1]; // e.g: Alex
+                                usrPrincipalName = user.UserPrincipalName; // e.g: Alex@cy.Ledra   
+                                usrDisplayName = user.DisplayName; // e.g: Alexandros Christofi
+                                usrFirstName = user.GivenName; // e.g: Alexandros  
+                                usrMiddleName = user.MiddleName;
+                                usrLastName = user.Surname; // e.g: Christofi
+                                usrTelephone = user.VoiceTelephoneNumber;
+                                usrEmailAddress = user.EmailAddress;
+                                usrSamAccountName = user.SamAccountName; // e.g: Alex
+                                usrDistinguishedName = user.DistinguishedName; // e.g: CN=Alex,OU=BR001,OU=TestOU1,DC=cy,DC=Ledra
+                            }
+                            else
+                            {
+                                success = false;
+                                string msg = string.Format("Unknown User Identity Format : [{0]", user.Name);
+                                WriteEventLog("RRDMAgent", EventLogEntryType.Error, msg);
+                            }
+
+                            user.Dispose();
+                        }
+                    }
+                }
+                catch (MultipleMatchesException ex)
+                {
+                    success = false;
+                    string msg = CreateExceptionMsg(ex, "MULTIPLEMATCHES", "RRDMActiveDirectoryHelper\\isUserInAD");
+                    WriteEventLog("RRDMAgent", EventLogEntryType.Error, msg);
+                }
+                catch (Exception ex)
+                {
+                    success = false;
+                    string msg = CreateExceptionMsg(ex, "GENERIC", "RRDMActiveDirectoryHelper\\isUserInAD");
+                    WriteEventLog("RRDMAgent", EventLogEntryType.Error, msg);
+                }
+            }
+            return success;
+        }
+        #endregion
+
+        #region EventLogging
+        private static void WriteEventLog(string eventSource, EventLogEntryType LogType, string Message)
+        {
+            EventLog Log = new EventLog();
+            if (EventLog.SourceExists(eventSource))
+            {
+                Log.Source = eventSource;
+                EventLog.WriteEntry(eventSource, Message, LogType);
+            }
+            else
+            {
+                Log.Source = "Application";
+                EventLog.WriteEntry(eventSource, Message, LogType);
+            }
+            Log.Dispose();
+        }
+        #endregion
+
+        #region GetExeptionLineNumber
+        private int GetExLineNumber(Exception ex)
+        {
+            var lineNumber = 0;
+            const string lineSearch = ":line ";
+            var index = ex.StackTrace.LastIndexOf(lineSearch);
+            if (index != -1)
+            {
+                var lineNumberText = ex.StackTrace.Substring(index + lineSearch.Length);
+                if (int.TryParse(lineNumberText, out lineNumber))
+                {
+                }
+            }
+            return lineNumber;
+        }
+        #endregion
+
+        #region CreateExceptionMsg()
+        private string CreateExceptionMsg(Exception ex, string errorCode, string module)
+        {
+            int lineNo = GetExLineNumber(ex);
+            string exType = ex.GetType().Name;
+            string msg = string.Format("[{0}] : Exception at Line:[{0}] Type:[{1}] Message:[{2}]", DateTime.Now.ToString("YYYY-MM-dd HH:mm:ss.fff"), lineNo, exType, ex.Message);
+            msg += string.Format("\nModule: [{0}], ErrorCode: [{1}].", module, errorCode);
+            Exception ex1 = ex;
+            while (ex1.InnerException != null)
+            {
+                msg += string.Format("\n  -- Type: [{0}] -- Message: [{1}]." + ex1.GetType().Name, ex1.Message);
+                ex1 = ex1.InnerException;
+            }
+            msg += "\nStackTrace:\n" + ex.StackTrace;
+            return (msg);
+        }
+        #endregion
     }
 }
+

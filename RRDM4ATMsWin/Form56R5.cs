@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
 using System.Collections;
 using Microsoft.Reporting.WinForms;
 using System.Configuration;
@@ -44,6 +36,13 @@ namespace RRDM4ATMsWin
 
         string WD40;
         string WD41;
+        string WBankIdLogo;
+        string WD39;
+        string WD45;
+        string WD46;
+        string WD47;
+        string WD48;
+        string WD50;
 
         public Form56R5(string InD11, string InD12, string InD13, string InD14, string InD15, string InD16, string InD17,
                         string InD21, string InD22, string InD23, string InD24,
@@ -51,7 +50,10 @@ namespace RRDM4ATMsWin
                         string InD29, string InD30, string InD31, string InD32,
                         string InD33, string InD34, string InD35, string InD36,
                         string InD37, string InD38,
-                        string InD40, string InD41)
+                        string InD40, string InD41, string InBankIdLogo, string InD39,
+                        string InD45, string InD46, string InD47, string InD48,
+                        string InD50
+                        )
         {
             WD11 = InD11;
             WD12 = InD12;
@@ -86,6 +88,18 @@ namespace RRDM4ATMsWin
             WD40 = InD40;
             WD41 = InD41;
 
+            WBankIdLogo = InBankIdLogo;
+
+            WD39 = InD39;
+
+            WD45 = InD45;
+            WD46 = InD46;
+            WD47 = InD47;
+            WD48 = InD48;
+
+            WD50 = InD50;
+
+
             InitializeComponent();
         }
 
@@ -108,7 +122,9 @@ namespace RRDM4ATMsWin
             try
             {
                 string RSUri = ConfigurationManager.AppSettings["ReportServerUri"];
-                string RSReportName = "/Dispute01";
+             
+                string RsDir = ConfigurationManager.AppSettings["ReportsDir"];
+                string RSReportName = RsDir + "/Dispute01";
 
                 // Set the processing mode for the ReportViewer to Remote
                 reportViewer1.ProcessingMode = ProcessingMode.Remote;
@@ -138,7 +154,6 @@ namespace RRDM4ATMsWin
                 MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
 
             }
-
            
         }
 
@@ -177,6 +192,14 @@ namespace RRDM4ATMsWin
 
             arrLstDefaultParam.Add(CreateReportParameter("D40", WD40));
             arrLstDefaultParam.Add(CreateReportParameter("D41", WD41));
+            arrLstDefaultParam.Add(CreateReportParameter("InBankIdLogo", WBankIdLogo));
+            arrLstDefaultParam.Add(CreateReportParameter("D39", WD39));
+
+            arrLstDefaultParam.Add(CreateReportParameter("D45", WD45));
+            arrLstDefaultParam.Add(CreateReportParameter("D46", WD46));
+            arrLstDefaultParam.Add(CreateReportParameter("D47", WD47));
+            arrLstDefaultParam.Add(CreateReportParameter("D48", WD48));
+            //arrLstDefaultParam.Add(CreateReportParameter("D50", WD50));
 
             return arrLstDefaultParam;
         }

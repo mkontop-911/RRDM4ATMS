@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using RRDM4ATMs;
-using System.Configuration;
-using System.Diagnostics;
 
 
 namespace RRDM4ATMsWin
@@ -18,11 +9,15 @@ namespace RRDM4ATMsWin
     {
         Form3_DispOwnersHistory NForm3_DispOwnersHistory;
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
+        RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords(); 
         RRDMDisputesTableClass Di = new RRDMDisputesTableClass();
-        RRDMDisputesOwnersHistory Dh = new RRDMDisputesOwnersHistory(); 
+        RRDMDisputesOwnersHistory Dh = new RRDMDisputesOwnersHistory();
 
-     //   string WUserId;
+        RRDMUsers_Applications_Roles Usr = new RRDMUsers_Applications_Roles();
+
+        string WApplication; 
+        //   string WUserId;
         string WDispOwner; 
         //string WUserName;
 
@@ -40,11 +35,15 @@ namespace RRDM4ATMsWin
             
             InitializeComponent();
 
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
+            WApplication = Usi.SignInApplication; 
         }
         // On Load Form 
         private void Form3DispOwners_Load(object sender, EventArgs e)
         {
             // Find Dispute details 
+
+
             Di.ReadDispute(WDispId);
 
             labelDispId.Text = "Dispute Id: " + WDispId.ToString();
@@ -68,21 +67,37 @@ namespace RRDM4ATMsWin
             comboBox1.Items.Add("Old Owner not available"); // 
           
             comboBox1.Text = "Select Reason";
-            textBoxMessage.Text = "Select Dispute Owner to Assign"; 
+            textBoxMessage.Text = "Select Dispute Owner to Assign";
 
-            Us.ReadDisputeOfficers(WOperator);
+            
+            int Mode = 3; // Dispute
 
-            dataGridView1.DataSource = Us.DisputeUsersSelected.DefaultView;
+            string SelectionCriteria = " WHERE Application ='" + WApplication + "' AND DisputeOfficer = 1 ";
+            Usr.ReadUsersVsApplicationsVsRolesAndFillTable(SelectionCriteria, Mode, "");
+          
+            dataGridView1.DataSource = Usr.UsersVsApplicationsVsRolesDataTable.DefaultView;
+          
+            dataGridView1.Columns[0].Width = 70; // SeqNo
+            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView1.Columns[0].Visible = false; 
 
-            //// DATA TABLE ROWS DEFINITION 
-            //DisputeUsersSelected.Columns.Add("UserId", typeof(string));
-            //DisputeUsersSelected.Columns.Add("UserName", typeof(string));
-            //DisputeUsersSelected.Columns.Add("TotalDisp", typeof(int));
-            //DisputeUsersSelected.Columns.Add("SecLevel", typeof(int));
-            //DisputeUsersSelected.Columns.Add("DisputeOfficer", typeof(bool));
-            //DisputeUsersSelected.Columns.Add("MobileNo", typeof(string));
+            dataGridView1.Columns[1].Width = 80; // UserId
+            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            //dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
+            dataGridView1.Columns[2].Width = 90; // Application
+            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[3].Width = 60; // SecLevel
+            dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[4].Width = 60; // RoleName
+            dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[5].Width = 70; // Authoriser
+            dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridView1.Columns[6].Width = 70; // DisputeOfficer
+            dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
         }
         // ON ROW ENTER 
@@ -90,7 +105,7 @@ namespace RRDM4ATMsWin
         {
             DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
 
-            WDispOwner = (string)rowSelected.Cells[0].Value;
+            WDispOwner = (string)rowSelected.Cells[1].Value;
 
             Us.ReadUsersRecord(WDispOwner);
 

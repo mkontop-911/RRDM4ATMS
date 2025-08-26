@@ -237,8 +237,8 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="pull-right">
-                        <asp:Button ID="Button1" CssClass="btn btn-info" runat="server" Text="Back"></asp:Button>
-                        <asp:Button ID="Button3" CssClass="btn btn-info" runat="server" Text="Next"></asp:Button>
+                        <asp:Button ID="ButtonBack" CssClass="btn btn-info" runat="server" Text="Back" OnClick="ButtonBack_Click"></asp:Button>
+                        <asp:Button ID="ButtonNext" CssClass="btn btn-info" runat="server" Text="Next"></asp:Button>
                     </div>
                 </div>
             </div>

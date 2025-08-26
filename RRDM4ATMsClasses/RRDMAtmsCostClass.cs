@@ -1,41 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMAtmsCostClass
+    public class RRDMAtmsMinMax : Logger
     {
+        public RRDMAtmsMinMax() : base() { }
         // Variables
-        // ATM MAIN FIELDS 
+      
+        public int RMCycle;
         public string AtmNo;
-        public string BankId;
-   
-        public DateTime ManifactureDt;
-        public DateTime PurchaseDt;
-        public DateTime DueServiceDt;
-        public DateTime LastServiceDt;
-
-        public decimal PurchaseCost;
-
-        public int MaintenanceCd;
-        public decimal AnnualMaint;
-
-        public decimal CitOnCall;
-        public decimal CitAnnual;
-
-    //    string SqlString; // Do not delete
-
-        // DATATable for Grid 
-        // public DataTable GridDays = new DataTable();
+      
+        public DateTime MinMaxDtTwoTables;
+        public DateTime MinMaxDtThreeTables;
 
         public bool RecordFound;
         public bool ErrorFound;
@@ -47,18 +27,29 @@ namespace RRDM4ATMs
 
         DateTime NullPastDate = new DateTime(1900, 01, 01);
 
+        // Reader Fields 
+        private void MinMaxFields(SqlDataReader rdr)
+        {
+            RMCycle = (int)rdr["RMCycle"];
+            AtmNo = (string)rdr["AtmNo"];
+
+            MinMaxDtTwoTables = (DateTime)rdr["MinMaxDtTwoTables"];
+            MinMaxDtThreeTables = (DateTime)rdr["MinMaxDtThreeTables"];
+       
+        }
+
         // Methods 
         // READ TableATMsPhys
         // 
-        public void ReadTableATMsCostSpecific(string InAtmNo)
+        public void ReadRRDMAtmsMinMaxSpecific(int InRMCycle, string InAtmNo)
         {
             RecordFound = false;
             ErrorFound = false;
             ErrorOutput = ""; 
 
-            string SqlString = "SELECT *"
-          + " FROM [dbo].[TableAtmsCost] "
-          + " WHERE AtmNo=@AtmNo ";
+            string SqlString = "SELECT * "
+          + " FROM [ATMS].[dbo].[AtmsMinMaxWorking] "
+          + " WHERE RMCycle=@RMCycle AND AtmNo=@AtmNo ";
             using (SqlConnection conn =
                           new SqlConnection(connectionString))
                 try
@@ -68,6 +59,7 @@ namespace RRDM4ATMs
                         new SqlCommand(SqlString, conn))
                     {
                         cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                        cmd.Parameters.AddWithValue("@RMCycle", InRMCycle);
 
                         // Read table 
 
@@ -75,23 +67,9 @@ namespace RRDM4ATMs
 
                         while (rdr.Read())
                         {
-                            RecordFound = true; 
+                            RecordFound = true;
 
-                            AtmNo = (string)rdr["AtmNo"];
-                     
-                            BankId = (string)rdr["BankId"];
-
-                            ManifactureDt = (DateTime)rdr["ManifactureDt"];
-                            PurchaseDt = (DateTime)rdr["PurchaseDt"];
-                            DueServiceDt = (DateTime)rdr["DueServiceDt"];
-                            LastServiceDt = (DateTime)rdr["LastServiceDt"];
-                          
-                            PurchaseCost = (decimal)rdr["PurchaseCost"];
-                            MaintenanceCd = (int)rdr["MaintenanceCd"];
-
-                            AnnualMaint = (decimal)rdr["AnnualMaint"];
-                            CitOnCall = (decimal)rdr["CitOnCall"];
-                            CitAnnual = (decimal)rdr["CitAnnual"];
+                            MinMaxFields(rdr);
 
                         }
 
@@ -105,55 +83,37 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ATMsCostClass............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
+
+
         // 
-        // UPDATE ATMs table of cost 
+        // UPDATE MINMAXTABLE 
         //
-        public void UpdateTableATMsCost(string InAtmNo, string InBankId)
+        public void DeleteTableATMsMinMax()
         {
             ErrorFound = false;
-            ErrorOutput = ""; 
+            ErrorOutput = "";
 
-            using (SqlConnection conn =
-                new SqlConnection(connectionString))
+            string SQLCmd = "DELETE FROM [ATMS].[dbo].[AtmsMinMaxWorking] "
+               + "    "
+               + " "
+               ;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
                 try
                 {
                     conn.Open();
-                    using (SqlCommand cmd = 
-                        new SqlCommand("UPDATE [dbo].[TableATMsCost] SET "
-                    + " [AtmNo]=@AtmNo, [BankId]=@BankId,"
-                    + " [ManifactureDt]=@ManifactureDt, [PurchaseDt]=@PurchaseDt, [DueServiceDt]=@DueServiceDt, [LastServiceDt]=@LastServiceDt,"
-                    + " [PurchaseCost]=@PurchaseCost, [MaintenanceCd]=@MaintenanceCd,"
-                    + " [AnnualMaint]=@AnnualMaint, [CitOnCall]=@CitOnCall, [CitAnnual]=@CitAnnual "
-                    + " WHERE AtmNo= @AtmNo AND BankId = @BankId ", conn))
+                    using (SqlCommand cmd =
+                        new SqlCommand(SQLCmd, conn))
                     {
-                        cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
-                        cmd.Parameters.AddWithValue("@BankId", InBankId);
-                      //  cmd.Parameters.AddWithValue("@Prive", InPrive);
+                        //  cmd.Parameters.AddWithValue("@TransDate", InDate);
 
-                        cmd.Parameters.AddWithValue("@ManifactureDt", ManifactureDt);
-                        cmd.Parameters.AddWithValue("@PurchaseDt", PurchaseDt);
-                        cmd.Parameters.AddWithValue("@DueServiceDt", DueServiceDt);
-                        cmd.Parameters.AddWithValue("@LastServiceDt", LastServiceDt);
+                        cmd.CommandTimeout = 350;  // seconds
 
-                        cmd.Parameters.AddWithValue("@PurchaseCost", PurchaseCost);
-
-                        cmd.Parameters.AddWithValue("@MaintenanceCd", MaintenanceCd);
-
-                        cmd.Parameters.AddWithValue("@AnnualMaint", AnnualMaint);
-                        cmd.Parameters.AddWithValue("@CitOnCall", CitOnCall);
-                        cmd.Parameters.AddWithValue("@CitAnnual", CitAnnual);
-
-                        // Execute and check success 
-                        int rows = cmd.ExecuteNonQuery();
-                        if (rows > 0)
-                        {
-                            // outcome = " ATMs Table UPDATED ";
-                        }
-
+                         cmd.ExecuteNonQuery();
                     }
                     // Close conn
                     conn.Close();
@@ -161,28 +121,70 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ATMsCostClass............. " + ex.Message;
+
+                    CatchDetails(ex);
+                    // CatchDetails(ex);
                 }
 
-            //  return outcome;
+
+            //using (SqlConnection conn =
+            //    new SqlConnection(connectionString))
+            //    try
+            //    {
+            //        conn.Open();
+            //        using (SqlCommand cmd = 
+            //            new SqlCommand("UPDATE [ATMS].[dbo].[AtmsMinMaxWorking] SET "
+            //        + " [RMCycle]=@RMCycle, "
+            //        + " [AtmNo]=@AtmNo,"
+            //        + " [MinMaxDtTwoTables]=@MinMaxDtTwoTables,"
+            //        + " [MinMaxDtThreeTables]=@MinMaxDtThreeTables "
+            //        + " WHERE RMCycle= @RMCycle AND AtmNo = @AtmNo ", conn))
+            //        {
+            //            cmd.Parameters.AddWithValue("@RMCycle", InRMCycle);
+            //            cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                      
+            //            cmd.Parameters.AddWithValue("@MinMaxDtTwoTables", MinMaxDtTwoTables);
+            //            cmd.Parameters.AddWithValue("@MinMaxDtThreeTables", MinMaxDtThreeTables);
+
+            //            // Execute and check success 
+            //            int rows = cmd.ExecuteNonQuery();
+            //            if (rows > 0)
+            //            {
+            //                // outcome = " ATMs Table UPDATED ";
+            //            }
+
+            //        }
+            //        // Close conn
+            //        conn.Close();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        conn.Close();
+
+            //        CatchDetails(ex);
+            //    }
+
+            ////  return outcome;
 
         }
-        // INSERT New Record in cost table  
-        public void InsertTableATMsCost(string InAtmNo, string InBankId)
+        // INSERT New Record MinMax
+        public void InsertToMinMax(int InRMCycle, string InAtmNo, DateTime InMinMaxDtTwoTables
+            , DateTime InMinMaxDtThreeTables)
         {
           
             ErrorFound = false;
             ErrorOutput = ""; 
 
-            string cmdinsert = 
-            "INSERT INTO [dbo].[TableATMsCost]" 
-                + " ([AtmNo], [BankId], " 
-                + " [ManifactureDt], [PurchaseDt], [DueServiceDt], [LastServiceDt]," 
-                + " [PurchaseCost], [MaintenanceCd], [AnnualMaint], [CitOnCall], [CitAnnual])" 
-                + " VALUES (@AtmNo, @BankId," 
-                + " @ManifactureDt, @PurchaseDt, @DueServiceDt, @LastServiceDt," 
-                + " @PurchaseCost, @MaintenanceCd, @AnnualMaint, @CitOnCall, @CitAnnual)";
+            string cmdinsert =
+            "INSERT INTO [ATMS].[dbo].[AtmsMinMaxWorking] "
+                + " ([RMCycle],  "
+                + " [AtmNo], "
+                + " [MinMaxDtTwoTables], "
+                + "[MinMaxDtThreeTables])"
+                + " VALUES (@RMCycle, "
+                + " @AtmNo,"
+                + " @MinMaxDtTwoTables, "
+                + "@MinMaxDtThreeTables)";
 
             using (SqlConnection conn =
                 new SqlConnection(connectionString))
@@ -192,22 +194,11 @@ namespace RRDM4ATMs
                     using (SqlCommand cmd =
                        new SqlCommand(cmdinsert, conn))
                     {
+                        cmd.Parameters.AddWithValue("@RMCycle", InRMCycle);
                         cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
-                        cmd.Parameters.AddWithValue("@BankId", InBankId);
-                  //      cmd.Parameters.AddWithValue("@Prive", InPrive);
 
-                        cmd.Parameters.AddWithValue("@ManifactureDt", ManifactureDt);
-                        cmd.Parameters.AddWithValue("@PurchaseDt", PurchaseDt);
-                        cmd.Parameters.AddWithValue("@DueServiceDt", DueServiceDt);
-                        cmd.Parameters.AddWithValue("@LastServiceDt", LastServiceDt);
-
-                        cmd.Parameters.AddWithValue("@PurchaseCost", PurchaseCost);
-
-                        cmd.Parameters.AddWithValue("@MaintenanceCd", MaintenanceCd);
-
-                        cmd.Parameters.AddWithValue("@AnnualMaint", AnnualMaint);
-                        cmd.Parameters.AddWithValue("@CitOnCall", CitOnCall);
-                        cmd.Parameters.AddWithValue("@CitAnnual", CitAnnual);
+                        cmd.Parameters.AddWithValue("@MinMaxDtTwoTables", InMinMaxDtTwoTables);
+                        cmd.Parameters.AddWithValue("@MinMaxDtThreeTables", InMinMaxDtThreeTables);
 
                         int rows = cmd.ExecuteNonQuery();
                         if (rows > 0)
@@ -223,9 +214,11 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ATMsCostClass............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
+        //
+
     }
 }

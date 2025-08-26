@@ -1,29 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMUpdateAuthUserForSpecialGrids
+    public class RRDMUpdateAuthUserForSpecialGrids : Logger
     {
+        public RRDMUpdateAuthUserForSpecialGrids() : base() { }
         // UPDATE AUTHORISED USER FOR TRANSACTIONS TO BE POSTED GRID 
 
-      //  public bool RecordFound;
+        //  public bool RecordFound;
         public bool ErrorFound;
         public string ErrorOutput; 
 
         string connectionString = ConfigurationManager.ConnectionStrings
            ["ATMSConnectionString"].ConnectionString;
 
-        RRDMAllowedAtmsAndUpdateFromJournal Aj = new RRDMAllowedAtmsAndUpdateFromJournal();
+        RRDMAllowedAtmsAndUpdateFromJournalΧΧΧΧ Aj = new RRDMAllowedAtmsAndUpdateFromJournalΧΧΧΧ();
         RRDMUpdateGrids Ug = new RRDMUpdateGrids();
         RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass(); 
 
@@ -42,9 +36,8 @@ namespace RRDM4ATMs
 
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
-     //       WSecLevel = InSecLevel;
+  
             WOperator = InOperator;
-       //     WPrive = InPrive;
 
             WMode = InMode; // Mode 1 = no updatind of lastest Journals is needed
                             // Updating of Latest Journals is needed
@@ -57,9 +50,13 @@ namespace RRDM4ATMs
                     string WFunction = "Reconc";
                     Aj.CreateTableOfAccess(WSignedId, WSignRecordNo, WOperator, WFunction);
 
-                    // From eJournal update traces and transactions based on table  
-                    Aj.UpdateLatestEjStatus(WSignedId, WSignRecordNo, WOperator);
+                    if (WMode == 2)
+                    {
+                        // From eJournal update traces and transactions based on table  
+                        Aj.UpdateLatestEjStatus(WSignedId, WSignRecordNo, WOperator);
 
+                    }
+                    
                     // THE BELOW IS SPECIFIC FOR TRANS TO BE POSTED
 
                     // Clear AuthUser in TranstoBe posted table
@@ -75,10 +72,10 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
 
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in UpdateAuthUserForSpecialGrids Class............. " + ex.Message;
-
-                }
+                CatchDetails(ex);
+            }
         }
+
+
     }
 }

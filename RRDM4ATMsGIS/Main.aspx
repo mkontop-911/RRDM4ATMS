@@ -4,7 +4,8 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
-<%--    <script type="text/javascript">
+<%--    
+    <script type="text/javascript">
         window.onload = function () {
             var div1 = document.getElementById("DivGrid");
             var div1_position = document.getElementById("DivGrid_Pos");
@@ -21,7 +22,6 @@
                 div1.onscroll = function () {
                     div1_position.value = div1.scrollTop;
                 };
-
                 if (isNaN(position2)) {
                     position2 = 0;
                 }
@@ -30,7 +30,8 @@
                     div2_position.value = div2.scrollTop;
                 };
         };
-    </script>--%>
+    </script>
+    --%>
 
     <style type="text/css">
         .auto-style1 {
@@ -44,7 +45,12 @@
 </asp:Content>
 
 <asp:Content ID="ContentMain" ContentPlaceHolderID="ContentPlaceHolderMain" runat="server">
-    <asp:ObjectDataSource ID="odsDistricts" runat="server" SelectMethod="GetListofDistricts" TypeName="RRDM4ATMs.AtmDataAccess"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="odsDistricts" runat="server" SelectMethod="GetListofDistrictsInGroupForUser" TypeName="RRDM4ATMs.RRDMTempAtmsLocation+AtmDataAccess">
+        <SelectParameters>
+            <asp:QueryStringParameter DefaultValue="-1" Name="GroupNo" QueryStringField="GroupNo" Type="Int32" />
+            <asp:QueryStringParameter DefaultValue="" Name="UserId" QueryStringField="UserId" Type="String" />
+        </SelectParameters>
+    </asp:ObjectDataSource>
 
     <%-- District selection --%>
     <div id="Div1" class="RRDM0" runat="server" style="z-index: 1; left: 0px; top: 8px; position: absolute; height: 39px; width: 326px; float: left;">
@@ -57,7 +63,7 @@
 
     <input type="hidden" id="DivDistricts_Pos" name="DivDistricts_Pos" />
     <div id="DivDistricts" class="RRDM0" style="position: absolute; left: 4px; top: 49px; padding: 2px; margin: 2px; border-style: solid; border-width: 1px; border-color: #2377C0; height: 100px; overflow: scroll; width: 316px;">
-        <asp:CheckBoxList ID="cblDistricts" runat="server" Height="100%" Width="100%" DataSourceID="odsDistricts" DataTextField="District" DataValueField="District" OnSelectedIndexChanged="cblDistricts_SelectedIndexChanged" AutoPostBack="true">
+        <asp:CheckBoxList ID="cblDistricts" runat="server" Height="100%" Width="100%" DataSourceID="odsDistricts" DataTextField="District" DataValueField="District" OnSelectedIndexChanged="cblDistricts_SelectedIndexChanged" AutoPostBack="True">
         </asp:CheckBoxList>
     </div>
 
@@ -71,7 +77,8 @@
             AutoGenerateSelectButton="True"
             EmptyDataText="   No Records to display!"
             BorderStyle="None" Font-Names="Arial" Font-Size="Small"
-            BackColor="White" BorderColor="#3366CC" BorderWidth="1px">
+            BackColor="White" BorderColor="#3366CC" BorderWidth="1px" OnRowDataBound="gvATMs_RowBound">
+            <HeaderStyle Height="50px"/>
             <FooterStyle BackColor="#99CCCC" ForeColor="#003399" />
             <HeaderStyle BackColor="#003399" Font-Bold="True" ForeColor="#CCCCFF" />
             <PagerStyle BackColor="#99CCCC" ForeColor="#003399" HorizontalAlign="Left" />
@@ -82,15 +89,22 @@
             <SortedDescendingCellStyle BackColor="#D6DFDF" />
             <SortedDescendingHeaderStyle BackColor="#002876" />
             <Columns>
+                <%--
                 <asp:BoundField DataField="ATMId" HeaderText="ID" ReadOnly="True">
                     <ItemStyle VerticalAlign="Middle" Wrap="False" />
                 </asp:BoundField>
+               --%> 
                 <asp:BoundField DataField="ATMNumber" HeaderText="ATM No">
                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Wrap="False" />
                 </asp:BoundField>
+                <asp:BoundField DataField="ATMGroupDesc" HeaderText="Description" ConvertEmptyStringToNull="False">
+                    <ItemStyle VerticalAlign="Middle" Wrap="False" Width="180px" />
+                </asp:BoundField>
+                <%-- 
                 <asp:BoundField DataField="ATMColorId" HeaderText="Color Id" ConvertEmptyStringToNull="False">
                     <ItemStyle VerticalAlign="Middle" Wrap="False" Width="180px" />
                 </asp:BoundField>
+                --%>
             </Columns>
         </asp:GridView>
     </div>
@@ -103,10 +117,12 @@
                 <td>
                     <asp:TextBox CssClass="TextBoxCell" ID="tbAtmNo" runat="server" Height="15px" Width="50px"></asp:TextBox>
                 </td>
+                <%--
                 <td class="FldLabel">Code</td>
                 <td>
                     <asp:TextBox ID="tbColorId" CssClass="TextBoxCell" runat="server" Height="15px" Width="100px"></asp:TextBox>
                 </td>
+                 --%>
             </tr>
             <tr class="dtlRow">
                 <td class="auto-style1">Street</td>

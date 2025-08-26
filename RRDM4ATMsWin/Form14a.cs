@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -18,6 +10,10 @@ namespace RRDM4ATMsWin
 
         RRDMErrorsClassWithActions Pa = new RRDMErrorsClassWithActions();
 
+        RRDMGetUniqueNumber Gu = new RRDMGetUniqueNumber();
+
+        public int MetaNumber;
+
         //  AtmsMainClass Am = new AtmsMainClass();
 
         RRDMAtmsClass Ac = new RRDMAtmsClass();
@@ -26,13 +22,19 @@ namespace RRDM4ATMsWin
         decimal WAmountInDiff;
      
         string WCurDes;
+        string WRMCategory;
+        int WRMCycle;
+        //int WMaskRecordId; 
         string WAtmNo;
         int WSesNo;
         string WOperator; 
 
-        public Form14a(string InSignedId, string InAtmNo, int InSesNo, string InOperator, decimal InAmountInDiff, string InCurrNm)
+        public Form14a(string InSignedId, string InRMCategory, int InRMCycle, int InMaskRecordId,string InAtmNo, int InSesNo, string InOperator, decimal InAmountInDiff, string InCurrNm)
         {
-            WSignedId = InSignedId; 
+            WSignedId = InSignedId;
+            WRMCategory = InRMCategory;
+            WRMCycle = InRMCycle;
+            //WMaskRecordId = InMaskRecordId = 0; 
             WAtmNo = InAtmNo;
             WSesNo = InSesNo;
             WOperator = InOperator; 
@@ -44,12 +46,10 @@ namespace RRDM4ATMsWin
             {
                 MessageBox.Show("Amount is Zero. Please review what you want to do" );
             } 
-            
-            
+                       
             InitializeComponent();
             // Call Procedures 
-
-            
+            MetaNumber = 0; 
             if (WAmountInDiff < 0) // ECHO PERISSEVMA AT HOST 
             {
                 checkBox2.Checked = true; // CR Cash 
@@ -61,13 +61,13 @@ namespace RRDM4ATMsWin
             {
                 checkBox1.Checked = true; // DR Cash
                 checkBox4.Checked = true; // CR Suspense 
-                textBox4.Text = "CR Cash -move Difference";  
+                textBox4.Text = "CR Cash - move to Suspense";
             }
 
-            radioButton2.Checked = true; 
+            radioButton1.Checked = true; 
             textBox1.Text = "598"; 
-            textBox11.Text = WAmountInDiff.ToString();
-         //   textBox14.Text = WCurrCd.ToString();
+            textBox11.Text = WAmountInDiff.ToString("#,##0.00");
+            //   textBox14.Text = WCurrCd.ToString();
             textBox15.Text = WCurDes;
             textBoxMsgBoard.Text = "Review Error to be created. Press Update to create it. Then press finish"; 
 
@@ -105,12 +105,11 @@ namespace RRDM4ATMsWin
 
             // INITIALISED WHAT IS NEEDED 
 
+            Pa.CategoryId = WRMCategory;
+            Pa.RMCycle = WRMCycle;
+            Pa.UniqueRecordId = Gu.GetNextValue();
 
-            Pa.CategoryId = "N/A"; 
-            Pa.RMCycle = 0;
-            Pa.MaskRecordId = 0; 
 
-          
             Pa.ErrDesc = textBox4.Text;
             Pa.AtmNo = WAtmNo;
             Pa.SesNo = WSesNo;
@@ -137,13 +136,16 @@ namespace RRDM4ATMsWin
 
             Pa.DatePrinted = NullPastDate;
 
+            Pa.UserComment = "Move difference to suspense for ATM :" + WAtmNo; 
+
             Pa.OpenErr = true;
 
-            Pa.Operator = WOperator; 
+            Pa.Operator = WOperator;
 
-            Pa.InsertError(); // INSERT ERROR
+            MetaNumber = Pa.InsertError(); // INSERT ERROR
 
-            MessageBox.Show("Error with id = 598 is created. This error makes transaction with suspense account." );  
+            MessageBox.Show("Exception with id = 598 is created." + Environment.NewLine
+                            +"This moves difference to suspense account.");  
 
             textBoxMsgBoard.Text = "Exception is created. Close form and take action on Error";
 

@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Data.SqlClient;
+using RRDM4ATMs;
 using System.Configuration;
 
 namespace RRDM4ATMsWin
@@ -34,13 +26,13 @@ namespace RRDM4ATMsWin
 
         int WErrNo;
         int WTraceNo;
-        int WTranNo;
+        int WUniqueRecordId;
         int WErrId;
 
         
         int WProcess;
 
-        bool DisputeOpenned;
+        bool DisputeOpened;
 
         bool ViewWorkFlow;
         //    bool Secondary; 
@@ -65,9 +57,9 @@ namespace RRDM4ATMsWin
             ["ATMSConnectionString"].ConnectionString;
 
 
-        RRDMNotesBalances Na = new RRDMNotesBalances(); // Activate Class 
+        RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances(); // Activate Class 
 
-        RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); // Activate Class 
+        RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); // Activate Class 
 
         RRDMErrorsClassWithActions Pa = new RRDMErrorsClassWithActions(); // Make class availble 
 
@@ -77,11 +69,11 @@ namespace RRDM4ATMsWin
 
         RRDMHostTransClass Ht = new RRDMHostTransClass();
 
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         RRDMDisputesTableClass Di = new RRDMDisputesTableClass(); 
 
-        RRDMDisputeTrasactionClass Dt = new RRDMDisputeTrasactionClass(); 
+        RRDMDisputeTransactionsClass Dt = new RRDMDisputeTransactionsClass(); 
      //   string WUserOperator; 
 
         //
@@ -107,15 +99,15 @@ namespace RRDM4ATMsWin
             //   if (CurrType == 2) Secondary = true;
 
             InitializeComponent();
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            Us.ReadSignedActivityByKey(WSignRecordNo);
-
-            if (Us.ProcessNo == 54 || Us.ProcessNo == 55 || Us.ProcessNo == 56)
+            if (Usi.ProcessNo == 54 || Usi.ProcessNo == 55 || Usi.ProcessNo == 56)
             {
                 ViewWorkFlow = true;
             }
 
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             label32.Text = WAtmNo;
             label31.Text = WSesNo.ToString();
@@ -302,7 +294,7 @@ namespace RRDM4ATMsWin
             {
                 textBox2.Hide();
 
-                WTranNo = Pa.TransNo; 
+                WUniqueRecordId = Pa.UniqueRecordId; 
 
                 WTraceNo = Pa.TraceNo;
                 
@@ -351,7 +343,7 @@ namespace RRDM4ATMsWin
                 if (Pa.ErrId != 198) // 198 is the correction for suspense has nothing to do with transactions 
                 {
                     // VALIDATION OF TRACES STATUS 
-                    Tc.ReadInPoolTransSpecific(Pa.TransNo);
+                 //   Tc.ReadInPoolTransSpecific(Pa.UniqueRecordId);
                     // Check to see if in Host for Errors reported in ATM 
                     if (Tc.RecordFound == true & (Pa.ErrId == 55 || Pa.ErrId == 175 || Pa.ErrId == 185)) // 55 is presenter error and 175 = missing at Host
                     {
@@ -513,7 +505,7 @@ namespace RRDM4ATMsWin
 
                 // Show Dispute 
 
-                Dt.ReadDisputeTranForInPool(Pa.MaskRecordId);
+                Dt.ReadDisputeTranByUniqueRecordId(Pa.UniqueRecordId);
                 if (Dt.RecordFound == true)
                 {
                     labelDisputeId.Show();
@@ -571,7 +563,7 @@ namespace RRDM4ATMsWin
 
                 if (radioButtonMoveToDispute.Checked)
                 {
-                    Dt.ReadDisputeTranForInPool(Pa.MaskRecordId);
+                    Dt.ReadDisputeTranByUniqueRecordId(Pa.UniqueRecordId);
                     if (Dt.RecordFound == true)
                     {
                         MessageBox.Show(" Dispute already open for this Error");
@@ -579,13 +571,13 @@ namespace RRDM4ATMsWin
                     }
             
                     int From = 5; // From dispute 
-                    NForm5 = new Form5(WSignedId, WSignRecordNo, WOperator, Pa.CardNo, Pa.TransNo, Pa.ErrAmount, 0, textBox32.Text, From, "ATM");
+                    NForm5 = new Form5(WSignedId, WSignRecordNo, WOperator, Pa.CardNo, Pa.UniqueRecordId, Pa.ErrAmount, 0, textBox32.Text, From, "ATM");
                     NForm5.FormClosed += NForm5_FormClosed;
                     NForm5.ShowDialog();
 
-                    if (DisputeOpenned == false)
+                    if (DisputeOpened == false)
                     {
-                        MessageBox.Show("Dispute was not oppenned! ");
+                        MessageBox.Show("Dispute was not opened! ");
                         return; 
                     }             
                 }
@@ -774,10 +766,10 @@ namespace RRDM4ATMsWin
         {
             // Show Dispute 
 
-            Dt.ReadDisputeTranForInPool(Pa.MaskRecordId);
+            Dt.ReadDisputeTranByUniqueRecordId(Pa.UniqueRecordId);
             if (Dt.RecordFound == true)
             {
-                DisputeOpenned = true; 
+                DisputeOpened = true; 
                 labelDisputeId.Show();
                 textBoxDisputeId.Show();
                 //buttonMoveToDispute.Hide();
@@ -786,7 +778,7 @@ namespace RRDM4ATMsWin
             else
             {
                 
-                DisputeOpenned = false; 
+                DisputeOpened = false; 
                 //labelDisputeId.Hide();
                 //textBoxDisputeId.Hide();
                 //buttonMoveToDispute.Show();
@@ -974,7 +966,7 @@ namespace RRDM4ATMsWin
                 textBoxMsgBoard.Text = " The ACTION that was taken is now UNDO. MAKE YOUR NEXT CHOICE";
 
             }
-            Dt.ReadDisputeTranForInPool(Pa.MaskRecordId);
+            Dt.ReadDisputeTranByUniqueRecordId(Pa.UniqueRecordId);
             if (Dt.RecordFound == true)
             {
                Di.ReadDispute(Dt.DisputeNumber);
@@ -1001,13 +993,9 @@ namespace RRDM4ATMsWin
                 return;
             }
 
-            string FilterATM = "AtmNo='" + WAtmNo + "'" + " AND SesNo =" + WSesNo + " AND AtmTraceNo=" + WTraceNo;
-
-            String FilterHost = "AtmNo='" + WAtmNo + "'" + " AND TraceNumber=" + WTraceNo;
-
             if (WErrId < 200)
             {
-                NForm75 = new Form75(WSignedId, WSignRecordNo, WOperator,WAtmNo, WSesNo, FilterATM, FilterHost, WTranNo );
+                NForm75 = new Form75(WSignedId, WSignRecordNo, WOperator,WAtmNo, WSesNo, WUniqueRecordId );
                 NForm75.Show();
             }
             else
@@ -1024,7 +1012,10 @@ namespace RRDM4ATMsWin
             if (WCountedBal - WABalGel != 0)
             {
                 AmountForSuspense = WCountedBal - WABalGel;
-                NForm14 = new Form14a(WSignedId, WAtmNo, WSesNo, WOperator, AmountForSuspense, WCurrNm);
+                //int MaskRecordId = 0;
+                int RMCycle = 0;
+                NForm14 = new Form14a(WSignedId, "EWB110", RMCycle, Pa.UniqueRecordId, WAtmNo, WSesNo, WOperator, AmountForSuspense, WCurrNm);
+            
                 NForm14.FormClosed += NForm14_FormClosed;
                 NForm14.Show();
             }

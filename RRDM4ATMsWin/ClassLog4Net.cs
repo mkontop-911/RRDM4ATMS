@@ -8,7 +8,7 @@ using System.Web;
 using System.Security.Principal;
 using System.IO.IsolatedStorage;
 using System.IO;
-//using log4net.Appender;
+using log4net.Appender;
 
 namespace RRDM4ATMsWin
 {
@@ -24,11 +24,11 @@ namespace RRDM4ATMsWin
 
 public class Log
 {
-	//static log4net.ILog mLog;
-	//static Log()
-	//{
-  //      mLog = log4net.LogManager.GetLogger("GAS");
-//	}
+    static log4net.ILog mLog;
+    static Log()
+    {
+        mLog = log4net.LogManager.GetLogger("GAS");
+    }
 	/// <summary>
 	/// WriteToLog
 	/// </summary>

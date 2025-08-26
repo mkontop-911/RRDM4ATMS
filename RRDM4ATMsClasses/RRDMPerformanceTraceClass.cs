@@ -1,39 +1,439 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Data;
 
 namespace RRDM4ATMs
 {
-    public class RRDMPerformanceTraceClass
+    public class RRDMPerformanceTraceClass : Logger
     {
+        public RRDMPerformanceTraceClass() : base() { }
 
-// For critical proceses a record is inputed to see performance 
+        // For critical proceses a record is inputed to see performance 
 
         public int RecordNo;
+        public int Mode;
+        // 1 : Performance critical processes 
+        // 2 : Traces of critical processes 
+        // 5 : Operational Updating Actions
+        // 6 : Operational Not Updating Actions
         public string BankId;
- 
         public string ProcessNm;
         public string AtmNo;
+        public DateTime Cut_Off_Date; 
         public DateTime StartDT;
         public DateTime EndDT;
-        public int Duration;
-
+        public int Duration_Sec;
+        public int Duration_Mili;
+        public string Details; 
+        public string UserId;
+        public int RMCycleNo;
         public string Operator;
 
         public bool RecordFound;
         public bool ErrorFound;
-        public string ErrorOutput; 
+        public string ErrorOutput;
+
+        // Define the data table 
+        public DataTable TablePerformance = new DataTable();
+
+        public DataTable TableTraces = new DataTable();
+
+        public int TotalSelected;
 
         string connectionString = ConfigurationManager.ConnectionStrings
            ["ATMSConnectionString"].ConnectionString;
+
+        // Read Fields
+        private void Read_ReaderFields(SqlDataReader rdr)
+        {
+            // Read Details
+            RecordNo = (int)rdr["RecordNo"];
+
+            Mode = (int)rdr["Mode"];
+
+            BankId = (string)rdr["BankId"];
+
+            ProcessNm = (string)rdr["ProcessNm"];
+            AtmNo = (string)rdr["AtmNo"];
+
+            Cut_Off_Date = (DateTime)rdr["Cut_Off_Date"];
+            StartDT = (DateTime)rdr["StartDT"];
+            EndDT = (DateTime)rdr["EndDT"];
+
+            Duration_Sec = (int)rdr["Duration_Sec"];
+            Duration_Mili = (int)rdr["Duration_Mili"];
+            
+            Details = (string)rdr["Details"];
+
+            UserId = (string)rdr["UserId"];
+            RMCycleNo = (int)rdr["RMCycleNo"];
+            
+            Operator = (string)rdr["Operator"];
+        }
+       //
+// Read and create Data Table for Performance 
+//
+        public void ReadPerformanceTraceAndFillTableForPerformance(string InOperator, string InAtmNo, string InProcessNm )
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            TablePerformance = new DataTable();
+            TablePerformance.Clear();
+
+            TotalSelected = 0;
+
+            string SqlString2 =
+                    " SELECT "
+                    + " CAST(StartDT AS Date) As Entry_Date, "
+                     + " Sum(Duration_Sec) As TotalDuration,"
+                    + " Max(Duration_Sec) AS Max_Duration, Sum(Counter) As Counter, (Sum(Counter)/Sum(Duration_Sec)) As PerSec "
+                    + " FROM [ATMS].[dbo].[PerformanceTrace] "
+                    + " WHERE Mode = 1 AND AtmNo = @AtmNo AND ProcessNm LIKE @ProcessNm"
+                    + " GROUP BY CAST(StartDT AS Date) "
+                    + " ORDER BY CAST(StartDT AS Date) DESC ";
+
+            using (SqlConnection conn =
+                        new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString2, conn);
+
+                    sqlAdapt.SelectCommand.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                    sqlAdapt.SelectCommand.Parameters.AddWithValue("@ProcessNm", InProcessNm);
+
+                    //Create a datatable that will be filled with the data retrieved from the command
+                    //    DataSet MISds = new DataSet();
+                    sqlAdapt.Fill(TablePerformance);
+
+                   
+                    // Close conn
+                    conn.Close();
+
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+        
+        }
+
+        public void ReadPerformanceTraceAndFillTableForPerformance_2(string InOperator, string InProcessNm
+                                                          , DateTime InDateFrom, DateTime InDateTo)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            TablePerformance = new DataTable();
+            TablePerformance.Clear();
+
+            TotalSelected = 0;
+
+
+            string SqlString2 =
+                    " SELECT RMCycleNo, Details , "
+                      + " CAST( EndDT AS Date) As Entry_Date, "
+                     + " CAST(Duration_Sec as Decimal(12, 2))/ 60 As Duration_Min "
+                    + " FROM [ATMS].[dbo].[PerformanceTrace] "
+                    + " WHERE Mode in (5, 6) AND ProcessNm = @ProcessNm AND Duration_Sec > 0 "
+                    + " AND CAST( EndDT AS Date) BETWEEN @DateFrom AND @DateTo "
+                    + " ORDER BY RMCycleNo  ";
+
+            using (SqlConnection conn =
+                        new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString2, conn);
+
+                    sqlAdapt.SelectCommand.Parameters.AddWithValue("@ProcessNm", InProcessNm);
+                    sqlAdapt.SelectCommand.Parameters.AddWithValue("@DateFrom", InDateFrom);
+                    sqlAdapt.SelectCommand.Parameters.AddWithValue("@DateTo", InDateTo);
+
+                    //Create a datatable that will be filled with the data retrieved from the command
+              
+                    sqlAdapt.Fill(TablePerformance);
+
+                    // Close conn
+                    conn.Close();
+
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+
+        }
+        // CREATE TABLE FOR OPERATIONAL ACTIONS
+        public void ReadPerformanceTraceAndFillTableForOperatingActions(string InOperator, string InSelectionCriteria)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            TableTraces = new DataTable();
+            TableTraces.Clear();
+
+            TotalSelected = 0;
+
+            string SqlString2 =
+                    " SELECT RecordNo"
+                    + " ,EndDT As DateTime "
+                    + " ,Cut_Off_Date "
+                    + " ,ProcessNm "
+                    + " ,Details "
+                    + " ,CAST(Duration_Sec as Decimal(12,2))/60 As Duration_Min "
+                    + " ,Mode "
+                    + " ,UserId "
+                    + " ,RMCycleNo "
+                    + " FROM [ATMS].[dbo].[PerformanceTrace] "
+                    + InSelectionCriteria
+                    + " ORDER BY RecordNo DESC";
+
+            using (SqlConnection conn =
+                        new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString2, conn);
+
+                  //  sqlAdapt.SelectCommand.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                   // sqlAdapt.SelectCommand.Parameters.AddWithValue("@Operator", InOperator);
+
+                    //    DataSet MISds = new DataSet();
+                    sqlAdapt.Fill(TableTraces);
+
+
+                    // Close conn
+                    conn.Close();
+
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+
+            InsertWReport73_2(); 
+
+        }
+        // Range of Dates 
+        public void ReadPerformanceTraceAndFillTableForOperatingActions_2(string InOperator,DateTime InFromDt, DateTime InToDt)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            TableTraces = new DataTable();
+            TableTraces.Clear();
+
+            TotalSelected = 0;
+
+
+            string SqlString2 =
+                    " SELECT RecordNo"
+                    + " ,EndDT As DateTime "
+                    + " ,Cut_Off_Date "
+                    + " ,ProcessNm "
+                    + " ,Details "
+                    + " ,CAST(Duration_Sec as Decimal(12,2))/60 As Duration_Min "
+                    + " ,Mode "
+                    + " ,UserId "
+                    + " ,RMCycleNo "
+                    + " FROM [ATMS].[dbo].[PerformanceTrace] "
+                    + " WHERE "
+                         + "  Mode in (5,6) And Cast(EndDT as Date) >=@FromDt AND  "
+                             + "  Cast(EndDT as Date) <= @ToDt  "
+                    + " ORDER BY RecordNo ASC";
+
+            using (SqlConnection conn =
+                        new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString2, conn);
+
+                    sqlAdapt.SelectCommand.Parameters.AddWithValue("@FromDt", InFromDt);
+                    sqlAdapt.SelectCommand.Parameters.AddWithValue("@ToDt", InToDt);
+
+                    //    DataSet MISds = new DataSet();
+                    sqlAdapt.Fill(TableTraces);
+
+
+                    // Close conn
+                    conn.Close();
+
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+
+            InsertWReport73_2();
+
+        }
+
+        // Read and create Data Table for Performance 
+        //
+        public void ReadPerformanceTraceAndFillTableForTraces(string InOperator, DateTime InCutOffDate, string InCriticalProcess)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            TableTraces = new DataTable();
+            TableTraces.Clear();
+
+            TotalSelected = 0;
+
+            string SqlString2 =
+                    " SELECT * "
+                    + " FROM [ATMS].[dbo].[PerformanceTrace] "
+                    + " WHERE Mode = 2 AND Cut_Off_Date = @CutOffDate  AND ProcessNm = @ProcessNm"
+                    + " ORDER BY RecordNo ";
+
+            using (SqlConnection conn =
+                        new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString2, conn);
+
+                    sqlAdapt.SelectCommand.Parameters.AddWithValue("@CutOffDate", InCutOffDate);
+                    sqlAdapt.SelectCommand.Parameters.AddWithValue("@ProcessNm", InCriticalProcess);
+
+                    //Create a datatable that will be filled with the data retrieved from the command
+               
+                    sqlAdapt.Fill(TableTraces);
+
+                    // Close conn
+                    conn.Close();
+
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+
+            return; 
+
+            InsertWReport73();
+        }
+
+        // Insert 
+        public void InsertWReport73()
+        {
+
+            if (TableTraces.Rows.Count > 0)
+            {
+                RRDMTempTablesForReportsATMS Tr = new RRDMTempTablesForReportsATMS();
+
+                //Clear Table 
+                Tr.DeleteReport73();
+
+                // RECORDS READ AND PROCESSED 
+                //TableMpa
+                using (SqlConnection conn =
+                               new SqlConnection(connectionString))
+                    try
+                    {
+                        conn.Open();
+
+                        using (SqlBulkCopy s = new SqlBulkCopy(conn))
+                        {
+                            s.DestinationTableName = "[ATMS].[dbo].[WReport73]";
+
+                            foreach (var column in TableTraces.Columns)
+                                s.ColumnMappings.Add(column.ToString(), column.ToString());
+
+                            s.WriteToServer(TableTraces);
+                        }
+                        conn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        conn.Close();
+
+                        CatchDetails(ex);
+                    }
+            }
+        }
+
+        // Insert 73_2
+        public void InsertWReport73_2()
+        {
+            return;
+
+            if (TableTraces.Rows.Count > 0)
+            {
+                RRDMTempTablesForReportsATMS Tr = new RRDMTempTablesForReportsATMS();
+
+                //Clear Table 
+                Tr.DeleteReport73_2();
+
+                // RECORDS READ AND PROCESSED 
+                //TableMpa
+                using (SqlConnection conn =
+                               new SqlConnection(connectionString))
+                    try
+                    {
+                        conn.Open();
+
+                        using (SqlBulkCopy s = new SqlBulkCopy(conn))
+                        {
+                            s.DestinationTableName = "[ATMS].[dbo].[WReport73_2]";
+
+                            foreach (var column in TableTraces.Columns)
+                                s.ColumnMappings.Add(column.ToString(), column.ToString());
+
+                            s.WriteToServer(TableTraces);
+                        }
+
+                        conn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        conn.Close();
+
+                        CatchDetails(ex);
+                    }
+            }
+        }
 
         // READ records for a particular ATM 
 
@@ -65,21 +465,7 @@ namespace RRDM4ATMs
                         {
                             RecordFound = true;
 
-                            // Read Details
-                            RecordNo = (int)rdr["RecordNo"];
-
-                            BankId = (string)rdr["BankId"];
-                  
-
-                            ProcessNm = (string)rdr["ProcessNm"];
-                            AtmNo = (string)rdr["AtmNo"];
-
-                            StartDT = (DateTime)rdr["StartDT"];
-                            EndDT = (DateTime)rdr["EndDT"];
-
-                            Duration = (int)rdr["Duration"];
-
-                            Operator = (string)rdr["Operator"];
+                            Read_ReaderFields(rdr);
 
                         }
 
@@ -94,11 +480,12 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Performance Trace Class............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
+
 
         // READ record for a particular Record No
 
@@ -131,19 +518,7 @@ namespace RRDM4ATMs
                             RecordFound = true;
 
                             // Read Details
-                            RecordNo = (int)rdr["RecordNo"];
-
-                            BankId = (string)rdr["BankId"];
-
-                            ProcessNm = (string)rdr["ProcessNm"];
-                            AtmNo = (string)rdr["AtmNo"];
-
-                            StartDT = (DateTime)rdr["StartDT"];
-                            EndDT = (DateTime)rdr["EndDT"];
-
-                            Duration = (int)rdr["Duration"];
-
-                            Operator = (string)rdr["Operator"];
+                            Read_ReaderFields(rdr);
 
                         }
 
@@ -158,8 +533,8 @@ namespace RRDM4ATMs
                 {
 
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Performance Trace Class............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -208,28 +583,68 @@ namespace RRDM4ATMs
                 }
                 catch (Exception ex)
                 {
-
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Performance Trace Class............. " + ex.Message;
+
+                    CatchDetails(ex);
 
                 }
         }
         //
-        // Insert NEW Performance Trace 
+        // Insert NEW Performance Trace GENERAL WITHOUT USER 
         //
-        public void InsertPerformanceTrace(string InBankId,string InOperator,  string InProcessNm, string InAtmNo, DateTime InStartDT)
+        public void InsertPerformanceTrace(string InBankId,string InOperator, int InMode , 
+                    string InProcessNm, string InAtmNo, DateTime InStartDT, DateTime InEndDT, string InDetails)
         {
             
             ErrorFound = false;
-            ErrorOutput = ""; 
+            ErrorOutput = "";
+
+            //if (InMode == 1)
+            //{
+                // Calculate Duration in seconds 
+                if (InEndDT > InStartDT)
+            {
+                TimeSpan DurationTemp = InEndDT - InStartDT;
+
+                Duration_Sec = Convert.ToInt32(DurationTemp.TotalSeconds);
+                Duration_Mili = Convert.ToInt32(DurationTemp.Milliseconds);
+            }
+               else
+            {
+                 Duration_Sec=0;
+                 Duration_Mili=0;
+            }
+               
+            //}
+            //else
+            //{
+            //    Duration_Sec = 0 ;
+            //    Duration_Mili = 0 ;
+            //}
+           
+
+            RRDMReconcJobCycles Rjc = new RRDMReconcJobCycles();
+
+            Rjc.ReadLastReconcJobCycle(InOperator); 
 
             string cmdinsert = "INSERT INTO [dbo].[PerformanceTrace]"   
-             + " ([BankId], "
-             + " [ProcessNm],[AtmNo] ,[StartDT], [Operator]) " 
+             + " ([Mode], [BankId], "
+             + " [ProcessNm],[AtmNo] ,"
+             + " [Cut_Off_Date],"
+             + " [StartDT],"
+             + " [EndDT], "
+             + " [Duration_Sec], "
+             + " [Duration_Mili], "
+             + " [Details] ,[Operator]) "
              +  "  VALUES "
-             + " (@BankId,  "
-             + " @ProcessNm, @AtmNo , @StartDT, @Operator) "; 
+             + " (@Mode, @BankId,  "
+             + " @ProcessNm, @AtmNo , "
+             + " @Cut_Off_Date, "
+             + " @StartDT, "
+             + " @EndDT, "
+             + " @Duration_Sec, "
+             + " @Duration_Mili, "
+             + " @Details, @Operator) ";
 
             using (SqlConnection conn =
                 new SqlConnection(connectionString))
@@ -241,20 +656,27 @@ namespace RRDM4ATMs
                        new SqlCommand(cmdinsert, conn))
                     {
 
-                 //       cmd.Parameters.AddWithValue("@RecordNo", RecordNo);
+                        cmd.Parameters.AddWithValue("@Mode", InMode);
                         cmd.Parameters.AddWithValue("@BankId", InBankId);
-                 //       cmd.Parameters.AddWithValue("@Prive", InPrive);
-
+              
                         cmd.Parameters.AddWithValue("@ProcessNm", InProcessNm);
                         cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+
+                        cmd.Parameters.AddWithValue("@Cut_Off_Date", Rjc.Cut_Off_Date);
+
                         cmd.Parameters.AddWithValue("@StartDT", InStartDT);
+                        cmd.Parameters.AddWithValue("@EndDT", InEndDT);
+
+                        cmd.Parameters.AddWithValue("@Duration_Sec", Duration_Sec);
+                        cmd.Parameters.AddWithValue("@Duration_Mili", Duration_Mili);
+
+                        cmd.Parameters.AddWithValue("@Details", InDetails);
                         cmd.Parameters.AddWithValue("@Operator", InOperator);
 
                         //rows number of record got updated
 
-                        int rows = cmd.ExecuteNonQuery();
-                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();
+                      
 
                     }
                     // Close conn
@@ -263,8 +685,132 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Performance Trace Class............. " + ex.Message;
+
+                    CatchDetails(ex);
+
+                }
+        }
+
+        //
+        // Insert NEW Performance Trace GENERAL WITH USER 
+        //
+        public void InsertPerformanceTrace_With_USER(string InBankId, string InOperator, int InMode,
+                    string InProcessNm, string InAtmNo, DateTime InStartDT, DateTime InEndDT, string InDetails,string InSignedId, int InRMCycleNo)
+        {
+
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            if (InEndDT >= InStartDT)
+            {
+                // OK
+            }
+            else
+            {
+                return; 
+            }
+
+                //if (InMode == 1)
+                //{
+           // Calculate Duration in seconds 
+            TimeSpan DurationTemp = InEndDT - InStartDT;
+
+            Duration_Sec = Convert.ToInt32(DurationTemp.TotalSeconds);
+            Duration_Mili = Convert.ToInt32(DurationTemp.Milliseconds);
+            //}
+            //else
+            //{
+            //    Duration_Sec = 0 ;
+            //    Duration_Mili = 0 ;
+            //}
+
+
+            RRDMReconcJobCycles Rjc = new RRDMReconcJobCycles();
+
+            Rjc.ReadLastReconcJobCycle(InOperator);
+
+            if (Rjc.RecordFound == true)
+            {
+            }
+            else
+            {
+                Rjc.Cut_Off_Date = DateTime.Now;
+            }
+
+            string cmdinsert = "INSERT INTO [dbo].[PerformanceTrace]"
+             + " ([Mode], [BankId], "
+             + " [ProcessNm],[AtmNo] ,"
+             + " [Cut_Off_Date],"
+             + " [StartDT],"
+             + " [EndDT], "
+             + " [Duration_Sec], "
+             + " [Duration_Mili], "
+             + " [Details], "
+              + " [UserId],"
+             + " [RMCycleNo]," 
+             + "[Operator]" +
+             ") "
+             + "  VALUES "
+             + " (@Mode, @BankId,  "
+             + " @ProcessNm, @AtmNo , "
+             + " @Cut_Off_Date, "
+             + " @StartDT, "
+             + " @EndDT, "
+             + " @Duration_Sec, "
+             + " @Duration_Mili, "
+             + " @Details," +
+               " @UserId," +
+             " @RMCycleNo," +
+             " @Operator" +
+             ") ";
+
+            using (SqlConnection conn =
+                new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+
+                       new SqlCommand(cmdinsert, conn))
+                    {
+
+                        cmd.Parameters.AddWithValue("@Mode", InMode);
+                        cmd.Parameters.AddWithValue("@BankId", InBankId);
+
+                        cmd.Parameters.AddWithValue("@ProcessNm", InProcessNm);
+                        cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+
+                        cmd.Parameters.AddWithValue("@Cut_Off_Date", Rjc.Cut_Off_Date);
+
+                        cmd.Parameters.AddWithValue("@StartDT", InStartDT);
+                        cmd.Parameters.AddWithValue("@EndDT", InEndDT);
+
+                        cmd.Parameters.AddWithValue("@Duration_Sec", Duration_Sec);
+                        cmd.Parameters.AddWithValue("@Duration_Mili", Duration_Mili);
+
+                        cmd.Parameters.AddWithValue("@Details", InDetails);
+                        
+
+                        cmd.Parameters.AddWithValue("@UserId", InSignedId);
+
+                        cmd.Parameters.AddWithValue("@RMCycleNo", InRMCycleNo);
+
+                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+
+                        //rows number of record got updated
+
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
 
                 }
         }
@@ -279,11 +825,10 @@ namespace RRDM4ATMs
             ErrorOutput = ""; 
             // Calculate Duration in seconds 
             TimeSpan DurationTemp = EndDT - StartDT;
-        //    string DurationString = (DurationTemp.TotalMinutes*60 + DurationTemp.TotalSeconds).ToString();
+     
+            Duration_Sec = Convert.ToInt32(DurationTemp.TotalSeconds);
 
-            Duration = Convert.ToInt32(DurationTemp.TotalSeconds);
-
-            if (Duration == 0 )
+            if (Duration_Sec == 0 )
             {
                 using (SqlConnection conn =
                new SqlConnection(connectionString))
@@ -298,9 +843,8 @@ namespace RRDM4ATMs
 
                             //rows number of record got updated
 
-                            int rows = cmd.ExecuteNonQuery();
-                            //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                            //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                            cmd.ExecuteNonQuery();
+                          
 
                         }
                         // Close conn
@@ -309,8 +853,8 @@ namespace RRDM4ATMs
                     catch (Exception ex)
                     {
                         conn.Close();
-                        ErrorFound = true;
-                        ErrorOutput = "An error occured in Performance Trace Class............. " + ex.Message;
+
+                        CatchDetails(ex);
 
                     }
             }
@@ -323,20 +867,19 @@ namespace RRDM4ATMs
                         conn.Open();
                         using (SqlCommand cmd =
                             new SqlCommand("UPDATE [dbo].[PerformanceTrace] SET "
-                                + " EndDT = @EndDT, Duration = @Duration, Counter = @Counter  "
+                                + " EndDT = @EndDT, Duration_Sec = @Duration, Counter = @Counter  "
                                 + " WHERE RecordNo = @RecordNo ", conn))
                         {
                             cmd.Parameters.AddWithValue("@RecordNo", InRecordNo);
 
                             cmd.Parameters.AddWithValue("@EndDT", EndDT);
-                            cmd.Parameters.AddWithValue("@Duration", Duration);
+                            cmd.Parameters.AddWithValue("@Duration_Sec", Duration_Sec);
                             cmd.Parameters.AddWithValue("@Counter", InCounter);
 
                             //rows number of record got updated
 
-                            int rows = cmd.ExecuteNonQuery();
-                            //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                            //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                            cmd.ExecuteNonQuery();
+                           
 
                         }
                         // Close conn
@@ -345,14 +888,50 @@ namespace RRDM4ATMs
                     catch (Exception ex)
                     {
                         conn.Close();
-                        ErrorFound = true;
-                        ErrorOutput = "An error occured in Performance Trace Class............. " + ex.Message;
+
+                        CatchDetails(ex);
 
                     }
             }
-
-           
+         
         }
-       
+
+        // UPDATE Performance Trace upon completion 
+        // 
+        public void DeleteLessThanDatePerformanceTrace(DateTime InCut_Off_Date)
+        {
+
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            using (SqlConnection conn =
+                new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(" DELETE FROM [ATMS].[dbo].[PerformanceTrace] "
+                            + " WHERE Cut_Off_Date < @Cut_Off_Date ", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Cut_Off_Date", InCut_Off_Date);
+
+                        //rows number of record got updated
+                        cmd.CommandTimeout = 300; 
+
+                        cmd.ExecuteNonQuery();
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+
+        }
+
     }
 }

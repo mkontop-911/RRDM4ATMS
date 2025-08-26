@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form3));
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -39,17 +38,18 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.label6 = new System.Windows.Forms.Label();
+            this.textBoxTransStatus = new System.Windows.Forms.TextBox();
+            this.NOTES = new System.Windows.Forms.Label();
             this.labelNumberNotes2 = new System.Windows.Forms.Label();
             this.buttonNotes2 = new System.Windows.Forms.Button();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.textBoxStatus = new System.Windows.Forms.TextBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label14 = new System.Windows.Forms.Label();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBoxTargetDate = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -81,6 +81,7 @@
             this.tbCardNo = new System.Windows.Forms.TextBox();
             this.labelCard = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.link_Creator = new System.Windows.Forms.LinkLabel();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
@@ -91,55 +92,15 @@
             this.labelStep1 = new System.Windows.Forms.Label();
             this.labelStep3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelToday = new System.Windows.Forms.Label();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelToday = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.UserId = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanelHeader = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.aTMSDataSet3 = new RRDM4ATMsWin.ATMSDataSet3();
-            this.disputesTransTableBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.disputesTransTableTableAdapter = new RRDM4ATMsWin.ATMSDataSet3TableAdapters.DisputesTransTableTableAdapter();
-            this.dispTranNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.maskRecordIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.disputeNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dispDtTmDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bankIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dbTranNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.originDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tranDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.atmNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.replGroupDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cardTypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cardNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.accNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.currencyNmDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tranAmountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.systemTargetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.transTypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.transDescDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.errNoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.replCycleDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.startTrxnDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.endTrxnDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.disputedAmtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.disputeActionIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.actionDtTmDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.decidedAmountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.reasonForActionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.actionCommentDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.postDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chooseAuthorDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.pendingAuthorizationDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.authorOriginatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.authorKeyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.authoriserDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.authorisedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.rejectedFromAuthDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.authoriserCommentDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.closedDisputeDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.operatorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanelMain.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -150,13 +111,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.disputesTransTableBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanelMain
@@ -175,7 +134,7 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1008, 647);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1264, 647);
             this.tableLayoutPanelMain.TabIndex = 259;
             // 
             // tableLayoutPanel2
@@ -194,7 +153,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1004, 30);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1260, 30);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
             // textBoxMsgBoard
@@ -209,7 +168,7 @@
             this.textBoxMsgBoard.Multiline = true;
             this.textBoxMsgBoard.Name = "textBoxMsgBoard";
             this.textBoxMsgBoard.ReadOnly = true;
-            this.textBoxMsgBoard.Size = new System.Drawing.Size(743, 26);
+            this.textBoxMsgBoard.Size = new System.Drawing.Size(999, 26);
             this.textBoxMsgBoard.TabIndex = 242;
             this.textBoxMsgBoard.Text = "No guidance information available.";
             // 
@@ -220,7 +179,7 @@
             this.buttonNext.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
             this.buttonNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonNext.Location = new System.Drawing.Point(923, 2);
+            this.buttonNext.Location = new System.Drawing.Point(1179, 2);
             this.buttonNext.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(71, 26);
@@ -236,7 +195,7 @@
             this.buttonFinish.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
             this.buttonFinish.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonFinish.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonFinish.Location = new System.Drawing.Point(840, 2);
+            this.buttonFinish.Location = new System.Drawing.Point(1096, 2);
             this.buttonFinish.Margin = new System.Windows.Forms.Padding(2);
             this.buttonFinish.Name = "buttonFinish";
             this.buttonFinish.Size = new System.Drawing.Size(76, 26);
@@ -260,7 +219,7 @@
             this.panel1.ForeColor = System.Drawing.Color.Black;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1002, 601);
+            this.panel1.Size = new System.Drawing.Size(1258, 601);
             this.panel1.TabIndex = 250;
             // 
             // label10
@@ -288,33 +247,45 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
-            this.panel3.Controls.Add(this.label6);
+            this.panel3.Controls.Add(this.textBoxTransStatus);
+            this.panel3.Controls.Add(this.NOTES);
             this.panel3.Controls.Add(this.labelNumberNotes2);
             this.panel3.Controls.Add(this.buttonNotes2);
-            this.panel3.Controls.Add(this.textBox6);
+            this.panel3.Controls.Add(this.textBoxStatus);
             this.panel3.Controls.Add(this.textBox5);
             this.panel3.Controls.Add(this.label15);
             this.panel3.Controls.Add(this.pictureBox2);
             this.panel3.Controls.Add(this.label14);
             this.panel3.Controls.Add(this.textBox7);
             this.panel3.Controls.Add(this.label13);
-            this.panel3.Controls.Add(this.textBox2);
+            this.panel3.Controls.Add(this.textBoxTargetDate);
             this.panel3.Controls.Add(this.label12);
             this.panel3.Controls.Add(this.checkBox2);
             this.panel3.Location = new System.Drawing.Point(629, 344);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(360, 254);
+            this.panel3.Size = new System.Drawing.Size(620, 254);
             this.panel3.TabIndex = 335;
             // 
-            // label6
+            // textBoxTransStatus
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label6.Location = new System.Drawing.Point(20, 118);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(44, 13);
-            this.label6.TabIndex = 401;
-            this.label6.Text = "Attach";
+            this.textBoxTransStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.textBoxTransStatus.ForeColor = System.Drawing.Color.YellowGreen;
+            this.textBoxTransStatus.Location = new System.Drawing.Point(110, 165);
+            this.textBoxTransStatus.Multiline = true;
+            this.textBoxTransStatus.Name = "textBoxTransStatus";
+            this.textBoxTransStatus.Size = new System.Drawing.Size(478, 75);
+            this.textBoxTransStatus.TabIndex = 402;
+            this.textBoxTransStatus.Text = "Trans Information ";
+            // 
+            // NOTES
+            // 
+            this.NOTES.AutoSize = true;
+            this.NOTES.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.NOTES.Location = new System.Drawing.Point(33, 192);
+            this.NOTES.Name = "NOTES";
+            this.NOTES.Size = new System.Drawing.Size(49, 13);
+            this.NOTES.TabIndex = 401;
+            this.NOTES.Text = "NOTES";
             // 
             // labelNumberNotes2
             // 
@@ -324,7 +295,7 @@
             this.labelNumberNotes2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelNumberNotes2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.labelNumberNotes2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(198)))));
-            this.labelNumberNotes2.Location = new System.Drawing.Point(70, 135);
+            this.labelNumberNotes2.Location = new System.Drawing.Point(74, 135);
             this.labelNumberNotes2.Name = "labelNumberNotes2";
             this.labelNumberNotes2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.labelNumberNotes2.Size = new System.Drawing.Size(15, 15);
@@ -349,15 +320,15 @@
             this.buttonNotes2.UseVisualStyleBackColor = true;
             this.buttonNotes2.Click += new System.EventHandler(this.buttonNotes2_Click);
             // 
-            // textBox6
+            // textBoxStatus
             // 
-            this.textBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.textBox6.ForeColor = System.Drawing.Color.YellowGreen;
-            this.textBox6.Location = new System.Drawing.Point(110, 156);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(170, 26);
-            this.textBox6.TabIndex = 340;
-            this.textBox6.Text = "Settled Dispute";
+            this.textBoxStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.textBoxStatus.ForeColor = System.Drawing.Color.YellowGreen;
+            this.textBoxStatus.Location = new System.Drawing.Point(110, 127);
+            this.textBoxStatus.Name = "textBoxStatus";
+            this.textBoxStatus.Size = new System.Drawing.Size(219, 26);
+            this.textBoxStatus.TabIndex = 340;
+            this.textBoxStatus.Text = "Settled Dispute";
             // 
             // textBox5
             // 
@@ -413,13 +384,13 @@
             this.label13.TabIndex = 334;
             this.label13.Text = "Days Remaining";
             // 
-            // textBox2
+            // textBoxTargetDate
             // 
-            this.textBox2.Location = new System.Drawing.Point(201, 44);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(128, 20);
-            this.textBox2.TabIndex = 333;
+            this.textBoxTargetDate.Location = new System.Drawing.Point(201, 44);
+            this.textBoxTargetDate.Name = "textBoxTargetDate";
+            this.textBoxTargetDate.ReadOnly = true;
+            this.textBoxTargetDate.Size = new System.Drawing.Size(128, 20);
+            this.textBoxTargetDate.TabIndex = 333;
             // 
             // label12
             // 
@@ -659,10 +630,10 @@
             // 
             // tbCustPhone
             // 
-            this.tbCustPhone.Location = new System.Drawing.Point(65, 81);
+            this.tbCustPhone.Location = new System.Drawing.Point(65, 83);
             this.tbCustPhone.Name = "tbCustPhone";
             this.tbCustPhone.ReadOnly = true;
-            this.tbCustPhone.Size = new System.Drawing.Size(110, 20);
+            this.tbCustPhone.Size = new System.Drawing.Size(130, 20);
             this.tbCustPhone.TabIndex = 284;
             // 
             // tbAccNo
@@ -670,7 +641,7 @@
             this.tbAccNo.Location = new System.Drawing.Point(65, 59);
             this.tbAccNo.Name = "tbAccNo";
             this.tbAccNo.ReadOnly = true;
-            this.tbAccNo.Size = new System.Drawing.Size(110, 20);
+            this.tbAccNo.Size = new System.Drawing.Size(130, 20);
             this.tbAccNo.TabIndex = 282;
             // 
             // labelEmail
@@ -722,7 +693,7 @@
             this.tbCardNo.Location = new System.Drawing.Point(65, 33);
             this.tbCardNo.Name = "tbCardNo";
             this.tbCardNo.ReadOnly = true;
-            this.tbCardNo.Size = new System.Drawing.Size(110, 20);
+            this.tbCardNo.Size = new System.Drawing.Size(130, 20);
             this.tbCardNo.TabIndex = 281;
             // 
             // labelCard
@@ -737,6 +708,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.link_Creator);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.dataGridView2);
             this.panel2.Controls.Add(this.button2);
@@ -745,8 +717,19 @@
             this.panel2.Controls.Add(this.dataGridView1);
             this.panel2.Location = new System.Drawing.Point(12, 29);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(977, 289);
+            this.panel2.Size = new System.Drawing.Size(1237, 289);
             this.panel2.TabIndex = 253;
+            // 
+            // link_Creator
+            // 
+            this.link_Creator.AutoSize = true;
+            this.link_Creator.Location = new System.Drawing.Point(469, 258);
+            this.link_Creator.Name = "link_Creator";
+            this.link_Creator.Size = new System.Drawing.Size(70, 13);
+            this.link_Creator.TabIndex = 336;
+            this.link_Creator.TabStop = true;
+            this.link_Creator.Text = "linkToCreator";
+            this.link_Creator.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_Creator_LinkClicked);
             // 
             // button1
             // 
@@ -756,68 +739,27 @@
             this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button1.Location = new System.Drawing.Point(547, 254);
+            this.button1.Location = new System.Drawing.Point(616, 255);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(64, 24);
             this.button1.TabIndex = 335;
             this.button1.Text = "Refresh";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // dataGridView2
             // 
             this.dataGridView2.AllowUserToAddRows = false;
             this.dataGridView2.AllowUserToDeleteRows = false;
-            this.dataGridView2.AutoGenerateColumns = false;
             this.dataGridView2.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dispTranNoDataGridViewTextBoxColumn,
-            this.maskRecordIdDataGridViewTextBoxColumn,
-            this.disputeNumberDataGridViewTextBoxColumn,
-            this.dispDtTmDataGridViewTextBoxColumn,
-            this.bankIdDataGridViewTextBoxColumn,
-            this.dbTranNoDataGridViewTextBoxColumn,
-            this.originDataGridViewTextBoxColumn,
-            this.tranDateDataGridViewTextBoxColumn,
-            this.atmNoDataGridViewTextBoxColumn,
-            this.replGroupDataGridViewTextBoxColumn,
-            this.cardTypeDataGridViewTextBoxColumn,
-            this.cardNoDataGridViewTextBoxColumn,
-            this.accNoDataGridViewTextBoxColumn,
-            this.currencyNmDataGridViewTextBoxColumn,
-            this.tranAmountDataGridViewTextBoxColumn,
-            this.systemTargetDataGridViewTextBoxColumn,
-            this.transTypeDataGridViewTextBoxColumn,
-            this.transDescDataGridViewTextBoxColumn,
-            this.errNoDataGridViewTextBoxColumn,
-            this.replCycleDataGridViewTextBoxColumn,
-            this.startTrxnDataGridViewTextBoxColumn,
-            this.endTrxnDataGridViewTextBoxColumn,
-            this.disputedAmtDataGridViewTextBoxColumn,
-            this.disputeActionIdDataGridViewTextBoxColumn,
-            this.actionDtTmDataGridViewTextBoxColumn,
-            this.decidedAmountDataGridViewTextBoxColumn,
-            this.reasonForActionDataGridViewTextBoxColumn,
-            this.actionCommentDataGridViewTextBoxColumn,
-            this.postDateDataGridViewTextBoxColumn,
-            this.chooseAuthorDataGridViewCheckBoxColumn,
-            this.pendingAuthorizationDataGridViewCheckBoxColumn,
-            this.authorOriginatorDataGridViewTextBoxColumn,
-            this.authorKeyDataGridViewTextBoxColumn,
-            this.authoriserDataGridViewTextBoxColumn,
-            this.authorisedDataGridViewCheckBoxColumn,
-            this.rejectedFromAuthDataGridViewCheckBoxColumn,
-            this.authoriserCommentDataGridViewTextBoxColumn,
-            this.closedDisputeDataGridViewCheckBoxColumn,
-            this.operatorDataGridViewTextBoxColumn});
-            this.dataGridView2.DataSource = this.disputesTransTableBindingSource;
             this.dataGridView2.GridColor = System.Drawing.Color.LightGray;
-            this.dataGridView2.Location = new System.Drawing.Point(500, 10);
+            this.dataGridView2.Location = new System.Drawing.Point(617, 10);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(474, 238);
+            this.dataGridView2.Size = new System.Drawing.Size(606, 238);
             this.dataGridView2.TabIndex = 332;
             this.dataGridView2.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_RowEnter);
             // 
@@ -835,6 +777,7 @@
             this.button2.TabIndex = 280;
             this.button2.Text = "Find";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // textBox3
             // 
@@ -865,7 +808,7 @@
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(484, 238);
+            this.dataGridView1.Size = new System.Drawing.Size(595, 238);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
             // 
@@ -876,7 +819,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(294, 6);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 6, 2, 2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(422, 71);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(789, 71);
             this.flowLayoutPanel1.TabIndex = 243;
             // 
             // labelStep1
@@ -910,7 +853,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 63F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 292F));
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(863, 2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(1119, 2);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -920,6 +863,51 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(139, 76);
             this.tableLayoutPanel1.TabIndex = 247;
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 2;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 232F));
+            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel3, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.pictureBox1, 0, 0);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(2, 2);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 67F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(287, 67);
+            this.tableLayoutPanel5.TabIndex = 251;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 67F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 161F));
+            this.tableLayoutPanel3.Controls.Add(this.label8, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.labelToday, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.label6, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.UserId, 1, 1);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(78, 2);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 3;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(227, 63);
+            this.tableLayoutPanel3.TabIndex = 252;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.ForeColor = System.Drawing.Color.White;
+            this.label8.Location = new System.Drawing.Point(2, 0);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 3, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(30, 13);
+            this.label8.TabIndex = 250;
+            this.label8.Text = "Date";
             // 
             // labelToday
             // 
@@ -934,48 +922,29 @@
             this.labelToday.TabIndex = 117;
             this.labelToday.Text = "Today";
             // 
-            // tableLayoutPanel3
+            // label6
             // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 67F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 161F));
-            this.tableLayoutPanel3.Controls.Add(this.label8, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.labelToday, 1, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(78, 2);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 3;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(228, 63);
-            this.tableLayoutPanel3.TabIndex = 248;
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(2, 23);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 3, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(29, 13);
+            this.label6.TabIndex = 251;
+            this.label6.Text = "User";
             // 
-            // label8
+            // UserId
             // 
-            this.label8.AutoSize = true;
-            this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(2, 0);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 3, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(30, 13);
-            this.label8.TabIndex = 251;
-            this.label8.Text = "Date";
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 2;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 232F));
-            this.tableLayoutPanel5.Controls.Add(this.pictureBox1, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel3, 1, 0);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(2, 2);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(2);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 1;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 67F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(288, 67);
-            this.tableLayoutPanel5.TabIndex = 251;
+            this.UserId.AutoSize = true;
+            this.UserId.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UserId.ForeColor = System.Drawing.Color.White;
+            this.UserId.Location = new System.Drawing.Point(69, 23);
+            this.UserId.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.UserId.Name = "UserId";
+            this.UserId.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.UserId.Size = new System.Drawing.Size(44, 13);
+            this.UserId.TabIndex = 252;
+            this.UserId.Text = "UserId";
             // 
             // pictureBox1
             // 
@@ -1000,7 +969,7 @@
             this.tableLayoutPanelHeader.Name = "tableLayoutPanelHeader";
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1008, 83);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1264, 83);
             this.tableLayoutPanelHeader.TabIndex = 260;
             // 
             // tableLayoutPanel4
@@ -1018,302 +987,15 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1004, 80);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1260, 80);
             this.tableLayoutPanel4.TabIndex = 249;
-            // 
-            // aTMSDataSet3
-            // 
-            this.aTMSDataSet3.DataSetName = "ATMSDataSet3";
-            this.aTMSDataSet3.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // disputesTransTableBindingSource
-            // 
-            this.disputesTransTableBindingSource.DataMember = "DisputesTransTable";
-            this.disputesTransTableBindingSource.DataSource = this.aTMSDataSet3;
-            // 
-            // disputesTransTableTableAdapter
-            // 
-            this.disputesTransTableTableAdapter.ClearBeforeFill = true;
-            // 
-            // dispTranNoDataGridViewTextBoxColumn
-            // 
-            this.dispTranNoDataGridViewTextBoxColumn.DataPropertyName = "DispTranNo";
-            this.dispTranNoDataGridViewTextBoxColumn.HeaderText = "DispTranNo";
-            this.dispTranNoDataGridViewTextBoxColumn.Name = "dispTranNoDataGridViewTextBoxColumn";
-            this.dispTranNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // maskRecordIdDataGridViewTextBoxColumn
-            // 
-            this.maskRecordIdDataGridViewTextBoxColumn.DataPropertyName = "MaskRecordId";
-            this.maskRecordIdDataGridViewTextBoxColumn.HeaderText = "MaskRecordId";
-            this.maskRecordIdDataGridViewTextBoxColumn.Name = "maskRecordIdDataGridViewTextBoxColumn";
-            this.maskRecordIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // disputeNumberDataGridViewTextBoxColumn
-            // 
-            this.disputeNumberDataGridViewTextBoxColumn.DataPropertyName = "DisputeNumber";
-            this.disputeNumberDataGridViewTextBoxColumn.HeaderText = "DisputeNumber";
-            this.disputeNumberDataGridViewTextBoxColumn.Name = "disputeNumberDataGridViewTextBoxColumn";
-            this.disputeNumberDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // dispDtTmDataGridViewTextBoxColumn
-            // 
-            this.dispDtTmDataGridViewTextBoxColumn.DataPropertyName = "DispDtTm";
-            this.dispDtTmDataGridViewTextBoxColumn.HeaderText = "DispDtTm";
-            this.dispDtTmDataGridViewTextBoxColumn.Name = "dispDtTmDataGridViewTextBoxColumn";
-            this.dispDtTmDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // bankIdDataGridViewTextBoxColumn
-            // 
-            this.bankIdDataGridViewTextBoxColumn.DataPropertyName = "BankId";
-            this.bankIdDataGridViewTextBoxColumn.HeaderText = "BankId";
-            this.bankIdDataGridViewTextBoxColumn.Name = "bankIdDataGridViewTextBoxColumn";
-            this.bankIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // dbTranNoDataGridViewTextBoxColumn
-            // 
-            this.dbTranNoDataGridViewTextBoxColumn.DataPropertyName = "DbTranNo";
-            this.dbTranNoDataGridViewTextBoxColumn.HeaderText = "DbTranNo";
-            this.dbTranNoDataGridViewTextBoxColumn.Name = "dbTranNoDataGridViewTextBoxColumn";
-            this.dbTranNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // originDataGridViewTextBoxColumn
-            // 
-            this.originDataGridViewTextBoxColumn.DataPropertyName = "Origin";
-            this.originDataGridViewTextBoxColumn.HeaderText = "Origin";
-            this.originDataGridViewTextBoxColumn.Name = "originDataGridViewTextBoxColumn";
-            this.originDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // tranDateDataGridViewTextBoxColumn
-            // 
-            this.tranDateDataGridViewTextBoxColumn.DataPropertyName = "TranDate";
-            this.tranDateDataGridViewTextBoxColumn.HeaderText = "TranDate";
-            this.tranDateDataGridViewTextBoxColumn.Name = "tranDateDataGridViewTextBoxColumn";
-            this.tranDateDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // atmNoDataGridViewTextBoxColumn
-            // 
-            this.atmNoDataGridViewTextBoxColumn.DataPropertyName = "AtmNo";
-            this.atmNoDataGridViewTextBoxColumn.HeaderText = "AtmNo";
-            this.atmNoDataGridViewTextBoxColumn.Name = "atmNoDataGridViewTextBoxColumn";
-            this.atmNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // replGroupDataGridViewTextBoxColumn
-            // 
-            this.replGroupDataGridViewTextBoxColumn.DataPropertyName = "ReplGroup";
-            this.replGroupDataGridViewTextBoxColumn.HeaderText = "ReplGroup";
-            this.replGroupDataGridViewTextBoxColumn.Name = "replGroupDataGridViewTextBoxColumn";
-            this.replGroupDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // cardTypeDataGridViewTextBoxColumn
-            // 
-            this.cardTypeDataGridViewTextBoxColumn.DataPropertyName = "CardType";
-            this.cardTypeDataGridViewTextBoxColumn.HeaderText = "CardType";
-            this.cardTypeDataGridViewTextBoxColumn.Name = "cardTypeDataGridViewTextBoxColumn";
-            this.cardTypeDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // cardNoDataGridViewTextBoxColumn
-            // 
-            this.cardNoDataGridViewTextBoxColumn.DataPropertyName = "CardNo";
-            this.cardNoDataGridViewTextBoxColumn.HeaderText = "CardNo";
-            this.cardNoDataGridViewTextBoxColumn.Name = "cardNoDataGridViewTextBoxColumn";
-            this.cardNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // accNoDataGridViewTextBoxColumn
-            // 
-            this.accNoDataGridViewTextBoxColumn.DataPropertyName = "AccNo";
-            this.accNoDataGridViewTextBoxColumn.HeaderText = "AccNo";
-            this.accNoDataGridViewTextBoxColumn.Name = "accNoDataGridViewTextBoxColumn";
-            this.accNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // currencyNmDataGridViewTextBoxColumn
-            // 
-            this.currencyNmDataGridViewTextBoxColumn.DataPropertyName = "CurrencyNm";
-            this.currencyNmDataGridViewTextBoxColumn.HeaderText = "CurrencyNm";
-            this.currencyNmDataGridViewTextBoxColumn.Name = "currencyNmDataGridViewTextBoxColumn";
-            this.currencyNmDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // tranAmountDataGridViewTextBoxColumn
-            // 
-            this.tranAmountDataGridViewTextBoxColumn.DataPropertyName = "TranAmount";
-            this.tranAmountDataGridViewTextBoxColumn.HeaderText = "TranAmount";
-            this.tranAmountDataGridViewTextBoxColumn.Name = "tranAmountDataGridViewTextBoxColumn";
-            this.tranAmountDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // systemTargetDataGridViewTextBoxColumn
-            // 
-            this.systemTargetDataGridViewTextBoxColumn.DataPropertyName = "SystemTarget";
-            this.systemTargetDataGridViewTextBoxColumn.HeaderText = "SystemTarget";
-            this.systemTargetDataGridViewTextBoxColumn.Name = "systemTargetDataGridViewTextBoxColumn";
-            this.systemTargetDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // transTypeDataGridViewTextBoxColumn
-            // 
-            this.transTypeDataGridViewTextBoxColumn.DataPropertyName = "TransType";
-            this.transTypeDataGridViewTextBoxColumn.HeaderText = "TransType";
-            this.transTypeDataGridViewTextBoxColumn.Name = "transTypeDataGridViewTextBoxColumn";
-            this.transTypeDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // transDescDataGridViewTextBoxColumn
-            // 
-            this.transDescDataGridViewTextBoxColumn.DataPropertyName = "TransDesc";
-            this.transDescDataGridViewTextBoxColumn.HeaderText = "TransDesc";
-            this.transDescDataGridViewTextBoxColumn.Name = "transDescDataGridViewTextBoxColumn";
-            this.transDescDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // errNoDataGridViewTextBoxColumn
-            // 
-            this.errNoDataGridViewTextBoxColumn.DataPropertyName = "ErrNo";
-            this.errNoDataGridViewTextBoxColumn.HeaderText = "ErrNo";
-            this.errNoDataGridViewTextBoxColumn.Name = "errNoDataGridViewTextBoxColumn";
-            this.errNoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // replCycleDataGridViewTextBoxColumn
-            // 
-            this.replCycleDataGridViewTextBoxColumn.DataPropertyName = "ReplCycle";
-            this.replCycleDataGridViewTextBoxColumn.HeaderText = "ReplCycle";
-            this.replCycleDataGridViewTextBoxColumn.Name = "replCycleDataGridViewTextBoxColumn";
-            this.replCycleDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // startTrxnDataGridViewTextBoxColumn
-            // 
-            this.startTrxnDataGridViewTextBoxColumn.DataPropertyName = "StartTrxn";
-            this.startTrxnDataGridViewTextBoxColumn.HeaderText = "StartTrxn";
-            this.startTrxnDataGridViewTextBoxColumn.Name = "startTrxnDataGridViewTextBoxColumn";
-            this.startTrxnDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // endTrxnDataGridViewTextBoxColumn
-            // 
-            this.endTrxnDataGridViewTextBoxColumn.DataPropertyName = "EndTrxn";
-            this.endTrxnDataGridViewTextBoxColumn.HeaderText = "EndTrxn";
-            this.endTrxnDataGridViewTextBoxColumn.Name = "endTrxnDataGridViewTextBoxColumn";
-            this.endTrxnDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // disputedAmtDataGridViewTextBoxColumn
-            // 
-            this.disputedAmtDataGridViewTextBoxColumn.DataPropertyName = "DisputedAmt";
-            this.disputedAmtDataGridViewTextBoxColumn.HeaderText = "DisputedAmt";
-            this.disputedAmtDataGridViewTextBoxColumn.Name = "disputedAmtDataGridViewTextBoxColumn";
-            this.disputedAmtDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // disputeActionIdDataGridViewTextBoxColumn
-            // 
-            this.disputeActionIdDataGridViewTextBoxColumn.DataPropertyName = "DisputeActionId";
-            this.disputeActionIdDataGridViewTextBoxColumn.HeaderText = "DisputeActionId";
-            this.disputeActionIdDataGridViewTextBoxColumn.Name = "disputeActionIdDataGridViewTextBoxColumn";
-            this.disputeActionIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // actionDtTmDataGridViewTextBoxColumn
-            // 
-            this.actionDtTmDataGridViewTextBoxColumn.DataPropertyName = "ActionDtTm";
-            this.actionDtTmDataGridViewTextBoxColumn.HeaderText = "ActionDtTm";
-            this.actionDtTmDataGridViewTextBoxColumn.Name = "actionDtTmDataGridViewTextBoxColumn";
-            this.actionDtTmDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // decidedAmountDataGridViewTextBoxColumn
-            // 
-            this.decidedAmountDataGridViewTextBoxColumn.DataPropertyName = "DecidedAmount";
-            this.decidedAmountDataGridViewTextBoxColumn.HeaderText = "DecidedAmount";
-            this.decidedAmountDataGridViewTextBoxColumn.Name = "decidedAmountDataGridViewTextBoxColumn";
-            this.decidedAmountDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // reasonForActionDataGridViewTextBoxColumn
-            // 
-            this.reasonForActionDataGridViewTextBoxColumn.DataPropertyName = "ReasonForAction";
-            this.reasonForActionDataGridViewTextBoxColumn.HeaderText = "ReasonForAction";
-            this.reasonForActionDataGridViewTextBoxColumn.Name = "reasonForActionDataGridViewTextBoxColumn";
-            this.reasonForActionDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // actionCommentDataGridViewTextBoxColumn
-            // 
-            this.actionCommentDataGridViewTextBoxColumn.DataPropertyName = "ActionComment";
-            this.actionCommentDataGridViewTextBoxColumn.HeaderText = "ActionComment";
-            this.actionCommentDataGridViewTextBoxColumn.Name = "actionCommentDataGridViewTextBoxColumn";
-            this.actionCommentDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // postDateDataGridViewTextBoxColumn
-            // 
-            this.postDateDataGridViewTextBoxColumn.DataPropertyName = "PostDate";
-            this.postDateDataGridViewTextBoxColumn.HeaderText = "PostDate";
-            this.postDateDataGridViewTextBoxColumn.Name = "postDateDataGridViewTextBoxColumn";
-            this.postDateDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // chooseAuthorDataGridViewCheckBoxColumn
-            // 
-            this.chooseAuthorDataGridViewCheckBoxColumn.DataPropertyName = "ChooseAuthor";
-            this.chooseAuthorDataGridViewCheckBoxColumn.HeaderText = "ChooseAuthor";
-            this.chooseAuthorDataGridViewCheckBoxColumn.Name = "chooseAuthorDataGridViewCheckBoxColumn";
-            this.chooseAuthorDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // pendingAuthorizationDataGridViewCheckBoxColumn
-            // 
-            this.pendingAuthorizationDataGridViewCheckBoxColumn.DataPropertyName = "PendingAuthorization";
-            this.pendingAuthorizationDataGridViewCheckBoxColumn.HeaderText = "PendingAuthorization";
-            this.pendingAuthorizationDataGridViewCheckBoxColumn.Name = "pendingAuthorizationDataGridViewCheckBoxColumn";
-            this.pendingAuthorizationDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // authorOriginatorDataGridViewTextBoxColumn
-            // 
-            this.authorOriginatorDataGridViewTextBoxColumn.DataPropertyName = "AuthorOriginator";
-            this.authorOriginatorDataGridViewTextBoxColumn.HeaderText = "AuthorOriginator";
-            this.authorOriginatorDataGridViewTextBoxColumn.Name = "authorOriginatorDataGridViewTextBoxColumn";
-            this.authorOriginatorDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // authorKeyDataGridViewTextBoxColumn
-            // 
-            this.authorKeyDataGridViewTextBoxColumn.DataPropertyName = "AuthorKey";
-            this.authorKeyDataGridViewTextBoxColumn.HeaderText = "AuthorKey";
-            this.authorKeyDataGridViewTextBoxColumn.Name = "authorKeyDataGridViewTextBoxColumn";
-            this.authorKeyDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // authoriserDataGridViewTextBoxColumn
-            // 
-            this.authoriserDataGridViewTextBoxColumn.DataPropertyName = "Authoriser";
-            this.authoriserDataGridViewTextBoxColumn.HeaderText = "Authoriser";
-            this.authoriserDataGridViewTextBoxColumn.Name = "authoriserDataGridViewTextBoxColumn";
-            this.authoriserDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // authorisedDataGridViewCheckBoxColumn
-            // 
-            this.authorisedDataGridViewCheckBoxColumn.DataPropertyName = "Authorised";
-            this.authorisedDataGridViewCheckBoxColumn.HeaderText = "Authorised";
-            this.authorisedDataGridViewCheckBoxColumn.Name = "authorisedDataGridViewCheckBoxColumn";
-            this.authorisedDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // rejectedFromAuthDataGridViewCheckBoxColumn
-            // 
-            this.rejectedFromAuthDataGridViewCheckBoxColumn.DataPropertyName = "RejectedFromAuth";
-            this.rejectedFromAuthDataGridViewCheckBoxColumn.HeaderText = "RejectedFromAuth";
-            this.rejectedFromAuthDataGridViewCheckBoxColumn.Name = "rejectedFromAuthDataGridViewCheckBoxColumn";
-            this.rejectedFromAuthDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // authoriserCommentDataGridViewTextBoxColumn
-            // 
-            this.authoriserCommentDataGridViewTextBoxColumn.DataPropertyName = "AuthoriserComment";
-            this.authoriserCommentDataGridViewTextBoxColumn.HeaderText = "AuthoriserComment";
-            this.authoriserCommentDataGridViewTextBoxColumn.Name = "authoriserCommentDataGridViewTextBoxColumn";
-            this.authoriserCommentDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // closedDisputeDataGridViewCheckBoxColumn
-            // 
-            this.closedDisputeDataGridViewCheckBoxColumn.DataPropertyName = "ClosedDispute";
-            this.closedDisputeDataGridViewCheckBoxColumn.HeaderText = "ClosedDispute";
-            this.closedDisputeDataGridViewCheckBoxColumn.Name = "closedDisputeDataGridViewCheckBoxColumn";
-            this.closedDisputeDataGridViewCheckBoxColumn.ReadOnly = true;
-            // 
-            // operatorDataGridViewTextBoxColumn
-            // 
-            this.operatorDataGridViewTextBoxColumn.DataPropertyName = "Operator";
-            this.operatorDataGridViewTextBoxColumn.HeaderText = "Operator";
-            this.operatorDataGridViewTextBoxColumn.Name = "operatorDataGridViewTextBoxColumn";
-            this.operatorDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1008, 730);
+            this.ClientSize = new System.Drawing.Size(1264, 730);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.DoubleBuffered = true;
@@ -1336,14 +1018,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
-            this.tableLayoutPanel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanelHeader.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.aTMSDataSet3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.disputesTransTableBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1369,9 +1049,6 @@
         private System.Windows.Forms.Label labelStep1;
         private System.Windows.Forms.Label labelStep3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label labelToday;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelHeader;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
@@ -1403,11 +1080,11 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBoxTargetDate;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox textBoxStatus;
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.Label label3;
         //   private ATMSDataSet21 aTMSDataSet21;
@@ -1445,54 +1122,19 @@
          */
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button buttonFinish;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label NOTES;
         private System.Windows.Forms.Label labelNumberNotes2;
         private System.Windows.Forms.Button buttonNotes2;
         private System.Windows.Forms.Button buttonChangeOwner;
         private System.Windows.Forms.TextBox textBoxOwner;
         private System.Windows.Forms.Label label7;
-        private ATMSDataSet3 aTMSDataSet3;
-        private System.Windows.Forms.BindingSource disputesTransTableBindingSource;
-        private ATMSDataSet3TableAdapters.DisputesTransTableTableAdapter disputesTransTableTableAdapter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dispTranNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn maskRecordIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn disputeNumberDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dispDtTmDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn bankIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dbTranNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn originDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tranDateDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn atmNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn replGroupDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cardTypeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cardNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn accNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn currencyNmDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tranAmountDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn systemTargetDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn transTypeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn transDescDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn errNoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn replCycleDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn startTrxnDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn endTrxnDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn disputedAmtDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn disputeActionIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn actionDtTmDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn decidedAmountDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn reasonForActionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn actionCommentDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn postDateDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn chooseAuthorDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn pendingAuthorizationDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn authorOriginatorDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn authorKeyDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn authoriserDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn authorisedDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn rejectedFromAuthDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn authoriserCommentDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn closedDisputeDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn operatorDataGridViewTextBoxColumn;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label labelToday;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label UserId;
+        private System.Windows.Forms.LinkLabel link_Creator;
+        private System.Windows.Forms.TextBox textBoxTransStatus;
         //private System.Windows.Forms.DataGridViewTextBoxColumn originDataGridViewTextBoxColumn;
         //private System.Windows.Forms.DataGridViewCheckBoxColumn chooseAuthorDataGridViewCheckBoxColumn;
         //private System.Windows.Forms.DataGridViewCheckBoxColumn pendingAuthorizationDataGridViewCheckBoxColumn;

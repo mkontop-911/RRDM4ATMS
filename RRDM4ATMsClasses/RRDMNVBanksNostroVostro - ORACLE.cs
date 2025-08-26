@@ -1,0 +1,633 @@
+﻿using System;
+using System.Text;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Data;
+using System.Collections;
+using Oracle.DataAccess.Client;
+
+
+namespace RRDM4ATMs
+{
+    public class RRDMNVBanksNostroVostroORACLE
+    {
+        public string BankId;
+        public string BankName;
+        public string ContactName;
+        public string Mobile;
+        public string Email;
+        public DateTime DtTmCreated;
+        public string Operator;
+
+        // Define the data table 
+        public DataTable ExternalBanksDataTable = new DataTable();
+        public int TotalSelected;
+
+        public bool RecordFound;
+        public bool ErrorFound;
+        public string ErrorOutput;
+
+        string ORACLEconnectionString = ConfigurationManager.ConnectionStrings
+           ["ATMSConnectionString"].ConnectionString;
+
+        // READ BANK 
+      
+        public void ReadBank(string InBankId)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            bool Oracle = true;
+            bool Sql = true;
+
+            string DBString = "SELECT *"
+                   + " FROM [ATMS].[dbo].[BanksExternals_NV] "
+                   + " WHERE BankId = @BankId";
+            if (Sql)
+            {
+                using (SqlConnection conn =
+                                         new SqlConnection(ORACLEconnectionString))
+                    try
+                    {
+                        conn.Open();
+                        using (SqlCommand cmd =
+                            new SqlCommand(DBString, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@BankId", InBankId);
+
+                            // Read table 
+
+                            SqlDataReader rdr = cmd.ExecuteReader();
+
+                            ReaderLoop(rdr);
+
+                            // Close Reader
+                            rdr.Close();
+                        }
+
+                        // Close conn
+                        conn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        conn.Close();
+                        RRDMLog4Net Log = new RRDMLog4Net();
+
+                        StringBuilder WParameters = new StringBuilder();
+
+                        WParameters.Append("User : ");
+                        WParameters.Append("NotAssignYet");
+                        WParameters.Append(Environment.NewLine);
+
+                        WParameters.Append("ATMNo : ");
+                        WParameters.Append("NotDefinedYet");
+                        WParameters.Append(Environment.NewLine);
+
+                        string Logger = "RRDM4Atms";
+                        string Parameters = WParameters.ToString();
+
+                        Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+                        System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                            + " . Application will be aborted! Call controller to take care. ");
+
+                        //Environment.Exit(0);
+
+                    }
+            }
+            if (Oracle)
+            {
+                using (OracleConnection conn =
+                         new OracleConnection(ORACLEconnectionString))
+                    try
+                    {
+                        conn.Open();
+                        using (OracleCommand cmd =
+                            new OracleCommand(DBString, conn))
+                        {
+                            cmd.Parameters.Add("@BankId", InBankId);
+
+                            // Read table 
+
+                            OracleDataReader rdr = cmd.ExecuteReader();
+
+                            while (rdr.Read())
+                            {
+                                RecordFound = true;
+
+                                BankId = (string)rdr["BankId"];
+                                BankName = (string)rdr["BankName"];
+
+                                ContactName = (string)rdr["ContactName"];
+                                Mobile = (string)rdr["Mobile"];
+                                Email = (string)rdr["Email"];
+
+                                DtTmCreated = (DateTime)rdr["DtTmCreated"];
+                                Operator = (string)rdr["Operator"];
+
+                            }
+
+                            // Close Reader
+                            rdr.Close();
+                        }
+
+                        // Close conn
+                        conn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        conn.Close();
+                        RRDMLog4Net Log = new RRDMLog4Net();
+
+                        StringBuilder WParameters = new StringBuilder();
+
+                        WParameters.Append("User : ");
+                        WParameters.Append("NotAssignYet");
+                        WParameters.Append(Environment.NewLine);
+
+                        WParameters.Append("ATMNo : ");
+                        WParameters.Append("NotDefinedYet");
+                        WParameters.Append(Environment.NewLine);
+
+                        string Logger = "RRDM4Atms";
+                        string Parameters = WParameters.ToString();
+
+                        Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+                        System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                            + " . Application will be aborted! Call controller to take care. ");
+
+                        //Environment.Exit(0);
+
+                    }
+            }
+           
+        }
+
+        private void ReaderLoop(SqlDataReader rdr)
+        {
+            while (rdr.Read())
+            {
+                RecordFound = true;
+
+                BankId = (string)rdr["BankId"];
+                BankName = (string)rdr["BankName"];
+
+                ContactName = (string)rdr["ContactName"];
+                Mobile = (string)rdr["Mobile"];
+                Email = (string)rdr["Email"];
+
+                DtTmCreated = (DateTime)rdr["DtTmCreated"];
+                Operator = (string)rdr["Operator"];
+
+            }
+        }
+
+        //
+        // READ Banks AND Fill table 
+        //
+
+        public void ReadBanksForDataTable(string InSelectionCriteria)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            //InMode = 1 ... is ITMX
+            //InMode = 2 ... is Clearing Bank = central Bank
+
+            ExternalBanksDataTable = new DataTable();
+            ExternalBanksDataTable.Clear();
+
+            TotalSelected = 0;
+
+            // DATA TABLE ROWS DEFINITION 
+            ExternalBanksDataTable.Columns.Add("BankId", typeof(string));
+            ExternalBanksDataTable.Columns.Add("BankName", typeof(string));
+            ExternalBanksDataTable.Columns.Add("ContactName", typeof(string));
+            ExternalBanksDataTable.Columns.Add("DtTmCreated", typeof(DateTime));
+
+            string OracleString = "SELECT *"
+                        + " FROM [ATMS].[dbo].[BanksExternals_NV] "
+                        + InSelectionCriteria;
+            using (OracleConnection conn =
+                          new OracleConnection(ORACLEconnectionString))
+                try
+                {
+                    conn.Open();
+                    using (OracleCommand cmd =
+                        new OracleCommand(OracleString, conn))
+                    {
+                        //cmd.Parameters.AddWithValue("@Operator", InOperator);
+
+                        // Read table 
+
+                        OracleDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+
+                            // Read Bank Details
+                            BankId = (string)rdr["BankId"];
+                            BankName = (string)rdr["BankName"];
+
+                            ContactName = (string)rdr["ContactName"];
+                            Mobile = (string)rdr["Mobile"];
+                            Email = (string)rdr["Email"];
+
+                            DtTmCreated = (DateTime)rdr["DtTmCreated"];
+                            Operator = (string)rdr["Operator"];
+                            //
+                            // Fill In Table
+                            //
+                            DataRow RowSelected = ExternalBanksDataTable.NewRow();
+
+                            RowSelected["BankId"] = BankId;
+                            RowSelected["BankName"] = BankName;
+                            RowSelected["ContactName"] = ContactName;
+                            RowSelected["DtTmCreated"] = DtTmCreated;
+
+                            // ADD ROW
+                            ExternalBanksDataTable.Rows.Add(RowSelected);
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+                    RRDMLog4Net Log = new RRDMLog4Net();
+
+                    StringBuilder WParameters = new StringBuilder();
+
+                    WParameters.Append("User : ");
+                    WParameters.Append("NotAssignYet");
+                    WParameters.Append(Environment.NewLine);
+
+                    WParameters.Append("ATMNo : ");
+                    WParameters.Append("NotDefinedYet");
+                    WParameters.Append(Environment.NewLine);
+
+                    string Logger = "RRDM4Atms";
+                    string Parameters = WParameters.ToString();
+
+                    Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+                    System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                        + " . Application will be aborted! Call controller to take care. ");
+
+                    Environment.Exit(0);
+
+                }
+        }
+
+        //
+        // GET External BANKS 
+        //
+        public ArrayList GetExternalBanksNames(string InOperator)
+        {
+            //USED ONLY TO DEFINE CATEGORIES IT IS NOT USED FOR OTHER 
+            ArrayList ExternalBanksIdsList = new ArrayList();
+
+            ExternalBanksIdsList.Add("SelectEntity");
+
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            string OracleString = "SELECT *"
+         + " FROM [ATMS].[dbo].[BanksExternals_NV] "
+          + " WHERE Operator = @Operator";
+            using (OracleConnection conn =
+                          new OracleConnection(ORACLEconnectionString))
+                try
+                {
+                    conn.Open();
+                    using (OracleCommand cmd =
+                        new OracleCommand(OracleString, conn))
+                    {
+                        cmd.Parameters.Add("@Operator", InOperator);
+                        // Read table 
+                        OracleDataReader rdr = cmd.ExecuteReader();
+
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+                            BankId = (string)rdr["BankId"];
+                            BankName = (string)rdr["BankName"];
+
+                            ExternalBanksIdsList.Add(BankId);
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+                    RRDMLog4Net Log = new RRDMLog4Net();
+
+                    StringBuilder WParameters = new StringBuilder();
+
+                    WParameters.Append("User : ");
+                    WParameters.Append("NotAssignYet");
+                    WParameters.Append(Environment.NewLine);
+
+                    WParameters.Append("ATMNo : ");
+                    WParameters.Append("NotDefinedYet");
+                    WParameters.Append(Environment.NewLine);
+
+                    string Logger = "RRDM4Atms";
+                    string Parameters = WParameters.ToString();
+
+                    Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+                    System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                        + " . Application will be aborted! Call controller to take care. ");
+
+                    Environment.Exit(0);
+
+                }
+
+            return ExternalBanksIdsList;
+        }
+
+        // Insert NEW BANK 
+        //
+        public void InsertExternalBank(string InBankId)
+        {
+
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            string cmdinsert = "INSERT INTO [ATMS].[dbo].[BanksExternals_NV] "
+                + " ([BankId],[BankName],"
+                + " [ContactName],"
+                + " [Mobile], "
+                + " [Email], "
+                + " [DtTmCreated], "
+                + " [Operator]  ) "
+                + " VALUES (@BankId,@BankName,"
+                + " @ContactName,"
+                + " @Mobile,"
+                + " @Email,"
+                + " @DtTmCreated,"
+                + " @Operator )";
+
+            using (OracleConnection conn =
+                new OracleConnection(ORACLEconnectionString))
+                try
+                {
+                    conn.Open();
+                    using (OracleCommand cmd =
+
+                       new OracleCommand(cmdinsert, conn))
+                    {
+
+                        cmd.Parameters.Add("@BankId", BankId);
+                        cmd.Parameters.Add("@BankName", BankName);
+
+                        cmd.Parameters.Add("@ContactName", ContactName);
+
+                        cmd.Parameters.Add("@Mobile", Mobile);
+                        cmd.Parameters.Add("@Email", Email);
+
+                        cmd.Parameters.Add("@DtTmCreated", DtTmCreated);
+
+                        cmd.Parameters.Add("@Operator", Operator);
+
+                        //rows number of record got updated
+
+                        int rows = cmd.ExecuteNonQuery();
+                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN Oracle ";
+                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    RRDMLog4Net Log = new RRDMLog4Net();
+
+                    StringBuilder WParameters = new StringBuilder();
+
+                    WParameters.Append("User : ");
+                    WParameters.Append("NotAssignYet");
+                    WParameters.Append(Environment.NewLine);
+
+                    WParameters.Append("ATMNo : ");
+                    WParameters.Append("NotDefinedYet");
+                    WParameters.Append(Environment.NewLine);
+
+                    string Logger = "RRDM4Atms";
+                    string Parameters = WParameters.ToString();
+
+                    Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+                    System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                        + " . Application will be aborted! Call controller to take care. ");
+
+                    Environment.Exit(0);
+
+                }
+        }
+
+        // 
+        // UPDATE BANK
+        // 
+        public void UpdateExternalBank(string InBankId)
+        {
+
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            using (OracleConnection conn =
+                new OracleConnection(ORACLEconnectionString))
+                try
+                {
+                    conn.Open();
+                    using (OracleCommand cmd =
+                        new OracleCommand("UPDATE [ATMS].[dbo].[BanksExternals_NV] SET "
+                            + " BankName = @BankName, "
+                            + " ContactName = @ContactName, "
+                            + " Mobile = @Mobile,"
+                            + " Email = @Email "
+                            + " WHERE BankId = @BankId", conn))
+                    {
+                        cmd.Parameters.Add("@BankId", BankId);
+                        cmd.Parameters.Add("@BankName", BankName);
+
+                        cmd.Parameters.Add("@ContactName", ContactName);
+
+                        cmd.Parameters.Add("@Mobile", Mobile);
+                        cmd.Parameters.Add("@Email", Email);
+
+                        //rows number of record got updated
+
+                        int rows = cmd.ExecuteNonQuery();
+                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
+                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    RRDMLog4Net Log = new RRDMLog4Net();
+
+                    StringBuilder WParameters = new StringBuilder();
+
+                    WParameters.Append("User : ");
+                    WParameters.Append("NotAssignYet");
+                    WParameters.Append(Environment.NewLine);
+
+                    WParameters.Append("ATMNo : ");
+                    WParameters.Append("NotDefinedYet");
+                    WParameters.Append(Environment.NewLine);
+
+                    string Logger = "RRDM4Atms";
+                    string Parameters = WParameters.ToString();
+
+                    Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+                    System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                        + " . Application will be aborted! Call controller to take care. ");
+
+                    //Environment.Exit(0);
+                }
+        }
+        //
+        // DELETE BANK
+        //
+        public void DeleteBankEntry(string InBankId)
+        {
+
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            using (OracleConnection conn =
+                new OracleConnection(ORACLEconnectionString))
+                try
+                {
+                    conn.Open();
+                    using (OracleCommand cmd =
+                        new OracleCommand("DELETE FROM [ATMS].[dbo].[BanksExternals_NV] "
+                            + " WHERE BankId = @BankId ", conn))
+                    {
+                        cmd.Parameters.Add("@BankId", InBankId);
+
+                        //rows number of record got updated
+
+                        int rows = cmd.ExecuteNonQuery();
+                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
+                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    RRDMLog4Net Log = new RRDMLog4Net();
+
+                    StringBuilder WParameters = new StringBuilder();
+
+                    WParameters.Append("User : ");
+                    WParameters.Append("NotAssignYet");
+                    WParameters.Append(Environment.NewLine);
+
+                    WParameters.Append("ATMNo : ");
+                    WParameters.Append("NotDefinedYet");
+                    WParameters.Append(Environment.NewLine);
+
+                    string Logger = "RRDM4Atms";
+                    string Parameters = WParameters.ToString();
+
+                    Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+                    System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                        + " . Application will be aborted! Call controller to take care. ");
+
+                    Environment.Exit(0);
+
+                }
+
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            using (OracleConnection conn =
+                new OracleConnection(ORACLEconnectionString))
+                try
+                {
+                    conn.Open();
+                    using (OracleCommand cmd =
+                        new OracleCommand("DELETE FROM [ATMS].[dbo].[ErrorsIdCharacteristics] "
+                            + " WHERE BankId = @BankId ", conn))
+                    {
+                        cmd.Parameters.Add("@BankId", InBankId);
+
+                        //rows number of record got updated
+
+                        int rows = cmd.ExecuteNonQuery();
+                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
+                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    RRDMLog4Net Log = new RRDMLog4Net();
+
+                    StringBuilder WParameters = new StringBuilder();
+
+                    WParameters.Append("User : ");
+                    WParameters.Append("NotAssignYet");
+                    WParameters.Append(Environment.NewLine);
+
+                    WParameters.Append("ATMNo : ");
+                    WParameters.Append("NotDefinedYet");
+                    WParameters.Append(Environment.NewLine);
+
+                    string Logger = "RRDM4Atms";
+                    string Parameters = WParameters.ToString();
+
+                    Log.CreateAndInsertRRDMLog4NetMessage(ex, Logger, Parameters);
+
+                    System.Windows.Forms.MessageBox.Show("There is a system error with ID = " + Log.ErrorNo.ToString()
+                        + " . Application will be aborted! Call controller to take care. ");
+
+                    Environment.Exit(0);
+
+                }
+        }
+    }
+}

@@ -1,24 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMAtmsDailyTransHistory
+    public class RRDMAtmsDailyTransHistory : Logger
     {
+        public RRDMAtmsDailyTransHistory() : base() { }
         // DECLARE Class FIELDS 
+        public int SeqNo; 
         public string AtmNo;
         public string BankId;
-        public DateTime DtTm;
-        public int Year; 
+//        Dt date    Unchecked
+//        LoadedAtRMCycle int Unchecked
+        public DateTime Dt;
+        public int LoadedAtRMCycle; 
  
         public int DrTransactions; 
         public decimal DispensedAmt; 
@@ -57,17 +55,6 @@ namespace RRDM4ATMs
 
         public string Operator; 
 
-   //     public decimal LastWorking; // Money Dispensed for Normal
-   //     public decimal LYearDispSame;  // Money Dispensed at the same date
-    //    public decimal LYearDispNear; // Money Dispensed at weekend or holiday
-    //    public decimal LMonthDispSame; // Money Dispensed 
-   //   public decimal LMonthDispNear; // Money Dispensed 
-
-   //     public bool Holiday;
-
-     //   public int HolId;
-   //     public bool Weekend;
-
         DateTime WDt;
 
         public bool RecordFound;
@@ -77,29 +64,73 @@ namespace RRDM4ATMs
         string connectionString = ConfigurationManager.ConnectionStrings
            ["ATMSConnectionString"].ConnectionString;
 
+        // Read Record Fields
+        private void ReadHstFields(SqlDataReader rdr)
+        {
+            // Read Details
+            SeqNo = (int)rdr["SeqNo"];
+            AtmNo = (string)rdr["AtmNo"];
+            BankId = (string)rdr["BankId"];
+            Dt = (DateTime)rdr["Dt"];
+            LoadedAtRMCycle = (int)rdr["LoadedAtRMCycle"];
+
+            DrTransactions = (int)rdr["DrTransactions"];
+            DispensedAmt = (decimal)rdr["DispensedAmt"];
+
+            PreEstimated = (decimal)rdr["PreEstimated"];
+            CrTransactions = (int)rdr["CrTransactions"];
+            DepAmount = (decimal)rdr["DepAmount"];
+
+            C301DailyMaintAmount = (decimal)rdr["C301DailyMaintAmount"];
+            C303ReplTimeCost = (decimal)rdr["C303ReplTimeCost"];
+            C307OverheadCost = (decimal)rdr["C307OverheadCost"];
+            C308CostOfMoney = (decimal)rdr["C308CostOfMoney"];
+            C309CostOfInvest = (decimal)rdr["C309CostOfInvest"];
+
+            R401CommTran = (int)rdr["R401CommTran"];
+            R401CommAmount = (decimal)rdr["R401CommAmount"];
+
+            R402CommTran = (int)rdr["R402CommTran"];
+            R402CommAmount = (decimal)rdr["R402CommAmount"];
+
+            R403CommTran = (int)rdr["R403CommTran"];
+            R403CommAmount = (decimal)rdr["R403CommAmount"];
+
+            R404CommTran = (int)rdr["R404CommTran"];
+            R404CommAmount = (decimal)rdr["R404CommAmount"];
+
+            R405CommTran = (int)rdr["R405CommTran"];
+            R405CommAmount = (decimal)rdr["R405CommAmount"];
+
+            Operator = (string)rdr["Operator"];
+        }
+
         // READ Record for a specific day  
 
-        public void ReadTransHistory(string InAtmNo, string InOperator, DateTime InDtTm)
+
+        public void ReadTransHistory(string InAtmNo, string InOperator, DateTime InDt)
         {
-            int dd = InDtTm.Day;
-            int mm = InDtTm.Month;
-            int yyyy = InDtTm.Year;
-
-       //     LastWorking = 0 ; // Money Dispensed for Normal
-        //    LYearDispSame = 0 ;  // Money Dispensed at the same date
-        //    LYearDispNear= 0 ;// Money Dispensed at weekend or holiday
-        //    LMonthDispSame= 0 ;// Money Dispensed 
-        //    LMonthDispNear= 0 ; // Money Dispensed 
-
-            WDt = InDtTm;
+            int Count = 0; 
 
             RecordFound = false;
             ErrorFound = false;
-            ErrorOutput = ""; 
+            ErrorOutput = "";
 
-            string SqlString = "SELECT *"
-          + " FROM [dbo].[AtmDispAmtsByDay] "
-          + " WHERE AtmNo = @AtmNo AND Operator = @Operator AND DtTm = @DtTm";
+            // For the same day it be two records
+            // One for one Cycle number and the other for the other Cycle Number
+            // EACH record has the Cycle Number in order to facilate the UNDO cycle operation 
+
+            int T_DrTransactions = 0;
+            decimal T_DispensedAmt = 0;
+
+            int T_CrTransactions = 0;
+            decimal T_DepAmount = 0;
+
+            string SqlString = "SELECT * "
+                 + " FROM [dbo].[AtmDispAmtsByDay] "
+                 + " WHERE AtmNo = @AtmNo AND Operator = @Operator AND Dt = @Dt"
+                 + " ORDER By AtmNo, LoadedAtRMCycle "
+                 ;
 
             using (SqlConnection conn =
                           new SqlConnection(connectionString))
@@ -111,7 +142,7 @@ namespace RRDM4ATMs
                     {
                         cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
                         cmd.Parameters.AddWithValue("@Operator", InOperator);
-                        cmd.Parameters.AddWithValue("@DtTm", WDt);
+                        cmd.Parameters.AddWithValue("@Dt", WDt);
 
                         // Read table 
 
@@ -121,43 +152,15 @@ namespace RRDM4ATMs
                         {
                             RecordFound = true;
 
-                            // Read Details
+                            ReadHstFields(rdr);
 
-                            AtmNo = (string)rdr["AtmNo"];
-                            BankId = (string)rdr["BankId"];
-                            DtTm = (DateTime)rdr["DtTm"];
-                            Year = (int)rdr["Year"];
+                            Count = Count + 1; 
 
-                            DrTransactions = (int)rdr["DrTransactions"];
-                            DispensedAmt = (decimal)rdr["DispensedAmt"];
+                            T_DrTransactions = T_DrTransactions + DrTransactions;
+                            T_DispensedAmt = T_DispensedAmt + DispensedAmt ;
 
-                            PreEstimated = (decimal)rdr["PreEstimated"];
-                            CrTransactions = (int)rdr["CrTransactions"];
-                            DepAmount = (decimal)rdr["DepAmount"];
-
-                            C301DailyMaintAmount = (decimal)rdr["C301DailyMaintAmount"];
-                            C303ReplTimeCost = (decimal)rdr["C303ReplTimeCost"];
-                            C307OverheadCost = (decimal)rdr["C307OverheadCost"];
-                            C308CostOfMoney = (decimal)rdr["C308CostOfMoney"];
-                            C309CostOfInvest = (decimal)rdr["C309CostOfInvest"];
-
-                            R401CommTran = (int)rdr["R401CommTran"];
-                            R401CommAmount = (decimal)rdr["R401CommAmount"];
-
-                            R402CommTran = (int)rdr["R402CommTran"];
-                            R402CommAmount = (decimal)rdr["R402CommAmount"];
-
-                            R403CommTran = (int)rdr["R403CommTran"];
-                            R403CommAmount = (decimal)rdr["R403CommAmount"];
-
-                            R404CommTran = (int)rdr["R404CommTran"];
-                            R404CommAmount = (decimal)rdr["R404CommAmount"];
-
-                            R405CommTran = (int)rdr["R405CommTran"];
-                            R405CommAmount = (decimal)rdr["R405CommAmount"];
-
-                            Operator = (string)rdr["Operator"];
-                            
+                            T_CrTransactions = T_CrTransactions + CrTransactions;
+                            T_DepAmount = T_DepAmount + DepAmount;
 
                         }
 
@@ -168,27 +171,36 @@ namespace RRDM4ATMs
 
                     // Close conn
                     conn.Close();
+
+                    DrTransactions = T_DrTransactions;
+                    DispensedAmt = T_DispensedAmt;
+                    CrTransactions = T_CrTransactions ;
+                    DepAmount = T_DepAmount ;
+
                 }
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ATMsDailyTransHistory Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
-        // This functionality is for new ATMs where past data are not available except yestredays   
-
-        public void ReadTransHistoryYesterday(string InAtmNo, string InOperator)
+        // Find Dispensed Total, between two days 
+        public int TotalRecords = 0;
+        public decimal ReadTotalDispForDaysRange(string InAtmNo, DateTime InDateFrom, DateTime InDateTo)
         {
             RecordFound = false;
             ErrorFound = false;
-            ErrorOutput = ""; 
+            ErrorOutput = "";
 
-            string SqlString = "SELECT *"
+            decimal TotalDisp = 0;
+            TotalRecords = 0; 
+
+            string SqlString = "SELECT DispensedAmt "
           + " FROM [dbo].[AtmDispAmtsByDay] "
-          + " WHERE AtmNo = @AtmNo AND Operator = @Operator"
-            + "  ORDER By [DtTm] ASC ";
+          + " WHERE AtmNo = @AtmNo AND (Dt>= @DateFrom AND Dt <= @DateTo)  "
+            + "  ";
           
             using (SqlConnection conn =
                           new SqlConnection(connectionString))
@@ -199,7 +211,8 @@ namespace RRDM4ATMs
                         new SqlCommand(SqlString, conn))
                     {
                         cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
-                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+                        cmd.Parameters.AddWithValue("@DateFrom", InDateFrom);
+                        cmd.Parameters.AddWithValue("@DateTo", InDateTo);
 
                         // Read table 
 
@@ -209,15 +222,10 @@ namespace RRDM4ATMs
                         {
                             RecordFound = true;
 
+                            TotalRecords = TotalRecords + 1; 
                             // Read Details
+                            TotalDisp = TotalDisp + (decimal)rdr["DispensedAmt"];
 
-                            AtmNo = (string)rdr["AtmNo"];
-                            BankId = (string)rdr["BankId"];
-                            DtTm = (DateTime)rdr["DtTm"];
-                            Year = (int)rdr["Year"];
-                      //      Prive = (bool)rdr["Prive"];
-
-                            DispensedAmt = (decimal)rdr["DispensedAmt"];            
                         }
 
                         // Close Reader
@@ -230,14 +238,273 @@ namespace RRDM4ATMs
                 }
                 catch (Exception ex)
                 {
-
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ATMsDailyTransHistory Class............. " + ex.Message;
+
+                    CatchDetails(ex);
+                }
+
+            return TotalDisp; 
+        }
+        //
+        // READ Record for a specific day  
+        //
+        public void ReadTransHistory_Dispensed_Deposited(string InAtmNo, DateTime InDt, int InLoadedAtRMCycle)
+        {
+            int dd = InDt.Day;
+            int mm = InDt.Month;
+           // int yyyy = InDt.Year;
+
+         
+            WDt = InDt;
+
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            string SqlString = "SELECT *"
+          + " FROM [dbo].[AtmDispAmtsByDay] "
+          + " WHERE AtmNo = @AtmNo AND Dt = @Dt AND LoadedAtRMCycle = @LoadedAtRMCycle";
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                        cmd.Parameters.AddWithValue("@Dt", WDt);
+                        cmd.Parameters.AddWithValue("@LoadedAtRMCycle", InLoadedAtRMCycle);
+
+                        // Read table 
+                        cmd.CommandTimeout = 200; 
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+
+                            // Read Details
+
+                            ReadHstFields(rdr);
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
                 }
         }
-     
-        
+        //
+        // UPDATE Daily Stats
+        // 
+        public void UpdateDailyStatsPerAtm(string InAtmNo, DateTime InDt)
+        {
+   
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            int rows; 
+
+            using (SqlConnection conn =
+                new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand("UPDATE [ATMS].[dbo].[AtmDispAmtsByDay] SET "
+                            + " DrTransactions = @DrTransactions"
+                             + " ,DispensedAmt = @DispensedAmt"
+                              + " ,CrTransactions = @CrTransactions"
+                               + " ,DepAmount = @DepAmount"
+                            + " WHERE AtmNo = @AtmNo AND Dt = @Dt ", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                        cmd.Parameters.AddWithValue("@Dt", InDt);
+
+                        cmd.Parameters.AddWithValue("@DrTransactions", DrTransactions);
+                        cmd.Parameters.AddWithValue("@DispensedAmt", DispensedAmt);
+
+                        cmd.Parameters.AddWithValue("@CrTransactions", CrTransactions);
+                        cmd.Parameters.AddWithValue("@DepAmount", DepAmount);
+                        cmd.CommandTimeout = 200;
+                        rows = cmd.ExecuteNonQuery();
+                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
+                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+        }
+
+        //
+        // Insert NEW daily Trans 
+        //
+        public void InsertTransHistory_With_Default(string InAtmNo, DateTime InDateTime)
+        {
+
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            string cmdinsert = "INSERT INTO [AtmDispAmtsByDay]"
+                + " ([AtmNo],[BankId],[Dt],[LoadedAtRMCycle],"
+                + " [DrTransactions],[DispensedAmt],"
+                + " [CrTransactions], [DepAmount],"
+                + " [Operator] )"
+                + " VALUES "
+                + " (@AtmNo,@BankId,@Dt,@LoadedAtRMCycle,"
+                + " @DrTransactions, @DispensedAmt,"
+                + " @CrTransactions, @DepAmount,"         
+                + " @Operator )";
+
+            using (SqlConnection conn =
+                new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+
+                       new SqlCommand(cmdinsert, conn))
+                    {
+
+                        cmd.Parameters.AddWithValue("@AtmNo", AtmNo);
+                        cmd.Parameters.AddWithValue("@BankId", BankId);
+                        cmd.Parameters.AddWithValue("@Dt", Dt);
+                        cmd.Parameters.AddWithValue("@LoadedAtRMCycle", LoadedAtRMCycle);
+
+                        cmd.Parameters.AddWithValue("@DrTransactions", DrTransactions);
+                        cmd.Parameters.AddWithValue("@DispensedAmt", DispensedAmt);
+
+                        cmd.Parameters.AddWithValue("@CrTransactions", CrTransactions);
+                        cmd.Parameters.AddWithValue("@DepAmount", DepAmount);
+
+                        cmd.Parameters.AddWithValue("@Operator", Operator);
+
+                        cmd.CommandTimeout = 200;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+        }
+        //
+        // UPDATE PreEstimated Dispensed
+        // 
+        public void UpdatePreEstimatedDispensed(int InSeqNo)
+        {
+
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            int rows;
+
+            using (SqlConnection conn =
+                new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand("UPDATE [ATMS].[dbo].[AtmDispAmtsByDay] SET "
+                            + " PreEstimated = @PreEstimated"
+                            + " WHERE SeqNo = @SeqNo ", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@SeqNo", InSeqNo);
+                       
+                        cmd.Parameters.AddWithValue("@PreEstimated", PreEstimated);
+                        
+                        rows = cmd.ExecuteNonQuery();
+                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
+                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+        }
+        //
+        // Insert NEW Estimated Dispensed
+        //
+        public void InsertTransHistory_With_PreEstimated(string InAtmNo, DateTime InDate)
+        {
+
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            string cmdinsert = "INSERT INTO [AtmDispAmtsByDay]"
+                + " ([AtmNo],[BankId],[Dt],[LoadedAtRMCycle],"
+                + " [PreEstimated],"
+                + " [Operator] )"
+                + " VALUES "
+                + " (@AtmNo,@BankId,@Dt,@LoadedAtRMCycle,"
+                + " @PreEstimated, "
+                + " @Operator )";
+
+            using (SqlConnection conn =
+                new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+
+                       new SqlCommand(cmdinsert, conn))
+                    {
+
+                        cmd.Parameters.AddWithValue("@AtmNo", AtmNo);
+                        cmd.Parameters.AddWithValue("@BankId", BankId);
+                        cmd.Parameters.AddWithValue("@Dt", Dt);
+                        cmd.Parameters.AddWithValue("@LoadedAtRMCycle", LoadedAtRMCycle);
+
+                        cmd.Parameters.AddWithValue("@PreEstimated", PreEstimated);
+                   
+                        cmd.Parameters.AddWithValue("@Operator", Operator);
+
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+        }
+
         // Insert NEW Trans 
         //
         public void InsertTransHistory(string InAtmNo, DateTime PreviousDt, decimal InDispensedAmt )
@@ -247,7 +514,7 @@ namespace RRDM4ATMs
             ErrorOutput = ""; 
 
             string cmdinsert = "INSERT INTO [AtmDispAmtsByDay]"
-                + " ([AtmNo],[BankId],[DtTm],[Year],[DrTransactions],[DispensedAmt],"
+                + " ([AtmNo],[BankId],[Dt],[LoadedAtRMCycle],[DrTransactions],[DispensedAmt],"
                 +    " [PreEstimated], [CrTransactions], [DepAmount],"
                 + " [C301DailyMaintAmount],"
                 + " [C303ReplTimeCost],"
@@ -260,7 +527,7 @@ namespace RRDM4ATMs
                 + " [R404CommTran], [R404CommAmount],"
                 + " [R405CommTran], [R405CommAmount], [Operator] )"
                 + " VALUES "
-                + " (@AtmNo,@BankId,@DtTm,@Year,@DrTransactions, @DispensedAmt,"
+                + " (@AtmNo,@BankId,@Dt,@LoadedAtRMCycle,@DrTransactions, @DispensedAmt,"
                 +   " @PreEstimated, @CrTransactions, @DepAmount,"
                 + " @C301DailyMaintAmount,"
                 + " @C303ReplTimeCost,"
@@ -285,8 +552,8 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@AtmNo", AtmNo);
                         cmd.Parameters.AddWithValue("@BankId", BankId);
-                        cmd.Parameters.AddWithValue("@DtTm", DtTm);
-                        cmd.Parameters.AddWithValue("@Year", Year);
+                        cmd.Parameters.AddWithValue("@Dt", Dt);
+                        cmd.Parameters.AddWithValue("@LoadedAtRMCycle", LoadedAtRMCycle);
              
                         cmd.Parameters.AddWithValue("@DrTransactions", DrTransactions);
                         cmd.Parameters.AddWithValue("@DispensedAmt", DispensedAmt);
@@ -318,11 +585,8 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@Operator", Operator);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();
+                        
 
                     }
                     // Close conn
@@ -331,8 +595,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ATMsDailyTransHistory Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -345,10 +609,10 @@ namespace RRDM4ATMs
             ErrorOutput = ""; 
 
             string cmdinsert = "INSERT INTO [AtmsDailyStats]"
-                + " ([AtmNo],[BankId],[DtTm],[RecordType],[Description],"
+                + " ([AtmNo],[BankId],[Dt],[RecordType],[Description],"
                 + " [NumberOfTrans],[Amount],[DateCreated], [Operator])"
                 + " VALUES "
-                + " (@AtmNo,@BankId,@DtTm,@RecordType,@Description,"
+                + " (@AtmNo,@BankId,@Dt,@RecordType,@Description,"
                 + " @NumberOfTrans,@Amount,@DateCreated, @Operator)";
            
             using (SqlConnection conn =
@@ -364,7 +628,7 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@AtmNo", AtmNo);
                         cmd.Parameters.AddWithValue("@BankId", BankId);
                    
-                        cmd.Parameters.AddWithValue("@DtTm", DtTm);
+                        cmd.Parameters.AddWithValue("@Dt", Dt);
                         cmd.Parameters.AddWithValue("@RecordType", RecordType);
                         cmd.Parameters.AddWithValue("@Description", Description);
 
@@ -373,11 +637,8 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@DateCreated", DateCreated);
                         cmd.Parameters.AddWithValue("@Operator", Operator);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();
+                       
 
                     }
                     // Close conn
@@ -386,8 +647,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ATMsDailyTransHistory Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 // Copy history By Atm 
@@ -425,8 +686,8 @@ namespace RRDM4ATMs
 
                             AtmNo = (string)rdr["AtmNo"];
                             BankId = (string)rdr["BankId"];
-                            DtTm = (DateTime)rdr["DtTm"];
-                            Year = (int)rdr["Year"];
+                            Dt = (DateTime)rdr["Dt"];
+                            LoadedAtRMCycle = (int)rdr["LoadedAtRMCycle"];
                      
                             DrTransactions = (int)rdr["DrTransactions"];
                             DispensedAmt = (decimal)rdr["DispensedAmt"];
@@ -461,7 +722,7 @@ namespace RRDM4ATMs
                             AtmNo = TargetAtmNo;
                         //    Prive = TargetPrive; 
 
-                            InsertTransHistory(AtmNo, DtTm, DispensedAmt); 
+                            InsertTransHistory(AtmNo, Dt, DispensedAmt); 
 
                         }
 
@@ -476,11 +737,12 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ATMsDailyTransHistory Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
+     
 
     }
 }

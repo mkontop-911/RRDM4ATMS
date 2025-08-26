@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form80b));
             this.tableLayoutPanelHeader = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -46,53 +47,67 @@
             this.textBoxMsgBoard = new System.Windows.Forms.TextBox();
             this.buttonBack = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label27 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
+            this.labelReversal = new System.Windows.Forms.Label();
             this.buttonTranPosted = new System.Windows.Forms.Button();
             this.textBoxPosted = new System.Windows.Forms.TextBox();
-            this.textBoxCreated = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
+            this.textBoxCreated = new System.Windows.Forms.TextBox();
+            this.panelForceMatched = new System.Windows.Forms.Panel();
+            this.label21 = new System.Windows.Forms.Label();
+            this.textBoxForceReason = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label16 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.buttonShowException = new System.Windows.Forms.Button();
-            this.label15 = new System.Windows.Forms.Label();
-            this.textBoxExceptionDesc = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBoxExceptionNo = new System.Windows.Forms.TextBox();
+            this.buttonAllAccounting = new System.Windows.Forms.Button();
+            this.buttonAllActions = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.labelDispute = new System.Windows.Forms.Label();
-            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.buttonCreateTXNSolo = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.buttonShow_IST_Presenter = new System.Windows.Forms.Button();
             this.panel9 = new System.Windows.Forms.Panel();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButtonOnlyThisCatandCycle = new System.Windows.Forms.RadioButton();
+            this.radioButtonAllTxns = new System.Windows.Forms.RadioButton();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxFilter = new System.Windows.Forms.ComboBox();
             this.label18 = new System.Windows.Forms.Label();
             this.comboBoxSort = new System.Windows.Forms.ComboBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.buttonRegisterDispute = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.label23 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.label24 = new System.Windows.Forms.Label();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.radioButtonTxnAmt = new System.Windows.Forms.RadioButton();
+            this.radioButtonPresenterError = new System.Windows.Forms.RadioButton();
+            this.radioButtonRRNumber = new System.Windows.Forms.RadioButton();
+            this.label13 = new System.Windows.Forms.Label();
+            this.radioButtonAtm = new System.Windows.Forms.RadioButton();
+            this.textBoxAtmNo = new System.Windows.Forms.TextBox();
+            this.radioButtonTraceNo = new System.Windows.Forms.RadioButton();
+            this.buttonShowSelection = new System.Windows.Forms.Button();
             this.radioButtonCard = new System.Windows.Forms.RadioButton();
             this.radioButtonAccount = new System.Windows.Forms.RadioButton();
-            this.radioButtonUniqueNo = new System.Windows.Forms.RadioButton();
+            this.radioButtonUniqueRecordId = new System.Windows.Forms.RadioButton();
             this.textBoxInputField = new System.Windows.Forms.TextBox();
             this.checkBoxUnique = new System.Windows.Forms.CheckBox();
-            this.buttonShowSelection = new System.Windows.Forms.Button();
             this.textBoxMask = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.panel21 = new System.Windows.Forms.Panel();
-            this.buttonTransTrail = new System.Windows.Forms.Button();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.linkLabelForRelationsToPresenterError = new System.Windows.Forms.LinkLabel();
+            this.textBoxUnMatchedType = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.labelFileF = new System.Windows.Forms.Label();
+            this.textBox36 = new System.Windows.Forms.TextBox();
+            this.textBox35 = new System.Windows.Forms.TextBox();
+            this.textBox34 = new System.Windows.Forms.TextBox();
+            this.textBox33 = new System.Windows.Forms.TextBox();
+            this.textBox32 = new System.Windows.Forms.TextBox();
+            this.textBox31 = new System.Windows.Forms.TextBox();
             this.labelFileE = new System.Windows.Forms.Label();
             this.labelFileD = new System.Windows.Forms.Label();
             this.labelFileC = new System.Windows.Forms.Label();
@@ -100,16 +115,45 @@
             this.labelFileA = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.buttonExpandGridRight = new System.Windows.Forms.Button();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.textBoxUniqueID = new System.Windows.Forms.TextBox();
-            this.label28 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
+            this.buttonBalance = new System.Windows.Forms.Button();
+            this.textBoxPostponed = new System.Windows.Forms.TextBox();
+            this.buttonExcel = new System.Windows.Forms.Button();
+            this.buttonPlayBack_IST = new System.Windows.Forms.Button();
+            this.labelBranch = new System.Windows.Forms.Label();
+            this.textBoxBranch = new System.Windows.Forms.TextBox();
+            this.labelJournalNm = new System.Windows.Forms.Label();
+            this.textBoxJournalNm = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBoxA_No = new System.Windows.Forms.TextBox();
+            this.textBoxTXNDEST = new System.Windows.Forms.TextBox();
+            this.textBoxTXNSRC = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.buttonVideo = new System.Windows.Forms.Button();
+            this.labelAuth = new System.Windows.Forms.Label();
+            this.textBoxAuth = new System.Windows.Forms.TextBox();
+            this.labelMaker = new System.Windows.Forms.Label();
+            this.textBoxMaker = new System.Windows.Forms.TextBox();
+            this.labelActionTaken = new System.Windows.Forms.Label();
+            this.textBoxActionTaken = new System.Windows.Forms.TextBox();
+            this.textBoxRRN = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.buttonJournal_Near = new System.Windows.Forms.Button();
+            this.label33 = new System.Windows.Forms.Label();
+            this.textBoxLines = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.buttonSourceReords = new System.Windows.Forms.Button();
+            this.linkLabelDispute = new System.Windows.Forms.LinkLabel();
+            this.labelDispute = new System.Windows.Forms.Label();
+            this.textBoxDisputeId = new System.Windows.Forms.TextBox();
+            this.labelNumberNotes2 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.textBoxTerminalId = new System.Windows.Forms.TextBox();
+            this.label31 = new System.Windows.Forms.Label();
+            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.buttonTextFromJournal = new System.Windows.Forms.Button();
+            this.buttonShowJournal = new System.Windows.Forms.Button();
             this.buttonReconcPlay = new System.Windows.Forms.Button();
             this.buttonReplPlay = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
@@ -129,24 +173,14 @@
             this.textBoxAmnt = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.panel24 = new System.Windows.Forms.Panel();
-            this.label13 = new System.Windows.Forms.Label();
-            this.textBoxNewMask = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.buttonMoveToMatched = new System.Windows.Forms.Button();
-            this.label22 = new System.Windows.Forms.Label();
-            this.buttonMovedToUnMatched = new System.Windows.Forms.Button();
-            this.labelNumberNotes2 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelAction = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.label31 = new System.Windows.Forms.Label();
-            this.textBox10 = new System.Windows.Forms.TextBox();
-            this.textBox11 = new System.Windows.Forms.TextBox();
-            this.label32 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTipMessages = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTipController = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTipButtons = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTipHeadings = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -156,16 +190,17 @@
             this.tableLayoutPanel6.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel8.SuspendLayout();
+            this.panelForceMatched.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel21.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.panel24.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanelMain.SuspendLayout();
             this.SuspendLayout();
@@ -177,12 +212,12 @@
             this.tableLayoutPanelHeader.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tableLayoutPanelHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanelHeader.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanelHeader.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanelHeader.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tableLayoutPanelHeader.Name = "tableLayoutPanelHeader";
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1008, 80);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1218, 79);
             this.tableLayoutPanelHeader.TabIndex = 267;
             // 
             // tableLayoutPanel4
@@ -195,12 +230,12 @@
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel5, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.flowLayoutPanel1, 1, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(2, 2);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(2, 1);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1004, 80);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 82F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1214, 82);
             this.tableLayoutPanel4.TabIndex = 249;
             // 
             // tableLayoutPanel1
@@ -209,13 +244,13 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(863, 2);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(1073, 1);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(139, 76);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(139, 80);
             this.tableLayoutPanel1.TabIndex = 247;
             // 
             // tableLayoutPanel5
@@ -225,12 +260,12 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 232F));
             this.tableLayoutPanel5.Controls.Add(this.pictureBox1, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel3, 1, 0);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(2, 2);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(2, 1);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 67F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(246, 67);
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 66F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(245, 66);
             this.tableLayoutPanel5.TabIndex = 251;
             // 
             // pictureBox1
@@ -238,10 +273,10 @@
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(2, 2);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Location = new System.Drawing.Point(2, 1);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(72, 63);
+            this.pictureBox1.Size = new System.Drawing.Size(72, 64);
             this.pictureBox1.TabIndex = 251;
             this.pictureBox1.TabStop = false;
             // 
@@ -254,14 +289,14 @@
             this.tableLayoutPanel3.Controls.Add(this.labelToday, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.label10, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.labelUserId, 1, 1);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(78, 2);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(78, 1);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(227, 63);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(227, 64);
             this.tableLayoutPanel3.TabIndex = 248;
             // 
             // label8
@@ -312,7 +347,7 @@
             // 
             this.flowLayoutPanel1.Controls.Add(this.tableLayoutPanel6);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(252, 6);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 6, 2, 2);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 6, 2, 1);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(561, 71);
             this.flowLayoutPanel1.TabIndex = 243;
@@ -352,8 +387,8 @@
             this.buttonNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonNext.ForeColor = System.Drawing.Color.White;
-            this.buttonNext.Location = new System.Drawing.Point(923, 2);
-            this.buttonNext.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
+            this.buttonNext.Location = new System.Drawing.Point(1133, 1);
+            this.buttonNext.Margin = new System.Windows.Forms.Padding(2, 1, 10, 1);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(71, 27);
             this.buttonNext.TabIndex = 244;
@@ -368,12 +403,12 @@
             this.textBoxMsgBoard.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxMsgBoard.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxMsgBoard.ForeColor = System.Drawing.Color.White;
-            this.textBoxMsgBoard.Location = new System.Drawing.Point(10, 2);
-            this.textBoxMsgBoard.Margin = new System.Windows.Forms.Padding(10, 2, 2, 2);
+            this.textBoxMsgBoard.Location = new System.Drawing.Point(10, 1);
+            this.textBoxMsgBoard.Margin = new System.Windows.Forms.Padding(10, 1, 2, 1);
             this.textBoxMsgBoard.Multiline = true;
             this.textBoxMsgBoard.Name = "textBoxMsgBoard";
             this.textBoxMsgBoard.ReadOnly = true;
-            this.textBoxMsgBoard.Size = new System.Drawing.Size(743, 32);
+            this.textBoxMsgBoard.Size = new System.Drawing.Size(953, 34);
             this.textBoxMsgBoard.TabIndex = 242;
             this.textBoxMsgBoard.TabStop = false;
             this.textBoxMsgBoard.Text = "No guidance information available.";
@@ -386,8 +421,8 @@
             this.buttonBack.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonBack.ForeColor = System.Drawing.Color.White;
-            this.buttonBack.Location = new System.Drawing.Point(840, 2);
-            this.buttonBack.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonBack.Location = new System.Drawing.Point(1050, 1);
+            this.buttonBack.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(76, 27);
             this.buttonBack.TabIndex = 246;
@@ -399,8 +434,9 @@
             // 
             this.panel1.AutoScroll = true;
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.panel1.Controls.Add(this.label27);
             this.panel1.Controls.Add(this.panel8);
+            this.panel1.Controls.Add(this.panelForceMatched);
+            this.panel1.Controls.Add(this.linkLabel1);
             this.panel1.Controls.Add(this.label16);
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.panel4);
@@ -409,37 +445,37 @@
             this.panel1.Controls.Add(this.panel21);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.panel2);
-            this.panel1.Controls.Add(this.panel24);
-            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.labelAction);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1002, 684);
+            this.panel1.Size = new System.Drawing.Size(1212, 591);
             this.panel1.TabIndex = 243;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label27.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label27.Location = new System.Drawing.Point(749, 497);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(139, 18);
-            this.label27.TabIndex = 371;
-            this.label27.Text = "ACTIONS TAKEN";
             // 
             // panel8
             // 
             this.panel8.BackColor = System.Drawing.Color.White;
+            this.panel8.Controls.Add(this.labelReversal);
             this.panel8.Controls.Add(this.buttonTranPosted);
             this.panel8.Controls.Add(this.textBoxPosted);
-            this.panel8.Controls.Add(this.textBoxCreated);
             this.panel8.Controls.Add(this.label30);
             this.panel8.Controls.Add(this.label29);
-            this.panel8.Location = new System.Drawing.Point(745, 519);
+            this.panel8.Controls.Add(this.textBoxCreated);
+            this.panel8.Location = new System.Drawing.Point(1007, 432);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(244, 158);
+            this.panel8.Size = new System.Drawing.Size(244, 123);
             this.panel8.TabIndex = 370;
+            // 
+            // labelReversal
+            // 
+            this.labelReversal.AutoSize = true;
+            this.labelReversal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelReversal.ForeColor = System.Drawing.Color.Red;
+            this.labelReversal.Location = new System.Drawing.Point(12, 98);
+            this.labelReversal.Name = "labelReversal";
+            this.labelReversal.Size = new System.Drawing.Size(131, 16);
+            this.labelReversal.TabIndex = 368;
+            this.labelReversal.Text = "There is Reversal";
             // 
             // buttonTranPosted
             // 
@@ -451,7 +487,7 @@
             this.buttonTranPosted.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonTranPosted.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.buttonTranPosted.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonTranPosted.Location = new System.Drawing.Point(150, 120);
+            this.buttonTranPosted.Location = new System.Drawing.Point(182, 92);
             this.buttonTranPosted.Name = "buttonTranPosted";
             this.buttonTranPosted.Size = new System.Drawing.Size(56, 27);
             this.buttonTranPosted.TabIndex = 367;
@@ -461,24 +497,16 @@
             // 
             // textBoxPosted
             // 
-            this.textBoxPosted.Location = new System.Drawing.Point(11, 92);
+            this.textBoxPosted.Location = new System.Drawing.Point(11, 71);
             this.textBoxPosted.Name = "textBoxPosted";
             this.textBoxPosted.ReadOnly = true;
             this.textBoxPosted.Size = new System.Drawing.Size(175, 20);
             this.textBoxPosted.TabIndex = 360;
             // 
-            // textBoxCreated
-            // 
-            this.textBoxCreated.Location = new System.Drawing.Point(11, 33);
-            this.textBoxCreated.Name = "textBoxCreated";
-            this.textBoxCreated.ReadOnly = true;
-            this.textBoxCreated.Size = new System.Drawing.Size(175, 20);
-            this.textBoxCreated.TabIndex = 359;
-            // 
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(8, 67);
+            this.label30.Location = new System.Drawing.Point(8, 54);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(49, 13);
             this.label30.TabIndex = 358;
@@ -487,11 +515,69 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(8, 11);
+            this.label29.Location = new System.Drawing.Point(8, 12);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(83, 13);
             this.label29.TabIndex = 357;
             this.label29.Text = "Trans Created : ";
+            // 
+            // textBoxCreated
+            // 
+            this.textBoxCreated.Location = new System.Drawing.Point(11, 29);
+            this.textBoxCreated.Name = "textBoxCreated";
+            this.textBoxCreated.ReadOnly = true;
+            this.textBoxCreated.Size = new System.Drawing.Size(175, 20);
+            this.textBoxCreated.TabIndex = 359;
+            // 
+            // panelForceMatched
+            // 
+            this.panelForceMatched.BackColor = System.Drawing.Color.White;
+            this.panelForceMatched.Controls.Add(this.label21);
+            this.panelForceMatched.Controls.Add(this.textBoxForceReason);
+            this.panelForceMatched.Controls.Add(this.label17);
+            this.panelForceMatched.Location = new System.Drawing.Point(1007, 561);
+            this.panelForceMatched.Name = "panelForceMatched";
+            this.panelForceMatched.Size = new System.Drawing.Size(238, 100);
+            this.panelForceMatched.TabIndex = 414;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(3, 43);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(44, 13);
+            this.label21.TabIndex = 412;
+            this.label21.Text = "Reason";
+            // 
+            // textBoxForceReason
+            // 
+            this.textBoxForceReason.Location = new System.Drawing.Point(4, 59);
+            this.textBoxForceReason.Name = "textBoxForceReason";
+            this.textBoxForceReason.ReadOnly = true;
+            this.textBoxForceReason.Size = new System.Drawing.Size(231, 20);
+            this.textBoxForceReason.TabIndex = 411;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.ForeColor = System.Drawing.Color.Red;
+            this.label17.Location = new System.Drawing.Point(-2, 12);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(239, 16);
+            this.label17.TabIndex = 404;
+            this.label17.Text = "Transaction was forced matched. ";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(926, 87);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(65, 13);
+            this.linkLabel1.TabIndex = 372;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Expand Grid";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // label16
             // 
@@ -508,139 +594,156 @@
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel3.Controls.Add(this.buttonShowException);
-            this.panel3.Controls.Add(this.label15);
-            this.panel3.Controls.Add(this.textBoxExceptionDesc);
-            this.panel3.Controls.Add(this.label5);
-            this.panel3.Controls.Add(this.textBoxExceptionNo);
-            this.panel3.Location = new System.Drawing.Point(745, 362);
+            this.panel3.Controls.Add(this.buttonAllAccounting);
+            this.panel3.Controls.Add(this.buttonAllActions);
+            this.panel3.Location = new System.Drawing.Point(1007, 363);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(244, 122);
+            this.panel3.Size = new System.Drawing.Size(244, 63);
             this.panel3.TabIndex = 10;
             // 
-            // buttonShowException
+            // buttonAllAccounting
             // 
-            this.buttonShowException.BackColor = System.Drawing.Color.White;
-            this.buttonShowException.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonShowException.FlatAppearance.BorderSize = 2;
-            this.buttonShowException.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonShowException.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.buttonShowException.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonShowException.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.buttonShowException.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonShowException.Location = new System.Drawing.Point(148, 39);
-            this.buttonShowException.Name = "buttonShowException";
-            this.buttonShowException.Size = new System.Drawing.Size(56, 27);
-            this.buttonShowException.TabIndex = 366;
-            this.buttonShowException.Text = "Show";
-            this.buttonShowException.UseVisualStyleBackColor = false;
-            this.buttonShowException.Click += new System.EventHandler(this.buttonShowException_Click);
+            this.buttonAllAccounting.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonAllAccounting.FlatAppearance.BorderSize = 2;
+            this.buttonAllAccounting.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonAllAccounting.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonAllAccounting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAllAccounting.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonAllAccounting.Location = new System.Drawing.Point(6, 33);
+            this.buttonAllAccounting.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.buttonAllAccounting.Name = "buttonAllAccounting";
+            this.buttonAllAccounting.Size = new System.Drawing.Size(101, 27);
+            this.buttonAllAccounting.TabIndex = 440;
+            this.buttonAllAccounting.Text = "Accounting";
+            this.buttonAllAccounting.UseVisualStyleBackColor = true;
+            this.buttonAllAccounting.Click += new System.EventHandler(this.buttonAllAccounting_Click);
             // 
-            // label15
+            // buttonAllActions
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 62);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(63, 13);
-            this.label15.TabIndex = 358;
-            this.label15.Text = "Descriprtion";
-            // 
-            // textBoxExceptionDesc
-            // 
-            this.textBoxExceptionDesc.Location = new System.Drawing.Point(9, 78);
-            this.textBoxExceptionDesc.Name = "textBoxExceptionDesc";
-            this.textBoxExceptionDesc.ReadOnly = true;
-            this.textBoxExceptionDesc.Size = new System.Drawing.Size(198, 20);
-            this.textBoxExceptionDesc.TabIndex = 359;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 17);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(106, 13);
-            this.label5.TabIndex = 356;
-            this.label5.Text = "MetaExceptions No :";
-            // 
-            // textBoxExceptionNo
-            // 
-            this.textBoxExceptionNo.Location = new System.Drawing.Point(9, 39);
-            this.textBoxExceptionNo.Name = "textBoxExceptionNo";
-            this.textBoxExceptionNo.ReadOnly = true;
-            this.textBoxExceptionNo.Size = new System.Drawing.Size(103, 20);
-            this.textBoxExceptionNo.TabIndex = 357;
+            this.buttonAllActions.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonAllActions.FlatAppearance.BorderSize = 2;
+            this.buttonAllActions.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonAllActions.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonAllActions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAllActions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonAllActions.Location = new System.Drawing.Point(6, 3);
+            this.buttonAllActions.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.buttonAllActions.Name = "buttonAllActions";
+            this.buttonAllActions.Size = new System.Drawing.Size(101, 27);
+            this.buttonAllActions.TabIndex = 439;
+            this.buttonAllActions.Text = "Actions";
+            this.buttonAllActions.UseVisualStyleBackColor = true;
+            this.buttonAllActions.Click += new System.EventHandler(this.buttonAllActions_Click);
             // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.White;
-            this.panel4.Controls.Add(this.labelDispute);
-            this.panel4.Controls.Add(this.textBox9);
+            this.panel4.Controls.Add(this.buttonCreateTXNSolo);
+            this.panel4.Controls.Add(this.button2);
+            this.panel4.Controls.Add(this.buttonShow_IST_Presenter);
             this.panel4.Controls.Add(this.panel9);
             this.panel4.Controls.Add(this.buttonRegisterDispute);
             this.panel4.Controls.Add(this.panel6);
             this.panel4.Controls.Add(this.panel5);
             this.panel4.Controls.Add(this.checkBoxUnique);
-            this.panel4.Controls.Add(this.buttonShowSelection);
             this.panel4.Location = new System.Drawing.Point(3, 105);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(290, 476);
+            this.panel4.Size = new System.Drawing.Size(290, 570);
             this.panel4.TabIndex = 367;
             // 
-            // labelDispute
+            // buttonCreateTXNSolo
             // 
-            this.labelDispute.AutoSize = true;
-            this.labelDispute.ForeColor = System.Drawing.Color.Red;
-            this.labelDispute.Location = new System.Drawing.Point(12, 425);
-            this.labelDispute.Name = "labelDispute";
-            this.labelDispute.Size = new System.Drawing.Size(100, 13);
-            this.labelDispute.TabIndex = 408;
-            this.labelDispute.Text = "Trans is in Dispute: ";
+            this.buttonCreateTXNSolo.FlatAppearance.BorderColor = System.Drawing.Color.Red;
+            this.buttonCreateTXNSolo.FlatAppearance.BorderSize = 2;
+            this.buttonCreateTXNSolo.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonCreateTXNSolo.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonCreateTXNSolo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCreateTXNSolo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonCreateTXNSolo.Location = new System.Drawing.Point(163, 519);
+            this.buttonCreateTXNSolo.Margin = new System.Windows.Forms.Padding(2, 1, 10, 1);
+            this.buttonCreateTXNSolo.Name = "buttonCreateTXNSolo";
+            this.buttonCreateTXNSolo.Size = new System.Drawing.Size(117, 27);
+            this.buttonCreateTXNSolo.TabIndex = 410;
+            this.buttonCreateTXNSolo.Text = "Create TXN SOLO";
+            this.buttonCreateTXNSolo.UseVisualStyleBackColor = true;
+            this.buttonCreateTXNSolo.Click += new System.EventHandler(this.buttonCreateTXNSolo_Click);
             // 
-            // textBox9
+            // button2
             // 
-            this.textBox9.Location = new System.Drawing.Point(19, 446);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(100, 20);
-            this.textBox9.TabIndex = 407;
+            this.button2.BackColor = System.Drawing.Color.White;
+            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button2.FlatAppearance.BorderSize = 2;
+            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button2.Location = new System.Drawing.Point(13, 513);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(145, 27);
+            this.button2.TabIndex = 408;
+            this.button2.Text = "All Journals";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Visible = false;
+            // 
+            // buttonShow_IST_Presenter
+            // 
+            this.buttonShow_IST_Presenter.BackColor = System.Drawing.Color.White;
+            this.buttonShow_IST_Presenter.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonShow_IST_Presenter.FlatAppearance.BorderSize = 2;
+            this.buttonShow_IST_Presenter.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonShow_IST_Presenter.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.buttonShow_IST_Presenter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonShow_IST_Presenter.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonShow_IST_Presenter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonShow_IST_Presenter.Location = new System.Drawing.Point(13, 486);
+            this.buttonShow_IST_Presenter.Name = "buttonShow_IST_Presenter";
+            this.buttonShow_IST_Presenter.Size = new System.Drawing.Size(145, 27);
+            this.buttonShow_IST_Presenter.TabIndex = 407;
+            this.buttonShow_IST_Presenter.Text = "IST Presenter ERRORS";
+            this.buttonShow_IST_Presenter.UseVisualStyleBackColor = false;
+            this.buttonShow_IST_Presenter.Visible = false;
+            this.buttonShow_IST_Presenter.Click += new System.EventHandler(this.buttonShow_IST_Presenter_Click);
             // 
             // panel9
             // 
-            this.panel9.Controls.Add(this.radioButton1);
-            this.panel9.Controls.Add(this.radioButton2);
+            this.panel9.Controls.Add(this.radioButtonOnlyThisCatandCycle);
+            this.panel9.Controls.Add(this.radioButtonAllTxns);
             this.panel9.Controls.Add(this.label1);
             this.panel9.Controls.Add(this.comboBoxFilter);
             this.panel9.Controls.Add(this.label18);
             this.panel9.Controls.Add(this.comboBoxSort);
+            this.panel9.Controls.Add(this.pictureBox2);
             this.panel9.Location = new System.Drawing.Point(13, 8);
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(274, 113);
             this.panel9.TabIndex = 406;
             // 
-            // radioButton1
+            // radioButtonOnlyThisCatandCycle
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton1.Location = new System.Drawing.Point(3, 18);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(182, 17);
-            this.radioButton1.TabIndex = 381;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "This RM Categ/Cycle Trans";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.radioButtonOnlyThisCatandCycle.AutoSize = true;
+            this.radioButtonOnlyThisCatandCycle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButtonOnlyThisCatandCycle.Location = new System.Drawing.Point(3, 5);
+            this.radioButtonOnlyThisCatandCycle.Name = "radioButtonOnlyThisCatandCycle";
+            this.radioButtonOnlyThisCatandCycle.Size = new System.Drawing.Size(168, 17);
+            this.radioButtonOnlyThisCatandCycle.TabIndex = 381;
+            this.radioButtonOnlyThisCatandCycle.TabStop = true;
+            this.radioButtonOnlyThisCatandCycle.Text = "This Reconc Cycle Trans\r\n";
+            this.radioButtonOnlyThisCatandCycle.UseVisualStyleBackColor = true;
+            this.radioButtonOnlyThisCatandCycle.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
-            // radioButton2
+            // radioButtonAllTxns
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton2.Location = new System.Drawing.Point(185, 18);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(75, 17);
-            this.radioButton2.TabIndex = 382;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "All Trans";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            this.radioButtonAllTxns.AutoSize = true;
+            this.radioButtonAllTxns.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButtonAllTxns.Location = new System.Drawing.Point(3, 27);
+            this.radioButtonAllTxns.Name = "radioButtonAllTxns";
+            this.radioButtonAllTxns.Size = new System.Drawing.Size(172, 17);
+            this.radioButtonAllTxns.TabIndex = 382;
+            this.radioButtonAllTxns.TabStop = true;
+            this.radioButtonAllTxns.Text = "All Trans of All Categories";
+            this.radioButtonAllTxns.UseVisualStyleBackColor = true;
+            this.radioButtonAllTxns.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             // 
             // label1
             // 
@@ -657,9 +760,9 @@
             // 
             this.comboBoxFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.comboBoxFilter.FormattingEnabled = true;
-            this.comboBoxFilter.Location = new System.Drawing.Point(106, 55);
+            this.comboBoxFilter.Location = new System.Drawing.Point(97, 55);
             this.comboBoxFilter.Name = "comboBoxFilter";
-            this.comboBoxFilter.Size = new System.Drawing.Size(161, 24);
+            this.comboBoxFilter.Size = new System.Drawing.Size(170, 24);
             this.comboBoxFilter.TabIndex = 364;
             this.comboBoxFilter.SelectedIndexChanged += new System.EventHandler(this.comboBoxFilter_SelectedIndexChanged);
             // 
@@ -678,10 +781,21 @@
             // 
             this.comboBoxSort.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.comboBoxSort.FormattingEnabled = true;
-            this.comboBoxSort.Location = new System.Drawing.Point(106, 88);
+            this.comboBoxSort.Location = new System.Drawing.Point(97, 88);
             this.comboBoxSort.Name = "comboBoxSort";
-            this.comboBoxSort.Size = new System.Drawing.Size(161, 21);
+            this.comboBoxSort.Size = new System.Drawing.Size(170, 21);
             this.comboBoxSort.TabIndex = 373;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(4, 1);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(267, 110);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 384;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Visible = false;
             // 
             // buttonRegisterDispute
             // 
@@ -691,8 +805,8 @@
             this.buttonRegisterDispute.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonRegisterDispute.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonRegisterDispute.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonRegisterDispute.Location = new System.Drawing.Point(182, 443);
-            this.buttonRegisterDispute.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
+            this.buttonRegisterDispute.Location = new System.Drawing.Point(178, 486);
+            this.buttonRegisterDispute.Margin = new System.Windows.Forms.Padding(2, 1, 10, 1);
             this.buttonRegisterDispute.Name = "buttonRegisterDispute";
             this.buttonRegisterDispute.Size = new System.Drawing.Size(104, 27);
             this.buttonRegisterDispute.TabIndex = 386;
@@ -703,14 +817,36 @@
             // 
             // panel6
             // 
-            this.panel6.Controls.Add(this.label23);
-            this.panel6.Controls.Add(this.dateTimePicker1);
-            this.panel6.Controls.Add(this.label24);
             this.panel6.Controls.Add(this.dateTimePicker2);
+            this.panel6.Controls.Add(this.dateTimePicker1);
+            this.panel6.Controls.Add(this.label23);
+            this.panel6.Controls.Add(this.label24);
             this.panel6.Location = new System.Drawing.Point(13, 124);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(270, 111);
+            this.panel6.Size = new System.Drawing.Size(270, 100);
             this.panel6.TabIndex = 385;
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.CustomFormat = "dd/MM/yyyy HH:mm:ss";
+            this.dateTimePicker2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker2.Location = new System.Drawing.Point(75, 66);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.ShowUpDown = true;
+            this.dateTimePicker2.Size = new System.Drawing.Size(181, 23);
+            this.dateTimePicker2.TabIndex = 428;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.CustomFormat = "dd/MM/yyyy HH:mm:ss";
+            this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker1.Location = new System.Drawing.Point(75, 21);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.ShowUpDown = true;
+            this.dateTimePicker1.Size = new System.Drawing.Size(181, 23);
+            this.dateTimePicker1.TabIndex = 427;
             // 
             // label23
             // 
@@ -723,13 +859,6 @@
             this.label23.TabIndex = 377;
             this.label23.Text = "From ";
             // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(62, 21);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(191, 20);
-            this.dateTimePicker1.TabIndex = 379;
-            // 
             // label24
             // 
             this.label24.AutoSize = true;
@@ -741,74 +870,101 @@
             this.label24.TabIndex = 378;
             this.label24.Text = "To";
             // 
-            // dateTimePicker2
-            // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(62, 64);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(191, 20);
-            this.dateTimePicker2.TabIndex = 380;
-            // 
             // panel5
             // 
+            this.panel5.Controls.Add(this.radioButtonTxnAmt);
+            this.panel5.Controls.Add(this.radioButtonPresenterError);
+            this.panel5.Controls.Add(this.radioButtonRRNumber);
+            this.panel5.Controls.Add(this.label13);
+            this.panel5.Controls.Add(this.radioButtonAtm);
+            this.panel5.Controls.Add(this.textBoxAtmNo);
+            this.panel5.Controls.Add(this.radioButtonTraceNo);
+            this.panel5.Controls.Add(this.buttonShowSelection);
             this.panel5.Controls.Add(this.radioButtonCard);
             this.panel5.Controls.Add(this.radioButtonAccount);
-            this.panel5.Controls.Add(this.radioButtonUniqueNo);
+            this.panel5.Controls.Add(this.radioButtonUniqueRecordId);
             this.panel5.Controls.Add(this.textBoxInputField);
-            this.panel5.Location = new System.Drawing.Point(13, 261);
+            this.panel5.Location = new System.Drawing.Point(13, 245);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(263, 109);
+            this.panel5.Size = new System.Drawing.Size(270, 239);
             this.panel5.TabIndex = 384;
             // 
-            // radioButtonCard
+            // radioButtonTxnAmt
             // 
-            this.radioButtonCard.AutoSize = true;
-            this.radioButtonCard.Location = new System.Drawing.Point(8, 5);
-            this.radioButtonCard.Name = "radioButtonCard";
-            this.radioButtonCard.Size = new System.Drawing.Size(67, 17);
-            this.radioButtonCard.TabIndex = 369;
-            this.radioButtonCard.TabStop = true;
-            this.radioButtonCard.Text = "Card No ";
-            this.radioButtonCard.UseVisualStyleBackColor = true;
+            this.radioButtonTxnAmt.AutoSize = true;
+            this.radioButtonTxnAmt.Location = new System.Drawing.Point(8, 152);
+            this.radioButtonTxnAmt.Name = "radioButtonTxnAmt";
+            this.radioButtonTxnAmt.Size = new System.Drawing.Size(86, 17);
+            this.radioButtonTxnAmt.TabIndex = 415;
+            this.radioButtonTxnAmt.TabStop = true;
+            this.radioButtonTxnAmt.Text = "Tran Amount";
+            this.radioButtonTxnAmt.UseVisualStyleBackColor = true;
+            this.radioButtonTxnAmt.CheckedChanged += new System.EventHandler(this.radioButtonTxnAmt_CheckedChanged);
             // 
-            // radioButtonAccount
+            // radioButtonPresenterError
             // 
-            this.radioButtonAccount.AutoSize = true;
-            this.radioButtonAccount.Location = new System.Drawing.Point(8, 32);
-            this.radioButtonAccount.Name = "radioButtonAccount";
-            this.radioButtonAccount.Size = new System.Drawing.Size(85, 17);
-            this.radioButtonAccount.TabIndex = 370;
-            this.radioButtonAccount.TabStop = true;
-            this.radioButtonAccount.Text = "Account No ";
-            this.radioButtonAccount.UseVisualStyleBackColor = true;
+            this.radioButtonPresenterError.AutoSize = true;
+            this.radioButtonPresenterError.Location = new System.Drawing.Point(8, 173);
+            this.radioButtonPresenterError.Name = "radioButtonPresenterError";
+            this.radioButtonPresenterError.Size = new System.Drawing.Size(100, 17);
+            this.radioButtonPresenterError.TabIndex = 414;
+            this.radioButtonPresenterError.TabStop = true;
+            this.radioButtonPresenterError.Text = "All Presenter Err";
+            this.radioButtonPresenterError.UseVisualStyleBackColor = true;
             // 
-            // radioButtonUniqueNo
+            // radioButtonRRNumber
             // 
-            this.radioButtonUniqueNo.AutoSize = true;
-            this.radioButtonUniqueNo.Location = new System.Drawing.Point(8, 62);
-            this.radioButtonUniqueNo.Name = "radioButtonUniqueNo";
-            this.radioButtonUniqueNo.Size = new System.Drawing.Size(70, 17);
-            this.radioButtonUniqueNo.TabIndex = 371;
-            this.radioButtonUniqueNo.TabStop = true;
-            this.radioButtonUniqueNo.Text = "Trace No";
-            this.radioButtonUniqueNo.UseVisualStyleBackColor = true;
+            this.radioButtonRRNumber.AutoSize = true;
+            this.radioButtonRRNumber.Location = new System.Drawing.Point(8, 108);
+            this.radioButtonRRNumber.Name = "radioButtonRRNumber";
+            this.radioButtonRRNumber.Size = new System.Drawing.Size(81, 17);
+            this.radioButtonRRNumber.TabIndex = 413;
+            this.radioButtonRRNumber.TabStop = true;
+            this.radioButtonRRNumber.Text = "RR Number";
+            this.radioButtonRRNumber.UseVisualStyleBackColor = true;
+            this.radioButtonRRNumber.CheckedChanged += new System.EventHandler(this.radioButtonRRNumber_CheckedChanged);
             // 
-            // textBoxInputField
+            // label13
             // 
-            this.textBoxInputField.Location = new System.Drawing.Point(89, 77);
-            this.textBoxInputField.Name = "textBoxInputField";
-            this.textBoxInputField.Size = new System.Drawing.Size(159, 20);
-            this.textBoxInputField.TabIndex = 368;
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(32, 205);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(74, 26);
+            this.label13.TabIndex = 412;
+            this.label13.Text = "Trace or RRN\r\n         Of ATM";
+            this.label13.Visible = false;
             // 
-            // checkBoxUnique
+            // radioButtonAtm
             // 
-            this.checkBoxUnique.AutoSize = true;
-            this.checkBoxUnique.Location = new System.Drawing.Point(15, 244);
-            this.checkBoxUnique.Name = "checkBoxUnique";
-            this.checkBoxUnique.Size = new System.Drawing.Size(100, 17);
-            this.checkBoxUnique.TabIndex = 383;
-            this.checkBoxUnique.Text = "Unique Search ";
-            this.checkBoxUnique.UseVisualStyleBackColor = true;
-            this.checkBoxUnique.CheckedChanged += new System.EventHandler(this.checkBoxUnique_CheckedChanged);
+            this.radioButtonAtm.AutoSize = true;
+            this.radioButtonAtm.Location = new System.Drawing.Point(8, 131);
+            this.radioButtonAtm.Name = "radioButtonAtm";
+            this.radioButtonAtm.Size = new System.Drawing.Size(83, 17);
+            this.radioButtonAtm.TabIndex = 373;
+            this.radioButtonAtm.TabStop = true;
+            this.radioButtonAtm.Text = "Atm Number";
+            this.radioButtonAtm.UseVisualStyleBackColor = true;
+            this.radioButtonAtm.CheckedChanged += new System.EventHandler(this.radioButtonAtm_CheckedChanged);
+            // 
+            // textBoxAtmNo
+            // 
+            this.textBoxAtmNo.Location = new System.Drawing.Point(109, 208);
+            this.textBoxAtmNo.Name = "textBoxAtmNo";
+            this.textBoxAtmNo.Size = new System.Drawing.Size(61, 20);
+            this.textBoxAtmNo.TabIndex = 374;
+            this.textBoxAtmNo.Visible = false;
+            // 
+            // radioButtonTraceNo
+            // 
+            this.radioButtonTraceNo.AutoSize = true;
+            this.radioButtonTraceNo.Location = new System.Drawing.Point(8, 84);
+            this.radioButtonTraceNo.Name = "radioButtonTraceNo";
+            this.radioButtonTraceNo.Size = new System.Drawing.Size(96, 17);
+            this.radioButtonTraceNo.TabIndex = 372;
+            this.radioButtonTraceNo.TabStop = true;
+            this.radioButtonTraceNo.Text = "ATM Trace No";
+            this.radioButtonTraceNo.UseVisualStyleBackColor = true;
+            this.radioButtonTraceNo.CheckedChanged += new System.EventHandler(this.radioButtonTraceNo_CheckedChanged);
             // 
             // buttonShowSelection
             // 
@@ -820,23 +976,77 @@
             this.buttonShowSelection.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonShowSelection.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.buttonShowSelection.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonShowSelection.Location = new System.Drawing.Point(220, 381);
+            this.buttonShowSelection.Location = new System.Drawing.Point(211, 205);
             this.buttonShowSelection.Name = "buttonShowSelection";
-            this.buttonShowSelection.Size = new System.Drawing.Size(56, 27);
+            this.buttonShowSelection.Size = new System.Drawing.Size(56, 24);
             this.buttonShowSelection.TabIndex = 376;
             this.buttonShowSelection.Text = "Show";
             this.buttonShowSelection.UseVisualStyleBackColor = false;
             this.buttonShowSelection.Click += new System.EventHandler(this.buttonShowSelection_Click);
             // 
+            // radioButtonCard
+            // 
+            this.radioButtonCard.AutoSize = true;
+            this.radioButtonCard.Location = new System.Drawing.Point(8, 5);
+            this.radioButtonCard.Name = "radioButtonCard";
+            this.radioButtonCard.Size = new System.Drawing.Size(67, 17);
+            this.radioButtonCard.TabIndex = 369;
+            this.radioButtonCard.TabStop = true;
+            this.radioButtonCard.Text = "Card No ";
+            this.radioButtonCard.UseVisualStyleBackColor = true;
+            this.radioButtonCard.CheckedChanged += new System.EventHandler(this.radioButtonCard_CheckedChanged);
+            // 
+            // radioButtonAccount
+            // 
+            this.radioButtonAccount.AutoSize = true;
+            this.radioButtonAccount.Location = new System.Drawing.Point(8, 32);
+            this.radioButtonAccount.Name = "radioButtonAccount";
+            this.radioButtonAccount.Size = new System.Drawing.Size(85, 17);
+            this.radioButtonAccount.TabIndex = 370;
+            this.radioButtonAccount.TabStop = true;
+            this.radioButtonAccount.Text = "Account No ";
+            this.radioButtonAccount.UseVisualStyleBackColor = true;
+            this.radioButtonAccount.CheckedChanged += new System.EventHandler(this.radioButtonAccount_CheckedChanged);
+            // 
+            // radioButtonUniqueRecordId
+            // 
+            this.radioButtonUniqueRecordId.AutoSize = true;
+            this.radioButtonUniqueRecordId.Location = new System.Drawing.Point(8, 58);
+            this.radioButtonUniqueRecordId.Name = "radioButtonUniqueRecordId";
+            this.radioButtonUniqueRecordId.Size = new System.Drawing.Size(109, 17);
+            this.radioButtonUniqueRecordId.TabIndex = 371;
+            this.radioButtonUniqueRecordId.TabStop = true;
+            this.radioButtonUniqueRecordId.Text = "Unique Record Id";
+            this.radioButtonUniqueRecordId.UseVisualStyleBackColor = true;
+            this.radioButtonUniqueRecordId.CheckedChanged += new System.EventHandler(this.radioButtonUniqueNo_CheckedChanged);
+            // 
+            // textBoxInputField
+            // 
+            this.textBoxInputField.Location = new System.Drawing.Point(108, 169);
+            this.textBoxInputField.Name = "textBoxInputField";
+            this.textBoxInputField.Size = new System.Drawing.Size(159, 20);
+            this.textBoxInputField.TabIndex = 368;
+            // 
+            // checkBoxUnique
+            // 
+            this.checkBoxUnique.AutoSize = true;
+            this.checkBoxUnique.Location = new System.Drawing.Point(15, 228);
+            this.checkBoxUnique.Name = "checkBoxUnique";
+            this.checkBoxUnique.Size = new System.Drawing.Size(100, 17);
+            this.checkBoxUnique.TabIndex = 383;
+            this.checkBoxUnique.Text = "Unique Search ";
+            this.checkBoxUnique.UseVisualStyleBackColor = true;
+            this.checkBoxUnique.CheckedChanged += new System.EventHandler(this.checkBoxUnique_CheckedChanged);
+            // 
             // textBoxMask
             // 
             this.textBoxMask.BackColor = System.Drawing.Color.White;
             this.textBoxMask.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.textBoxMask.Location = new System.Drawing.Point(917, 80);
+            this.textBoxMask.Location = new System.Drawing.Point(1157, 79);
             this.textBoxMask.Name = "textBoxMask";
             this.textBoxMask.ReadOnly = true;
             this.textBoxMask.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.textBoxMask.Size = new System.Drawing.Size(72, 23);
+            this.textBoxMask.Size = new System.Drawing.Size(94, 23);
             this.textBoxMask.TabIndex = 366;
             this.textBoxMask.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -846,7 +1056,7 @@
             this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label11.Location = new System.Drawing.Point(748, 81);
+            this.label11.Location = new System.Drawing.Point(1010, 81);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(138, 20);
             this.label11.TabIndex = 361;
@@ -855,157 +1065,190 @@
             // panel21
             // 
             this.panel21.BackColor = System.Drawing.Color.White;
-            this.panel21.Controls.Add(this.buttonTransTrail);
-            this.panel21.Controls.Add(this.textBox6);
-            this.panel21.Controls.Add(this.textBox5);
-            this.panel21.Controls.Add(this.textBox4);
-            this.panel21.Controls.Add(this.textBox3);
-            this.panel21.Controls.Add(this.textBox2);
-            this.panel21.Controls.Add(this.textBox1);
+            this.panel21.Controls.Add(this.linkLabelForRelationsToPresenterError);
+            this.panel21.Controls.Add(this.textBoxUnMatchedType);
+            this.panel21.Controls.Add(this.label22);
+            this.panel21.Controls.Add(this.labelFileF);
+            this.panel21.Controls.Add(this.textBox36);
+            this.panel21.Controls.Add(this.textBox35);
+            this.panel21.Controls.Add(this.textBox34);
+            this.panel21.Controls.Add(this.textBox33);
+            this.panel21.Controls.Add(this.textBox32);
+            this.panel21.Controls.Add(this.textBox31);
             this.panel21.Controls.Add(this.labelFileE);
             this.panel21.Controls.Add(this.labelFileD);
             this.panel21.Controls.Add(this.labelFileC);
             this.panel21.Controls.Add(this.labelFileB);
             this.panel21.Controls.Add(this.labelFileA);
-            this.panel21.Location = new System.Drawing.Point(745, 105);
+            this.panel21.Location = new System.Drawing.Point(1007, 105);
             this.panel21.Name = "panel21";
             this.panel21.Size = new System.Drawing.Size(248, 224);
             this.panel21.TabIndex = 342;
             // 
-            // buttonTransTrail
+            // linkLabelForRelationsToPresenterError
             // 
-            this.buttonTransTrail.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonTransTrail.FlatAppearance.BorderSize = 2;
-            this.buttonTransTrail.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonTransTrail.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonTransTrail.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonTransTrail.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonTransTrail.Location = new System.Drawing.Point(169, 179);
-            this.buttonTransTrail.Margin = new System.Windows.Forms.Padding(2);
-            this.buttonTransTrail.Name = "buttonTransTrail";
-            this.buttonTransTrail.Size = new System.Drawing.Size(75, 27);
-            this.buttonTransTrail.TabIndex = 419;
-            this.buttonTransTrail.Text = "TransTrail";
-            this.buttonTransTrail.UseVisualStyleBackColor = true;
-            this.buttonTransTrail.Click += new System.EventHandler(this.buttonTransTrail_Click);
+            this.linkLabelForRelationsToPresenterError.AutoSize = true;
+            this.linkLabelForRelationsToPresenterError.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabelForRelationsToPresenterError.Location = new System.Drawing.Point(15, 131);
+            this.linkLabelForRelationsToPresenterError.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.linkLabelForRelationsToPresenterError.Name = "linkLabelForRelationsToPresenterError";
+            this.linkLabelForRelationsToPresenterError.Size = new System.Drawing.Size(149, 15);
+            this.linkLabelForRelationsToPresenterError.TabIndex = 438;
+            this.linkLabelForRelationsToPresenterError.TabStop = true;
+            this.linkLabelForRelationsToPresenterError.Text = "TXNs at External Category";
+            this.linkLabelForRelationsToPresenterError.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelForRelationsToPresenterError_LinkClicked);
             // 
-            // textBox6
+            // textBoxUnMatchedType
             // 
-            this.textBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.textBox6.Location = new System.Drawing.Point(15, 186);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.ReadOnly = true;
-            this.textBox6.Size = new System.Drawing.Size(103, 20);
-            this.textBox6.TabIndex = 358;
+            this.textBoxUnMatchedType.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.textBoxUnMatchedType.Location = new System.Drawing.Point(4, 149);
+            this.textBoxUnMatchedType.Multiline = true;
+            this.textBoxUnMatchedType.Name = "textBoxUnMatchedType";
+            this.textBoxUnMatchedType.ReadOnly = true;
+            this.textBoxUnMatchedType.Size = new System.Drawing.Size(237, 71);
+            this.textBoxUnMatchedType.TabIndex = 437;
             // 
-            // textBox5
+            // label22
             // 
-            this.textBox5.BackColor = System.Drawing.Color.Lime;
-            this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.textBox5.ForeColor = System.Drawing.Color.White;
-            this.textBox5.Location = new System.Drawing.Point(15, 154);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(22, 20);
-            this.textBox5.TabIndex = 9;
-            this.textBox5.Text = "E";
-            this.textBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.label22.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.label22.Location = new System.Drawing.Point(66, 55);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(137, 54);
+            this.label22.TabIndex = 436;
+            this.label22.Text = "MATCHING \r\nNOT DONE YET \r\nFOR THIS TXN";
             // 
-            // textBox4
+            // labelFileF
             // 
-            this.textBox4.BackColor = System.Drawing.Color.Lime;
-            this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.textBox4.ForeColor = System.Drawing.Color.White;
-            this.textBox4.Location = new System.Drawing.Point(15, 122);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(22, 20);
-            this.textBox4.TabIndex = 8;
-            this.textBox4.Text = "E";
-            this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.labelFileF.AutoSize = true;
+            this.labelFileF.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelFileF.Location = new System.Drawing.Point(180, 124);
+            this.labelFileF.Name = "labelFileF";
+            this.labelFileF.Size = new System.Drawing.Size(61, 13);
+            this.labelFileF.TabIndex = 435;
+            this.labelFileF.Text = "labelFileF";
             // 
-            // textBox3
+            // textBox36
             // 
-            this.textBox3.BackColor = System.Drawing.Color.Lime;
-            this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.textBox3.ForeColor = System.Drawing.Color.White;
-            this.textBox3.Location = new System.Drawing.Point(15, 90);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(22, 20);
-            this.textBox3.TabIndex = 7;
-            this.textBox3.Text = "E";
-            this.textBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox36.BackColor = System.Drawing.Color.Lime;
+            this.textBox36.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.textBox36.ForeColor = System.Drawing.Color.White;
+            this.textBox36.Location = new System.Drawing.Point(150, 126);
+            this.textBox36.Name = "textBox36";
+            this.textBox36.Size = new System.Drawing.Size(22, 20);
+            this.textBox36.TabIndex = 434;
+            this.textBox36.Text = "E";
+            this.textBox36.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox2
+            // textBox35
             // 
-            this.textBox2.BackColor = System.Drawing.Color.Red;
-            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.textBox2.ForeColor = System.Drawing.Color.White;
-            this.textBox2.Location = new System.Drawing.Point(15, 58);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(22, 20);
-            this.textBox2.TabIndex = 6;
-            this.textBox2.Text = "E";
-            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox35.BackColor = System.Drawing.Color.Lime;
+            this.textBox35.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.textBox35.ForeColor = System.Drawing.Color.White;
+            this.textBox35.Location = new System.Drawing.Point(150, 105);
+            this.textBox35.Name = "textBox35";
+            this.textBox35.Size = new System.Drawing.Size(22, 20);
+            this.textBox35.TabIndex = 433;
+            this.textBox35.Text = "E";
+            this.textBox35.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox1
+            // textBox34
             // 
-            this.textBox1.BackColor = System.Drawing.Color.Lime;
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.textBox1.ForeColor = System.Drawing.Color.White;
-            this.textBox1.Location = new System.Drawing.Point(15, 26);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(22, 20);
-            this.textBox1.TabIndex = 5;
-            this.textBox1.Text = "E";
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox34.BackColor = System.Drawing.Color.Lime;
+            this.textBox34.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.textBox34.ForeColor = System.Drawing.Color.White;
+            this.textBox34.Location = new System.Drawing.Point(15, 109);
+            this.textBox34.Name = "textBox34";
+            this.textBox34.Size = new System.Drawing.Size(22, 20);
+            this.textBox34.TabIndex = 432;
+            this.textBox34.Text = "E";
+            this.textBox34.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox33
+            // 
+            this.textBox33.BackColor = System.Drawing.Color.Lime;
+            this.textBox33.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.textBox33.ForeColor = System.Drawing.Color.White;
+            this.textBox33.Location = new System.Drawing.Point(15, 73);
+            this.textBox33.Name = "textBox33";
+            this.textBox33.Size = new System.Drawing.Size(22, 20);
+            this.textBox33.TabIndex = 431;
+            this.textBox33.Text = "E";
+            this.textBox33.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox32
+            // 
+            this.textBox32.BackColor = System.Drawing.Color.Lime;
+            this.textBox32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.textBox32.ForeColor = System.Drawing.Color.White;
+            this.textBox32.Location = new System.Drawing.Point(15, 44);
+            this.textBox32.Name = "textBox32";
+            this.textBox32.Size = new System.Drawing.Size(22, 20);
+            this.textBox32.TabIndex = 430;
+            this.textBox32.Text = "E";
+            this.textBox32.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox31
+            // 
+            this.textBox31.BackColor = System.Drawing.Color.Lime;
+            this.textBox31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.textBox31.ForeColor = System.Drawing.Color.White;
+            this.textBox31.Location = new System.Drawing.Point(15, 13);
+            this.textBox31.Name = "textBox31";
+            this.textBox31.Size = new System.Drawing.Size(22, 20);
+            this.textBox31.TabIndex = 429;
+            this.textBox31.Text = "E";
+            this.textBox31.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // labelFileE
             // 
             this.labelFileE.AutoSize = true;
             this.labelFileE.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.labelFileE.Location = new System.Drawing.Point(51, 154);
+            this.labelFileE.Location = new System.Drawing.Point(176, 109);
             this.labelFileE.Name = "labelFileE";
             this.labelFileE.Size = new System.Drawing.Size(62, 13);
-            this.labelFileE.TabIndex = 4;
+            this.labelFileE.TabIndex = 428;
             this.labelFileE.Text = "labelFileE";
             // 
             // labelFileD
             // 
             this.labelFileD.AutoSize = true;
             this.labelFileD.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.labelFileD.Location = new System.Drawing.Point(51, 122);
+            this.labelFileD.Location = new System.Drawing.Point(41, 109);
             this.labelFileD.Name = "labelFileD";
             this.labelFileD.Size = new System.Drawing.Size(63, 13);
-            this.labelFileD.TabIndex = 3;
+            this.labelFileD.TabIndex = 427;
             this.labelFileD.Text = "labelFileD";
             // 
             // labelFileC
             // 
             this.labelFileC.AutoSize = true;
             this.labelFileC.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.labelFileC.Location = new System.Drawing.Point(51, 90);
+            this.labelFileC.Location = new System.Drawing.Point(41, 77);
             this.labelFileC.Name = "labelFileC";
             this.labelFileC.Size = new System.Drawing.Size(62, 13);
-            this.labelFileC.TabIndex = 2;
+            this.labelFileC.TabIndex = 426;
             this.labelFileC.Text = "labelFileC";
             // 
             // labelFileB
             // 
             this.labelFileB.AutoSize = true;
             this.labelFileB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.labelFileB.Location = new System.Drawing.Point(51, 58);
+            this.labelFileB.Location = new System.Drawing.Point(41, 47);
             this.labelFileB.Name = "labelFileB";
             this.labelFileB.Size = new System.Drawing.Size(62, 13);
-            this.labelFileB.TabIndex = 1;
+            this.labelFileB.TabIndex = 425;
             this.labelFileB.Text = "labelFileB";
             // 
             // labelFileA
             // 
             this.labelFileA.AutoSize = true;
             this.labelFileA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.labelFileA.Location = new System.Drawing.Point(51, 26);
+            this.labelFileA.Location = new System.Drawing.Point(41, 17);
             this.labelFileA.Name = "labelFileA";
             this.labelFileA.Size = new System.Drawing.Size(62, 13);
-            this.labelFileA.TabIndex = 0;
+            this.labelFileA.TabIndex = 424;
             this.labelFileA.Text = "labelFileA";
             // 
             // label2
@@ -1022,46 +1265,53 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Controls.Add(this.buttonExpandGridRight);
             this.panel2.Controls.Add(this.panel7);
             this.panel2.Controls.Add(this.dataGridView1);
-            this.panel2.Location = new System.Drawing.Point(299, 105);
+            this.panel2.Location = new System.Drawing.Point(310, 105);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(440, 572);
+            this.panel2.Size = new System.Drawing.Size(687, 572);
             this.panel2.TabIndex = 3;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
-            // 
-            // buttonExpandGridRight
-            // 
-            this.buttonExpandGridRight.BackColor = System.Drawing.Color.Transparent;
-            this.buttonExpandGridRight.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonExpandGridRight.FlatAppearance.BorderSize = 2;
-            this.buttonExpandGridRight.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonExpandGridRight.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonExpandGridRight.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonExpandGridRight.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonExpandGridRight.Location = new System.Drawing.Point(347, 3);
-            this.buttonExpandGridRight.Name = "buttonExpandGridRight";
-            this.buttonExpandGridRight.Size = new System.Drawing.Size(90, 27);
-            this.buttonExpandGridRight.TabIndex = 405;
-            this.buttonExpandGridRight.Text = "Expand Grid";
-            this.buttonExpandGridRight.UseVisualStyleBackColor = false;
-            this.buttonExpandGridRight.Click += new System.EventHandler(this.buttonExpandGridRight_Click);
             // 
             // panel7
             // 
+            this.panel7.Controls.Add(this.buttonBalance);
+            this.panel7.Controls.Add(this.textBoxPostponed);
+            this.panel7.Controls.Add(this.buttonExcel);
+            this.panel7.Controls.Add(this.buttonPlayBack_IST);
+            this.panel7.Controls.Add(this.labelBranch);
+            this.panel7.Controls.Add(this.textBoxBranch);
+            this.panel7.Controls.Add(this.labelJournalNm);
+            this.panel7.Controls.Add(this.textBoxJournalNm);
+            this.panel7.Controls.Add(this.label15);
+            this.panel7.Controls.Add(this.textBoxA_No);
+            this.panel7.Controls.Add(this.textBoxTXNDEST);
+            this.panel7.Controls.Add(this.textBoxTXNSRC);
+            this.panel7.Controls.Add(this.label3);
+            this.panel7.Controls.Add(this.label5);
+            this.panel7.Controls.Add(this.buttonVideo);
+            this.panel7.Controls.Add(this.labelAuth);
+            this.panel7.Controls.Add(this.textBoxAuth);
+            this.panel7.Controls.Add(this.labelMaker);
+            this.panel7.Controls.Add(this.textBoxMaker);
+            this.panel7.Controls.Add(this.labelActionTaken);
+            this.panel7.Controls.Add(this.textBoxActionTaken);
+            this.panel7.Controls.Add(this.textBoxRRN);
+            this.panel7.Controls.Add(this.label26);
+            this.panel7.Controls.Add(this.buttonJournal_Near);
+            this.panel7.Controls.Add(this.label33);
+            this.panel7.Controls.Add(this.textBoxLines);
+            this.panel7.Controls.Add(this.button1);
+            this.panel7.Controls.Add(this.buttonSourceReords);
+            this.panel7.Controls.Add(this.linkLabelDispute);
+            this.panel7.Controls.Add(this.labelDispute);
+            this.panel7.Controls.Add(this.textBoxDisputeId);
+            this.panel7.Controls.Add(this.labelNumberNotes2);
             this.panel7.Controls.Add(this.label32);
-            this.panel7.Controls.Add(this.textBox11);
+            this.panel7.Controls.Add(this.textBoxTerminalId);
             this.panel7.Controls.Add(this.label31);
             this.panel7.Controls.Add(this.textBox10);
-            this.panel7.Controls.Add(this.textBoxUniqueID);
-            this.panel7.Controls.Add(this.label28);
-            this.panel7.Controls.Add(this.label19);
-            this.panel7.Controls.Add(this.label25);
-            this.panel7.Controls.Add(this.label26);
-            this.panel7.Controls.Add(this.button3);
-            this.panel7.Controls.Add(this.button4);
-            this.panel7.Controls.Add(this.button5);
+            this.panel7.Controls.Add(this.buttonTextFromJournal);
+            this.panel7.Controls.Add(this.buttonShowJournal);
             this.panel7.Controls.Add(this.buttonReconcPlay);
             this.panel7.Controls.Add(this.buttonReplPlay);
             this.panel7.Controls.Add(this.label20);
@@ -1080,408 +1330,351 @@
             this.panel7.Controls.Add(this.textBoxCardNo);
             this.panel7.Controls.Add(this.textBoxAmnt);
             this.panel7.Controls.Add(this.label7);
-            this.panel7.Location = new System.Drawing.Point(3, 342);
+            this.panel7.Location = new System.Drawing.Point(3, 298);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(434, 227);
+            this.panel7.Size = new System.Drawing.Size(678, 272);
             this.panel7.TabIndex = 374;
+            this.panel7.Visible = false;
             // 
-            // textBoxUniqueID
+            // buttonBalance
             // 
-            this.textBoxUniqueID.Location = new System.Drawing.Point(69, 200);
-            this.textBoxUniqueID.Name = "textBoxUniqueID";
-            this.textBoxUniqueID.ReadOnly = true;
-            this.textBoxUniqueID.Size = new System.Drawing.Size(175, 20);
-            this.textBoxUniqueID.TabIndex = 407;
-            this.textBoxUniqueID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.buttonBalance.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonBalance.FlatAppearance.BorderSize = 2;
+            this.buttonBalance.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonBalance.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonBalance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonBalance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonBalance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonBalance.Location = new System.Drawing.Point(456, 152);
+            this.buttonBalance.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.buttonBalance.Name = "buttonBalance";
+            this.buttonBalance.Size = new System.Drawing.Size(104, 27);
+            this.buttonBalance.TabIndex = 456;
+            this.buttonBalance.Text = "TXN BAL";
+            this.buttonBalance.UseVisualStyleBackColor = true;
+            this.buttonBalance.Visible = false;
+            this.buttonBalance.Click += new System.EventHandler(this.buttonBalance_Click);
             // 
-            // label28
+            // textBoxPostponed
             // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(7, 202);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(64, 13);
-            this.label28.TabIndex = 406;
-            this.label28.Text = "Unique ID : ";
+            this.textBoxPostponed.Location = new System.Drawing.Point(97, 248);
+            this.textBoxPostponed.Name = "textBoxPostponed";
+            this.textBoxPostponed.Size = new System.Drawing.Size(207, 20);
+            this.textBoxPostponed.TabIndex = 455;
             // 
-            // label19
+            // buttonExcel
             // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(303, 134);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(57, 13);
-            this.label19.TabIndex = 405;
-            this.label19.Text = "Video Clip:";
+            this.buttonExcel.BackColor = System.Drawing.Color.White;
+            this.buttonExcel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonExcel.FlatAppearance.BorderSize = 2;
+            this.buttonExcel.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonExcel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.buttonExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonExcel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonExcel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonExcel.Location = new System.Drawing.Point(629, 185);
+            this.buttonExcel.Name = "buttonExcel";
+            this.buttonExcel.Size = new System.Drawing.Size(49, 27);
+            this.buttonExcel.TabIndex = 454;
+            this.buttonExcel.Text = "EXCEL";
+            this.buttonExcel.UseVisualStyleBackColor = false;
+            this.buttonExcel.Click += new System.EventHandler(this.buttonExcel_Click);
             // 
-            // label25
+            // buttonPlayBack_IST
             // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(297, 107);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(63, 13);
-            this.label25.TabIndex = 404;
-            this.label25.Text = "Full Journal:";
+            this.buttonPlayBack_IST.BackColor = System.Drawing.Color.White;
+            this.buttonPlayBack_IST.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonPlayBack_IST.FlatAppearance.BorderSize = 2;
+            this.buttonPlayBack_IST.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonPlayBack_IST.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.buttonPlayBack_IST.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonPlayBack_IST.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonPlayBack_IST.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonPlayBack_IST.Location = new System.Drawing.Point(567, 5);
+            this.buttonPlayBack_IST.Name = "buttonPlayBack_IST";
+            this.buttonPlayBack_IST.Size = new System.Drawing.Size(105, 27);
+            this.buttonPlayBack_IST.TabIndex = 453;
+            this.buttonPlayBack_IST.Text = "IST Playback";
+            this.buttonPlayBack_IST.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonPlayBack_IST.UseVisualStyleBackColor = false;
+            this.buttonPlayBack_IST.Click += new System.EventHandler(this.buttonPlayBack_IST_Click);
+            // 
+            // labelBranch
+            // 
+            this.labelBranch.AutoSize = true;
+            this.labelBranch.Location = new System.Drawing.Point(261, 17);
+            this.labelBranch.Name = "labelBranch";
+            this.labelBranch.Size = new System.Drawing.Size(31, 13);
+            this.labelBranch.TabIndex = 452;
+            this.labelBranch.Text = "BR : ";
+            // 
+            // textBoxBranch
+            // 
+            this.textBoxBranch.Location = new System.Drawing.Point(255, 33);
+            this.textBoxBranch.Name = "textBoxBranch";
+            this.textBoxBranch.ReadOnly = true;
+            this.textBoxBranch.Size = new System.Drawing.Size(47, 20);
+            this.textBoxBranch.TabIndex = 451;
+            this.textBoxBranch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // labelJournalNm
+            // 
+            this.labelJournalNm.AutoSize = true;
+            this.labelJournalNm.Location = new System.Drawing.Point(310, 247);
+            this.labelJournalNm.Name = "labelJournalNm";
+            this.labelJournalNm.Size = new System.Drawing.Size(57, 13);
+            this.labelJournalNm.TabIndex = 450;
+            this.labelJournalNm.Text = "JournalNm";
+            // 
+            // textBoxJournalNm
+            // 
+            this.textBoxJournalNm.Location = new System.Drawing.Point(374, 244);
+            this.textBoxJournalNm.Name = "textBoxJournalNm";
+            this.textBoxJournalNm.ReadOnly = true;
+            this.textBoxJournalNm.Size = new System.Drawing.Size(249, 20);
+            this.textBoxJournalNm.TabIndex = 449;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(170, 185);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(14, 13);
+            this.label15.TabIndex = 448;
+            this.label15.Text = "A";
+            // 
+            // textBoxA_No
+            // 
+            this.textBoxA_No.Location = new System.Drawing.Point(187, 182);
+            this.textBoxA_No.Name = "textBoxA_No";
+            this.textBoxA_No.ReadOnly = true;
+            this.textBoxA_No.Size = new System.Drawing.Size(68, 20);
+            this.textBoxA_No.TabIndex = 447;
+            this.textBoxA_No.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBoxTXNDEST
+            // 
+            this.textBoxTXNDEST.Location = new System.Drawing.Point(192, 207);
+            this.textBoxTXNDEST.Name = "textBoxTXNDEST";
+            this.textBoxTXNDEST.ReadOnly = true;
+            this.textBoxTXNDEST.Size = new System.Drawing.Size(63, 20);
+            this.textBoxTXNDEST.TabIndex = 446;
+            this.textBoxTXNDEST.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBoxTXNSRC
+            // 
+            this.textBoxTXNSRC.Location = new System.Drawing.Point(71, 206);
+            this.textBoxTXNSRC.Name = "textBoxTXNSRC";
+            this.textBoxTXNSRC.ReadOnly = true;
+            this.textBoxTXNSRC.Size = new System.Drawing.Size(43, 20);
+            this.textBoxTXNSRC.TabIndex = 445;
+            this.textBoxTXNSRC.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(122, 211);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(58, 13);
+            this.label3.TabIndex = 444;
+            this.label3.Text = "TXNDEST";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 211);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(54, 13);
+            this.label5.TabIndex = 443;
+            this.label5.Text = "TXNSRC:";
+            // 
+            // buttonVideo
+            // 
+            this.buttonVideo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonVideo.FlatAppearance.BorderSize = 2;
+            this.buttonVideo.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonVideo.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonVideo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonVideo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonVideo.Location = new System.Drawing.Point(225, 225);
+            this.buttonVideo.Name = "buttonVideo";
+            this.buttonVideo.Size = new System.Drawing.Size(54, 25);
+            this.buttonVideo.TabIndex = 442;
+            this.buttonVideo.Text = "Video";
+            this.buttonVideo.UseVisualStyleBackColor = true;
+            this.buttonVideo.Visible = false;
+            this.buttonVideo.Click += new System.EventHandler(this.buttonVideo_Click);
+            // 
+            // labelAuth
+            // 
+            this.labelAuth.AutoSize = true;
+            this.labelAuth.Location = new System.Drawing.Point(487, 214);
+            this.labelAuth.Name = "labelAuth";
+            this.labelAuth.Size = new System.Drawing.Size(29, 13);
+            this.labelAuth.TabIndex = 440;
+            this.labelAuth.Text = "Auth";
+            // 
+            // textBoxAuth
+            // 
+            this.textBoxAuth.Location = new System.Drawing.Point(519, 211);
+            this.textBoxAuth.Name = "textBoxAuth";
+            this.textBoxAuth.ReadOnly = true;
+            this.textBoxAuth.Size = new System.Drawing.Size(104, 20);
+            this.textBoxAuth.TabIndex = 441;
+            this.textBoxAuth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // labelMaker
+            // 
+            this.labelMaker.AutoSize = true;
+            this.labelMaker.Location = new System.Drawing.Point(330, 214);
+            this.labelMaker.Name = "labelMaker";
+            this.labelMaker.Size = new System.Drawing.Size(37, 13);
+            this.labelMaker.TabIndex = 438;
+            this.labelMaker.Text = "Maker";
+            // 
+            // textBoxMaker
+            // 
+            this.textBoxMaker.Location = new System.Drawing.Point(373, 212);
+            this.textBoxMaker.Name = "textBoxMaker";
+            this.textBoxMaker.ReadOnly = true;
+            this.textBoxMaker.Size = new System.Drawing.Size(102, 20);
+            this.textBoxMaker.TabIndex = 439;
+            this.textBoxMaker.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // labelActionTaken
+            // 
+            this.labelActionTaken.AutoSize = true;
+            this.labelActionTaken.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelActionTaken.ForeColor = System.Drawing.Color.Red;
+            this.labelActionTaken.Location = new System.Drawing.Point(333, 171);
+            this.labelActionTaken.Name = "labelActionTaken";
+            this.labelActionTaken.Size = new System.Drawing.Size(83, 13);
+            this.labelActionTaken.TabIndex = 437;
+            this.labelActionTaken.Text = "Action Taken";
+            // 
+            // textBoxActionTaken
+            // 
+            this.textBoxActionTaken.Location = new System.Drawing.Point(330, 185);
+            this.textBoxActionTaken.Name = "textBoxActionTaken";
+            this.textBoxActionTaken.ReadOnly = true;
+            this.textBoxActionTaken.Size = new System.Drawing.Size(294, 20);
+            this.textBoxActionTaken.TabIndex = 436;
+            // 
+            // textBoxRRN
+            // 
+            this.textBoxRRN.Location = new System.Drawing.Point(71, 182);
+            this.textBoxRRN.Name = "textBoxRRN";
+            this.textBoxRRN.ReadOnly = true;
+            this.textBoxRRN.Size = new System.Drawing.Size(100, 20);
+            this.textBoxRRN.TabIndex = 435;
+            this.textBoxRRN.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(275, 78);
+            this.label26.Location = new System.Drawing.Point(6, 183);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(91, 13);
-            this.label26.TabIndex = 403;
-            this.label26.Text = "Text from Journal:";
+            this.label26.Size = new System.Drawing.Size(57, 13);
+            this.label26.TabIndex = 434;
+            this.label26.Text = "RRN No : ";
             // 
-            // button3
+            // buttonJournal_Near
             // 
-            this.button3.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button3.FlatAppearance.BorderSize = 2;
-            this.button3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.ForeColor = System.Drawing.Color.Green;
-            this.button3.Location = new System.Drawing.Point(370, 72);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(54, 24);
-            this.button3.TabIndex = 400;
-            this.button3.Text = "Show";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.buttonJournal_Near.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonJournal_Near.FlatAppearance.BorderSize = 2;
+            this.buttonJournal_Near.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonJournal_Near.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonJournal_Near.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonJournal_Near.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonJournal_Near.Location = new System.Drawing.Point(456, 66);
+            this.buttonJournal_Near.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.buttonJournal_Near.Name = "buttonJournal_Near";
+            this.buttonJournal_Near.Size = new System.Drawing.Size(133, 25);
+            this.buttonJournal_Near.TabIndex = 432;
+            this.buttonJournal_Near.Text = "Near Journal Lines";
+            this.buttonJournal_Near.UseVisualStyleBackColor = true;
+            this.buttonJournal_Near.Click += new System.EventHandler(this.buttonJournal_Near_Click);
             // 
-            // button4
+            // label33
             // 
-            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button4.FlatAppearance.BorderSize = 2;
-            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.ForeColor = System.Drawing.Color.Green;
-            this.button4.Location = new System.Drawing.Point(369, 101);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(55, 24);
-            this.button4.TabIndex = 401;
-            this.button4.Text = "Show";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(640, 145);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(35, 13);
+            this.label33.TabIndex = 427;
+            this.label33.Text = "Lines:";
             // 
-            // button5
+            // textBoxLines
             // 
-            this.button5.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button5.FlatAppearance.BorderSize = 2;
-            this.button5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.ForeColor = System.Drawing.Color.Green;
-            this.button5.Location = new System.Drawing.Point(370, 128);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(54, 24);
-            this.button5.TabIndex = 402;
-            this.button5.Text = "Show";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.textBoxLines.Location = new System.Drawing.Point(629, 161);
+            this.textBoxLines.Name = "textBoxLines";
+            this.textBoxLines.ReadOnly = true;
+            this.textBoxLines.Size = new System.Drawing.Size(49, 20);
+            this.textBoxLines.TabIndex = 426;
+            this.textBoxLines.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // buttonReconcPlay
+            // button1
             // 
-            this.buttonReconcPlay.BackColor = System.Drawing.Color.White;
-            this.buttonReconcPlay.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonReconcPlay.FlatAppearance.BorderSize = 2;
-            this.buttonReconcPlay.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonReconcPlay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.buttonReconcPlay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonReconcPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.buttonReconcPlay.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonReconcPlay.Location = new System.Drawing.Point(261, 39);
-            this.buttonReconcPlay.Name = "buttonReconcPlay";
-            this.buttonReconcPlay.Size = new System.Drawing.Size(167, 27);
-            this.buttonReconcPlay.TabIndex = 399;
-            this.buttonReconcPlay.Text = "Reconciliation Playback";
-            this.buttonReconcPlay.UseVisualStyleBackColor = false;
-            this.buttonReconcPlay.Click += new System.EventHandler(this.buttonReconcPlay_Click);
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button1.FlatAppearance.BorderSize = 2;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button1.Location = new System.Drawing.Point(259, 56);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(26, 23);
+            this.button1.TabIndex = 420;
+            this.button1.Text = "D";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // buttonReplPlay
+            // buttonSourceReords
             // 
-            this.buttonReplPlay.BackColor = System.Drawing.Color.White;
-            this.buttonReplPlay.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonReplPlay.FlatAppearance.BorderSize = 2;
-            this.buttonReplPlay.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonReplPlay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.buttonReplPlay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonReplPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.buttonReplPlay.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonReplPlay.Location = new System.Drawing.Point(261, 10);
-            this.buttonReplPlay.Name = "buttonReplPlay";
-            this.buttonReplPlay.Size = new System.Drawing.Size(167, 27);
-            this.buttonReplPlay.TabIndex = 398;
-            this.buttonReplPlay.Text = "Replenishment Playback";
-            this.buttonReplPlay.UseVisualStyleBackColor = false;
-            this.buttonReplPlay.Click += new System.EventHandler(this.buttonReplPlay_Click);
+            this.buttonSourceReords.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonSourceReords.FlatAppearance.BorderSize = 2;
+            this.buttonSourceReords.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonSourceReords.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonSourceReords.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonSourceReords.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSourceReords.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonSourceReords.Location = new System.Drawing.Point(565, 93);
+            this.buttonSourceReords.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.buttonSourceReords.Name = "buttonSourceReords";
+            this.buttonSourceReords.Size = new System.Drawing.Size(105, 27);
+            this.buttonSourceReords.TabIndex = 419;
+            this.buttonSourceReords.Text = "Source Rec";
+            this.buttonSourceReords.UseVisualStyleBackColor = true;
+            this.buttonSourceReords.Click += new System.EventHandler(this.buttonSourceReords_Click);
             // 
-            // label20
+            // linkLabelDispute
             // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(6, 33);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(59, 13);
-            this.label20.TabIndex = 368;
-            this.label20.Text = "RMCycle : ";
+            this.linkLabelDispute.AutoSize = true;
+            this.linkLabelDispute.Location = new System.Drawing.Point(135, 232);
+            this.linkLabelDispute.Name = "linkLabelDispute";
+            this.linkLabelDispute.Size = new System.Drawing.Size(82, 13);
+            this.linkLabelDispute.TabIndex = 374;
+            this.linkLabelDispute.TabStop = true;
+            this.linkLabelDispute.Text = "Link To Dispute";
+            this.linkLabelDispute.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelDispute_LinkClicked);
             // 
-            // label12
+            // labelDispute
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(7, 143);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(54, 13);
-            this.label12.TabIndex = 352;
-            this.label12.Text = "DateTm : ";
+            this.labelDispute.AutoSize = true;
+            this.labelDispute.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDispute.ForeColor = System.Drawing.Color.Red;
+            this.labelDispute.Location = new System.Drawing.Point(8, 231);
+            this.labelDispute.Name = "labelDispute";
+            this.labelDispute.Size = new System.Drawing.Size(121, 13);
+            this.labelDispute.TabIndex = 408;
+            this.labelDispute.Text = "Trans is in Dispute: ";
             // 
-            // buttonNotes2
+            // textBoxDisputeId
             // 
-            this.buttonNotes2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonNotes2.BackgroundImage")));
-            this.buttonNotes2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonNotes2.FlatAppearance.BorderColor = System.Drawing.Color.DarkRed;
-            this.buttonNotes2.FlatAppearance.BorderSize = 0;
-            this.buttonNotes2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonNotes2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonNotes2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonNotes2.ForeColor = System.Drawing.Color.Black;
-            this.buttonNotes2.Location = new System.Drawing.Point(278, 159);
-            this.buttonNotes2.Margin = new System.Windows.Forms.Padding(2);
-            this.buttonNotes2.Name = "buttonNotes2";
-            this.buttonNotes2.Size = new System.Drawing.Size(56, 52);
-            this.buttonNotes2.TabIndex = 395;
-            this.buttonNotes2.UseVisualStyleBackColor = true;
-            this.buttonNotes2.Click += new System.EventHandler(this.buttonNotes2_Click);
-            // 
-            // buttonPrint
-            // 
-            this.buttonPrint.BackColor = System.Drawing.Color.White;
-            this.buttonPrint.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonPrint.FlatAppearance.BorderSize = 2;
-            this.buttonPrint.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonPrint.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.buttonPrint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonPrint.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.buttonPrint.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonPrint.Location = new System.Drawing.Point(363, 187);
-            this.buttonPrint.Name = "buttonPrint";
-            this.buttonPrint.Size = new System.Drawing.Size(56, 27);
-            this.buttonPrint.TabIndex = 367;
-            this.buttonPrint.Text = "Print";
-            this.buttonPrint.UseVisualStyleBackColor = false;
-            this.buttonPrint.Click += new System.EventHandler(this.buttonPrint_Click);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 62);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(55, 13);
-            this.label4.TabIndex = 348;
-            this.label4.Text = "Card No : ";
-            // 
-            // textBoxTraceNo
-            // 
-            this.textBoxTraceNo.Location = new System.Drawing.Point(68, 175);
-            this.textBoxTraceNo.Name = "textBoxTraceNo";
-            this.textBoxTraceNo.ReadOnly = true;
-            this.textBoxTraceNo.Size = new System.Drawing.Size(175, 20);
-            this.textBoxTraceNo.TabIndex = 359;
-            this.textBoxTraceNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBoxRmCycle
-            // 
-            this.textBoxRmCycle.Location = new System.Drawing.Point(71, 33);
-            this.textBoxRmCycle.Name = "textBoxRmCycle";
-            this.textBoxRmCycle.ReadOnly = true;
-            this.textBoxRmCycle.Size = new System.Drawing.Size(90, 20);
-            this.textBoxRmCycle.TabIndex = 369;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(6, 176);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(61, 13);
-            this.label14.TabIndex = 353;
-            this.label14.Text = "Trace No : ";
-            // 
-            // textBoxCurr
-            // 
-            this.textBoxCurr.Location = new System.Drawing.Point(68, 113);
-            this.textBoxCurr.Name = "textBoxCurr";
-            this.textBoxCurr.ReadOnly = true;
-            this.textBoxCurr.Size = new System.Drawing.Size(45, 20);
-            this.textBoxCurr.TabIndex = 356;
-            this.textBoxCurr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(121, 114);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(40, 13);
-            this.label9.TabIndex = 351;
-            this.label9.Text = "Amnt : ";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 87);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(52, 13);
-            this.label6.TabIndex = 349;
-            this.label6.Text = "Acc No : ";
-            // 
-            // textBoxDtTm
-            // 
-            this.textBoxDtTm.Location = new System.Drawing.Point(68, 143);
-            this.textBoxDtTm.Name = "textBoxDtTm";
-            this.textBoxDtTm.ReadOnly = true;
-            this.textBoxDtTm.Size = new System.Drawing.Size(175, 20);
-            this.textBoxDtTm.TabIndex = 358;
-            // 
-            // textBoxAccNo
-            // 
-            this.textBoxAccNo.Location = new System.Drawing.Point(68, 87);
-            this.textBoxAccNo.Name = "textBoxAccNo";
-            this.textBoxAccNo.ReadOnly = true;
-            this.textBoxAccNo.Size = new System.Drawing.Size(175, 20);
-            this.textBoxAccNo.TabIndex = 355;
-            // 
-            // textBoxCardNo
-            // 
-            this.textBoxCardNo.Location = new System.Drawing.Point(68, 62);
-            this.textBoxCardNo.Name = "textBoxCardNo";
-            this.textBoxCardNo.ReadOnly = true;
-            this.textBoxCardNo.Size = new System.Drawing.Size(175, 20);
-            this.textBoxCardNo.TabIndex = 354;
-            // 
-            // textBoxAmnt
-            // 
-            this.textBoxAmnt.Location = new System.Drawing.Point(160, 111);
-            this.textBoxAmnt.Name = "textBoxAmnt";
-            this.textBoxAmnt.ReadOnly = true;
-            this.textBoxAmnt.Size = new System.Drawing.Size(83, 20);
-            this.textBoxAmnt.TabIndex = 357;
-            this.textBoxAmnt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(9, 117);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(35, 13);
-            this.label7.TabIndex = 350;
-            this.label7.Text = "Curr : ";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.GridColor = System.Drawing.Color.LightGray;
-            this.dataGridView1.Location = new System.Drawing.Point(8, 8);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(423, 328);
-            this.dataGridView1.TabIndex = 347;
-            this.dataGridView1.TabStop = false;
-            this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
-            // 
-            // panel24
-            // 
-            this.panel24.BackColor = System.Drawing.Color.White;
-            this.panel24.Controls.Add(this.label13);
-            this.panel24.Controls.Add(this.textBoxNewMask);
-            this.panel24.Controls.Add(this.label17);
-            this.panel24.Controls.Add(this.buttonMoveToMatched);
-            this.panel24.Controls.Add(this.label22);
-            this.panel24.Controls.Add(this.buttonMovedToUnMatched);
-            this.panel24.Controls.Add(this.labelNumberNotes2);
-            this.panel24.Controls.Add(this.label21);
-            this.panel24.Controls.Add(this.textBox7);
-            this.panel24.Controls.Add(this.textBox8);
-            this.panel24.Location = new System.Drawing.Point(1, 587);
-            this.panel24.Name = "panel24";
-            this.panel24.Size = new System.Drawing.Size(288, 94);
-            this.panel24.TabIndex = 357;
-            this.panel24.Visible = false;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(43, 68);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(70, 13);
-            this.label13.TabIndex = 400;
-            this.label13.Text = "New Mask  : ";
-            // 
-            // textBoxNewMask
-            // 
-            this.textBoxNewMask.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.textBoxNewMask.Location = new System.Drawing.Point(112, 62);
-            this.textBoxNewMask.Name = "textBoxNewMask";
-            this.textBoxNewMask.Size = new System.Drawing.Size(72, 23);
-            this.textBoxNewMask.TabIndex = 399;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label17.Location = new System.Drawing.Point(-4, -8);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(80, 18);
-            this.label17.TabIndex = 369;
-            this.label17.Text = "ACTIONS";
-            this.label17.Visible = false;
-            // 
-            // buttonMoveToMatched
-            // 
-            this.buttonMoveToMatched.BackColor = System.Drawing.Color.White;
-            this.buttonMoveToMatched.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonMoveToMatched.FlatAppearance.BorderSize = 2;
-            this.buttonMoveToMatched.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonMoveToMatched.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.buttonMoveToMatched.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonMoveToMatched.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.buttonMoveToMatched.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonMoveToMatched.Location = new System.Drawing.Point(14, 38);
-            this.buttonMoveToMatched.Name = "buttonMoveToMatched";
-            this.buttonMoveToMatched.Size = new System.Drawing.Size(167, 27);
-            this.buttonMoveToMatched.TabIndex = 398;
-            this.buttonMoveToMatched.Text = "Move To Matched";
-            this.buttonMoveToMatched.UseVisualStyleBackColor = false;
-            this.buttonMoveToMatched.Click += new System.EventHandler(this.buttonMoveToMatched_Click);
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(205, 37);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(55, 13);
-            this.label22.TabIndex = 373;
-            this.label22.Text = "Author by:";
-            // 
-            // buttonMovedToUnMatched
-            // 
-            this.buttonMovedToUnMatched.BackColor = System.Drawing.Color.White;
-            this.buttonMovedToUnMatched.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonMovedToUnMatched.FlatAppearance.BorderSize = 2;
-            this.buttonMovedToUnMatched.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonMovedToUnMatched.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.buttonMovedToUnMatched.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonMovedToUnMatched.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.buttonMovedToUnMatched.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonMovedToUnMatched.Location = new System.Drawing.Point(14, 13);
-            this.buttonMovedToUnMatched.Name = "buttonMovedToUnMatched";
-            this.buttonMovedToUnMatched.Size = new System.Drawing.Size(167, 27);
-            this.buttonMovedToUnMatched.TabIndex = 397;
-            this.buttonMovedToUnMatched.Text = "Move To UnMatched";
-            this.buttonMovedToUnMatched.UseVisualStyleBackColor = false;
-            this.buttonMovedToUnMatched.Click += new System.EventHandler(this.buttonMovedToUnMatched_Click);
+            this.textBoxDisputeId.Location = new System.Drawing.Point(10, 248);
+            this.textBoxDisputeId.Name = "textBoxDisputeId";
+            this.textBoxDisputeId.Size = new System.Drawing.Size(81, 20);
+            this.textBoxDisputeId.TabIndex = 407;
             // 
             // labelNumberNotes2
             // 
@@ -1491,86 +1684,30 @@
             this.labelNumberNotes2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelNumberNotes2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.labelNumberNotes2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(198)))));
-            this.labelNumberNotes2.Location = new System.Drawing.Point(-213, 111);
+            this.labelNumberNotes2.Location = new System.Drawing.Point(404, 119);
             this.labelNumberNotes2.Name = "labelNumberNotes2";
             this.labelNumberNotes2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.labelNumberNotes2.Size = new System.Drawing.Size(15, 15);
-            this.labelNumberNotes2.TabIndex = 396;
+            this.labelNumberNotes2.TabIndex = 413;
             this.labelNumberNotes2.Text = "2";
             // 
-            // label21
+            // label32
             // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(205, 3);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(54, 13);
-            this.label21.TabIndex = 371;
-            this.label21.Text = "Action by:";
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(190, 17);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(56, 13);
+            this.label32.TabIndex = 411;
+            this.label32.Text = "Terminal : ";
             // 
-            // textBox7
+            // textBoxTerminalId
             // 
-            this.textBox7.Location = new System.Drawing.Point(208, 19);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.ReadOnly = true;
-            this.textBox7.Size = new System.Drawing.Size(51, 20);
-            this.textBox7.TabIndex = 370;
-            // 
-            // textBox8
-            // 
-            this.textBox8.Location = new System.Drawing.Point(209, 48);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.ReadOnly = true;
-            this.textBox8.Size = new System.Drawing.Size(51, 20);
-            this.textBox8.TabIndex = 372;
-            this.textBox8.TextChanged += new System.EventHandler(this.textBox8_TextChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label3.Location = new System.Drawing.Point(748, 341);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(204, 18);
-            this.label3.TabIndex = 342;
-            this.label3.Text = "MetaEXCEPTION Created";
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 4;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
-            this.tableLayoutPanel2.Controls.Add(this.buttonNext, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.textBoxMsgBoard, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.buttonBack, 2, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 692);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1004, 36);
-            this.tableLayoutPanel2.TabIndex = 242;
-            // 
-            // tableLayoutPanelMain
-            // 
-            this.tableLayoutPanelMain.ColumnCount = 1;
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelMain.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanel2, 0, 1);
-            this.tableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelMain.ForeColor = System.Drawing.Color.Black;
-            this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(2);
-            this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
-            this.tableLayoutPanelMain.RowCount = 2;
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1008, 730);
-            this.tableLayoutPanelMain.TabIndex = 266;
+            this.textBoxTerminalId.Location = new System.Drawing.Point(171, 33);
+            this.textBoxTerminalId.Name = "textBoxTerminalId";
+            this.textBoxTerminalId.ReadOnly = true;
+            this.textBoxTerminalId.Size = new System.Drawing.Size(78, 20);
+            this.textBoxTerminalId.TabIndex = 410;
+            this.textBoxTerminalId.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label31
             // 
@@ -1588,30 +1725,350 @@
             this.textBox10.ReadOnly = true;
             this.textBox10.Size = new System.Drawing.Size(90, 20);
             this.textBox10.TabIndex = 409;
+            this.textBox10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox11
+            // buttonTextFromJournal
             // 
-            this.textBox11.Location = new System.Drawing.Point(165, 33);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.ReadOnly = true;
-            this.textBox11.Size = new System.Drawing.Size(78, 20);
-            this.textBox11.TabIndex = 410;
+            this.buttonTextFromJournal.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonTextFromJournal.FlatAppearance.BorderSize = 2;
+            this.buttonTextFromJournal.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonTextFromJournal.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonTextFromJournal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonTextFromJournal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonTextFromJournal.Location = new System.Drawing.Point(456, 94);
+            this.buttonTextFromJournal.Name = "buttonTextFromJournal";
+            this.buttonTextFromJournal.Size = new System.Drawing.Size(104, 25);
+            this.buttonTextFromJournal.TabIndex = 400;
+            this.buttonTextFromJournal.Text = "Journal Lines";
+            this.buttonTextFromJournal.UseVisualStyleBackColor = true;
+            this.buttonTextFromJournal.Click += new System.EventHandler(this.button3_Click);
             // 
-            // label32
+            // buttonShowJournal
             // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(184, 17);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(56, 13);
-            this.label32.TabIndex = 411;
-            this.label32.Text = "Terminal : ";
+            this.buttonShowJournal.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonShowJournal.FlatAppearance.BorderSize = 2;
+            this.buttonShowJournal.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonShowJournal.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonShowJournal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonShowJournal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonShowJournal.Location = new System.Drawing.Point(456, 122);
+            this.buttonShowJournal.Name = "buttonShowJournal";
+            this.buttonShowJournal.Size = new System.Drawing.Size(104, 25);
+            this.buttonShowJournal.TabIndex = 401;
+            this.buttonShowJournal.Text = "Journal ";
+            this.buttonShowJournal.UseVisualStyleBackColor = true;
+            this.buttonShowJournal.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // buttonReconcPlay
+            // 
+            this.buttonReconcPlay.BackColor = System.Drawing.Color.White;
+            this.buttonReconcPlay.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonReconcPlay.FlatAppearance.BorderSize = 2;
+            this.buttonReconcPlay.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonReconcPlay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.buttonReconcPlay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonReconcPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonReconcPlay.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonReconcPlay.Location = new System.Drawing.Point(456, 35);
+            this.buttonReconcPlay.Name = "buttonReconcPlay";
+            this.buttonReconcPlay.Size = new System.Drawing.Size(167, 27);
+            this.buttonReconcPlay.TabIndex = 399;
+            this.buttonReconcPlay.Text = "Reconc Trans Playback";
+            this.buttonReconcPlay.UseVisualStyleBackColor = false;
+            this.buttonReconcPlay.Click += new System.EventHandler(this.buttonReconcPlay_Click);
+            // 
+            // buttonReplPlay
+            // 
+            this.buttonReplPlay.BackColor = System.Drawing.Color.White;
+            this.buttonReplPlay.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonReplPlay.FlatAppearance.BorderSize = 2;
+            this.buttonReplPlay.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonReplPlay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.buttonReplPlay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonReplPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonReplPlay.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonReplPlay.Location = new System.Drawing.Point(456, 5);
+            this.buttonReplPlay.Name = "buttonReplPlay";
+            this.buttonReplPlay.Size = new System.Drawing.Size(105, 27);
+            this.buttonReplPlay.TabIndex = 398;
+            this.buttonReplPlay.Text = "Repl. Playback";
+            this.buttonReplPlay.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonReplPlay.UseVisualStyleBackColor = false;
+            this.buttonReplPlay.Click += new System.EventHandler(this.buttonReplPlay_Click);
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(6, 33);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(59, 13);
+            this.label20.TabIndex = 368;
+            this.label20.Text = "RMCycle : ";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(7, 136);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(54, 13);
+            this.label12.TabIndex = 352;
+            this.label12.Text = "DateTm : ";
+            // 
+            // buttonNotes2
+            // 
+            this.buttonNotes2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonNotes2.BackgroundImage")));
+            this.buttonNotes2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonNotes2.FlatAppearance.BorderColor = System.Drawing.Color.DarkRed;
+            this.buttonNotes2.FlatAppearance.BorderSize = 0;
+            this.buttonNotes2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonNotes2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonNotes2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonNotes2.ForeColor = System.Drawing.Color.Black;
+            this.buttonNotes2.Location = new System.Drawing.Point(353, 116);
+            this.buttonNotes2.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.buttonNotes2.Name = "buttonNotes2";
+            this.buttonNotes2.Size = new System.Drawing.Size(56, 52);
+            this.buttonNotes2.TabIndex = 395;
+            this.buttonNotes2.UseVisualStyleBackColor = true;
+            this.buttonNotes2.Click += new System.EventHandler(this.buttonNotes2_Click);
+            // 
+            // buttonPrint
+            // 
+            this.buttonPrint.BackColor = System.Drawing.Color.White;
+            this.buttonPrint.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonPrint.FlatAppearance.BorderSize = 2;
+            this.buttonPrint.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonPrint.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.buttonPrint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonPrint.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonPrint.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonPrint.Location = new System.Drawing.Point(629, 218);
+            this.buttonPrint.Name = "buttonPrint";
+            this.buttonPrint.Size = new System.Drawing.Size(49, 27);
+            this.buttonPrint.TabIndex = 367;
+            this.buttonPrint.Text = "Print";
+            this.buttonPrint.UseVisualStyleBackColor = false;
+            this.buttonPrint.Click += new System.EventHandler(this.buttonPrint_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 60);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(55, 13);
+            this.label4.TabIndex = 348;
+            this.label4.Text = "Card No : ";
+            // 
+            // textBoxTraceNo
+            // 
+            this.textBoxTraceNo.Location = new System.Drawing.Point(71, 159);
+            this.textBoxTraceNo.Name = "textBoxTraceNo";
+            this.textBoxTraceNo.ReadOnly = true;
+            this.textBoxTraceNo.Size = new System.Drawing.Size(184, 20);
+            this.textBoxTraceNo.TabIndex = 359;
+            this.textBoxTraceNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBoxRmCycle
+            // 
+            this.textBoxRmCycle.Location = new System.Drawing.Point(71, 33);
+            this.textBoxRmCycle.Name = "textBoxRmCycle";
+            this.textBoxRmCycle.ReadOnly = true;
+            this.textBoxRmCycle.Size = new System.Drawing.Size(90, 20);
+            this.textBoxRmCycle.TabIndex = 369;
+            this.textBoxRmCycle.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 161);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(61, 13);
+            this.label14.TabIndex = 353;
+            this.label14.Text = "Trace No : ";
+            // 
+            // textBoxCurr
+            // 
+            this.textBoxCurr.Location = new System.Drawing.Point(71, 111);
+            this.textBoxCurr.Name = "textBoxCurr";
+            this.textBoxCurr.ReadOnly = true;
+            this.textBoxCurr.Size = new System.Drawing.Size(45, 20);
+            this.textBoxCurr.TabIndex = 356;
+            this.textBoxCurr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(121, 112);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(40, 13);
+            this.label9.TabIndex = 351;
+            this.label9.Text = "Amnt : ";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 85);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(52, 13);
+            this.label6.TabIndex = 349;
+            this.label6.Text = "Acc No : ";
+            // 
+            // textBoxDtTm
+            // 
+            this.textBoxDtTm.Location = new System.Drawing.Point(71, 135);
+            this.textBoxDtTm.Name = "textBoxDtTm";
+            this.textBoxDtTm.ReadOnly = true;
+            this.textBoxDtTm.Size = new System.Drawing.Size(184, 20);
+            this.textBoxDtTm.TabIndex = 358;
+            // 
+            // textBoxAccNo
+            // 
+            this.textBoxAccNo.Location = new System.Drawing.Point(71, 83);
+            this.textBoxAccNo.Name = "textBoxAccNo";
+            this.textBoxAccNo.ReadOnly = true;
+            this.textBoxAccNo.Size = new System.Drawing.Size(184, 20);
+            this.textBoxAccNo.TabIndex = 355;
+            // 
+            // textBoxCardNo
+            // 
+            this.textBoxCardNo.Location = new System.Drawing.Point(71, 58);
+            this.textBoxCardNo.Name = "textBoxCardNo";
+            this.textBoxCardNo.ReadOnly = true;
+            this.textBoxCardNo.Size = new System.Drawing.Size(181, 20);
+            this.textBoxCardNo.TabIndex = 354;
+            // 
+            // textBoxAmnt
+            // 
+            this.textBoxAmnt.Location = new System.Drawing.Point(163, 110);
+            this.textBoxAmnt.Name = "textBoxAmnt";
+            this.textBoxAmnt.ReadOnly = true;
+            this.textBoxAmnt.Size = new System.Drawing.Size(92, 20);
+            this.textBoxAmnt.TabIndex = 357;
+            this.textBoxAmnt.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(9, 116);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(35, 13);
+            this.label7.TabIndex = 350;
+            this.label7.Text = "Curr : ";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToOrderColumns = true;
+            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.GridColor = System.Drawing.Color.LightGray;
+            this.dataGridView1.Location = new System.Drawing.Point(5, 8);
+            this.dataGridView1.MultiSelect = false;
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(676, 281);
+            this.dataGridView1.TabIndex = 347;
+            this.dataGridView1.TabStop = false;
+            this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
+            // 
+            // labelAction
+            // 
+            this.labelAction.AutoSize = true;
+            this.labelAction.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelAction.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.labelAction.Location = new System.Drawing.Point(1009, 341);
+            this.labelAction.Name = "labelAction";
+            this.labelAction.Size = new System.Drawing.Size(80, 18);
+            this.labelAction.TabIndex = 342;
+            this.labelAction.Text = "ACTIONS";
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
+            this.tableLayoutPanel2.Controls.Add(this.buttonNext, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.textBoxMsgBoard, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.buttonBack, 2, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 600);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1214, 36);
+            this.tableLayoutPanel2.TabIndex = 242;
+            // 
+            // tableLayoutPanelMain
+            // 
+            this.tableLayoutPanelMain.ColumnCount = 1;
+            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelMain.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanel2, 0, 1);
+            this.tableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelMain.ForeColor = System.Drawing.Color.Black;
+            this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
+            this.tableLayoutPanelMain.RowCount = 2;
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1218, 637);
+            this.tableLayoutPanelMain.TabIndex = 266;
+            // 
+            // toolTipMessages
+            // 
+            this.toolTipMessages.AutomaticDelay = 300;
+            this.toolTipMessages.AutoPopDelay = 19000;
+            this.toolTipMessages.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.toolTipMessages.InitialDelay = 300;
+            this.toolTipMessages.IsBalloon = true;
+            this.toolTipMessages.ReshowDelay = 60;
+            this.toolTipMessages.ShowAlways = true;
+            this.toolTipMessages.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.toolTipMessages.ToolTipTitle = "Messages";
+            // 
+            // toolTipController
+            // 
+            this.toolTipController.AutomaticDelay = 2000;
+            this.toolTipController.ForeColor = System.Drawing.Color.Ivory;
+            this.toolTipController.IsBalloon = true;
+            this.toolTipController.ShowAlways = true;
+            this.toolTipController.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.toolTipController.ToolTipTitle = "Communication";
+            // 
+            // toolTipButtons
+            // 
+            this.toolTipButtons.AutomaticDelay = 1000;
+            this.toolTipButtons.AutoPopDelay = 20000;
+            this.toolTipButtons.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.toolTipButtons.InitialDelay = 1000;
+            this.toolTipButtons.IsBalloon = true;
+            this.toolTipButtons.ReshowDelay = 200;
+            this.toolTipButtons.ShowAlways = true;
+            this.toolTipButtons.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.toolTipButtons.ToolTipTitle = "Info";
+            // 
+            // toolTipHeadings
+            // 
+            this.toolTipHeadings.AutomaticDelay = 1000;
+            this.toolTipHeadings.AutoPopDelay = 20000;
+            this.toolTipHeadings.InitialDelay = 1000;
+            this.toolTipHeadings.IsBalloon = true;
+            this.toolTipHeadings.ReshowDelay = 200;
             // 
             // Form80b
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1008, 730);
+            this.ClientSize = new System.Drawing.Size(1218, 637);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.ForeColor = System.Drawing.Color.White;
@@ -1631,12 +2088,14 @@
             this.panel1.PerformLayout();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
+            this.panelForceMatched.ResumeLayout(false);
+            this.panelForceMatched.PerformLayout();
             this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.panel5.ResumeLayout(false);
@@ -1647,8 +2106,6 @@
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.panel24.ResumeLayout(false);
-            this.panel24.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanelMain.ResumeLayout(false);
@@ -1681,28 +2138,11 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label labelUserId;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Panel panel24;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ComboBox comboBoxFilter;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label labelFileE;
-        private System.Windows.Forms.Label labelFileD;
-        private System.Windows.Forms.Label labelFileC;
-        private System.Windows.Forms.Label labelFileB;
-        private System.Windows.Forms.Label labelFileA;
-        private System.Windows.Forms.Label labelNumberNotes2;
         private System.Windows.Forms.Button buttonNotes2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox textBoxExceptionDesc;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBoxExceptionNo;
+        private System.Windows.Forms.Label labelAction;
         private System.Windows.Forms.TextBox textBoxTraceNo;
         private System.Windows.Forms.TextBox textBoxDtTm;
         private System.Windows.Forms.TextBox textBoxAmnt;
@@ -1715,54 +2155,32 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button buttonMoveToMatched;
-        private System.Windows.Forms.Button buttonMovedToUnMatched;
-        private System.Windows.Forms.Button buttonShowException;
         private System.Windows.Forms.Button buttonPrint;
         private System.Windows.Forms.TextBox textBoxMask;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox textBoxNewMask;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Label label17;
         private System.Windows.Forms.RadioButton radioButtonAccount;
         private System.Windows.Forms.RadioButton radioButtonCard;
         private System.Windows.Forms.TextBox textBoxInputField;
-        private System.Windows.Forms.RadioButton radioButtonUniqueNo;
+        private System.Windows.Forms.RadioButton radioButtonUniqueRecordId;
         private System.Windows.Forms.ComboBox comboBoxSort;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Button buttonShowSelection;
-        private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.TextBox textBoxRmCycle;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.Button buttonTransTrail;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton radioButtonAllTxns;
+        private System.Windows.Forms.RadioButton radioButtonOnlyThisCatandCycle;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.CheckBox checkBoxUnique;
         private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.Button buttonExpandGridRight;
         private System.Windows.Forms.Button buttonReconcPlay;
         private System.Windows.Forms.Button buttonReplPlay;
-        private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.TextBox textBoxUniqueID;
-        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Button buttonTextFromJournal;
+        private System.Windows.Forms.Button buttonShowJournal;
         private System.Windows.Forms.TextBox textBoxPosted;
         private System.Windows.Forms.TextBox textBoxCreated;
         private System.Windows.Forms.Label label30;
@@ -1770,11 +2188,83 @@
         private System.Windows.Forms.Button buttonTranPosted;
         private System.Windows.Forms.Button buttonRegisterDispute;
         private System.Windows.Forms.Panel panel9;
-        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.TextBox textBoxDisputeId;
         private System.Windows.Forms.Label labelDispute;
         private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.TextBox textBoxTerminalId;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label labelNumberNotes2;
+        private System.Windows.Forms.Label labelFileF;
+        private System.Windows.Forms.TextBox textBox36;
+        private System.Windows.Forms.TextBox textBox35;
+        private System.Windows.Forms.TextBox textBox34;
+        private System.Windows.Forms.TextBox textBox33;
+        private System.Windows.Forms.TextBox textBox32;
+        private System.Windows.Forms.TextBox textBox31;
+        private System.Windows.Forms.Label labelFileE;
+        private System.Windows.Forms.Label labelFileD;
+        private System.Windows.Forms.Label labelFileC;
+        private System.Windows.Forms.Label labelFileB;
+        private System.Windows.Forms.Label labelFileA;
+        private System.Windows.Forms.RadioButton radioButtonTraceNo;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolTip toolTipMessages;
+        private System.Windows.Forms.ToolTip toolTipController;
+        private System.Windows.Forms.ToolTip toolTipButtons;
+        private System.Windows.Forms.ToolTip toolTipHeadings;
+        private System.Windows.Forms.LinkLabel linkLabelDispute;
+        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.RadioButton radioButtonAtm;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox textBoxAtmNo;
+        private System.Windows.Forms.Panel panelForceMatched;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox textBoxForceReason;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Button buttonSourceReords;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label labelReversal;
+        private System.Windows.Forms.TextBox textBoxUnMatchedType;
+        private System.Windows.Forms.TextBox textBoxLines;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.RadioButton radioButtonRRNumber;
+        private System.Windows.Forms.Button buttonJournal_Near;
+        private System.Windows.Forms.RadioButton radioButtonPresenterError;
+        private System.Windows.Forms.TextBox textBoxRRN;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.LinkLabel linkLabelForRelationsToPresenterError;
+        private System.Windows.Forms.Button buttonShow_IST_Presenter;
+        private System.Windows.Forms.Button buttonAllAccounting;
+        private System.Windows.Forms.Button buttonAllActions;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label labelActionTaken;
+        private System.Windows.Forms.TextBox textBoxActionTaken;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.RadioButton radioButtonTxnAmt;
+        private System.Windows.Forms.Label labelAuth;
+        private System.Windows.Forms.TextBox textBoxAuth;
+        private System.Windows.Forms.Label labelMaker;
+        private System.Windows.Forms.TextBox textBoxMaker;
+        private System.Windows.Forms.Button buttonVideo;
+        private System.Windows.Forms.TextBox textBoxTXNDEST;
+        private System.Windows.Forms.TextBox textBoxTXNSRC;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox textBoxA_No;
+        private System.Windows.Forms.TextBox textBoxJournalNm;
+        private System.Windows.Forms.Label labelJournalNm;
+        private System.Windows.Forms.Label labelBranch;
+        private System.Windows.Forms.TextBox textBoxBranch;
+        private System.Windows.Forms.Button buttonPlayBack_IST;
+        private System.Windows.Forms.Button buttonCreateTXNSolo;
+        private System.Windows.Forms.Button buttonExcel;
+        private System.Windows.Forms.TextBox textBoxPostponed;
+        private System.Windows.Forms.Button buttonBalance;
     }
 }

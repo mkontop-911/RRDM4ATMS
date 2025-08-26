@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
-using RRDM4ATMs; 
-using System.Text;
-using System.Threading.Tasks;
+using RRDM4ATMs;
 using System.Data.SqlClient;
 using System.Configuration;
 //multilingual
 using System.Resources;
 using System.Globalization;
+using System.ComponentModel;
+using System.Drawing;
+
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -40,7 +38,7 @@ namespace RRDM4ATMsWin
         //multilingual
         CultureInfo culture;
 
-        RRDMUsersAndSignedRecord Xa = new RRDMUsersAndSignedRecord(); // Make class availble 
+        RRDMUsersRecords Xa = new RRDMUsersRecords(); // Make class availble 
 
         ResourceManager LocRM = new ResourceManager("RRDM4ATMsWin.appRes", typeof(Form40).Assembly);
 
@@ -57,12 +55,12 @@ namespace RRDM4ATMsWin
 
         string WSignedId;
         int WSignRecordNo;
-        int WSecLevel;
+        string WSecLevel;
         string WOperator;
  
         int WAction;
 
-        public Form21MIS(string InSignedId, int SignRecordNo, int InSecLevel, string InOperator, int InAction)
+        public Form21MIS(string InSignedId, int SignRecordNo, string InSecLevel, string InOperator, int InAction)
         {
             WSignedId = InSignedId;
             WSignRecordNo = SignRecordNo;
@@ -78,20 +76,29 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
-            labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            // Set Working Date 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            string ParId = "267";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string TestingDate = Gp.OccuranceNm;
+            if (TestingDate == "YES")
+                labelToday.Text = new DateTime(2017, 03, 01).ToShortDateString();
+            else labelToday.Text = DateTime.Now.ToShortDateString();
+
+            pictureBox1.BackgroundImage = appResImg.logo2;
         }
        
         private void Form21MIS_Load(object sender, EventArgs e)
         {
-            
-            Xa.ReadSignedActivityByKey(WSignRecordNo);
+            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
+            Usi.ReadSignedActivityByKey(WSignRecordNo);
 
-            if (Xa.Culture == "English")
+            if (Usi.Culture == "English")
             {
                 culture = CultureInfo.CreateSpecificCulture("el-GR");
             }
-            if (Xa.Culture == "Français")
+            if (Usi.Culture == "Français")
             {
                 culture = CultureInfo.CreateSpecificCulture("fr-FR");
             }
@@ -161,19 +168,40 @@ namespace RRDM4ATMsWin
                     }
 
 
-                //  MessageBox.Show(" Number of ATMS = " + I);
+                DataGridViewCellStyle style = new DataGridViewCellStyle();
+                style.Format = "N2";
 
+                dataGridView1.Columns[0].Width = 70; // Date
+                dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-                dataGridView1.Columns[0].Width = 65; // Count ATM no
-                dataGridView1.Columns[1].Width = 65; // Repl Date
-                dataGridView1.Columns[2].Width = 65; // Total Repl Minutes 
-                dataGridView1.Columns[3].Width = 65; // Average Reple
-                dataGridView1.Columns[4].Width = 65; // Errors ATm 
-                dataGridView1.Columns[5].Width = 65; // Errors Host
-                dataGridView1.Columns[6].Width = 65; // Total Errors
-                dataGridView1.Columns[7].Width = 65; // aBSOLUTE Difference
-                dataGridView1.Columns[8].Width = 65; // Cash utilization 
-                dataGridView1.Columns[9].Width = 65; // Not Reconciled 
+                dataGridView1.Columns[1].Width = 60; // No_Of_Atms
+                dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[2].Width = 65; //  RepMin
+                dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[3].Width = 65; // Avg_Repl
+                dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[4].Width = 65; // ErrATM
+                dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[5].Width = 65; // ErrHost
+                dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[6].Width = 65; // TotErr
+                dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[7].Width = 70; // AbsDiff
+                dataGridView1.Columns[7].DefaultCellStyle = style;
+                dataGridView1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[8].Width = 70; // CashUtil
+                dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dataGridView1.Columns[8].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
+
+                dataGridView1.Columns[9].Width = 50; // NotReconc
+                dataGridView1.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
 
                 //     dataGridView1.Columns[0].HeaderText = LocRM.GetString("Form67Grd1Cl0", culture);
@@ -219,7 +247,7 @@ namespace RRDM4ATMsWin
                 labelStep1.Text = "User Performance Analysis"; 
                 label14.Text = "BY USER LISTING OF KEY PERFORMANCE"; 
 
-                string SqlString2 =
+            string SqlString2 =
                     "SELECT UserId, Min(ReplMinutes) AS RepMin, Max(ReplMinutes) AS RepMax, Avg(ReplMinutes) AS Avg_Repl,"
             + " SUM(ErrorsAtm) As ErrATM,SUM(ErrorsHost) AS ErrHost,TotErr = SUM(ErrorsAtm + ErrorsHost), "
             + "  AbsDiff = SUM(DiffPlus + DiffMinus),"
@@ -260,20 +288,63 @@ namespace RRDM4ATMsWin
                     }
 
 
-                //  MessageBox.Show(" Number of ATMS = " + I);
+                DataGridViewCellStyle style = new DataGridViewCellStyle();
+                style.Format = "N2";
 
-                dataGridView1.Columns[0].Width = 60; // 
-                dataGridView1.Columns[1].Width = 60; // 
-                dataGridView1.Columns[2].Width = 60; //
-                dataGridView1.Columns[3].Width = 60; // 
-                dataGridView1.Columns[4].Width = 60; // 
-                dataGridView1.Columns[5].Width = 60; // 
-                dataGridView1.Columns[6].Width = 60; // 
-                dataGridView1.Columns[7].Width = 65; // 
-                dataGridView1.Columns[8].Width = 65; // 
-                dataGridView1.Columns[9].Width = 65; // 
-                dataGridView1.Columns[10].Width = 65; // 
-                dataGridView1.Columns[11].Width = 65; // 
+                dataGridView1.Columns[0].Width = 70; // UserId
+                dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+                dataGridView1.Columns[1].Width = 60; //RepMin
+                dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[2].Width = 65; //  RepMax
+                dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[3].Width = 65; // Avg_Repl
+                dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[4].Width = 65; // ErrATM
+                dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[5].Width = 65; // ErrHost
+                dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[6].Width = 65; // TotErr
+                dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[7].Width = 70; // AbsDiff
+                dataGridView1.Columns[7].DefaultCellStyle = style;
+                dataGridView1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                dataGridView1.Columns[8].Width = 75; // TotInMoney
+                dataGridView1.Columns[8].DefaultCellStyle = style;
+                dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dataGridView1.Columns[8].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
+
+                dataGridView1.Columns[9].Width = 70; //TotUsed
+                dataGridView1.Columns[9].DefaultCellStyle = style;
+                dataGridView1.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                dataGridView1.Columns[10].Width = 70; //CashUtil
+                dataGridView1.Columns[10].DefaultCellStyle = style;
+                dataGridView1.Columns[10].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                dataGridView1.Columns[11].Width = 70; //NotReconc
+                dataGridView1.Columns[11].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+
+                //dataGridView1.Columns[0].Width = 60; // 
+                //dataGridView1.Columns[1].Width = 60; // 
+                //dataGridView1.Columns[2].Width = 60; //
+                //dataGridView1.Columns[3].Width = 60; // 
+                //dataGridView1.Columns[4].Width = 60; // 
+                //dataGridView1.Columns[5].Width = 60; // 
+                //dataGridView1.Columns[6].Width = 60; // 
+                //dataGridView1.Columns[7].Width = 65; // 
+                //dataGridView1.Columns[8].Width = 65; // 
+                //dataGridView1.Columns[9].Width = 65; // 
+                //dataGridView1.Columns[10].Width = 65; // 
+                //dataGridView1.Columns[11].Width = 65; // 
 
                 //     dataGridView1.Columns[0].HeaderText = LocRM.GetString("Form67Grd1Cl0", culture);
                 //     dataGridView1.Columns[1].HeaderText = LocRM.GetString("Form67Grd1Cl01", culture);
@@ -324,13 +395,7 @@ namespace RRDM4ATMsWin
                 label1.Text = "PERIOD vs INDICATORS FOR DEPOSITS";
                 //TEST
                 // SELECT STATEMENT TO GET DATA BY MONTH PERIOD INSTEAD OF DATE
-           /*     string SqlStringMM = " SELECT " 
-                    + " DATEPART(Year, DtTm) Year,"
-                    + " DATEPART(Month, DtTm) Month, SUM(DrTransactions) [TotalAmount]"
-                    + " FROM [ATMS].[dbo].[AtmDispAmtsByDay]  "
-                    + " GROUP BY DATEPART(Year, DtTm), DATEPART(Month, DtTm)"
-                    + " ORDER BY Year, Month "; 
-*/
+         
                 string SqlStringDD =
                     "SELECT CAST(DtTm AS Date) AS Date, Count(AtmNo) As No_Of_Atms,"
                     +" SUM(DrTransactions) AS DR_TRANS,SUM(DispensedAmt) AS DR_Amount,"
@@ -341,17 +406,6 @@ namespace RRDM4ATMsWin
             + " WHERE Operator = @Operator AND Year =@Year"
             + " GROUP BY CAST(DtTm AS Date) "
             + " ORDER BY CAST(DtTm AS Date) DESC ";
-
-                /*
-                SELECT CAST(DispDtTm AS Date), 
-Count(DispTranNo) As No_Of_Tran_Disp,
-                    SUM(TranAmount) AS Total_Disputed,
-                     Avg(TranAmount) AS Avg_TranAmount
-                    FROM [ATMS].[dbo].[DisputesTransTable] 
-                    WHERE Operator = 'CRBAGRAA' 
-					GROUP BY CAST(DispDtTm AS Date)
-                    ORDER BY CAST(DispDtTm AS Date) DESC
- */
 
                 using (SqlConnection conn =
                             new SqlConnection(connectionString))
@@ -364,8 +418,16 @@ Count(DispTranNo) As No_Of_Tran_Disp,
                         SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlStringDD, conn);
 
                         sqlAdapt.SelectCommand.Parameters.AddWithValue("@Operator", WOperator);
-
-                         sqlAdapt.SelectCommand.Parameters.AddWithValue("@Year", 2014);
+                        if (WOperator == "CRBAGRAA")
+                        {
+                            sqlAdapt.SelectCommand.Parameters.AddWithValue("@Year", 2014);
+                        }
+                        else
+                        {
+                            int WYear = DateTime.Now.Year;
+                            sqlAdapt.SelectCommand.Parameters.AddWithValue("@Year", WYear);
+                        }
+                         
 
                         //Create a datatable that will be filled with the data retrieved from the command
                         //    DataSet MISds = new DataSet();
@@ -387,22 +449,52 @@ Count(DispTranNo) As No_Of_Tran_Disp,
 
                     }
 
-                dataGridView1.Columns[0].Width = 65; // 
-                dataGridView1.Columns[1].Width = 65; // 
-                dataGridView1.Columns[2].Width = 65; // 
-                dataGridView1.Columns[3].Width = 65; // 
-                dataGridView1.Columns[4].Width = 65; // 
-                dataGridView1.Columns[5].Width = 65; // 
-                dataGridView1.Columns[6].Width = 65; // 
-                dataGridView1.Columns[7].Width = 65; // 
-                dataGridView1.Columns[8].Width = 65; // 
-                dataGridView1.Columns[9].Width = 65; //  
+              
+                DataGridViewCellStyle style = new DataGridViewCellStyle();
+                style.Format = "N2";
 
+          //      "SELECT CAST(DtTm AS Date) AS Date, Count(AtmNo) As No_Of_Atms,"
+          //        + " SUM(DrTransactions) AS DR_TRANS,SUM(DispensedAmt) AS DR_Amount,"
+          //        + " Avg(DrTransactions) AS Avg_DrTrans, Avg(DispensedAmt) AS Avg_DrAmount,"
+          //        + " SUM(CrTransactions) AS CR_TRANS,SUM(DepAmount) AS CR_Amount,"
+          //         + " Avg(CrTransactions) AS Avg_CrTrans, Avg(DepAmount) AS Avg_CrAmount"
+          //+ " FROM [ATMS].[dbo].[AtmDispAmtsByDay] "
 
-                //     dataGridView1.Columns[0].HeaderText = LocRM.GetString("Form67Grd1Cl0", culture);
-                //     dataGridView1.Columns[1].HeaderText = LocRM.GetString("Form67Grd1Cl01", culture);
-                //     dataGridView1.Columns[2].HeaderText = LocRM.GetString("Form67Grd1Cl02", culture);
+                dataGridView1.Columns[0].Width = 70; // Date
+                dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
+                dataGridView1.Columns[1].Width = 60; //No_Of_Atms
+                dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[2].Width = 65; //  DR_TRANS
+                dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[3].Width = 80; // DR_Amount
+                dataGridView1.Columns[3].DefaultCellStyle = style;
+                dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+               
+                dataGridView1.Columns[4].Width = 65; // Avg_DrTrans
+                dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[5].Width = 80; // Avg_DrAmount
+                dataGridView1.Columns[5].DefaultCellStyle = style;
+                dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                dataGridView1.Columns[6].Width = 65; // CR_TRANS
+                dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dataGridView1.Columns[7].Width = 80; // CR_Amount
+                dataGridView1.Columns[7].DefaultCellStyle = style;
+                dataGridView1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                dataGridView1.Columns[8].Width = 65; // Avg_CrTrans
+                dataGridView1.Columns[8].DefaultCellStyle = style;
+                dataGridView1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                //dataGridView1.Columns[8].DefaultCellStyle.Font = new Font("Tahoma", 09, FontStyle.Bold);
+
+                dataGridView1.Columns[9].Width = 80; // Avg_CrAmount
+                dataGridView1.Columns[9].DefaultCellStyle = style;
+                dataGridView1.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                 dataGridView1.Show();
 
@@ -965,6 +1057,11 @@ Count(DispTranNo) As No_Of_Tran_Disp,
 
             }
 
+        }
+        // FINISH 
+        private void buttonFinish_Click(object sender, EventArgs e)
+        {
+            this.Dispose(); 
         }
     }
 }

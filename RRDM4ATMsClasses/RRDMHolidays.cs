@@ -1,75 +1,237 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
 {
-    public class RRDMHolidays
+    public class RRDMHolidays : Logger
     {
+        public RRDMHolidays() : base() { }
+
         // DECLARE HOLIDAY FIELDS
- 
+        public int SeqNo; 
         public string BankId;
         public int Year;
         public string HolidaysVersion; 
-        public DateTime SpecialDay; 
+        public DateTime HoliDay; 
    
-        public bool IsHoliday;
-        public string SpecialDescr;
+        public string Descr;
         public bool DiffDayEveryYear;
-        public DateTime LastYearSpecial; 
-        public int SpecialId; 
+        public DateTime LastYearHoliday; 
+      
+        public string Operator;
 
         public bool IsNormal;
         public bool IsWeekend;
-        public bool IsSpecialday;
-
+        public bool IsHoliday;
+     
         public DateTime NextWorkingDt;
         public bool NextWorkingDtFound; 
 
         public int daysInYear;
 
-        public string Operator;
-
         public bool RecordFound;
         public bool ErrorFound;
-        public string ErrorOutput; 
+        public string ErrorOutput;
+
+        public DataTable HolidaysTable = new DataTable();
+
+        DateTime NullPastDate = new DateTime(1900, 01, 01);
 
         string connectionString = ConfigurationManager.ConnectionStrings
            ["ATMSConnectionString"].ConnectionString;
+        // Holiday Fields 
+        private void ReadHolidaysFields(SqlDataReader rdr)
+        {
+            SeqNo = (int)rdr["SeqNo"];
+            BankId = (string)rdr["BankId"];
+            Year = (int)rdr["Year"];
+            HolidaysVersion = (string)rdr["HolidaysVersion"];
+            HoliDay = (DateTime)rdr["HoliDay"];
 
-        // READ Holiday 
+            Descr = (string)rdr["Descr"];
+            DiffDayEveryYear = (bool)rdr["DiffDayEveryYear"];
+            LastYearHoliday = (DateTime)rdr["LastYearHoliday"];
+        
+            Operator = (string)rdr["Operator"];
+        }
 
-        public void ReadSpecificDate( string InOperator, DateTime InDate, string InHolidaysVersion)
+        // Read Table 
+        //  Holiday 
+        public int TotalRows;
+        public int NeedCorrection;
+        public void ReadHolidaysAndFillTable(string InOperator, int InBaseYear,string InHolidaysVersion)
         {
             RecordFound = false;
             ErrorFound = false;
-            ErrorOutput = ""; 
+            ErrorOutput = "";
 
-            IsNormal = false; IsWeekend = false; IsSpecialday = false; 
-            int InYear = InDate.Year;
+            NeedCorrection = 0;
 
-            int SeqDay = (int)InDate.DayOfWeek;
+            TotalRows = 0;
+         
+            HolidaysTable = new DataTable();
+            HolidaysTable.Clear();
 
-            if (SeqDay < 6 & SeqDay > 0) IsNormal = true;
-            else IsNormal = false;
+            // DATA TABLE ROWS DEFINITION 
+            HolidaysTable.Columns.Add("SeqNo", typeof(int));
+            HolidaysTable.Columns.Add("NeedCorr", typeof(string));
+            HolidaysTable.Columns.Add("Operator", typeof(string));
+            HolidaysTable.Columns.Add("Year", typeof(int));
+            HolidaysTable.Columns.Add("Date", typeof(DateTime));
+            HolidaysTable.Columns.Add("Day", typeof(string));
+            HolidaysTable.Columns.Add("Descr", typeof(string));
+            HolidaysTable.Columns.Add("LastYear", typeof(DateTime));
 
-            if (SeqDay == 6 || SeqDay == 0) IsWeekend = true;
-            else IsWeekend = false;
+            DateTime WTempDt;
+            DateTime NotCorrTempDate = new DateTime(InBaseYear, 12, 31);
 
-            IsSpecialday = false;
-            IsHoliday = false;
+            string SQLString = "Select * FROM [dbo].[HolidaysTable] "
+            + " WHERE Operator = @Operator AND Year = @Year AND HolidaysVersion = @HolidaysVersion "
+            + " Order By Holiday, SeqNo " ;
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SQLString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+                        cmd.Parameters.AddWithValue("@Year", InBaseYear);
+                        cmd.Parameters.AddWithValue("@HolidaysVersion", InHolidaysVersion);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+
+                            TotalRows = TotalRows + 1;
+
+                            ReadHolidaysFields(rdr);
+
+                            DataRow RowGrid = HolidaysTable.NewRow();
+
+                            RowGrid["SeqNo"] = SeqNo;
+                           
+                            RowGrid["Operator"] = Operator ;
+                            RowGrid["Year"] = Year;
+
+                            RowGrid["Date"] = HoliDay.Date;
+                            RowGrid["Day"] = HoliDay.DayOfWeek;
+
+                            RowGrid["Descr"] = Descr;
+                            RowGrid["LastYear"] = LastYearHoliday.Date;
+
+                            if (DiffDayEveryYear & HoliDay == NotCorrTempDate)
+                            {
+                                RowGrid["NeedCorr"] = "Yes";
+                                NeedCorrection = NeedCorrection + 1; 
+                            }
+                            else
+                            {
+                                RowGrid["NeedCorr"] = "";
+                            }
+
+                            HolidaysTable.Rows.Add(RowGrid);
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+        }
+
+        // Read Table 
+        //  Holiday 
+
+        public int ReadHolidaysAndFindInsertLocation(string InOperator, int InBaseYear, int InNextYear, 
+                                            string InHolidaysVersion, int InSeqNoOfInsert)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            int InsertLocation = 0; 
+
+            string SQLString = "Select * FROM [dbo].[HolidaysTable] "
+            + " WHERE Operator = @Operator AND Year = @Year AND HolidaysVersion = @HolidaysVersion "
+            + " Order By Holiday ";
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SQLString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+                        cmd.Parameters.AddWithValue("@Year", InBaseYear);
+                        cmd.Parameters.AddWithValue("@HolidaysVersion", InHolidaysVersion);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+
+                            ReadHolidaysFields(rdr);
+
+                            InsertLocation = InsertLocation + 1; 
+
+                            if (InSeqNoOfInsert == SeqNo)
+                            {                    
+                                break;
+                            }
+                           
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+            return InsertLocation; 
+        }
+
+        // READ Holiday by SeqNo
+
+        public void ReadHolidayBySeqNo(string InOperator, int InSeqNo )
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
 
             string SqlString = "SELECT *"
-          + " FROM [dbo].[HolidaysAndSpecialDays] "
-           + " WHERE Operator = @Operator AND SpecialDay = @SpecialDay AND HolidaysVersion = @HolidaysVersion";
+          + " FROM [dbo].[HolidaysTable] "
+           + " WHERE SeqNo = @SeqNo ";
 
             using (SqlConnection conn =
                           new SqlConnection(connectionString))
@@ -79,34 +241,17 @@ namespace RRDM4ATMs
                     using (SqlCommand cmd =
                         new SqlCommand(SqlString, conn))
                     {
-                        cmd.Parameters.AddWithValue("@Operator", InOperator);
-                        cmd.Parameters.AddWithValue("@SpecialDay", InDate);
-                        cmd.Parameters.AddWithValue("@HolidaysVersion", InHolidaysVersion);
-                      
+                        cmd.Parameters.AddWithValue("@SeqNo", InSeqNo);
+                     
                         // Read table 
 
                         SqlDataReader rdr = cmd.ExecuteReader();
 
                         while (rdr.Read())
                         {
-                            RecordFound = true; 
+                            RecordFound = true;
 
-                            IsSpecialday = true;
-
-                            if (IsSpecialday == true & IsNormal == true) IsNormal = false;
-
-                            BankId = (string)rdr["BankId"];
-                            Year = (int)rdr["Year"];
-                            HolidaysVersion = (string)rdr["HolidaysVersion"];
-                            SpecialDay = (DateTime)rdr["SpecialDay"];
-                
-                            IsHoliday = (bool)rdr["IsHoliday"];
-                            SpecialDescr = (string)rdr["SpecialDescr"];
-                            DiffDayEveryYear = (bool)rdr["DiffDayEveryYear"];
-                            LastYearSpecial = (DateTime)rdr["LastYearSpecial"];
-                            SpecialId = (int)rdr["SpecialId"];
-
-                            Operator = (string)rdr["Operator"];
+                            ReadHolidaysFields(rdr);
 
                         }
 
@@ -120,24 +265,115 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Holidays Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
+        // READ Holiday 
+
+        public void ReadSpecificDate( string InOperator, DateTime InDate, string InHolidaysVersion)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            RRDMGasParameters Gp = new RRDMGasParameters();
+
+            IsNormal = false;
+            IsWeekend = false; 
+
+            int InYear = InDate.Year;
+
+            int SeqDay = (int)InDate.DayOfWeek;
+
+            string ParId = "233";
+            string OccurId = SeqDay.ToString(); // Check table for this 
+            Gp.ReadParametersSpecificId(InOperator, ParId, OccurId, "", "");
+            if (Gp.RecordFound & Gp.OccuranceNm == "YES")
+            {
+                // Eg for Greece SeqDay = 6 = Saturday and SeqDay = 0 = Sunday
+                // Eg for Egypt SeqDay = 5 = Friday And 6 = Saturday and SeqDay = 0 = Sunday 
+                IsWeekend = true;
+                IsNormal = false;
+            }
+            else
+            {
+                // For Egypt Sunday cones here 
+                IsWeekend = false;
+                IsNormal = true; 
+            }
+
+            //if (SeqDay < 6 & SeqDay > 0) IsNormal = true;
+            //else IsNormal = false;
+
+            //if (SeqDay == 6 || SeqDay == 0) IsWeekend = true;
+            //else IsWeekend = false;
+
+            IsHoliday = false;
+
+            string SqlString = "SELECT *"
+          + " FROM [dbo].[HolidaysTable] "
+           + " WHERE Operator = @Operator AND HoliDay = @HoliDay AND HolidaysVersion = @HolidaysVersion";
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+                        cmd.Parameters.AddWithValue("@HoliDay", InDate);
+                        cmd.Parameters.AddWithValue("@HolidaysVersion", InHolidaysVersion);
+                      
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+
+                            ReadHolidaysFields(rdr);
+
+                            IsHoliday = true;
+
+                            if (IsHoliday == true & IsNormal == true) IsNormal = false;
+                
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+        }
+
+
         // Insert New Holiday or Special  
         //
-        public void InsertHoliday(string InOperator, DateTime InDate, string InHolidaysVersion )
+        public int InsertHoliday(string InOperator)
         {
            
             ErrorFound = false;
             ErrorOutput = ""; 
 
-            string cmdinsert = "INSERT INTO [dbo].[HolidaysAndSpecialDays]"
-                + " ([BankId], [Year], [HolidaysVersion], [SpecialDay], "
-                + " [IsHoliday], [SpecialDescr], [DiffDayEveryYear], [LastYearSpecial], [SpecialId], [Operator] )"
-                + " VALUES (@BankId, @Year, @HolidaysVersion, @SpecialDay,"
-                + " @IsHoliday, @SpecialDescr, @DiffDayEveryYear, @LastYearSpecial, @SpecialId , @Operator)";
+            string cmdinsert = "INSERT INTO [dbo].[HolidaysTable]"
+                + " ([BankId], [Year], [HolidaysVersion], [HoliDay], "
+                + " [Descr], [DiffDayEveryYear], [LastYearHoliday], [Operator] )"
+                + " VALUES (@BankId, @Year, @HolidaysVersion, @HoliDay,"
+                + "  @Descr, @DiffDayEveryYear, @LastYearHoliday , @Operator )"
+                +" SELECT CAST(SCOPE_IDENTITY() AS int)";
 
             using (SqlConnection conn =
                 new SqlConnection(connectionString))
@@ -149,25 +385,18 @@ namespace RRDM4ATMs
                        new SqlCommand(cmdinsert, conn))
                     {
 
-                        cmd.Parameters.AddWithValue("@BankId", BankId);
+                        cmd.Parameters.AddWithValue("@BankId", InOperator);
                         cmd.Parameters.AddWithValue("@Year", Year);
-                        cmd.Parameters.AddWithValue("@HolidaysVersion", InHolidaysVersion);
-                        cmd.Parameters.AddWithValue("@SpecialDay", InDate);
+                        cmd.Parameters.AddWithValue("@HolidaysVersion", HolidaysVersion);
+                        cmd.Parameters.AddWithValue("@HoliDay", HoliDay.Date);
                 
-                        cmd.Parameters.AddWithValue("@IsHoliday", IsHoliday);
-
-                        cmd.Parameters.AddWithValue("@SpecialDescr", SpecialDescr);
+                        cmd.Parameters.AddWithValue("@Descr", Descr);
                         cmd.Parameters.AddWithValue("@DiffDayEveryYear", DiffDayEveryYear);
-                        cmd.Parameters.AddWithValue("@LastYearSpecial", LastYearSpecial);
-
-                        cmd.Parameters.AddWithValue("@SpecialId", SpecialId);
+                        cmd.Parameters.AddWithValue("@LastYearHoliday", LastYearHoliday.Date);
 
                         cmd.Parameters.AddWithValue("@Operator", InOperator);
-                        //rows number of record got updated
 
-                        int rows = cmd.ExecuteNonQuery();
-                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        SeqNo = (int)cmd.ExecuteScalar();
 
                     }
                     // Close conn
@@ -176,15 +405,17 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Holidays Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
+
+            return SeqNo; 
         }
 
 
         // UPDATE Holiday 
         // 
-        public void UpdateHoliday(string InOperator, DateTime InDate, string InHolidaysVersion )
+        public void UpdateHoliday(int InSeqNo )
         {
             
             ErrorFound = false;
@@ -196,35 +427,28 @@ namespace RRDM4ATMs
                 {
                     conn.Open();
                     using (SqlCommand cmd =
-                        new SqlCommand(" UPDATE [dbo].[HolidaysAndSpecialDays] SET "
+                        new SqlCommand(" UPDATE [dbo].[HolidaysTable] SET "
                             + "BankId = @BankId,"
                              + "Year = @Year,"
-                             + "HolidaysVersion = @HolidaysVersion, SpecialDay = @SpecialDay,"
-                             + "IsHoliday = @IsHoliday, SpecialDescr = @SpecialDescr, DiffDayEveryYear = @DiffDayEveryYear,"
-                             + "LastYearSpecial = @LastYearSpecial, SpecialId = @SpecialId"
-                             + " WHERE Operator = @Operator AND SpecialDay = @SpecialDay AND HolidaysVersion = @HolidaysVersion", conn))
+                             + "HolidaysVersion = @HolidaysVersion, HoliDay = @HoliDay,"
+                             + " Descr = @Descr, DiffDayEveryYear = @DiffDayEveryYear,"
+                             + "LastYearHoliday = @LastYearHoliday "
+                             + " WHERE SeqNo = @SeqNo ", conn))
                     {
+                        cmd.Parameters.AddWithValue("@SeqNo", InSeqNo);
                         cmd.Parameters.AddWithValue("@BankId", BankId);
                         cmd.Parameters.AddWithValue("@Year", Year);
-                        cmd.Parameters.AddWithValue("@HolidaysVersion", InHolidaysVersion);
-                        cmd.Parameters.AddWithValue("@SpecialDay", InDate);
+                        cmd.Parameters.AddWithValue("@HolidaysVersion", HolidaysVersion);
+                        cmd.Parameters.AddWithValue("@HoliDay", HoliDay.Date);
                   
-                        cmd.Parameters.AddWithValue("@IsHoliday", IsHoliday);
-
-                        cmd.Parameters.AddWithValue("@SpecialDescr", SpecialDescr);
+                        cmd.Parameters.AddWithValue("@Descr", Descr);
                         cmd.Parameters.AddWithValue("@DiffDayEveryYear", DiffDayEveryYear);
-                        cmd.Parameters.AddWithValue("@LastYearSpecial", LastYearSpecial);
+                        cmd.Parameters.AddWithValue("@LastYearHoliday", LastYearHoliday.Date);
 
-                        cmd.Parameters.AddWithValue("@SpecialId", SpecialId);
-                        cmd.Parameters.AddWithValue("@Operator", Operator);
+                      //  cmd.Parameters.AddWithValue("@Operator", Operator);
 
-
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
-
+                        cmd.ExecuteNonQuery();
+                       
                     }
                     // Close conn
                     conn.Close();
@@ -232,38 +456,32 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Holidays Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
        
-// DELETE Holidays for year   
+// DELETE Holidays for WHOLE year   
         //
-        public void DeleteYearHoliday(string InOperator, int InYear, string InHolidaysVersion)
+        public void DeleteYearHoliday(string InOperator, string InYear)
         {
          
             ErrorFound = false;
-            ErrorOutput = ""; 
-
+            ErrorOutput = "";
+         
             using (SqlConnection conn =
                 new SqlConnection(connectionString))
                 try
                 {
                     conn.Open();
                     using (SqlCommand cmd =
-                        new SqlCommand("DELETE FROM [dbo].[HolidaysAndSpecialDays] "
-                            + " WHERE Operator = @Operator AND Year = @Year AND  HolidaysVersion = @HolidaysVersion", conn))
+                        new SqlCommand("DELETE FROM [dbo].[HolidaysTable] "
+                            + " WHERE Operator=@Operator AND Year = @Year", conn))
                     {
                         cmd.Parameters.AddWithValue("@Operator", InOperator);
                         cmd.Parameters.AddWithValue("@Year", InYear);
-                        cmd.Parameters.AddWithValue("@HolidaysVersion", InHolidaysVersion);
-
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();    
 
                     }
                     // Close conn
@@ -272,17 +490,18 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Holidays Class............. " + ex.Message;
+
+
+                    CatchDetails(ex);
                 }
         }
         // DELETE Holiday   
         //
-        public void DeleteHolidayEntry(string InOperator, DateTime InDate, string InHolidaysVersion)
+        public void DeleteHolidayEntry(int InSeqNo)
         {
-            
+
             ErrorFound = false;
-            ErrorOutput = ""; 
+            ErrorOutput = "";
 
             using (SqlConnection conn =
                 new SqlConnection(connectionString))
@@ -290,18 +509,12 @@ namespace RRDM4ATMs
                 {
                     conn.Open();
                     using (SqlCommand cmd =
-                        new SqlCommand("DELETE FROM [dbo].[HolidaysAndSpecialDays] "
-                            + " WHERE Operator = @Operator AND SpecialDay = @SpecialDay AND HolidaysVersion = @HolidaysVersion  ", conn))
+                        new SqlCommand("DELETE FROM [dbo].[HolidaysTable] "
+                            + " WHERE SeqNo = @SeqNo", conn))
                     {
-                        cmd.Parameters.AddWithValue("@Operator", InOperator);
-                        cmd.Parameters.AddWithValue("@SpecialDay", InDate);
-                        cmd.Parameters.AddWithValue("@HolidaysVersion", InHolidaysVersion);
+                        cmd.Parameters.AddWithValue("@SeqNo", InSeqNo);
 
-                        //rows number of record got updated
-
-                        int rows = cmd.ExecuteNonQuery();
-                        //             if (rows > 0) textBoxMsg.Text = " ATMs Table UPDATED ";
-                        //            else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        cmd.ExecuteNonQuery();
 
                     }
                     // Close conn
@@ -310,12 +523,114 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Holidays Class............. " + ex.Message;
+
+
+                    CatchDetails(ex);
                 }
         }
 
-        // Copy Holidays 
+        // Copy Holidays from Year to year
+
+        public void CopyHolidaysFromYearToYear(string InOperator, int InBaseYear, int InNextYear)
+        {
+
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            bool Valid = false; 
+
+            DateTime NotCorrTempDate = new DateTime(InNextYear, 12, 31);
+
+            string SqlString = "SELECT *"
+          + " FROM [dbo].[HolidaysTable] "
+           + " WHERE Operator = @Operator AND Year = @Year "
+           + " Order By Holiday ";
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+                        cmd.Parameters.AddWithValue("@Year", InBaseYear);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+
+                            Valid = false; 
+
+                            ReadHolidaysFields(rdr);
+
+                            Year = InNextYear;
+
+                            if (DiffDayEveryYear == false)
+                            {
+                                HoliDay = HoliDay.AddYears(1);
+                                // Check if Weekend 
+
+                                ReadSpecificDate(InOperator, HoliDay, HolidaysVersion);
+
+                                if (IsWeekend == true)
+                                {
+                                    Valid = false; 
+                                }
+                                else
+                                {
+                                    Valid = true; 
+                                }
+                                LastYearHoliday = LastYearHoliday.AddYears(1);
+                            }
+                            else
+                            {
+                                Valid = true;
+                                LastYearHoliday = HoliDay;
+                                HoliDay = NotCorrTempDate;
+                            }
+
+                            if (Valid == true)
+                            {
+                                 InsertHoliday(InOperator);
+                            }      
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+        }
+
+        //private bool IsWeekend(DateTime InDate)
+        //{
+        //    bool IsWeekend;
+        //    int SeqDay = (int)InDate.DayOfWeek;
+
+        //    if (SeqDay == 6 || SeqDay == 0) IsWeekend = true;
+        //    else IsWeekend = false;
+
+        //    return IsWeekend;
+        //}
+
+        // Copy Holidays from Bank to Bank
 
         public void CopyHolidays(string InOperatorA, String InOperatorB, int InYear)
         {
@@ -325,7 +640,7 @@ namespace RRDM4ATMs
             ErrorOutput = ""; 
 
             string SqlString = "SELECT *"
-          + " FROM [dbo].[HolidaysAndSpecialDays] "
+          + " FROM [dbo].[HolidaysTable] "
            + " WHERE Operator = @Operator AND Year = @Year";
 
             using (SqlConnection conn =
@@ -346,23 +661,13 @@ namespace RRDM4ATMs
                         while (rdr.Read())
                         {
                             RecordFound = true;
-                            
-                            BankId = (string)rdr["BankId"];
-                            Year = (int)rdr["Year"];
-                            HolidaysVersion = (string)rdr["HolidaysVersion"];
-                            SpecialDay = (DateTime)rdr["SpecialDay"];
-                    
-                            IsHoliday = (bool)rdr["IsHoliday"];
-                            SpecialDescr = (string)rdr["SpecialDescr"];
-                            DiffDayEveryYear = (bool)rdr["DiffDayEveryYear"];
-                            LastYearSpecial = (DateTime)rdr["LastYearSpecial"];
-                            SpecialId = (int)rdr["SpecialId"];
 
-                            Operator = (string)rdr["Operator"];
+                            ReadHolidaysFields(rdr);
 
                             // Insert Holiday 
 
-                            InsertHoliday(InOperatorB, SpecialDay, HolidaysVersion);  
+                            //    InsertHoliday(InOperatorB, HoliDay, HolidaysVersion);  
+                            InsertHoliday(InOperatorB);
 
                         }
 
@@ -376,16 +681,19 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in Holidays Class............. " + ex.Message;
+
+                    CatchDetails(ex); 
+
                 }
         }
 
         //
         // Get days of YEAR 
         // 
-        public void GetNextWorkingDt(string InOperator, DateTime InStartDate, string InHolidaysVersion)
+        public int DaysTillNextWorking;
+        public DateTime GetNextWorkingDt(string InOperator, DateTime InStartDate, string InHolidaysVersion)
         {
+            DaysTillNextWorking = 0;
             DateTime WDate = InStartDate; 
            // Read Next till Normal date 
             NextWorkingDtFound = false; 
@@ -394,14 +702,70 @@ namespace RRDM4ATMs
                 WDate = WDate.AddDays(1);
                 ReadSpecificDate(InOperator, WDate, InHolidaysVersion);
 
-                if (IsNormal == true & IsSpecialday == false)
+                if (IsNormal == true & IsHoliday == false)
                 {
                     NextWorkingDtFound = true;
-                    NextWorkingDt = WDate; 
+                    NextWorkingDt = WDate;
+                    DaysTillNextWorking = DaysTillNextWorking + 1; 
+                }
+                else
+                {
+                    DaysTillNextWorking = DaysTillNextWorking + 1;
                 }
 
             }
 
+            return NextWorkingDt; 
+
+        }
+        //
+        // Get days of YEAR 
+        // 
+        public int DaysTillSecondWorking;
+        public DateTime GetNextSecondWorkingDt_NBG(string InOperator, DateTime InStartDate, string InHolidaysVersion)
+        {
+            DateTime NBG_CutOffDate = NullPastDate; 
+            DaysTillSecondWorking = 0;
+            DateTime WDate = InStartDate;
+            // Read Next till Normal date 
+            
+            while (DaysTillSecondWorking < 2)
+            {
+                WDate = WDate.AddDays(1);
+                ReadSpecificDate(InOperator, WDate, InHolidaysVersion);
+
+                if (IsNormal == true & IsHoliday == false)
+                {
+                    NBG_CutOffDate = WDate;
+                    DaysTillSecondWorking = DaysTillSecondWorking + 1;
+                }
+            }
+            NBG_CutOffDate = NBG_CutOffDate.AddDays(-1);
+            return NBG_CutOffDate;
+        }
+        
+      // Get next working date 
+        public DateTime GetNextSecondWorkingDt(string InOperator, DateTime InStartDate, string InHolidaysVersion)
+        {
+            DateTime NextWorkingDate = NullPastDate;
+            
+            DateTime WDate = InStartDate;
+            // Read Next till Normal date 
+            bool NextWorkingFound = false; 
+
+            while (NextWorkingFound == false)
+            {
+                WDate = WDate.AddDays(1);
+                ReadSpecificDate(InOperator, WDate, InHolidaysVersion);
+
+                if (IsNormal == true & IsHoliday == false)
+                {
+                    NextWorkingDate = WDate;
+                    NextWorkingFound = true; 
+                }
+            }
+           
+            return NextWorkingDate;
         }
         //
         // Get days of YEAR 

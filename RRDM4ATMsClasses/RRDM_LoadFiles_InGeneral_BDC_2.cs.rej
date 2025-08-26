@@ -1,0 +1,16 @@
+diff a/RRDM4ATMsClasses/RRDM_LoadFiles_InGeneral_BDC_2.cs b/RRDM4ATMsClasses/RRDM_LoadFiles_InGeneral_BDC_2.cs	(rejected hunks)
+@@ -1827,13 +1827,13 @@
+           + " ON "
+           //    + " A.TerminalId = B.TerminalId "
+           + "  A.CardNumber = B.CardNumber "
+           //+ " AND A.TransAmt = B.TransAmt " Some times IST forgets to AMt in reversal
+           + " AND A.RRNumber = B.RRNumber "
+           + " AND A.TransDate = B.TransDate "
+-       + " WHERE(A.Processed = 0 AND LEFT(A.FullTraceNo, 1) = '4') "
++       + " WHERE(A.Processed = 0 AND LEFT(A.FullTraceNo, 1) = '4' AND A.ResponseCode = '0' AND B.ResponseCode = '0') "
+             + " AND( B.Processed = 0 AND (LEFT(B.FullTraceNo, 1) = '2' OR(LEFT(B.FullTraceNo, 1) = '1'))  ) "
+             + " AND A.Comment <> 'Reversals'  "  // EXCLUDE ALREADY REVERSED
+             + " AND B.Comment <> 'Reversals'  "  // EXCLUDE ALREADY REVERSED
+             ;
+ 
+             using (SqlConnection conn = new SqlConnection(recconConnString))

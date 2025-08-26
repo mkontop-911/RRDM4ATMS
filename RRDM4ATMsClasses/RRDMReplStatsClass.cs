@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Windows.Forms;
 
 namespace RRDM4ATMs
 {
-    public class RRDMReplStatsClass
+    public class RRDMReplStatsClass : Logger
     {
+        public RRDMReplStatsClass() : base() { }
         // Variables
         // ATM MAIN FIELDS 
 
-         public int RecordSeq;
+        public int RecordSeq;
          public string AtmNo;
          public string UserId;
          public string UserName;
@@ -78,7 +74,48 @@ namespace RRDM4ATMs
 
         DateTime NullPastDate = new DateTime(1900, 01, 01);
 
-     //   string outcome = ""; // TO FACILITATE EXCEPTIONS 
+        // Read Stats Fields
+        private void ReadFields(SqlDataReader rdr)
+        {
+            RecordSeq = (int)rdr["RecordSeq"];
+            AtmNo = (string)rdr["AtmNo"];
+            UserId = (string)rdr["UserId"];
+            UserName = (string)rdr["UserName"];
+
+            ReplDtRev = (int)rdr["ReplDtRev"];
+
+            ReplDate = (DateTime)rdr["ReplDate"];
+
+            BankId = (string)rdr["BankId"];
+
+
+            AtmGroup = (int)rdr["AtmGroup"];
+            ReplGroup = (int)rdr["ReplGroup"];
+            ReconcGroup = (int)rdr["ReconcGroup"];
+
+            ReplCycleNo = (int)rdr["ReplCycleNo"];
+
+            ReplMinutes = (int)rdr["ReplMinutes"];
+            OtherNop = (int)rdr["OtherNop"];
+
+            InMoneyLast = (decimal)rdr["InMoneyLast"];
+            RemainMoney = (decimal)rdr["RemainMoney"];
+            InMoneyNew = (decimal)rdr["InMoneyNew"];
+
+            ErrorsAtm = (int)rdr["ErrorsAtm"];
+            NoAtmOutst = (int)rdr["NoAtmOutst"];
+            ErrorsHost = (int)rdr["ErrorsHost"];
+
+            NoHostOut = (int)rdr["NoHostOut"];
+
+            CurName = (string)rdr["CurName"];
+            DiffPlus = (Decimal)rdr["DiffPlus"];
+            DiffMinus = (Decimal)rdr["DiffMinus"];
+
+            NotReconc = (int)rdr["NotReconc"];
+            CitId = (string)rdr["CitId"];
+            Operator = (string)rdr["Operator"];
+        }
 
         // Methods 
         // READ ReplStatClass MIN and MAX 
@@ -130,8 +167,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReplStats Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
 
@@ -145,6 +182,7 @@ namespace RRDM4ATMs
             RecordFound = false;
             ErrorFound = false;
             ErrorOutput = ""; 
+
 
             TotalReplMinutes = 0; 
 
@@ -171,46 +209,9 @@ namespace RRDM4ATMs
 
                             RecordFound = true;
 
-                            RecordSeq = (int)rdr["RecordSeq"];
-                            AtmNo = (string)rdr["AtmNo"];
-                            UserId = (string)rdr["UserId"];
-                            UserName = (string)rdr["UserName"];
+                            ReadFields(rdr);
 
-                            ReplDtRev = (int)rdr["ReplDtRev"];
-
-                            ReplDate = (DateTime)rdr["ReplDate"];
-
-                            BankId = (string)rdr["BankId"];
-                       
-
-                            AtmGroup = (int)rdr["AtmGroup"];
-                            ReplGroup = (int)rdr["ReplGroup"];
-                            ReconcGroup = (int)rdr["ReconcGroup"];
-
-                            ReplCycleNo = (int)rdr["ReplCycleNo"];
-
-                            ReplMinutes = (int)rdr["ReplMinutes"];
-                            OtherNop = (int)rdr["OtherNop"];
-
-                            InMoneyLast = (decimal)rdr["InMoneyLast"];
-                            RemainMoney = (decimal)rdr["RemainMoney"];
-                            InMoneyNew = (decimal)rdr["InMoneyNew"];
-
-                            ErrorsAtm = (int)rdr["ErrorsAtm"];
-                            NoAtmOutst = (int)rdr["NoAtmOutst"];
-                            ErrorsHost = (int)rdr["ErrorsHost"];
-
-                            NoHostOut = (int)rdr["NoHostOut"];
-
-                            CurName = (string)rdr["CurName"];
-                            DiffPlus = (Decimal)rdr["DiffPlus"];
-                            DiffMinus = (Decimal)rdr["DiffMinus"];
-
-                            NotReconc = (int)rdr["NotReconc"];
-                            CitId = (string)rdr["CitId"];
-                            Operator = (string)rdr["Operator"];
-
-                            TotalReplMinutes = TotalReplMinutes + ReplMinutes; 
+                            TotalReplMinutes = TotalReplMinutes + ReplMinutes;
                         }
 
                         // Close Reader
@@ -223,10 +224,11 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReplStats Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
+
 
         // Methods 
         // READ ReplStatClass Specific REPL Cycle 
@@ -259,46 +261,9 @@ namespace RRDM4ATMs
                         while (rdr.Read())
                         {
 
-                            RecordFound = true; 
+                            RecordFound = true;
 
-                            RecordSeq = (int)rdr["RecordSeq"];
-                            AtmNo = (string)rdr["AtmNo"];
-                            UserId = (string)rdr["UserId"];
-                            UserName = (string)rdr["UserName"];
-
-                            ReplDtRev = (int)rdr["ReplDtRev"];
-
-                            ReplDate = (DateTime)rdr["ReplDate"]; 
-
-                            BankId = (string)rdr["BankId"];
-                    
-
-                            AtmGroup = (int)rdr["AtmGroup"];
-                            ReplGroup = (int)rdr["ReplGroup"];
-                            ReconcGroup = (int)rdr["ReconcGroup"];
-
-                            ReplCycleNo = (int)rdr["ReplCycleNo"];
-
-                            ReplMinutes = (int)rdr["ReplMinutes"];
-                            OtherNop = (int)rdr["OtherNop"];
- 
-                            InMoneyLast = (decimal)rdr["InMoneyLast"];
-                            RemainMoney = (decimal)rdr["RemainMoney"];
-                            InMoneyNew = (decimal)rdr["InMoneyNew"];
-                            
-                            ErrorsAtm = (int)rdr["ErrorsAtm"];
-                            NoAtmOutst = (int)rdr["NoAtmOutst"];
-                            ErrorsHost = (int)rdr["ErrorsHost"];
-
-                            NoHostOut = (int)rdr["NoHostOut"];
-
-                            CurName = (string)rdr["CurName"];
-                            DiffPlus = (Decimal)rdr["DiffPlus"];
-                            DiffMinus = (Decimal)rdr["DiffMinus"];
-
-                            NotReconc = (int)rdr["NotReconc"];
-                            CitId = (string)rdr["CitId"];
-                            Operator = (string)rdr["Operator"];
+                            ReadFields(rdr);
                         }
 
                         // Close Reader
@@ -311,8 +276,8 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReplStats Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
         }
         // 
@@ -396,23 +361,110 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReplStats Class............. " + ex.Message;
+
+                    CatchDetails(ex);
                 }
 
             //  return outcome;
 
         }
-        // INSERT New Record in ReplStatsTable
-        public void InsertInAtmsStatsTable(string InAtmNo, int InReplCycle)
+       
+        //
+  // Create STATS Record for the REPL CYCLE JUST ENDED 
+  // We are working with the one just started but we want to insert stats for the one just ended. 
+        //
+        // This record is created at Repl-End in EJournal operation just after Cash In Time at 9:00 am 
+        // 
+        public void InsertInAtmsStatsProcess(string InOperator, 
+                                string InAtmNo, int InReplCycle, decimal InCashLoaded)
         {
+
+            RRDMAtmsClass Ac = new RRDMAtmsClass(); 
             
+            RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
+            RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); 
+            RRDMUsersRecords Us = new RRDMUsersRecords ();
+
+            Ac.ReadAtm(InAtmNo); 
+            string WBankId = Ac.BankId;
+
+            Ta.ReadSessionsStatusTraces(InAtmNo, InReplCycle);
+
+            //Na.ReadSessionsNotesAndValues(InAtmNo, InReplCycle, 2);
+
+            decimal MoneyIn = Na.Balances1.OpenBal; 
+
+            int ReplCycle = Ta.PreSes;
+            if (ReplCycle > 0) // It is not a new ATM therefore it has previous SesNo 
+            {
+
+            Na.ReadSessionsNotesAndValues( InAtmNo, ReplCycle, 12);
+
+            Ta.ReadSessionsStatusTraces(InAtmNo, ReplCycle);
+
+            Us.ReadUsersRecord(Ta.Repl1.SignIdRepl); 
+    
+            TimeSpan SM_Duration = Ta.Repl1.ReplFinDtTm - Ta.Repl1.ReplStartDtTm;
+
+            // Now we have available all fields from Na and Ta
+            // Also we have the time SM - end 
+
+            AtmNo = InAtmNo;
+            UserId = "Operator User";
+
+            UserName = "System";
+
+            ReplDtRev = 0 ;
+
+            ReplDate = Ta.SesDtTimeEnd.Date;
+
+            BankId = Ta.BankId;
+  
+            AtmGroup = Ta.AtmsStatsGroup;
+            ReplGroup = Ta.AtmsReplGroup;
+            ReconcGroup = Ta.AtmsReconcGroup;
+
+            ReplCycleNo = ReplCycle;
+
+            ReplMinutes = Convert.ToInt32(SM_Duration.TotalMinutes);
+
+            OtherNop = Ta.Stats1.NoOpMinutes;
+
+            InMoneyLast = Na.Balances1.OpenBal;
+            RemainMoney = Na.Balances1.MachineBal;
+            InMoneyNew = InCashLoaded;
+
+            ErrorsAtm = Na.ErrJournalThisCycle;
+            NoAtmOutst = Na.ErrOutstanding;
+            ErrorsHost = Na.ErrHostToday;
+
+            NoHostOut = Na.NumberOfErrHost; 
+
+            CurName = Ta.Diff1.CurrNm1;
+            if (Ta.Diff1.DiffCurr1 > 0) DiffPlus = Ta.Diff1.DiffCurr1;
+            if (Ta.Diff1.DiffCurr1 < 0) DiffMinus = Ta.Diff1.DiffCurr1;
+            
+            NotReconc = Ta.SessionsInDiff;
+            
+            CitId = Ac.CitId;
+
+            Operator = InOperator; 
+if (Environment.MachineName== "RRDM-PANICOS")
+            InsertRecordInAtmsStatsTable(InAtmNo, ReplCycle);
+
+            }
+        }
+
+        // INSERT New Record in ReplStatsTable just after Replenishment finishes
+        public void InsertRecordInAtmsStatsTable(string InAtmNo, int InReplCycle)
+        {
+
             ErrorFound = false;
-            ErrorOutput = ""; 
+            ErrorOutput = "";
 
             SqlString = "INSERT INTO [dbo].[ReplStatsTable] "
                 + "([AtmNo], [UserId], [UserName],"
-                +"[ReplDtRev],[ReplDate], [BankId], " 
+                + "[ReplDtRev],[ReplDate], [BankId], "
                 + "[AtmGroup], [ReplGroup], [ReconcGroup], [ReplCycleNo],"
                 + " [ReplMinutes], [OtherNop], [InMoneyLast], [RemainMoney], [InMoneyNew],"
                 + "[ErrorsAtm], [NoAtmOutst], [ErrorsHost], [NoHostOut],"
@@ -423,8 +475,8 @@ namespace RRDM4ATMs
                 + " @ReplMinutes, @OtherNop, @InMoneyLast, @RemainMoney,@InMoneyNew,"
                 + " @ErrorsAtm, @NoAtmOutst, @ErrorsHost,"
                 + "@NoHostOut, @CurName, @DiffPlus, @DiffMinus, @NotReconc , @CitId , @Operator)";
-                
-          
+
+
             using (SqlConnection conn =
                 new SqlConnection(connectionString))
                 try
@@ -442,7 +494,7 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@ReplDate", ReplDate);
 
                         cmd.Parameters.AddWithValue("@BankId", BankId);
-                
+
                         cmd.Parameters.AddWithValue("@AtmGroup", AtmGroup);
                         cmd.Parameters.AddWithValue("@ReplGroup", ReplGroup);
                         cmd.Parameters.AddWithValue("@ReconcGroup", ReconcGroup);
@@ -471,15 +523,15 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@CitId", CitId);
 
                         cmd.Parameters.AddWithValue("@Operator", Operator);
-                     
+
                         //rows number of record got updated
 
                         int rows = cmd.ExecuteNonQuery();
                         if (rows > 0)
                         {
-                          //  outcome = " Record Inserted ";
+                            //  outcome = " Record Inserted ";
                         }
-                     
+
 
                     }
                     // Close conn
@@ -489,91 +541,16 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
-                    ErrorFound = true;
-                    ErrorOutput = "An error occured in ReplStats Class............. " + ex.Message;
+                    string Message = "Cancel_at_Insert_Stats_During_Atm.."+ InAtmNo+Environment.NewLine 
+                        + "And...Repl..Date.."+ ReplDate.ToString() + Environment.NewLine
+                    + "Look at the SM of this Journal and you will see strange things in cassette totals." + Environment.NewLine
+                    + "Ask Supplier to correct." + ReplDate.ToString();
+                    MessageBox.Show(Message); 
+
+                    CatchDetails(ex);
                 }
         }
-        //
-  // Create STATS Record for this ATM and this ReplCycle
-        //
-        // This record is created at Repl-End in EJournal operation just after Cash In Time at 9:00 am 
-        // 
-        public void InsertInAtmsStats(string InOperator, string InAtmNo, int InReplCycle, DateTime InSMEnd)
-        {
 
-            RRDMAtmsClass Ac = new RRDMAtmsClass(); 
-            
-            RRDMNotesBalances Na = new RRDMNotesBalances();
-            RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); 
-            RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord ();
-
-            Ac.ReadAtm(InAtmNo); 
-            string WBankId = Ac.BankId;
-
-            Na.ReadSessionsNotesAndValues(InAtmNo, InReplCycle, 2);
-
-            decimal MoneyIn = Na.Balances1.OpenBal; 
-
-            int ReplCycle = Na.PreSes;
-            if (ReplCycle > 0) // It is not a new ATM therefore it has previous SesNo 
-            {
-
-                Na.ReadSessionsNotesAndValues( InAtmNo, ReplCycle, 2);
-
-            Ta.ReadSessionsStatusTraces(InAtmNo, ReplCycle);
-
-            Us.ReadUsersRecord(Ta.Repl1.SignIdRepl); 
-
-            TimeSpan SM_Duration = InSMEnd - Ta.SesDtTimeEnd;
-
-            // Now we have available all fields from Na and Ta
-            // Also we have the time SM - end 
-
-            AtmNo = InAtmNo;
-            UserId = Ta.Repl1.SignIdRepl;
-
-            UserName = Us.UserName;
-
-            ReplDtRev = 0 ;
-
-            ReplDate = Ta.SesDtTimeEnd.Date;
-
-            BankId = Ta.BankId;
-  
-
-            AtmGroup = Ta.AtmsStatsGroup;
-            ReplGroup = Ta.AtmsReplGroup;
-            ReconcGroup = Ta.AtmsReconcGroup;
-
-            ReplCycleNo = ReplCycle;
-
-            ReplMinutes = Convert.ToInt32(SM_Duration.TotalMinutes);
-
-            OtherNop = Ta.Stats1.NoOpMinutes;
-
-            InMoneyLast = Na.Balances1.OpenBal;
-            RemainMoney = Na.Balances1.MachineBal;
-            InMoneyNew = MoneyIn;
-
-            ErrorsAtm = Na.ErrJournalThisCycle;
-            NoAtmOutst = Na.ErrOutstanding;
-            ErrorsHost = Na.ErrHostToday;
-
-            NoHostOut = Na.NumberOfErrHost; 
-
-            CurName = Ta.Diff1.CurrNm1;
-            if (Ta.Diff1.DiffCurr1 > 0) DiffPlus = Ta.Diff1.DiffCurr1;
-            if (Ta.Diff1.DiffCurr1 < 0) DiffMinus = Ta.Diff1.DiffCurr1;
-            
-            NotReconc = Ta.SessionsInDiff;
-
-            CitId = Us.CitId ;
-
-            Operator = InOperator; 
-
-            InsertInAtmsStatsTable(InAtmNo, ReplCycle);
-
-            }
-        }
+     
     }
 }

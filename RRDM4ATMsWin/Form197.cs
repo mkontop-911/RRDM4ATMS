@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RRDM4ATMs; 
+using RRDM4ATMs;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -16,7 +10,7 @@ namespace RRDM4ATMsWin
     public partial class Form197 : Form
     {
         RRDMCaseNotes Cn = new RRDMCaseNotes();
-        RRDMUsersAndSignedRecord Us = new RRDMUsersAndSignedRecord();
+        RRDMUsersRecords Us = new RRDMUsersRecords();
 
         int WSeqNumber;
 
@@ -27,17 +21,19 @@ namespace RRDM4ATMsWin
         string WSignedId;
         int WSignRecordNo;
         string WOperator;
+        string WParameter2;
         string WParameter3;
         string WParameter4;
         string WMode;
         string WSearchP4;
 
-        public Form197(string InSignedId, int InSignRecordNo, string InOperator, string InParameter3, string InParameter4, string InMode, string InSearchP4)
+        public Form197(string InSignedId, int InSignRecordNo, string InOperator, string InParameter2, string InParameter3, string InParameter4, string InMode, string InSearchP4)
         {
             WSignedId = InSignedId;
             WSignRecordNo = InSignRecordNo;
             WOperator = InOperator;
 
+            WParameter2 = InParameter2;
             WParameter3 = InParameter3;
             WParameter4 = InParameter4;
             WMode = InMode; // Mode Values are "Update" and "Read"
@@ -47,7 +43,7 @@ namespace RRDM4ATMsWin
             InitializeComponent();
 
             labelToday.Text = DateTime.Now.ToShortDateString();
-            pictureBox1.BackgroundImage = Properties.Resources.logo2;
+            pictureBox1.BackgroundImage = appResImg.logo2;
 
             
             comboBox1.Items.Add("Descending"); 
@@ -301,6 +297,7 @@ namespace RRDM4ATMsWin
             {
                 if (buttonNext.Text == "Add Note")
                 {
+                    Cn.Parameter2 = WParameter2;
                     Cn.Parameter3 = WParameter3;
 
                     Cn.UserId = WSignedId;
@@ -516,23 +513,12 @@ namespace RRDM4ATMsWin
             Form197_Load(this, new EventArgs());
         }
 // Print TextBox1 
-        private void button1_Click(object sender, EventArgs e)
+
+        private void button1_Click_1(object sender, EventArgs e)
         {
-            string WHeader = labelStep1.Text;
+            string WHeader = WParameter4;
 
-            string WDetail = "";
-
-            if (textBox1.Text != "")
-            {
-                WDetail = textBox1.Text;
-            }
-            else
-            {
-                MessageBox.Show("Nothing to print");
-                return; 
-            }
-           
-            Form56R18 NotesPrinting = new Form56R18(WHeader, WDetail);
+            Form56R18 NotesPrinting = new Form56R18(WHeader, WOperator);
             NotesPrinting.Show();
         }
     }
