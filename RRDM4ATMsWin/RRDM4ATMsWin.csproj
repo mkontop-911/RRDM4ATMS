@@ -245,11 +245,11 @@
     <Compile Include="Form18_LoadedFilesStatus_GAPS.Designer.cs">
       <DependentUpon>Form18_LoadedFilesStatus_GAPS.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1_ATMS _Controller_EMR.cs">
+    <Compile Include="Form1 - ATMS -Controller_EMR.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1_ATMS _Controller_EMR.Designer.cs">
-      <DependentUpon>Form1_ATMS _Controller_EMR.cs</DependentUpon>
+    <Compile Include="Form1 - ATMS -Controller_EMR.Designer.cs">
+      <DependentUpon>Form1 - ATMS -Controller_EMR.cs</DependentUpon>
     </Compile>
     <Compile Include="Form1 - ATMS - Controller.cs">
       <SubType>Form</SubType>
@@ -382,6 +382,12 @@
     </Compile>
     <Compile Include="Form2-MessageContent.Designer.cs">
       <DependentUpon>Form2-MessageContent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form200JobCycles_Reports_EGATE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form200JobCycles_Reports_EGATE.Designer.cs">
+      <DependentUpon>Form200JobCycles_Reports_EGATE.cs</DependentUpon>
     </Compile>
     <Compile Include="Form20_NEW.cs">
       <SubType>Form</SubType>
@@ -545,6 +551,12 @@
     <Compile Include="Form3_PreInv_IST.Designer.cs">
       <DependentUpon>Form3_PreInv_IST.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form40_ALPHA_CY.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form40_ALPHA_CY.Designer.cs">
+      <DependentUpon>Form40_ALPHA_CY.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form40.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -568,6 +580,12 @@
     </Compile>
     <Compile Include="Form502aPOS_XXX.Designer.cs">
       <DependentUpon>Form502aPOS_XXX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_ALP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form502_Load_And_Match_ALP.Designer.cs">
+      <DependentUpon>Form502_Load_And_Match_ALP.cs</DependentUpon>
     </Compile>
     <Compile Include="Form502_Load_And_Match_BOC.cs">
       <SubType>Form</SubType>
@@ -2388,8 +2406,8 @@
     <EmbeddedResource Include="Form18_LoadedFilesStatus_GAPS.resx">
       <DependentUpon>Form18_LoadedFilesStatus_GAPS.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1_ATMS _Controller_EMR.resx">
-      <DependentUpon>Form1_ATMS _Controller_EMR.cs</DependentUpon>
+    <EmbeddedResource Include="Form1 - ATMS -Controller_EMR.resx">
+      <DependentUpon>Form1 - ATMS -Controller_EMR.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1 - ATMS - Controller.resx">
       <DependentUpon>Form1 - ATMS - Controller.cs</DependentUpon>
@@ -2469,6 +2487,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form2-MessageContent.resx">
       <DependentUpon>Form2-MessageContent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form200JobCycles_Reports_EGATE.resx">
+      <DependentUpon>Form200JobCycles_Reports_EGATE.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form20_NEW.resx">
       <DependentUpon>Form20_NEW.cs</DependentUpon>
@@ -2551,6 +2572,12 @@
     <EmbeddedResource Include="Form3_PreInv_IST.resx">
       <DependentUpon>Form3_PreInv_IST.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form40_ALPHA_CY.de.resx">
+      <DependentUpon>Form40_ALPHA_CY.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form40_ALPHA_CY.resx">
+      <DependentUpon>Form40_ALPHA_CY.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form40.de.resx">
       <DependentUpon>Form40.cs</DependentUpon>
     </EmbeddedResource>
@@ -2568,6 +2595,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form502aPOS_XXX.resx">
       <DependentUpon>Form502aPOS_XXX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form502_Load_And_Match_ALP.resx">
+      <DependentUpon>Form502_Load_And_Match_ALP.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form502_Load_And_Match_BOC.resx">
       <DependentUpon>Form502_Load_And_Match_BOC.cs</DependentUpon>

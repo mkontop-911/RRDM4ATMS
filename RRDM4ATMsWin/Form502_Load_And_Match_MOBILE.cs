@@ -989,98 +989,113 @@ namespace RRDM4ATMsWin
             Message = "Matching Process Finishes.";
 
             Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, DateTime.Now, Message, WSignedId, WReconcCycleNo);
+            // CHECK IF DONE
+            // READ GL ENTRIES BY CUT OFF DATE TO FIND OUT IF ALREADY DONE
+           // Lf_BDC_ETI.Check_If_GL_ALREADY_Exist(int InRMCycle, DateTime WCutOffDate);
+            Lf_BDC_ETI.Check_If_GL_ALREADY_Exist(WReconcCycleNo, WCut_Off_Date);
 
-            int ReturnCode = -20;
-            string ErrorText = "";
-            string ErrorReference = "";
-            int ret = -1;
-            // THIS STORE PROCEDURE IS IN ATMS STore Procedures 
-            string connectionString = ConfigurationManager.ConnectionStrings
-                                          ["ATMSConnectionString"].ConnectionString;
-            // ETISALAT_TPF_FAWRY_TXNS
-            // WE LOAD TPF. After we look at Fawry to find out which ones are for Settlement 
-            int rows = 0;
-            string SPName = "";
-            //
-            // stp_ETISALAT_GL_ENTRIES
-            //
-            if (W_Application == "ETISALAT")
+            if (Lf_BDC_ETI.RecordFound == true)
             {
-                SPName = W_Application + ".[dbo].[stp_" + W_Application + "_GL_ENTRIES]";
-
-                using (SqlConnection conn2 = new SqlConnection(connectionString))
+                // SKIP GL already created 
+                MessageBox.Show(" GL already Created we will not create again ");
+            }
+            else
+            {
+                // CREATE GL 
+                int ReturnCode = -20;
+                string ErrorText = "";
+                string ErrorReference = "";
+                int ret = -1;
+                // THIS STORE PROCEDURE IS IN ATMS STore Procedures 
+                string connectionString = ConfigurationManager.ConnectionStrings
+                                              ["ATMSConnectionString"].ConnectionString;
+                // ETISALAT_TPF_FAWRY_TXNS
+                // WE LOAD TPF. After we look at Fawry to find out which ones are for Settlement 
+                int rows = 0;
+                string SPName = "";
+                //
+                // stp_ETISALAT_GL_ENTRIES
+                //
+                if (W_Application == "ETISALAT")
                 {
-                    try
+                    SPName = W_Application + ".[dbo].[stp_" + W_Application + "_GL_ENTRIES]";
+
+                    using (SqlConnection conn2 = new SqlConnection(connectionString))
                     {
+                        try
+                        {
 
-                        conn2.Open();
+                            conn2.Open();
 
-                        SqlCommand cmd = new SqlCommand(SPName, conn2);
+                            SqlCommand cmd = new SqlCommand(SPName, conn2);
 
-                        cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.CommandType = CommandType.StoredProcedure;
 
-                        // the first are input parameters
+                            // the first are input parameters
 
-                        cmd.Parameters.Add(new SqlParameter("@RMCycleNo", WReconcCycleNo));
+                            cmd.Parameters.Add(new SqlParameter("@RMCycleNo", WReconcCycleNo));
 
-                        //cmd.Parameters.Add(new SqlParameter("@businessDate", WCut_Off_Date));
-                        // cmd.Parameters.Add(new SqlParameter("@businessDate", "2024-02-01"));
+                            //cmd.Parameters.Add(new SqlParameter("@businessDate", WCut_Off_Date));
+                            // cmd.Parameters.Add(new SqlParameter("@businessDate", "2024-02-01"));
 
-                        // the following are output parameters
+                            // the following are output parameters
 
-                        SqlParameter retCode = new SqlParameter("@ReturnCode", ReturnCode);
-                        retCode.Direction = ParameterDirection.Output;
-                        retCode.SqlDbType = SqlDbType.Int;
-                        cmd.Parameters.Add(retCode);
+                            SqlParameter retCode = new SqlParameter("@ReturnCode", ReturnCode);
+                            retCode.Direction = ParameterDirection.Output;
+                            retCode.SqlDbType = SqlDbType.Int;
+                            cmd.Parameters.Add(retCode);
 
-                        SqlParameter retErrorText = new SqlParameter("@ErrorText", ErrorText);
-                        retErrorText.Direction = ParameterDirection.Output;
-                        retErrorText.SqlDbType = SqlDbType.NVarChar;
-                        retErrorText.Size = 1024;
-                        cmd.Parameters.Add(retErrorText);
+                            SqlParameter retErrorText = new SqlParameter("@ErrorText", ErrorText);
+                            retErrorText.Direction = ParameterDirection.Output;
+                            retErrorText.SqlDbType = SqlDbType.NVarChar;
+                            retErrorText.Size = 1024;
+                            cmd.Parameters.Add(retErrorText);
 
-                        SqlParameter retErrorReference = new SqlParameter("@ErrorReference", ErrorReference);
-                        retErrorReference.Direction = ParameterDirection.Output;
-                        retErrorReference.SqlDbType = SqlDbType.NVarChar;
-                        retErrorReference.Size = 40;
-                        cmd.Parameters.Add(retErrorReference);
+                            SqlParameter retErrorReference = new SqlParameter("@ErrorReference", ErrorReference);
+                            retErrorReference.Direction = ParameterDirection.Output;
+                            retErrorReference.SqlDbType = SqlDbType.NVarChar;
+                            retErrorReference.Size = 40;
+                            cmd.Parameters.Add(retErrorReference);
 
-                        // execute the command
-                        cmd.CommandTimeout = 300;  // seconds
-                        cmd.ExecuteNonQuery(); // errors will be caught in CATCH
+                            // execute the command
+                            cmd.CommandTimeout = 300;  // seconds
+                            cmd.ExecuteNonQuery(); // errors will be caught in CATCH
 
-                        ret = (int)cmd.Parameters["@ReturnCode"].Value;
-                        //ProgressText = (string)cmd.Parameters["@ProgressText"].Value;
+                            ret = (int)cmd.Parameters["@ReturnCode"].Value;
+                            //ProgressText = (string)cmd.Parameters["@ProgressText"].Value;
 
-                        conn2.Close();
+                            conn2.Close();
 
-                    }
-                    catch (Exception ex)
-                    {
-                        conn2.Close();
-                        CatchDetails(ex);
-                    }
+                        }
+                        catch (Exception ex)
+                        {
+                            conn2.Close();
+                            CatchDetails(ex);
+                        }
 
-                    if (ret == 0)
-                    {
+                        if (ret == 0)
+                        {
 
-                        // OK
-                        //MessageBox.Show("VALID CALL" + Environment.NewLine
-                        //            + ProgressText);
-                    }
-                    else
-                    {
-                        // NOT OK
-                        MessageBox.Show("NOT VALID CALL for GL Transactions" + Environment.NewLine
-                                 );
-                    }
+                            // OK
+                            //MessageBox.Show("VALID CALL" + Environment.NewLine
+                            //            + ProgressText);
+                        }
+                        else
+                        {
+                            // NOT OK
+                            MessageBox.Show("NOT VALID CALL for GL Transactions" + Environment.NewLine
+                                     );
+                        }
 
 
-                } // here
+                    } // here
+                }
+
             }
 
+
             //*********************************
-            
+
             textBoxMsgBoard.Text = "Current Status : Moving Records Process";
 
             text = "Matching has Finished" + Environment.NewLine
@@ -1496,13 +1511,13 @@ namespace RRDM4ATMsWin
             {
                 // 
                 // 
-                string connectionStringITMX = ConfigurationManager.ConnectionStrings
-             ["ReconConnectionString"].ConnectionString;
+                string connectionString = ConfigurationManager.ConnectionStrings
+                                               ["ATMSConnectionString"].ConnectionString;
 
-                string RCT = "[RRDM_Reconciliation_ITMX].[dbo].[Stp_00_UPDATE_DB_System_Stats]";
+                string RCT = "[ATMS].[dbo].[Stp_00_UPDATE_DB_System_Stats]";
 
                 using (SqlConnection conn =
-                   new SqlConnection(connectionStringITMX))
+            new SqlConnection(connectionString))
                     try
                     {
                         conn.Open();
@@ -1511,8 +1526,14 @@ namespace RRDM4ATMsWin
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             // Parameters
+                            SqlParameter retCode = new SqlParameter("@ReturnCode", ReturnCode);
+                            retCode.Direction = ParameterDirection.Output;
+                            retCode.SqlDbType = SqlDbType.Int;
+                            cmd.Parameters.Add(retCode);
 
-                            rows = cmd.ExecuteNonQuery();
+                            cmd.ExecuteNonQuery();
+
+                            ret = (int)cmd.Parameters["@ReturnCode"].Value;
                             //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
                             //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
 

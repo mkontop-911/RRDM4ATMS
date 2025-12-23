@@ -1,6 +1,6 @@
 ﻿namespace RRDM4ATMsWin
 {
-    partial class Form502_Load_And_Match_MOBILE
+    partial class Form502_Load_And_Match_ALP
     {
         /// <summary>
         /// Required designer variable.
@@ -53,29 +53,46 @@
             this.buttonFinish = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.textBoxMsgBoard = new System.Windows.Forms.TextBox();
+            this.buttonRefresh = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.buttonNotInIst = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxFileId = new System.Windows.Forms.TextBox();
             this.buttonNonProcessed = new System.Windows.Forms.Button();
             this.buttonProcessed = new System.Windows.Forms.Button();
             this.textBoxCycle = new System.Windows.Forms.TextBox();
             this.comboBoxMatchingCateg = new System.Windows.Forms.ComboBox();
+            this.buttonViewGaps = new System.Windows.Forms.Button();
+            this.buttonBadAndUgly = new System.Windows.Forms.Button();
             this.labelCycle = new System.Windows.Forms.Label();
+            this.buttonNotLoaed = new System.Windows.Forms.Button();
             this.radioButtonCategory = new System.Windows.Forms.RadioButton();
             this.radioButtonAll = new System.Windows.Forms.RadioButton();
             this.buttonUndoFile = new System.Windows.Forms.Button();
+            this.buttonERRORS = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
+            this.buttonViewFiles = new System.Windows.Forms.Button();
             this.dataGridViewFilesStatus = new System.Windows.Forms.DataGridView();
             this.buttonExportToExcel = new System.Windows.Forms.Button();
             this.linkLabelExpand = new System.Windows.Forms.LinkLabel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.buttonUNDO = new System.Windows.Forms.Button();
+            this.buttonTemp = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.linkLabelPerf_Matching = new System.Windows.Forms.LinkLabel();
+            this.buttonUNDO_Journals = new System.Windows.Forms.Button();
+            this.linkLabelPerf_Journals = new System.Windows.Forms.LinkLabel();
             this.linkLabelPerf_Files = new System.Windows.Forms.LinkLabel();
             this.textBoxInDirForLoading = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.buttonLoadJournals = new System.Windows.Forms.Button();
             this.buttonDoMatching = new System.Windows.Forms.Button();
             this.buttonLoadFiles = new System.Windows.Forms.Button();
             this.panelLoaded = new System.Windows.Forms.Panel();
@@ -93,26 +110,28 @@
             this.buttonShowComment = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.textBoxFilesReady = new System.Windows.Forms.TextBox();
+            this.textBoxNotReady = new System.Windows.Forms.TextBox();
             this.textBoxNumberOfFiles = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.dataGridViewFiles = new System.Windows.Forms.DataGridView();
             this.labelFieldsDefinition = new System.Windows.Forms.Label();
             this.labelRMCategory = new System.Windows.Forms.Label();
             this.panelCategories = new System.Windows.Forms.Panel();
-            this.buttonGL_AND_Disputes = new System.Windows.Forms.Button();
-            this.buttonTEST_4_GRIDS = new System.Windows.Forms.Button();
-            this.buttonDisputePreInvestigation = new System.Windows.Forms.Button();
-            this.buttonMatched = new System.Windows.Forms.Button();
-            this.buttonActionsTaken = new System.Windows.Forms.Button();
-            this.buttonDiscr_All_Categ = new System.Windows.Forms.Button();
-            this.buttonDiscrCategory = new System.Windows.Forms.Button();
+            this.buttonGL_View = new System.Windows.Forms.Button();
+            this.buttonReplReport = new System.Windows.Forms.Button();
             this.linkLabelShowFiles = new System.Windows.Forms.LinkLabel();
             this.buttonViewGroupCateg = new System.Windows.Forms.Button();
+            this.buttonMatched = new System.Windows.Forms.Button();
             this.label_Categ_Name = new System.Windows.Forms.Label();
+            this.buttonDiscrCategory = new System.Windows.Forms.Button();
+            this.buttonDiscr_All_ATMS = new System.Windows.Forms.Button();
+            this.buttonDiscrep = new System.Windows.Forms.Button();
             this.buttonViewAllLinesMatching = new System.Windows.Forms.Button();
             this.buttonViewRCS = new System.Windows.Forms.Button();
             this.textBoxCateg = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
+            this.buttonMatching = new System.Windows.Forms.Button();
             this.dataGridViewMatched = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.timerJournals = new System.Windows.Forms.Timer(this.components);
@@ -151,7 +170,7 @@
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1284, 79);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1313, 79);
             this.tableLayoutPanelHeader.TabIndex = 271;
             // 
             // tableLayoutPanel4
@@ -169,7 +188,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 82F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1280, 82);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1309, 82);
             this.tableLayoutPanel4.TabIndex = 249;
             // 
             // tableLayoutPanel1
@@ -178,7 +197,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(1139, 1);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(1168, 1);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
@@ -345,7 +364,7 @@
             this.buttonFinish.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonFinish.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonFinish.ForeColor = System.Drawing.Color.White;
-            this.buttonFinish.Location = new System.Drawing.Point(1199, 1);
+            this.buttonFinish.Location = new System.Drawing.Point(1228, 1);
             this.buttonFinish.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.buttonFinish.Name = "buttonFinish";
             this.buttonFinish.Size = new System.Drawing.Size(76, 27);
@@ -363,13 +382,14 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.tableLayoutPanel2.Controls.Add(this.textBoxMsgBoard, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonFinish, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.buttonRefresh, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 719);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1280, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1309, 36);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
             // textBoxMsgBoard
@@ -384,10 +404,27 @@
             this.textBoxMsgBoard.Multiline = true;
             this.textBoxMsgBoard.Name = "textBoxMsgBoard";
             this.textBoxMsgBoard.ReadOnly = true;
-            this.textBoxMsgBoard.Size = new System.Drawing.Size(1019, 34);
+            this.textBoxMsgBoard.Size = new System.Drawing.Size(1048, 34);
             this.textBoxMsgBoard.TabIndex = 242;
             this.textBoxMsgBoard.TabStop = false;
             this.textBoxMsgBoard.Text = "No guidance information available.";
+            // 
+            // buttonRefresh
+            // 
+            this.buttonRefresh.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.buttonRefresh.FlatAppearance.BorderSize = 2;
+            this.buttonRefresh.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonRefresh.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonRefresh.ForeColor = System.Drawing.Color.White;
+            this.buttonRefresh.Location = new System.Drawing.Point(1145, 1);
+            this.buttonRefresh.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.Size = new System.Drawing.Size(76, 27);
+            this.buttonRefresh.TabIndex = 247;
+            this.buttonRefresh.Text = "Refresh";
+            this.buttonRefresh.UseVisualStyleBackColor = true;
+            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
             // panel1
             // 
@@ -410,7 +447,7 @@
             this.panel1.ForeColor = System.Drawing.Color.Black;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1278, 710);
+            this.panel1.Size = new System.Drawing.Size(1307, 710);
             this.panel1.TabIndex = 243;
             // 
             // label5
@@ -427,22 +464,44 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
+            this.panel3.Controls.Add(this.buttonNotInIst);
             this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.textBoxFileId);
             this.panel3.Controls.Add(this.buttonNonProcessed);
             this.panel3.Controls.Add(this.buttonProcessed);
             this.panel3.Controls.Add(this.textBoxCycle);
             this.panel3.Controls.Add(this.comboBoxMatchingCateg);
+            this.panel3.Controls.Add(this.buttonViewGaps);
+            this.panel3.Controls.Add(this.buttonBadAndUgly);
             this.panel3.Controls.Add(this.labelCycle);
+            this.panel3.Controls.Add(this.buttonNotLoaed);
             this.panel3.Controls.Add(this.radioButtonCategory);
             this.panel3.Controls.Add(this.radioButtonAll);
             this.panel3.Controls.Add(this.buttonUndoFile);
+            this.panel3.Controls.Add(this.buttonERRORS);
             this.panel3.Controls.Add(this.label10);
+            this.panel3.Controls.Add(this.buttonViewFiles);
             this.panel3.Controls.Add(this.dataGridViewFilesStatus);
             this.panel3.Location = new System.Drawing.Point(9, 553);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(723, 275);
             this.panel3.TabIndex = 437;
+            // 
+            // buttonNotInIst
+            // 
+            this.buttonNotInIst.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonNotInIst.FlatAppearance.BorderSize = 2;
+            this.buttonNotInIst.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonNotInIst.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonNotInIst.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonNotInIst.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonNotInIst.Location = new System.Drawing.Point(533, 201);
+            this.buttonNotInIst.Name = "buttonNotInIst";
+            this.buttonNotInIst.Size = new System.Drawing.Size(166, 27);
+            this.buttonNotInIst.TabIndex = 551;
+            this.buttonNotInIst.Text = "NOT in IST";
+            this.buttonNotInIst.UseVisualStyleBackColor = true;
+            this.buttonNotInIst.Click += new System.EventHandler(this.buttonNotInIst_Click);
             // 
             // label2
             // 
@@ -522,6 +581,42 @@
             this.comboBoxMatchingCateg.Size = new System.Drawing.Size(417, 26);
             this.comboBoxMatchingCateg.TabIndex = 534;
             // 
+            // buttonViewGaps
+            // 
+            this.buttonViewGaps.BackColor = System.Drawing.Color.White;
+            this.buttonViewGaps.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonViewGaps.FlatAppearance.BorderSize = 2;
+            this.buttonViewGaps.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonViewGaps.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonViewGaps.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonViewGaps.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonViewGaps.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonViewGaps.Location = new System.Drawing.Point(619, 115);
+            this.buttonViewGaps.Name = "buttonViewGaps";
+            this.buttonViewGaps.Size = new System.Drawing.Size(80, 39);
+            this.buttonViewGaps.TabIndex = 541;
+            this.buttonViewGaps.Text = "View Gaps";
+            this.buttonViewGaps.UseVisualStyleBackColor = false;
+            this.buttonViewGaps.Click += new System.EventHandler(this.buttonViewGaps_Click);
+            // 
+            // buttonBadAndUgly
+            // 
+            this.buttonBadAndUgly.BackColor = System.Drawing.Color.White;
+            this.buttonBadAndUgly.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonBadAndUgly.FlatAppearance.BorderSize = 2;
+            this.buttonBadAndUgly.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonBadAndUgly.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonBadAndUgly.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonBadAndUgly.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonBadAndUgly.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonBadAndUgly.Location = new System.Drawing.Point(533, 160);
+            this.buttonBadAndUgly.Name = "buttonBadAndUgly";
+            this.buttonBadAndUgly.Size = new System.Drawing.Size(166, 35);
+            this.buttonBadAndUgly.TabIndex = 538;
+            this.buttonBadAndUgly.Text = "The Good And The Bad";
+            this.buttonBadAndUgly.UseVisualStyleBackColor = false;
+            this.buttonBadAndUgly.Click += new System.EventHandler(this.buttonBadAndUgly_Click);
+            // 
             // labelCycle
             // 
             this.labelCycle.AutoSize = true;
@@ -530,6 +625,24 @@
             this.labelCycle.Size = new System.Drawing.Size(33, 13);
             this.labelCycle.TabIndex = 545;
             this.labelCycle.Text = "Cycle";
+            // 
+            // buttonNotLoaed
+            // 
+            this.buttonNotLoaed.BackColor = System.Drawing.Color.White;
+            this.buttonNotLoaed.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonNotLoaed.FlatAppearance.BorderSize = 2;
+            this.buttonNotLoaed.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonNotLoaed.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonNotLoaed.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonNotLoaed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonNotLoaed.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonNotLoaed.Location = new System.Drawing.Point(533, 115);
+            this.buttonNotLoaed.Name = "buttonNotLoaed";
+            this.buttonNotLoaed.Size = new System.Drawing.Size(80, 39);
+            this.buttonNotLoaed.TabIndex = 529;
+            this.buttonNotLoaed.Text = "View Not Loaded Journals";
+            this.buttonNotLoaed.UseVisualStyleBackColor = false;
+            this.buttonNotLoaed.Click += new System.EventHandler(this.buttonNotLoaed_Click);
             // 
             // radioButtonCategory
             // 
@@ -575,6 +688,24 @@
             this.buttonUndoFile.UseVisualStyleBackColor = false;
             this.buttonUndoFile.Click += new System.EventHandler(this.buttonUndoFile_Click);
             // 
+            // buttonERRORS
+            // 
+            this.buttonERRORS.BackColor = System.Drawing.Color.White;
+            this.buttonERRORS.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonERRORS.FlatAppearance.BorderSize = 2;
+            this.buttonERRORS.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonERRORS.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonERRORS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonERRORS.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonERRORS.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonERRORS.Location = new System.Drawing.Point(533, 74);
+            this.buttonERRORS.Name = "buttonERRORS";
+            this.buttonERRORS.Size = new System.Drawing.Size(166, 35);
+            this.buttonERRORS.TabIndex = 528;
+            this.buttonERRORS.Text = "View ERRORS Loaded";
+            this.buttonERRORS.UseVisualStyleBackColor = false;
+            this.buttonERRORS.Click += new System.EventHandler(this.buttonERRORS_Click);
+            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -585,6 +716,22 @@
             this.label10.Size = new System.Drawing.Size(118, 17);
             this.label10.TabIndex = 499;
             this.label10.Text = "Current Entries";
+            // 
+            // buttonViewFiles
+            // 
+            this.buttonViewFiles.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonViewFiles.FlatAppearance.BorderSize = 2;
+            this.buttonViewFiles.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonViewFiles.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonViewFiles.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonViewFiles.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonViewFiles.Location = new System.Drawing.Point(533, 41);
+            this.buttonViewFiles.Name = "buttonViewFiles";
+            this.buttonViewFiles.Size = new System.Drawing.Size(166, 27);
+            this.buttonViewFiles.TabIndex = 435;
+            this.buttonViewFiles.Text = "View Loaded Journals";
+            this.buttonViewFiles.UseVisualStyleBackColor = true;
+            this.buttonViewFiles.Click += new System.EventHandler(this.buttonViewFiles_Click);
             // 
             // dataGridViewFilesStatus
             // 
@@ -660,11 +807,21 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.Honeydew;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.buttonUNDO);
+            this.panel2.Controls.Add(this.buttonTemp);
+            this.panel2.Controls.Add(this.button2);
             this.panel2.Controls.Add(this.linkLabelPerf_Matching);
+            this.panel2.Controls.Add(this.buttonUNDO_Journals);
+            this.panel2.Controls.Add(this.linkLabelPerf_Journals);
             this.panel2.Controls.Add(this.linkLabelPerf_Files);
             this.panel2.Controls.Add(this.textBoxInDirForLoading);
             this.panel2.Controls.Add(this.label19);
+            this.panel2.Controls.Add(this.textBox2);
+            this.panel2.Controls.Add(this.label18);
+            this.panel2.Controls.Add(this.textBox3);
+            this.panel2.Controls.Add(this.label17);
+            this.panel2.Controls.Add(this.textBox1);
+            this.panel2.Controls.Add(this.label15);
+            this.panel2.Controls.Add(this.buttonLoadJournals);
             this.panel2.Controls.Add(this.buttonDoMatching);
             this.panel2.Controls.Add(this.buttonLoadFiles);
             this.panel2.Location = new System.Drawing.Point(9, 367);
@@ -672,27 +829,45 @@
             this.panel2.Size = new System.Drawing.Size(723, 163);
             this.panel2.TabIndex = 350;
             // 
-            // buttonUNDO
+            // buttonTemp
             // 
-            this.buttonUNDO.BackColor = System.Drawing.Color.White;
-            this.buttonUNDO.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonUNDO.FlatAppearance.BorderSize = 2;
-            this.buttonUNDO.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonUNDO.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.buttonUNDO.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonUNDO.Location = new System.Drawing.Point(361, 106);
-            this.buttonUNDO.Name = "buttonUNDO";
-            this.buttonUNDO.Size = new System.Drawing.Size(101, 42);
-            this.buttonUNDO.TabIndex = 495;
-            this.buttonUNDO.Text = "UNDO \r\nFiles & Match";
-            this.buttonUNDO.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonUNDO.UseVisualStyleBackColor = false;
-            this.buttonUNDO.Click += new System.EventHandler(this.buttonUNDO_Click);
+            this.buttonTemp.BackColor = System.Drawing.Color.White;
+            this.buttonTemp.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonTemp.FlatAppearance.BorderSize = 2;
+            this.buttonTemp.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonTemp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonTemp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonTemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonTemp.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonTemp.Location = new System.Drawing.Point(386, 106);
+            this.buttonTemp.Name = "buttonTemp";
+            this.buttonTemp.Size = new System.Drawing.Size(80, 39);
+            this.buttonTemp.TabIndex = 550;
+            this.buttonTemp.Text = "Excel To Tap";
+            this.buttonTemp.UseVisualStyleBackColor = false;
+            this.buttonTemp.Click += new System.EventHandler(this.buttonTemp_Click);
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.White;
+            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button2.FlatAppearance.BorderSize = 2;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.button2.Location = new System.Drawing.Point(610, 111);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(101, 42);
+            this.button2.TabIndex = 495;
+            this.button2.Text = "UNDO \r\nFiles,Match";
+            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // linkLabelPerf_Matching
             // 
             this.linkLabelPerf_Matching.AutoSize = true;
-            this.linkLabelPerf_Matching.Location = new System.Drawing.Point(557, 53);
+            this.linkLabelPerf_Matching.Location = new System.Drawing.Point(610, 53);
             this.linkLabelPerf_Matching.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.linkLabelPerf_Matching.Name = "linkLabelPerf_Matching";
             this.linkLabelPerf_Matching.Size = new System.Drawing.Size(89, 13);
@@ -701,10 +876,39 @@
             this.linkLabelPerf_Matching.Text = "link_Performance";
             this.linkLabelPerf_Matching.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelPerf_Matching_LinkClicked);
             // 
+            // buttonUNDO_Journals
+            // 
+            this.buttonUNDO_Journals.BackColor = System.Drawing.Color.White;
+            this.buttonUNDO_Journals.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonUNDO_Journals.FlatAppearance.BorderSize = 2;
+            this.buttonUNDO_Journals.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonUNDO_Journals.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonUNDO_Journals.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonUNDO_Journals.Location = new System.Drawing.Point(167, 111);
+            this.buttonUNDO_Journals.Name = "buttonUNDO_Journals";
+            this.buttonUNDO_Journals.Size = new System.Drawing.Size(95, 42);
+            this.buttonUNDO_Journals.TabIndex = 537;
+            this.buttonUNDO_Journals.Text = "UNDO \r\nJournals";
+            this.buttonUNDO_Journals.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonUNDO_Journals.UseVisualStyleBackColor = false;
+            this.buttonUNDO_Journals.Click += new System.EventHandler(this.buttonUNDO_Journals_Click);
+            // 
+            // linkLabelPerf_Journals
+            // 
+            this.linkLabelPerf_Journals.AutoSize = true;
+            this.linkLabelPerf_Journals.Location = new System.Drawing.Point(62, 53);
+            this.linkLabelPerf_Journals.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.linkLabelPerf_Journals.Name = "linkLabelPerf_Journals";
+            this.linkLabelPerf_Journals.Size = new System.Drawing.Size(89, 13);
+            this.linkLabelPerf_Journals.TabIndex = 548;
+            this.linkLabelPerf_Journals.TabStop = true;
+            this.linkLabelPerf_Journals.Text = "link_Performance";
+            this.linkLabelPerf_Journals.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelPerf_Journals_LinkClicked);
+            // 
             // linkLabelPerf_Files
             // 
             this.linkLabelPerf_Files.AutoSize = true;
-            this.linkLabelPerf_Files.Location = new System.Drawing.Point(174, 53);
+            this.linkLabelPerf_Files.Location = new System.Drawing.Point(384, 53);
             this.linkLabelPerf_Files.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.linkLabelPerf_Files.Name = "linkLabelPerf_Files";
             this.linkLabelPerf_Files.Size = new System.Drawing.Size(86, 13);
@@ -716,7 +920,7 @@
             // textBoxInDirForLoading
             // 
             this.textBoxInDirForLoading.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.textBoxInDirForLoading.Location = new System.Drawing.Point(218, 73);
+            this.textBoxInDirForLoading.Location = new System.Drawing.Point(428, 73);
             this.textBoxInDirForLoading.Name = "textBoxInDirForLoading";
             this.textBoxInDirForLoading.ReadOnly = true;
             this.textBoxInDirForLoading.Size = new System.Drawing.Size(51, 23);
@@ -726,11 +930,87 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(174, 75);
+            this.label19.Location = new System.Drawing.Point(384, 75);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(38, 13);
             this.label19.TabIndex = 491;
             this.label19.Text = "In DIR";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.textBox2.Location = new System.Drawing.Point(110, 97);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
+            this.textBox2.Size = new System.Drawing.Size(51, 23);
+            this.textBox2.TabIndex = 489;
+            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(49, 103);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(59, 13);
+            this.label18.TabIndex = 488;
+            this.label18.Text = "Valid Read";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.textBox3.Location = new System.Drawing.Point(110, 123);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
+            this.textBox3.Size = new System.Drawing.Size(51, 23);
+            this.textBox3.TabIndex = 487;
+            this.textBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(37, 125);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(70, 13);
+            this.label17.TabIndex = 486;
+            this.label17.Text = "Invalid  Read";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.textBox1.Location = new System.Drawing.Point(110, 70);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(51, 23);
+            this.textBox1.TabIndex = 485;
+            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(63, 75);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(38, 13);
+            this.label15.TabIndex = 484;
+            this.label15.Text = "In DIR";
+            // 
+            // buttonLoadJournals
+            // 
+            this.buttonLoadJournals.BackColor = System.Drawing.Color.White;
+            this.buttonLoadJournals.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonLoadJournals.FlatAppearance.BorderSize = 2;
+            this.buttonLoadJournals.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonLoadJournals.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonLoadJournals.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonLoadJournals.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonLoadJournals.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonLoadJournals.Location = new System.Drawing.Point(56, 6);
+            this.buttonLoadJournals.Name = "buttonLoadJournals";
+            this.buttonLoadJournals.Size = new System.Drawing.Size(105, 45);
+            this.buttonLoadJournals.TabIndex = 483;
+            this.buttonLoadJournals.Text = "1. LOAD JOURNALS";
+            this.buttonLoadJournals.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonLoadJournals.UseVisualStyleBackColor = false;
+            this.buttonLoadJournals.Click += new System.EventHandler(this.buttonLoadJournals_Click);
             // 
             // buttonDoMatching
             // 
@@ -742,11 +1022,11 @@
             this.buttonDoMatching.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDoMatching.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.buttonDoMatching.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonDoMatching.Location = new System.Drawing.Point(553, 5);
+            this.buttonDoMatching.Location = new System.Drawing.Point(607, 6);
             this.buttonDoMatching.Name = "buttonDoMatching";
-            this.buttonDoMatching.Size = new System.Drawing.Size(103, 45);
+            this.buttonDoMatching.Size = new System.Drawing.Size(105, 45);
             this.buttonDoMatching.TabIndex = 481;
-            this.buttonDoMatching.Text = "2. DO MATCHING";
+            this.buttonDoMatching.Text = "3. DO MATCHING";
             this.buttonDoMatching.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonDoMatching.UseVisualStyleBackColor = false;
             this.buttonDoMatching.Click += new System.EventHandler(this.buttonDoMatching_Click);
@@ -761,11 +1041,11 @@
             this.buttonLoadFiles.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonLoadFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.buttonLoadFiles.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonLoadFiles.Location = new System.Drawing.Point(171, 5);
+            this.buttonLoadFiles.Location = new System.Drawing.Point(381, 5);
             this.buttonLoadFiles.Name = "buttonLoadFiles";
             this.buttonLoadFiles.Size = new System.Drawing.Size(105, 45);
             this.buttonLoadFiles.TabIndex = 480;
-            this.buttonLoadFiles.Text = "1. LOAD FILES";
+            this.buttonLoadFiles.Text = "2. LOAD FILES";
             this.buttonLoadFiles.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonLoadFiles.UseVisualStyleBackColor = false;
             this.buttonLoadFiles.Click += new System.EventHandler(this.buttonLoadFiles_Click);
@@ -784,6 +1064,7 @@
             this.panelLoaded.Name = "panelLoaded";
             this.panelLoaded.Size = new System.Drawing.Size(521, 239);
             this.panelLoaded.TabIndex = 352;
+            this.panelLoaded.Visible = false;
             // 
             // buttonLineDates
             // 
@@ -899,6 +1180,7 @@
             this.label4.Size = new System.Drawing.Size(313, 18);
             this.label4.TabIndex = 351;
             this.label4.Text = "LOADED FILES IN RRDM REPOSITORY";
+            this.label4.Visible = false;
             // 
             // label12
             // 
@@ -928,7 +1210,9 @@
             this.panelFiles.Controls.Add(this.buttonShowComment);
             this.panelFiles.Controls.Add(this.label9);
             this.panelFiles.Controls.Add(this.textBoxFilesReady);
+            this.panelFiles.Controls.Add(this.textBoxNotReady);
             this.panelFiles.Controls.Add(this.textBoxNumberOfFiles);
+            this.panelFiles.Controls.Add(this.label7);
             this.panelFiles.Controls.Add(this.label6);
             this.panelFiles.Controls.Add(this.dataGridViewFiles);
             this.panelFiles.Location = new System.Drawing.Point(9, 103);
@@ -970,6 +1254,15 @@
             this.textBoxFilesReady.TabIndex = 365;
             this.textBoxFilesReady.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // textBoxNotReady
+            // 
+            this.textBoxNotReady.Location = new System.Drawing.Point(483, 208);
+            this.textBoxNotReady.Name = "textBoxNotReady";
+            this.textBoxNotReady.ReadOnly = true;
+            this.textBoxNotReady.Size = new System.Drawing.Size(46, 20);
+            this.textBoxNotReady.TabIndex = 362;
+            this.textBoxNotReady.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // textBoxNumberOfFiles
             // 
             this.textBoxNumberOfFiles.Location = new System.Drawing.Point(101, 209);
@@ -978,6 +1271,15 @@
             this.textBoxNumberOfFiles.Size = new System.Drawing.Size(48, 20);
             this.textBoxNumberOfFiles.TabIndex = 361;
             this.textBoxNumberOfFiles.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(397, 214);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(58, 13);
+            this.label7.TabIndex = 356;
+            this.label7.Text = "Not Ready";
             // 
             // label6
             // 
@@ -1030,142 +1332,60 @@
             // panelCategories
             // 
             this.panelCategories.BackColor = System.Drawing.Color.White;
-            this.panelCategories.Controls.Add(this.buttonGL_AND_Disputes);
-            this.panelCategories.Controls.Add(this.buttonTEST_4_GRIDS);
-            this.panelCategories.Controls.Add(this.buttonDisputePreInvestigation);
-            this.panelCategories.Controls.Add(this.buttonMatched);
-            this.panelCategories.Controls.Add(this.buttonActionsTaken);
-            this.panelCategories.Controls.Add(this.buttonDiscr_All_Categ);
-            this.panelCategories.Controls.Add(this.buttonDiscrCategory);
+            this.panelCategories.Controls.Add(this.buttonGL_View);
+            this.panelCategories.Controls.Add(this.buttonReplReport);
             this.panelCategories.Controls.Add(this.linkLabelShowFiles);
             this.panelCategories.Controls.Add(this.buttonViewGroupCateg);
+            this.panelCategories.Controls.Add(this.buttonMatched);
             this.panelCategories.Controls.Add(this.label_Categ_Name);
+            this.panelCategories.Controls.Add(this.buttonDiscrCategory);
+            this.panelCategories.Controls.Add(this.buttonDiscr_All_ATMS);
+            this.panelCategories.Controls.Add(this.buttonDiscrep);
             this.panelCategories.Controls.Add(this.buttonViewAllLinesMatching);
             this.panelCategories.Controls.Add(this.buttonViewRCS);
             this.panelCategories.Controls.Add(this.textBoxCateg);
             this.panelCategories.Controls.Add(this.label20);
+            this.panelCategories.Controls.Add(this.buttonMatching);
             this.panelCategories.Controls.Add(this.dataGridViewMatched);
             this.panelCategories.Location = new System.Drawing.Point(751, 371);
             this.panelCategories.Name = "panelCategories";
-            this.panelCategories.Size = new System.Drawing.Size(521, 416);
+            this.panelCategories.Size = new System.Drawing.Size(521, 454);
             this.panelCategories.TabIndex = 4;
             // 
-            // buttonGL_AND_Disputes
+            // buttonGL_View
             // 
-            this.buttonGL_AND_Disputes.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonGL_AND_Disputes.FlatAppearance.BorderSize = 2;
-            this.buttonGL_AND_Disputes.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonGL_AND_Disputes.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonGL_AND_Disputes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonGL_AND_Disputes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonGL_AND_Disputes.Location = new System.Drawing.Point(10, 326);
-            this.buttonGL_AND_Disputes.Name = "buttonGL_AND_Disputes";
-            this.buttonGL_AND_Disputes.Size = new System.Drawing.Size(159, 27);
-            this.buttonGL_AND_Disputes.TabIndex = 553;
-            this.buttonGL_AND_Disputes.Text = "GL And Dispute Entries";
-            this.buttonGL_AND_Disputes.UseVisualStyleBackColor = true;
-            this.buttonGL_AND_Disputes.Click += new System.EventHandler(this.buttonGL_AND_Disputes_Click);
+            this.buttonGL_View.BackColor = System.Drawing.Color.GreenYellow;
+            this.buttonGL_View.FlatAppearance.BorderSize = 0;
+            this.buttonGL_View.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonGL_View.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonGL_View.ForeColor = System.Drawing.Color.Black;
+            this.buttonGL_View.Location = new System.Drawing.Point(195, 414);
+            this.buttonGL_View.Name = "buttonGL_View";
+            this.buttonGL_View.Size = new System.Drawing.Size(130, 35);
+            this.buttonGL_View.TabIndex = 497;
+            this.buttonGL_View.Text = "GL View";
+            this.buttonGL_View.UseVisualStyleBackColor = false;
+            this.buttonGL_View.Click += new System.EventHandler(this.buttonGL_View_Click);
             // 
-            // buttonTEST_4_GRIDS
+            // buttonReplReport
             // 
-            this.buttonTEST_4_GRIDS.BackColor = System.Drawing.Color.White;
-            this.buttonTEST_4_GRIDS.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonTEST_4_GRIDS.FlatAppearance.BorderSize = 2;
-            this.buttonTEST_4_GRIDS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonTEST_4_GRIDS.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.buttonTEST_4_GRIDS.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonTEST_4_GRIDS.Location = new System.Drawing.Point(9, 357);
-            this.buttonTEST_4_GRIDS.Name = "buttonTEST_4_GRIDS";
-            this.buttonTEST_4_GRIDS.Size = new System.Drawing.Size(159, 27);
-            this.buttonTEST_4_GRIDS.TabIndex = 552;
-            this.buttonTEST_4_GRIDS.Text = "4_GRIDS";
-            this.buttonTEST_4_GRIDS.UseVisualStyleBackColor = false;
-            this.buttonTEST_4_GRIDS.Click += new System.EventHandler(this.buttonTEST_4_GRIDS_Click);
-            // 
-            // buttonDisputePreInvestigation
-            // 
-            this.buttonDisputePreInvestigation.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonDisputePreInvestigation.FlatAppearance.BorderSize = 2;
-            this.buttonDisputePreInvestigation.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonDisputePreInvestigation.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonDisputePreInvestigation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonDisputePreInvestigation.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonDisputePreInvestigation.Location = new System.Drawing.Point(229, 324);
-            this.buttonDisputePreInvestigation.Name = "buttonDisputePreInvestigation";
-            this.buttonDisputePreInvestigation.Size = new System.Drawing.Size(144, 27);
-            this.buttonDisputePreInvestigation.TabIndex = 500;
-            this.buttonDisputePreInvestigation.Text = "Dispute Pre-Investigation";
-            this.buttonDisputePreInvestigation.UseVisualStyleBackColor = true;
-            this.buttonDisputePreInvestigation.Click += new System.EventHandler(this.buttonDisputePreInvestigation_Click);
-            // 
-            // buttonMatched
-            // 
-            this.buttonMatched.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonMatched.FlatAppearance.BorderSize = 2;
-            this.buttonMatched.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonMatched.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonMatched.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonMatched.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonMatched.Location = new System.Drawing.Point(9, 294);
-            this.buttonMatched.Name = "buttonMatched";
-            this.buttonMatched.Size = new System.Drawing.Size(159, 27);
-            this.buttonMatched.TabIndex = 499;
-            this.buttonMatched.Text = "Matched Per Category";
-            this.buttonMatched.UseVisualStyleBackColor = true;
-            this.buttonMatched.Click += new System.EventHandler(this.buttonMatched_Click_1);
-            // 
-            // buttonActionsTaken
-            // 
-            this.buttonActionsTaken.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonActionsTaken.FlatAppearance.BorderSize = 2;
-            this.buttonActionsTaken.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonActionsTaken.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonActionsTaken.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonActionsTaken.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonActionsTaken.Location = new System.Drawing.Point(228, 294);
-            this.buttonActionsTaken.Name = "buttonActionsTaken";
-            this.buttonActionsTaken.Size = new System.Drawing.Size(144, 27);
-            this.buttonActionsTaken.TabIndex = 498;
-            this.buttonActionsTaken.Text = "Actions Taken";
-            this.buttonActionsTaken.UseVisualStyleBackColor = true;
-            this.buttonActionsTaken.Click += new System.EventHandler(this.buttonActionsTaken_Click);
-            // 
-            // buttonDiscr_All_Categ
-            // 
-            this.buttonDiscr_All_Categ.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonDiscr_All_Categ.FlatAppearance.BorderSize = 2;
-            this.buttonDiscr_All_Categ.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonDiscr_All_Categ.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonDiscr_All_Categ.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonDiscr_All_Categ.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonDiscr_All_Categ.Location = new System.Drawing.Point(228, 265);
-            this.buttonDiscr_All_Categ.Name = "buttonDiscr_All_Categ";
-            this.buttonDiscr_All_Categ.Size = new System.Drawing.Size(144, 27);
-            this.buttonDiscr_All_Categ.TabIndex = 497;
-            this.buttonDiscr_All_Categ.Text = "Discrepancies All Categ";
-            this.buttonDiscr_All_Categ.UseVisualStyleBackColor = true;
-            this.buttonDiscr_All_Categ.Click += new System.EventHandler(this.buttonDiscr_All_Categ_Click);
-            // 
-            // buttonDiscrCategory
-            // 
-            this.buttonDiscrCategory.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonDiscrCategory.FlatAppearance.BorderSize = 2;
-            this.buttonDiscrCategory.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonDiscrCategory.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonDiscrCategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonDiscrCategory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonDiscrCategory.Location = new System.Drawing.Point(8, 265);
-            this.buttonDiscrCategory.Name = "buttonDiscrCategory";
-            this.buttonDiscrCategory.Size = new System.Drawing.Size(159, 27);
-            this.buttonDiscrCategory.TabIndex = 496;
-            this.buttonDiscrCategory.Text = "Discrepancies Per Category";
-            this.buttonDiscrCategory.UseVisualStyleBackColor = true;
-            this.buttonDiscrCategory.Click += new System.EventHandler(this.buttonDiscrCategory_Click_1);
+            this.buttonReplReport.BackColor = System.Drawing.Color.GreenYellow;
+            this.buttonReplReport.FlatAppearance.BorderSize = 0;
+            this.buttonReplReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonReplReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonReplReport.ForeColor = System.Drawing.Color.Black;
+            this.buttonReplReport.Location = new System.Drawing.Point(34, 415);
+            this.buttonReplReport.Name = "buttonReplReport";
+            this.buttonReplReport.Size = new System.Drawing.Size(130, 35);
+            this.buttonReplReport.TabIndex = 496;
+            this.buttonReplReport.Text = "Repl View";
+            this.buttonReplReport.UseVisualStyleBackColor = false;
+            this.buttonReplReport.Click += new System.EventHandler(this.buttonReplReport_Click);
             // 
             // linkLabelShowFiles
             // 
             this.linkLabelShowFiles.AutoSize = true;
-            this.linkLabelShowFiles.Location = new System.Drawing.Point(156, 245);
+            this.linkLabelShowFiles.Location = new System.Drawing.Point(156, 323);
             this.linkLabelShowFiles.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.linkLabelShowFiles.Name = "linkLabelShowFiles";
             this.linkLabelShowFiles.Size = new System.Drawing.Size(58, 13);
@@ -1182,7 +1402,7 @@
             this.buttonViewGroupCateg.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonViewGroupCateg.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonViewGroupCateg.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonViewGroupCateg.Location = new System.Drawing.Point(380, 239);
+            this.buttonViewGroupCateg.Location = new System.Drawing.Point(380, 309);
             this.buttonViewGroupCateg.Name = "buttonViewGroupCateg";
             this.buttonViewGroupCateg.Size = new System.Drawing.Size(129, 27);
             this.buttonViewGroupCateg.TabIndex = 494;
@@ -1190,16 +1410,80 @@
             this.buttonViewGroupCateg.UseVisualStyleBackColor = true;
             this.buttonViewGroupCateg.Click += new System.EventHandler(this.buttonViewGroupCateg_Click);
             // 
+            // buttonMatched
+            // 
+            this.buttonMatched.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonMatched.FlatAppearance.BorderSize = 2;
+            this.buttonMatched.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonMatched.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonMatched.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonMatched.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonMatched.Location = new System.Drawing.Point(34, 370);
+            this.buttonMatched.Name = "buttonMatched";
+            this.buttonMatched.Size = new System.Drawing.Size(159, 27);
+            this.buttonMatched.TabIndex = 493;
+            this.buttonMatched.Text = "Matched Per Category";
+            this.buttonMatched.UseVisualStyleBackColor = true;
+            this.buttonMatched.Click += new System.EventHandler(this.buttonMatched_Click);
+            // 
             // label_Categ_Name
             // 
             this.label_Categ_Name.AutoSize = true;
             this.label_Categ_Name.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_Categ_Name.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label_Categ_Name.Location = new System.Drawing.Point(156, 228);
+            this.label_Categ_Name.Location = new System.Drawing.Point(156, 309);
             this.label_Categ_Name.Name = "label_Categ_Name";
             this.label_Categ_Name.Size = new System.Drawing.Size(137, 15);
             this.label_Categ_Name.TabIndex = 492;
             this.label_Categ_Name.Text = "LabelCategoryName";
+            // 
+            // buttonDiscrCategory
+            // 
+            this.buttonDiscrCategory.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonDiscrCategory.FlatAppearance.BorderSize = 2;
+            this.buttonDiscrCategory.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonDiscrCategory.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonDiscrCategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonDiscrCategory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonDiscrCategory.Location = new System.Drawing.Point(200, 370);
+            this.buttonDiscrCategory.Name = "buttonDiscrCategory";
+            this.buttonDiscrCategory.Size = new System.Drawing.Size(159, 27);
+            this.buttonDiscrCategory.TabIndex = 441;
+            this.buttonDiscrCategory.Text = "Discrepancies Per Category";
+            this.buttonDiscrCategory.UseVisualStyleBackColor = true;
+            this.buttonDiscrCategory.Click += new System.EventHandler(this.buttonDiscrCategory_Click);
+            // 
+            // buttonDiscr_All_ATMS
+            // 
+            this.buttonDiscr_All_ATMS.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonDiscr_All_ATMS.FlatAppearance.BorderSize = 2;
+            this.buttonDiscr_All_ATMS.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonDiscr_All_ATMS.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonDiscr_All_ATMS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonDiscr_All_ATMS.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonDiscr_All_ATMS.Location = new System.Drawing.Point(34, 339);
+            this.buttonDiscr_All_ATMS.Name = "buttonDiscr_All_ATMS";
+            this.buttonDiscr_All_ATMS.Size = new System.Drawing.Size(129, 27);
+            this.buttonDiscr_All_ATMS.TabIndex = 440;
+            this.buttonDiscr_All_ATMS.Text = "Discrepancies All ATMs";
+            this.buttonDiscr_All_ATMS.UseVisualStyleBackColor = true;
+            this.buttonDiscr_All_ATMS.Click += new System.EventHandler(this.buttonDiscr_All_ATMS_Click);
+            // 
+            // buttonDiscrep
+            // 
+            this.buttonDiscrep.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonDiscrep.FlatAppearance.BorderSize = 2;
+            this.buttonDiscrep.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonDiscrep.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonDiscrep.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonDiscrep.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonDiscrep.Location = new System.Drawing.Point(364, 371);
+            this.buttonDiscrep.Name = "buttonDiscrep";
+            this.buttonDiscrep.Size = new System.Drawing.Size(84, 27);
+            this.buttonDiscrep.TabIndex = 439;
+            this.buttonDiscrep.Text = "Discrepancies";
+            this.buttonDiscrep.UseVisualStyleBackColor = true;
+            this.buttonDiscrep.Click += new System.EventHandler(this.buttonDiscrep_Click);
             // 
             // buttonViewAllLinesMatching
             // 
@@ -1209,7 +1493,7 @@
             this.buttonViewAllLinesMatching.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonViewAllLinesMatching.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonViewAllLinesMatching.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonViewAllLinesMatching.Location = new System.Drawing.Point(379, 296);
+            this.buttonViewAllLinesMatching.Location = new System.Drawing.Point(380, 341);
             this.buttonViewAllLinesMatching.Name = "buttonViewAllLinesMatching";
             this.buttonViewAllLinesMatching.Size = new System.Drawing.Size(129, 27);
             this.buttonViewAllLinesMatching.TabIndex = 438;
@@ -1225,9 +1509,9 @@
             this.buttonViewRCS.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonViewRCS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonViewRCS.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonViewRCS.Location = new System.Drawing.Point(380, 268);
+            this.buttonViewRCS.Location = new System.Drawing.Point(272, 341);
             this.buttonViewRCS.Name = "buttonViewRCS";
-            this.buttonViewRCS.Size = new System.Drawing.Size(129, 27);
+            this.buttonViewRCS.Size = new System.Drawing.Size(102, 27);
             this.buttonViewRCS.TabIndex = 437;
             this.buttonViewRCS.Text = "View Line Details";
             this.buttonViewRCS.UseVisualStyleBackColor = true;
@@ -1235,7 +1519,7 @@
             // 
             // textBoxCateg
             // 
-            this.textBoxCateg.Location = new System.Drawing.Point(59, 229);
+            this.textBoxCateg.Location = new System.Drawing.Point(59, 309);
             this.textBoxCateg.Name = "textBoxCateg";
             this.textBoxCateg.Size = new System.Drawing.Size(92, 20);
             this.textBoxCateg.TabIndex = 363;
@@ -1243,11 +1527,30 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(6, 232);
+            this.label20.Location = new System.Drawing.Point(6, 312);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(49, 13);
             this.label20.TabIndex = 362;
             this.label20.Text = "Category";
+            // 
+            // buttonMatching
+            // 
+            this.buttonMatching.BackColor = System.Drawing.Color.GreenYellow;
+            this.buttonMatching.Enabled = false;
+            this.buttonMatching.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonMatching.FlatAppearance.BorderSize = 2;
+            this.buttonMatching.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonMatching.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonMatching.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonMatching.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonMatching.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonMatching.Location = new System.Drawing.Point(2, 3);
+            this.buttonMatching.Name = "buttonMatching";
+            this.buttonMatching.Size = new System.Drawing.Size(39, 32);
+            this.buttonMatching.TabIndex = 354;
+            this.buttonMatching.Text = ">";
+            this.buttonMatching.UseVisualStyleBackColor = false;
+            this.buttonMatching.Visible = false;
             // 
             // dataGridViewMatched
             // 
@@ -1287,7 +1590,7 @@
             this.dataGridViewMatched.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridViewMatched.RowHeadersVisible = false;
             this.dataGridViewMatched.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewMatched.Size = new System.Drawing.Size(500, 213);
+            this.dataGridViewMatched.Size = new System.Drawing.Size(500, 291);
             this.dataGridViewMatched.TabIndex = 2;
             this.dataGridViewMatched.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewMatched_RowEnter);
             // 
@@ -1307,7 +1610,7 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1284, 756);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1313, 756);
             this.tableLayoutPanelMain.TabIndex = 270;
             // 
             // timerJournals
@@ -1316,17 +1619,18 @@
             this.timerJournals.Interval = 10000;
             this.timerJournals.Tick += new System.EventHandler(this.timerJournals_Tick);
             // 
-            // Form502_Load_And_Match_MOBILE
+            // Form502_Load_And_Match_ALP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1284, 756);
+            this.ClientSize = new System.Drawing.Size(1313, 756);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.Controls.Add(this.tableLayoutPanelMain);
-            this.Name = "Form502_Load_And_Match_MOBILE";
+            this.Name = "Form502_Load_And_Match_ALP";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form502_Load_And_Match_MOBILE";
+            this.Text = "Form502_Load_And_Match_ALP";
+            this.Load += new System.EventHandler(this.Form502_Load);
             this.tableLayoutPanelHeader.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
@@ -1386,16 +1690,26 @@
         private System.Windows.Forms.Panel panelCategories;
         private System.Windows.Forms.DataGridView dataGridViewMatched;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
+        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBoxNotReady;
         private System.Windows.Forms.TextBox textBoxNumberOfFiles;
         private System.Windows.Forms.TextBox textBoxFilesReady;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button buttonRefresh;
         private System.Windows.Forms.Button buttonDoMatching;
         private System.Windows.Forms.Button buttonLoadFiles;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label labelCycleNo;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button buttonLoadJournals;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Timer timerJournals;
         private System.Windows.Forms.Panel panelLoaded;
         private System.Windows.Forms.TextBox textBoxFilesRight;
@@ -1404,8 +1718,10 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBoxInDirForLoading;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button buttonMatching;
         private System.Windows.Forms.Button buttonLoad;
-        private System.Windows.Forms.Button buttonUNDO;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonViewFiles;
         private System.Windows.Forms.Button buttonLineDetails;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button buttonViewRCS;
@@ -1413,34 +1729,41 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Button buttonViewAllLinesMatching;
         private System.Windows.Forms.Button buttonViewAllLinesFiles;
+        private System.Windows.Forms.Button buttonDiscrep;
         private System.Windows.Forms.DataGridView dataGridViewFilesStatus;
+        private System.Windows.Forms.Button buttonNotLoaed;
+        private System.Windows.Forms.Button buttonERRORS;
         private System.Windows.Forms.Button buttonNonProcessed;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxFileId;
         private System.Windows.Forms.Button buttonProcessed;
+        private System.Windows.Forms.Button buttonDiscr_All_ATMS;
+        private System.Windows.Forms.Button buttonDiscrCategory;
         private System.Windows.Forms.Label label_Categ_Name;
         private System.Windows.Forms.ComboBox comboBoxMatchingCateg;
+        private System.Windows.Forms.Button buttonMatched;
         private System.Windows.Forms.RadioButton radioButtonAll;
         private System.Windows.Forms.RadioButton radioButtonCategory;
         private System.Windows.Forms.Button buttonViewGroupCateg;
         private System.Windows.Forms.LinkLabel linkLabelShowFiles;
         private System.Windows.Forms.LinkLabel linkLabelExpand;
         private System.Windows.Forms.Button buttonExportToExcel;
+        private System.Windows.Forms.Button buttonUNDO_Journals;
+        private System.Windows.Forms.Button buttonBadAndUgly;
         private System.Windows.Forms.Button buttonShowComment;
+        private System.Windows.Forms.Button buttonViewGaps;
         private System.Windows.Forms.Button buttonLineDates;
         private System.Windows.Forms.Button buttonUndoFile;
         private System.Windows.Forms.TextBox textBoxCycle;
         private System.Windows.Forms.Label labelCycle;
         private System.Windows.Forms.LinkLabel linkLabelPerf_Matching;
+        private System.Windows.Forms.LinkLabel linkLabelPerf_Journals;
         private System.Windows.Forms.LinkLabel linkLabelPerf_Files;
+        private System.Windows.Forms.Button buttonNotInIst;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button buttonDiscrCategory;
-        private System.Windows.Forms.Button buttonDiscr_All_Categ;
-        private System.Windows.Forms.Button buttonActionsTaken;
-        private System.Windows.Forms.Button buttonMatched;
-        private System.Windows.Forms.Button buttonDisputePreInvestigation;
-        private System.Windows.Forms.Button buttonTEST_4_GRIDS;
-        private System.Windows.Forms.Button buttonGL_AND_Disputes;
+        private System.Windows.Forms.Button buttonTemp;
+        private System.Windows.Forms.Button buttonReplReport;
+        private System.Windows.Forms.Button buttonGL_View;
     }
 }

@@ -49,38 +49,34 @@
             this.checkBox_Make_Branch_2 = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxTownOrVillage_2 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBoxPostalCode_2 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.buttonRefreshPos = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBoxCountry = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.comboBoxDistrict = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBoxStreet_2 = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.buttonSearchPos = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBoxLongitude_2 = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBoxLatitude_2 = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.textBoxBranchId_2 = new System.Windows.Forms.TextBox();
+            this.textBoxBranchName_2 = new System.Windows.Forms.TextBox();
             this.buttonDelete_2 = new System.Windows.Forms.Button();
             this.buttonUpdate_2 = new System.Windows.Forms.Button();
             this.buttonAdd_2 = new System.Windows.Forms.Button();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.label19 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.button7 = new System.Windows.Forms.Button();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.Excel = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
-            this.checkBoxMakeNewBranch = new System.Windows.Forms.CheckBox();
             this.label28 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
             this.textBoxTownOrVillage = new System.Windows.Forms.TextBox();
@@ -88,9 +84,7 @@
             this.textBoxPostalCode = new System.Windows.Forms.TextBox();
             this.label63 = new System.Windows.Forms.Label();
             this.buttonRefresh = new System.Windows.Forms.Button();
-            this.comboBoxCountry = new System.Windows.Forms.ComboBox();
             this.label62 = new System.Windows.Forms.Label();
-            this.comboBoxDistrict = new System.Windows.Forms.ComboBox();
             this.label61 = new System.Windows.Forms.Label();
             this.label60 = new System.Windows.Forms.Label();
             this.label59 = new System.Windows.Forms.Label();
@@ -115,8 +109,9 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonFinish = new System.Windows.Forms.Button();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -129,12 +124,12 @@
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.panel6.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanelMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanelHeader
@@ -144,12 +139,12 @@
             this.tableLayoutPanelHeader.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tableLayoutPanelHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanelHeader.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanelHeader.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanelHeader.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanelHeader.Name = "tableLayoutPanelHeader";
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1266, 80);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1265, 80);
             this.tableLayoutPanelHeader.TabIndex = 267;
             // 
             // tableLayoutPanel4
@@ -163,11 +158,11 @@
             this.tableLayoutPanel4.Controls.Add(this.flowLayoutPanel1, 1, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(2, 2);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1262, 80);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1261, 80);
             this.tableLayoutPanel4.TabIndex = 249;
             // 
             // tableLayoutPanel1
@@ -177,12 +172,12 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Controls.Add(this.button52, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(1182, 2);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(1181, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 77F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(78, 76);
             this.tableLayoutPanel1.TabIndex = 247;
             // 
@@ -214,7 +209,7 @@
             this.tableLayoutPanel5.Controls.Add(this.pictureBox1, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel3, 1, 0);
             this.tableLayoutPanel5.Location = new System.Drawing.Point(2, 2);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 67F));
@@ -227,7 +222,7 @@
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(2, 2);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(72, 63);
             this.pictureBox1.TabIndex = 251;
@@ -243,7 +238,7 @@
             this.tableLayoutPanel3.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.labelUserId, 1, 1);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(78, 2);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
@@ -344,7 +339,7 @@
             this.textBoxMsgBoard.Multiline = true;
             this.textBoxMsgBoard.Name = "textBoxMsgBoard";
             this.textBoxMsgBoard.ReadOnly = true;
-            this.textBoxMsgBoard.Size = new System.Drawing.Size(1001, 32);
+            this.textBoxMsgBoard.Size = new System.Drawing.Size(1000, 32);
             this.textBoxMsgBoard.TabIndex = 242;
             this.textBoxMsgBoard.TabStop = false;
             this.textBoxMsgBoard.Text = "No guidance information available.";
@@ -354,7 +349,6 @@
             this.panel1.AutoScroll = true;
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.panel1.Controls.Add(this.panel3);
-            this.panel1.Controls.Add(this.checkBoxMakeNewBranch);
             this.panel1.Controls.Add(this.label28);
             this.panel1.Controls.Add(this.panel6);
             this.panel1.Controls.Add(this.comboBoxFilter);
@@ -364,7 +358,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1260, 658);
+            this.panel1.Size = new System.Drawing.Size(1259, 679);
             this.panel1.TabIndex = 243;
             // 
             // panel3
@@ -374,14 +368,12 @@
             this.panel3.Controls.Add(this.checkBox_Make_Branch_2);
             this.panel3.Controls.Add(this.label3);
             this.panel3.Controls.Add(this.panel4);
-            this.panel3.Controls.Add(this.comboBox3);
-            this.panel3.Controls.Add(this.label19);
             this.panel3.Controls.Add(this.panel5);
             this.panel3.Controls.Add(this.label20);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1250, 671);
+            this.panel3.Size = new System.Drawing.Size(1259, 679);
             this.panel3.TabIndex = 419;
             // 
             // checkBox_Make_Branch_2
@@ -410,28 +402,28 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.White;
-            this.panel4.Controls.Add(this.textBox1);
+            this.panel4.Controls.Add(this.textBoxTownOrVillage_2);
             this.panel4.Controls.Add(this.label4);
-            this.panel4.Controls.Add(this.textBox2);
+            this.panel4.Controls.Add(this.textBoxPostalCode_2);
             this.panel4.Controls.Add(this.label7);
             this.panel4.Controls.Add(this.buttonRefreshPos);
-            this.panel4.Controls.Add(this.comboBox1);
+            this.panel4.Controls.Add(this.comboBoxCountry);
             this.panel4.Controls.Add(this.label9);
-            this.panel4.Controls.Add(this.comboBox2);
+            this.panel4.Controls.Add(this.comboBoxDistrict);
             this.panel4.Controls.Add(this.label10);
             this.panel4.Controls.Add(this.label11);
             this.panel4.Controls.Add(this.label12);
-            this.panel4.Controls.Add(this.textBox3);
+            this.panel4.Controls.Add(this.textBoxStreet_2);
             this.panel4.Controls.Add(this.label13);
             this.panel4.Controls.Add(this.buttonSearchPos);
             this.panel4.Controls.Add(this.label14);
-            this.panel4.Controls.Add(this.textBox4);
+            this.panel4.Controls.Add(this.textBoxLongitude_2);
             this.panel4.Controls.Add(this.label15);
-            this.panel4.Controls.Add(this.textBox5);
+            this.panel4.Controls.Add(this.textBoxLatitude_2);
             this.panel4.Controls.Add(this.label16);
             this.panel4.Controls.Add(this.label17);
-            this.panel4.Controls.Add(this.textBox6);
-            this.panel4.Controls.Add(this.textBox7);
+            this.panel4.Controls.Add(this.textBoxBranchId_2);
+            this.panel4.Controls.Add(this.textBoxBranchName_2);
             this.panel4.Controls.Add(this.buttonDelete_2);
             this.panel4.Controls.Add(this.buttonUpdate_2);
             this.panel4.Controls.Add(this.buttonAdd_2);
@@ -440,14 +432,14 @@
             this.panel4.Size = new System.Drawing.Size(576, 545);
             this.panel4.TabIndex = 358;
             // 
-            // textBox1
+            // textBoxTownOrVillage_2
             // 
-            this.textBox1.Location = new System.Drawing.Point(113, 199);
-            this.textBox1.MaxLength = 100;
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(349, 25);
-            this.textBox1.TabIndex = 444;
+            this.textBoxTownOrVillage_2.Location = new System.Drawing.Point(113, 199);
+            this.textBoxTownOrVillage_2.MaxLength = 100;
+            this.textBoxTownOrVillage_2.Multiline = true;
+            this.textBoxTownOrVillage_2.Name = "textBoxTownOrVillage_2";
+            this.textBoxTownOrVillage_2.Size = new System.Drawing.Size(349, 25);
+            this.textBoxTownOrVillage_2.TabIndex = 444;
             // 
             // label4
             // 
@@ -458,13 +450,13 @@
             this.label4.TabIndex = 443;
             this.label4.Text = "Village";
             // 
-            // textBox2
+            // textBoxPostalCode_2
             // 
-            this.textBox2.Location = new System.Drawing.Point(113, 254);
-            this.textBox2.MaxLength = 50;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(153, 20);
-            this.textBox2.TabIndex = 442;
+            this.textBoxPostalCode_2.Location = new System.Drawing.Point(113, 254);
+            this.textBoxPostalCode_2.MaxLength = 50;
+            this.textBoxPostalCode_2.Name = "textBoxPostalCode_2";
+            this.textBoxPostalCode_2.Size = new System.Drawing.Size(153, 20);
+            this.textBoxPostalCode_2.TabIndex = 442;
             // 
             // label7
             // 
@@ -493,32 +485,32 @@
             this.buttonRefreshPos.UseVisualStyleBackColor = false;
             this.buttonRefreshPos.Click += new System.EventHandler(this.buttonRefreshPos_Click);
             // 
-            // comboBox1
+            // comboBoxCountry
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(113, 277);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(153, 21);
-            this.comboBox1.TabIndex = 439;
+            this.comboBoxCountry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxCountry.FormattingEnabled = true;
+            this.comboBoxCountry.Location = new System.Drawing.Point(113, 277);
+            this.comboBoxCountry.Name = "comboBoxCountry";
+            this.comboBoxCountry.Size = new System.Drawing.Size(153, 21);
+            this.comboBoxCountry.TabIndex = 439;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(30, 279);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(43, 13);
+            this.label9.Size = new System.Drawing.Size(70, 13);
             this.label9.TabIndex = 438;
-            this.label9.Text = "Country";
+            this.label9.Text = "Country (227)";
             // 
-            // comboBox2
+            // comboBoxDistrict
             // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(113, 230);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(153, 21);
-            this.comboBox2.TabIndex = 437;
+            this.comboBoxDistrict.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxDistrict.FormattingEnabled = true;
+            this.comboBoxDistrict.Location = new System.Drawing.Point(113, 230);
+            this.comboBoxDistrict.Name = "comboBoxDistrict";
+            this.comboBoxDistrict.Size = new System.Drawing.Size(153, 21);
+            this.comboBoxDistrict.TabIndex = 437;
             // 
             // label10
             // 
@@ -528,6 +520,7 @@
             this.label10.Size = new System.Drawing.Size(66, 13);
             this.label10.TabIndex = 436;
             this.label10.Text = "District (226)";
+            this.label10.Enter += new System.EventHandler(this.label10_Enter);
             // 
             // label11
             // 
@@ -547,14 +540,14 @@
             this.label12.TabIndex = 433;
             this.label12.Text = "Street + number";
             // 
-            // textBox3
+            // textBoxStreet_2
             // 
-            this.textBox3.Location = new System.Drawing.Point(113, 141);
-            this.textBox3.MaxLength = 100;
-            this.textBox3.Multiline = true;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(349, 42);
-            this.textBox3.TabIndex = 434;
+            this.textBoxStreet_2.Location = new System.Drawing.Point(113, 141);
+            this.textBoxStreet_2.MaxLength = 100;
+            this.textBoxStreet_2.Multiline = true;
+            this.textBoxStreet_2.Name = "textBoxStreet_2";
+            this.textBoxStreet_2.Size = new System.Drawing.Size(349, 42);
+            this.textBoxStreet_2.TabIndex = 434;
             // 
             // label13
             // 
@@ -593,12 +586,12 @@
             this.label14.TabIndex = 429;
             this.label14.Text = "Longitude";
             // 
-            // textBox4
+            // textBoxLongitude_2
             // 
-            this.textBox4.Location = new System.Drawing.Point(113, 348);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(105, 20);
-            this.textBox4.TabIndex = 430;
+            this.textBoxLongitude_2.Location = new System.Drawing.Point(113, 348);
+            this.textBoxLongitude_2.Name = "textBoxLongitude_2";
+            this.textBoxLongitude_2.Size = new System.Drawing.Size(105, 20);
+            this.textBoxLongitude_2.TabIndex = 430;
             // 
             // label15
             // 
@@ -609,12 +602,12 @@
             this.label15.TabIndex = 427;
             this.label15.Text = "Latitude";
             // 
-            // textBox5
+            // textBoxLatitude_2
             // 
-            this.textBox5.Location = new System.Drawing.Point(113, 320);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(106, 20);
-            this.textBox5.TabIndex = 428;
+            this.textBoxLatitude_2.Location = new System.Drawing.Point(113, 320);
+            this.textBoxLatitude_2.Name = "textBoxLatitude_2";
+            this.textBoxLatitude_2.Size = new System.Drawing.Size(106, 20);
+            this.textBoxLatitude_2.TabIndex = 428;
             // 
             // label16
             // 
@@ -634,23 +627,22 @@
             this.label17.TabIndex = 423;
             this.label17.Text = "Branch Name";
             // 
-            // textBox6
+            // textBoxBranchId_2
             // 
-            this.textBox6.Location = new System.Drawing.Point(113, 56);
-            this.textBox6.MaxLength = 50;
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(84, 20);
-            this.textBox6.TabIndex = 425;
+            this.textBoxBranchId_2.Location = new System.Drawing.Point(113, 56);
+            this.textBoxBranchId_2.MaxLength = 50;
+            this.textBoxBranchId_2.Name = "textBoxBranchId_2";
+            this.textBoxBranchId_2.Size = new System.Drawing.Size(84, 20);
+            this.textBoxBranchId_2.TabIndex = 425;
             // 
-            // textBox7
+            // textBoxBranchName_2
             // 
-            this.textBox7.Location = new System.Drawing.Point(113, 86);
-            this.textBox7.MaxLength = 100;
-            this.textBox7.Multiline = true;
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(349, 25);
-            this.textBox7.TabIndex = 426;
-            this.textBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxBranchName_2.Location = new System.Drawing.Point(113, 86);
+            this.textBoxBranchName_2.MaxLength = 100;
+            this.textBoxBranchName_2.Multiline = true;
+            this.textBoxBranchName_2.Name = "textBoxBranchName_2";
+            this.textBoxBranchName_2.Size = new System.Drawing.Size(349, 25);
+            this.textBoxBranchName_2.TabIndex = 426;
             // 
             // buttonDelete_2
             // 
@@ -700,90 +692,42 @@
             this.buttonAdd_2.UseVisualStyleBackColor = true;
             this.buttonAdd_2.Click += new System.EventHandler(this.buttonAdd_2_Click);
             // 
-            // comboBox3
-            // 
-            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(111, 79);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(217, 21);
-            this.comboBox3.TabIndex = 357;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label19.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label19.Location = new System.Drawing.Point(11, 79);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(94, 18);
-            this.label19.TabIndex = 346;
-            this.label19.Text = "DISTRICTS";
-            // 
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.SystemColors.Window;
-            this.panel5.Controls.Add(this.button7);
             this.panel5.Controls.Add(this.dataGridView2);
-            this.panel5.Location = new System.Drawing.Point(9, 126);
+            this.panel5.Controls.Add(this.Excel);
+            this.panel5.Location = new System.Drawing.Point(9, 114);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(657, 545);
+            this.panel5.Size = new System.Drawing.Size(657, 554);
             this.panel5.TabIndex = 344;
             // 
-            // button7
+            // Excel
             // 
-            this.button7.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button7.FlatAppearance.BorderSize = 2;
-            this.button7.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button7.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button7.Location = new System.Drawing.Point(573, 521);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(77, 24);
-            this.button7.TabIndex = 445;
-            this.button7.Text = "Print";
-            this.button7.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView2
-            // 
-            this.dataGridView2.AllowUserToAddRows = false;
-            this.dataGridView2.AllowUserToDeleteRows = false;
-            this.dataGridView2.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.GridColor = System.Drawing.Color.LightGray;
-            this.dataGridView2.Location = new System.Drawing.Point(13, 16);
-            this.dataGridView2.MultiSelect = false;
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.ReadOnly = true;
-            this.dataGridView2.RowHeadersVisible = false;
-            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(637, 481);
-            this.dataGridView2.TabIndex = 2;
-            this.dataGridView2.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_RowEnter);
+            this.Excel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.Excel.FlatAppearance.BorderSize = 2;
+            this.Excel.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.Excel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.Excel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Excel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.Excel.Location = new System.Drawing.Point(573, 515);
+            this.Excel.Name = "Excel";
+            this.Excel.Size = new System.Drawing.Size(77, 24);
+            this.Excel.TabIndex = 445;
+            this.Excel.Text = "Excel";
+            this.Excel.UseVisualStyleBackColor = true;
+            this.Excel.Click += new System.EventHandler(this.Excel_Click);
             // 
             // label20
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.label20.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label20.Location = new System.Drawing.Point(9, 105);
+            this.label20.Location = new System.Drawing.Point(9, 90);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(99, 18);
             this.label20.TabIndex = 343;
             this.label20.Text = "BRANCHES";
-            // 
-            // checkBoxMakeNewBranch
-            // 
-            this.checkBoxMakeNewBranch.AutoSize = true;
-            this.checkBoxMakeNewBranch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxMakeNewBranch.Location = new System.Drawing.Point(1026, 100);
-            this.checkBoxMakeNewBranch.Name = "checkBoxMakeNewBranch";
-            this.checkBoxMakeNewBranch.Size = new System.Drawing.Size(151, 20);
-            this.checkBoxMakeNewBranch.TabIndex = 418;
-            this.checkBoxMakeNewBranch.Text = "Make New Branch";
-            this.checkBoxMakeNewBranch.UseVisualStyleBackColor = true;
-            this.checkBoxMakeNewBranch.CheckedChanged += new System.EventHandler(this.checkBoxMakeNewBranch_CheckedChanged);
             // 
             // label28
             // 
@@ -804,9 +748,7 @@
             this.panel6.Controls.Add(this.textBoxPostalCode);
             this.panel6.Controls.Add(this.label63);
             this.panel6.Controls.Add(this.buttonRefresh);
-            this.panel6.Controls.Add(this.comboBoxCountry);
             this.panel6.Controls.Add(this.label62);
-            this.panel6.Controls.Add(this.comboBoxDistrict);
             this.panel6.Controls.Add(this.label61);
             this.panel6.Controls.Add(this.label60);
             this.panel6.Controls.Add(this.label59);
@@ -866,30 +808,10 @@
             // 
             // buttonRefresh
             // 
-            this.buttonRefresh.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.buttonRefresh.Enabled = false;
-            this.buttonRefresh.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonRefresh.FlatAppearance.BorderSize = 2;
-            this.buttonRefresh.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonRefresh.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonRefresh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonRefresh.Location = new System.Drawing.Point(112, 374);
+            this.buttonRefresh.Location = new System.Drawing.Point(0, 0);
             this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Size = new System.Drawing.Size(98, 24);
-            this.buttonRefresh.TabIndex = 440;
-            this.buttonRefresh.Text = "Refresh Position";
-            this.buttonRefresh.UseVisualStyleBackColor = false;
-            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
-            // 
-            // comboBoxCountry
-            // 
-            this.comboBoxCountry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxCountry.FormattingEnabled = true;
-            this.comboBoxCountry.Location = new System.Drawing.Point(113, 277);
-            this.comboBoxCountry.Name = "comboBoxCountry";
-            this.comboBoxCountry.Size = new System.Drawing.Size(153, 21);
-            this.comboBoxCountry.TabIndex = 439;
+            this.buttonRefresh.Size = new System.Drawing.Size(75, 23);
+            this.buttonRefresh.TabIndex = 445;
             // 
             // label62
             // 
@@ -899,15 +821,6 @@
             this.label62.Size = new System.Drawing.Size(43, 13);
             this.label62.TabIndex = 438;
             this.label62.Text = "Country";
-            // 
-            // comboBoxDistrict
-            // 
-            this.comboBoxDistrict.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxDistrict.FormattingEnabled = true;
-            this.comboBoxDistrict.Location = new System.Drawing.Point(113, 230);
-            this.comboBoxDistrict.Name = "comboBoxDistrict";
-            this.comboBoxDistrict.Size = new System.Drawing.Size(153, 21);
-            this.comboBoxDistrict.TabIndex = 437;
             // 
             // label61
             // 
@@ -958,20 +871,10 @@
             // 
             // buttonSearchGoogle
             // 
-            this.buttonSearchGoogle.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.buttonSearchGoogle.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonSearchGoogle.FlatAppearance.BorderSize = 2;
-            this.buttonSearchGoogle.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonSearchGoogle.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonSearchGoogle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonSearchGoogle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonSearchGoogle.Location = new System.Drawing.Point(236, 318);
+            this.buttonSearchGoogle.Location = new System.Drawing.Point(0, 0);
             this.buttonSearchGoogle.Name = "buttonSearchGoogle";
-            this.buttonSearchGoogle.Size = new System.Drawing.Size(98, 24);
-            this.buttonSearchGoogle.TabIndex = 431;
-            this.buttonSearchGoogle.Text = "Search Position";
-            this.buttonSearchGoogle.UseVisualStyleBackColor = false;
-            this.buttonSearchGoogle.Click += new System.EventHandler(this.buttonSearchGoogle_Click);
+            this.buttonSearchGoogle.Size = new System.Drawing.Size(75, 23);
+            this.buttonSearchGoogle.TabIndex = 446;
             // 
             // label51
             // 
@@ -1043,73 +946,38 @@
             // 
             // buttonDelete
             // 
-            this.buttonDelete.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonDelete.FlatAppearance.BorderSize = 2;
-            this.buttonDelete.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonDelete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonDelete.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonDelete.Location = new System.Drawing.Point(274, 455);
+            this.buttonDelete.Location = new System.Drawing.Point(0, 0);
             this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(77, 24);
-            this.buttonDelete.TabIndex = 287;
-            this.buttonDelete.Text = "Delete";
-            this.buttonDelete.UseVisualStyleBackColor = true;
-            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
+            this.buttonDelete.Size = new System.Drawing.Size(75, 23);
+            this.buttonDelete.TabIndex = 447;
             // 
             // buttonUpdate
             // 
-            this.buttonUpdate.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonUpdate.FlatAppearance.BorderSize = 2;
-            this.buttonUpdate.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonUpdate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonUpdate.Location = new System.Drawing.Point(361, 455);
+            this.buttonUpdate.Location = new System.Drawing.Point(0, 0);
             this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(77, 24);
-            this.buttonUpdate.TabIndex = 288;
-            this.buttonUpdate.Text = "Update";
-            this.buttonUpdate.UseVisualStyleBackColor = true;
-            this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
+            this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
+            this.buttonUpdate.TabIndex = 448;
             // 
             // buttonAdd
             // 
-            this.buttonAdd.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonAdd.FlatAppearance.BorderSize = 2;
-            this.buttonAdd.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonAdd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.buttonAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonAdd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.buttonAdd.Location = new System.Drawing.Point(444, 455);
+            this.buttonAdd.Location = new System.Drawing.Point(0, 0);
             this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(77, 24);
-            this.buttonAdd.TabIndex = 289;
-            this.buttonAdd.Text = "Add";
-            this.buttonAdd.UseVisualStyleBackColor = true;
-            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+            this.buttonAdd.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdd.TabIndex = 449;
             // 
             // comboBoxFilter
             // 
-            this.comboBoxFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxFilter.FormattingEnabled = true;
-            this.comboBoxFilter.Location = new System.Drawing.Point(111, 79);
+            this.comboBoxFilter.Location = new System.Drawing.Point(0, 0);
             this.comboBoxFilter.Name = "comboBoxFilter";
-            this.comboBoxFilter.Size = new System.Drawing.Size(217, 21);
-            this.comboBoxFilter.TabIndex = 357;
-            this.comboBoxFilter.SelectedIndexChanged += new System.EventHandler(this.comboBoxFilter_SelectedIndexChanged);
+            this.comboBoxFilter.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxFilter.TabIndex = 420;
             // 
             // label18
             // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label18.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.label18.Location = new System.Drawing.Point(11, 79);
+            this.label18.Location = new System.Drawing.Point(0, 0);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(94, 18);
-            this.label18.TabIndex = 346;
-            this.label18.Text = "DISTRICTS";
-            this.label18.Click += new System.EventHandler(this.label18_Click);
+            this.label18.Size = new System.Drawing.Size(100, 23);
+            this.label18.TabIndex = 421;
             // 
             // panel2
             // 
@@ -1139,20 +1007,10 @@
             // 
             // dataGridView1
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.GridColor = System.Drawing.Color.LightGray;
-            this.dataGridView1.Location = new System.Drawing.Point(13, 16);
-            this.dataGridView1.MultiSelect = false;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(637, 505);
-            this.dataGridView1.TabIndex = 2;
-            this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
+            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
+            this.dataGridView1.TabIndex = 446;
             // 
             // label1
             // 
@@ -1173,32 +1031,32 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.tableLayoutPanel2.Controls.Add(this.textBoxMsgBoard, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.button2, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.buttonFinish, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 666);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 687);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1262, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1261, 36);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
-            // button2
+            // buttonFinish
             // 
-            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button2.FlatAppearance.BorderSize = 2;
-            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(1098, 2);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(71, 27);
-            this.button2.TabIndex = 245;
-            this.button2.Text = "Finish";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buttonFinish.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.buttonFinish.FlatAppearance.BorderSize = 2;
+            this.buttonFinish.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonFinish.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonFinish.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonFinish.ForeColor = System.Drawing.Color.White;
+            this.buttonFinish.Location = new System.Drawing.Point(1097, 2);
+            this.buttonFinish.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
+            this.buttonFinish.Name = "buttonFinish";
+            this.buttonFinish.Size = new System.Drawing.Size(71, 27);
+            this.buttonFinish.TabIndex = 245;
+            this.buttonFinish.Text = "Finish";
+            this.buttonFinish.UseVisualStyleBackColor = true;
+            this.buttonFinish.Click += new System.EventHandler(this.button2_Click);
             // 
             // tableLayoutPanelMain
             // 
@@ -1209,21 +1067,38 @@
             this.tableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelMain.ForeColor = System.Drawing.Color.Black;
             this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
             this.tableLayoutPanelMain.RowCount = 2;
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1266, 704);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1265, 725);
             this.tableLayoutPanelMain.TabIndex = 266;
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.AllowUserToDeleteRows = false;
+            this.dataGridView2.BackgroundColor = System.Drawing.Color.White;
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.GridColor = System.Drawing.Color.LightGray;
+            this.dataGridView2.Location = new System.Drawing.Point(3, 12);
+            this.dataGridView2.MultiSelect = false;
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.ReadOnly = true;
+            this.dataGridView2.RowHeadersVisible = false;
+            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView2.Size = new System.Drawing.Size(651, 479);
+            this.dataGridView2.TabIndex = 446;
+            this.dataGridView2.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_RowEnter_1);
             // 
             // Form503_Branch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(113)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1266, 704);
+            this.ClientSize = new System.Drawing.Size(1265, 725);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.ForeColor = System.Drawing.Color.White;
@@ -1247,7 +1122,6 @@
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -1255,6 +1129,7 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanelMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1287,7 +1162,7 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Button button52;
         private System.Windows.Forms.ComboBox comboBoxFilter;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonFinish;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.TextBox textBoxTownOrVillage;
@@ -1295,9 +1170,9 @@
         private System.Windows.Forms.TextBox textBoxPostalCode;
         private System.Windows.Forms.Label label63;
         private System.Windows.Forms.Button buttonRefresh;
-        private System.Windows.Forms.ComboBox comboBoxCountry;
+       
         private System.Windows.Forms.Label label62;
-        private System.Windows.Forms.ComboBox comboBoxDistrict;
+        
         private System.Windows.Forms.Label label61;
         private System.Windows.Forms.Label label60;
         private System.Windows.Forms.Label label59;
@@ -1312,42 +1187,40 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBoxBranchId;
         private System.Windows.Forms.TextBox textBoxBranchName;
-        private System.Windows.Forms.CheckBox checkBoxMakeNewBranch;
+       
         private System.Windows.Forms.Button buttonPrint;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.CheckBox checkBox_Make_Branch_2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxTownOrVillage_2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBoxPostalCode_2;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button buttonRefreshPos;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBoxCountry;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox comboBoxDistrict;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBoxStreet_2;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button buttonSearchPos;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBoxLongitude_2;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textBoxLatitude_2;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox textBoxBranchId_2;
+        private System.Windows.Forms.TextBox textBoxBranchName_2;
         private System.Windows.Forms.Button buttonDelete_2;
         private System.Windows.Forms.Button buttonUpdate_2;
         private System.Windows.Forms.Button buttonAdd_2;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.Button Excel;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.DataGridView dataGridView2;
     }
 }

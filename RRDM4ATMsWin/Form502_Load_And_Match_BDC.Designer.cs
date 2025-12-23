@@ -143,7 +143,6 @@
             this.dataGridViewMatched = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.timerJournals = new System.Windows.Forms.Timer(this.components);
-            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -179,7 +178,7 @@
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1155, 79);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1312, 79);
             this.tableLayoutPanelHeader.TabIndex = 271;
             // 
             // tableLayoutPanel4
@@ -197,7 +196,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 82F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1151, 82);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1308, 82);
             this.tableLayoutPanel4.TabIndex = 249;
             // 
             // tableLayoutPanel1
@@ -206,7 +205,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(1010, 1);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(1167, 1);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
@@ -373,7 +372,7 @@
             this.buttonFinish.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonFinish.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonFinish.ForeColor = System.Drawing.Color.White;
-            this.buttonFinish.Location = new System.Drawing.Point(1070, 1);
+            this.buttonFinish.Location = new System.Drawing.Point(1227, 1);
             this.buttonFinish.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.buttonFinish.Name = "buttonFinish";
             this.buttonFinish.Size = new System.Drawing.Size(76, 27);
@@ -393,12 +392,12 @@
             this.tableLayoutPanel2.Controls.Add(this.buttonFinish, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonRefresh, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 664);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 719);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1151, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1308, 36);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
             // textBoxMsgBoard
@@ -413,7 +412,7 @@
             this.textBoxMsgBoard.Multiline = true;
             this.textBoxMsgBoard.Name = "textBoxMsgBoard";
             this.textBoxMsgBoard.ReadOnly = true;
-            this.textBoxMsgBoard.Size = new System.Drawing.Size(890, 34);
+            this.textBoxMsgBoard.Size = new System.Drawing.Size(1047, 34);
             this.textBoxMsgBoard.TabIndex = 242;
             this.textBoxMsgBoard.TabStop = false;
             this.textBoxMsgBoard.Text = "No guidance information available.";
@@ -426,7 +425,7 @@
             this.buttonRefresh.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonRefresh.ForeColor = System.Drawing.Color.White;
-            this.buttonRefresh.Location = new System.Drawing.Point(987, 1);
+            this.buttonRefresh.Location = new System.Drawing.Point(1144, 1);
             this.buttonRefresh.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.buttonRefresh.Name = "buttonRefresh";
             this.buttonRefresh.Size = new System.Drawing.Size(76, 27);
@@ -454,7 +453,7 @@
             this.panel1.ForeColor = System.Drawing.Color.Black;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1149, 655);
+            this.panel1.Size = new System.Drawing.Size(1306, 710);
             this.panel1.TabIndex = 243;
             // 
             // buttonExportToExcel
@@ -488,7 +487,6 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.buttonInvalidCit);
             this.panel2.Controls.Add(this.labelLine);
             this.panel2.Controls.Add(this.buttonShowEntries);
@@ -1031,6 +1029,7 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewFilesStatus.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewFilesStatus.RowHeadersVisible = false;
+            this.dataGridViewFilesStatus.RowHeadersWidth = 102;
             this.dataGridViewFilesStatus.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewFilesStatus.Size = new System.Drawing.Size(358, 159);
             this.dataGridViewFilesStatus.TabIndex = 527;
@@ -1328,6 +1327,7 @@
             this.dataGridViewLoadedFiles.Name = "dataGridViewLoadedFiles";
             this.dataGridViewLoadedFiles.ReadOnly = true;
             this.dataGridViewLoadedFiles.RowHeadersVisible = false;
+            this.dataGridViewLoadedFiles.RowHeadersWidth = 102;
             this.dataGridViewLoadedFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewLoadedFiles.Size = new System.Drawing.Size(500, 212);
             this.dataGridViewLoadedFiles.TabIndex = 2;
@@ -1465,6 +1465,7 @@
             this.dataGridViewFiles.Name = "dataGridViewFiles";
             this.dataGridViewFiles.ReadOnly = true;
             this.dataGridViewFiles.RowHeadersVisible = false;
+            this.dataGridViewFiles.RowHeadersWidth = 102;
             this.dataGridViewFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewFiles.Size = new System.Drawing.Size(697, 213);
             this.dataGridViewFiles.TabIndex = 2;
@@ -1720,6 +1721,7 @@
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewMatched.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridViewMatched.RowHeadersVisible = false;
+            this.dataGridViewMatched.RowHeadersWidth = 102;
             this.dataGridViewMatched.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewMatched.Size = new System.Drawing.Size(500, 417);
             this.dataGridViewMatched.TabIndex = 2;
@@ -1741,7 +1743,7 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1155, 701);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1312, 756);
             this.tableLayoutPanelMain.TabIndex = 270;
             // 
             // timerJournals
@@ -1750,27 +1752,12 @@
             this.timerJournals.Interval = 10000;
             this.timerJournals.Tick += new System.EventHandler(this.timerJournals_Tick);
             // 
-            // button1
-            // 
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button1.FlatAppearance.BorderSize = 2;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.button1.Location = new System.Drawing.Point(532, 153);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(105, 27);
-            this.button1.TabIndex = 560;
-            this.button1.Text = "Find Recycle 2";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // Form502_Load_And_Match_BDC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1155, 701);
+            this.ClientSize = new System.Drawing.Size(1312, 756);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.DoubleBuffered = true;
@@ -1917,6 +1904,5 @@
         private System.Windows.Forms.Label labelLine;
         private System.Windows.Forms.Button buttonViewBULK;
         private System.Windows.Forms.Button buttonInvalidCit;
-        private System.Windows.Forms.Button button1;
     }
 }

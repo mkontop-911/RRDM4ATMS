@@ -2,6 +2,8 @@
 using System.ServiceProcess;
 
 using RRDMRFMClasses;
+using RRDM4ATMs;
+
 
 namespace RRDMRFMService
 {
@@ -37,6 +39,10 @@ namespace RRDMRFMService
                 argOrigin = args[0];
                 argSourceFileID = args[1];
                 argOperator = args[2];
+
+                RRDMGasParameters Gp = new RRDMGasParameters();
+                argOperator = Gp.ReadParametersAndFillDataTable_101();
+
             }
             #endregion
 

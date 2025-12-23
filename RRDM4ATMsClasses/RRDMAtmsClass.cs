@@ -566,6 +566,7 @@ namespace RRDM4ATMs
             ATMsDetailsDataTable.Columns.Add("AtmName", typeof(string));
             ATMsDetailsDataTable.Columns.Add("Branch", typeof(string));
             ATMsDetailsDataTable.Columns.Add("AtmsReconcGroup", typeof(int));
+            ATMsDetailsDataTable.Columns.Add("PhysicalID", typeof(string));
             ATMsDetailsDataTable.Columns.Add("CitId", typeof(string));
             ATMsDetailsDataTable.Columns.Add("CashInType", typeof(string));
             ATMsDetailsDataTable.Columns.Add("BranchName", typeof(string));
@@ -624,11 +625,14 @@ namespace RRDM4ATMs
             Jd.ReadJTMIdentificationDetailsByAtmNo(AtmNo);
             if (Jd.RecordFound == true)
             {
+                // PhysicalID
+                RowSelected["PhysicalID"] = Jd.ATMAccessID;
                 RowSelected["ATMIPAddress"] = Jd.ATMIPAddress;
                 RowSelected["SWVersion"] = Jd.SWVersion;
             }
             else
             {
+               
                 RowSelected["ATMIPAddress"] = "FillData";
                 RowSelected["SWVersion"] = "FillData";
             }
@@ -972,7 +976,7 @@ namespace RRDM4ATMs
                
                     ErrorFound = true;
                     ErrorOutput = "Model ATM Not defined in parameters";
-             
+                return; 
             }
 
             try
@@ -1101,6 +1105,192 @@ namespace RRDM4ATMs
             }
         }
 
+        // CREATE NEW ATM BASED ON MODEL 
+        //
+        public void CreateNewAtmBasedOnGeneral_Mode_ALPHA(string InOperator, string InAtmNo, string ATM_Supplier)
+        {
+
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            //   string WJournalNAME = "00000506_20190702_EJ_NCR.000";
+
+       
+
+            string WModelAtm = "";
+            DateTime FutureDate = new DateTime(2050, 11, 21);
+
+            RRDMGasParameters Gp = new RRDMGasParameters();
+
+            RRDMAtmsMainClass Am = new RRDMAtmsMainClass();
+            RRDMAtmsCostClass Ap = new RRDMAtmsCostClass();
+            RRDMJTMIdentificationDetailsClass Jd = new RRDMJTMIdentificationDetailsClass();
+            RRDMAccountsClass Acc = new RRDMAccountsClass();
+
+            // 
+            string ParId = "932";
+            string OccurId = "1";
+
+            if (ATM_Supplier == "NCR")
+            {
+                OccurId = "1";
+            }
+            if (ATM_Supplier == "DBL")
+            {
+                OccurId = "2";
+            }
+            if (ATM_Supplier == "WCR")
+            {
+                OccurId = "3";
+            }
+            if (ATM_Supplier == "HYO")
+            {
+                OccurId = "4";
+            }
+            if (ATM_Supplier == "WDN")
+            {
+                OccurId = "5";
+            }
+
+
+            Gp.ReadParametersSpecificId(InOperator, ParId, OccurId, "", "");
+            if (Gp.RecordFound == true)
+            {
+                WModelAtm = Gp.OccuranceNm;
+            }
+            else
+            {
+
+                ErrorFound = true;
+                ErrorOutput = "Model ATM Not defined in parameters";
+                return;
+            }
+
+            try
+            {
+                // This is for creating new ATM   
+
+                ReadAtm(WModelAtm);
+
+                if (RecordFound == true)
+                {
+                    //*************************
+                    // This is for insert the new ATM                  
+                    //**************************
+                    AtmNo = InAtmNo;
+                    AtmName = "ATM with ID..." + InAtmNo;
+                    Branch = "Br.." + InAtmNo;
+                    BranchName = "Branch..." + InAtmNo;
+                    Street = "UnKnown";
+                    District = "UnKnown";
+                    //     AtmsReconcGroup = 101;
+
+                    // INSERT INSERT INSERT INSERT INSERT
+                    InsertATM(InAtmNo); // Insert ATM record
+
+                    //*************************
+                    //  INSERT ATMs MAIN                   
+                    //**************************
+                    Am.ReadAtmsMainSpecific(WModelAtm); // READ FROM MODEL 
+
+                    Am.AtmNo = InAtmNo;
+                    Am.AtmName = "Name.." + InAtmNo;
+                    Am.BankId = InOperator;
+
+                    Am.RespBranch = "UnKnown";
+                    Am.BranchName = "UnKnown";
+
+                    // Initialise for new atm 
+                    Am.NextReplDt = FutureDate;
+                    Am.EstReplDt = FutureDate;
+
+                    Am.LastUpdated = DateTime.Now;
+
+                    Am.CitId = CitId;
+                    Am.AtmsReplGroup = AtmsReplGroup;
+                    Am.AtmsReconcGroup = AtmsReconcGroup;
+
+                    Am.GL_CurrNm1 = DepCurNm;
+
+                    Am.Operator = Operator;
+
+                    // INSERT INSERT INSERT INSERT INSERT
+                    Am.InsertInAtmsMain(InAtmNo); // Insert AtmMain record 
+
+                    //*************************
+                    //  COST                    
+                    //**************************
+
+                    Ap.ReadTableATMsCostSpecific(WModelAtm);
+
+                    Ap.AtmNo = InAtmNo;
+                    // Insert FIELDS SUCH AS 
+                    // Ap.PurchaseDt = PurchaseDt;
+
+                    // ===============Insert ================
+                    Ap.Operator = Operator;
+                    Ap.InsertTableATMsCost(InAtmNo, BankId);
+
+
+                    //*************************
+                    // Insert Physical                  
+                    //**************************
+
+                    Jd.ReadJTMIdentificationDetailsByAtmNo(WModelAtm);
+
+                    Jd.AtmNo = InAtmNo;
+
+                    Jd.ATMIPAddress = "ATMIPAddress";
+
+                    // ===============Insert ================
+                    Jd.InsertNewRecordInJTMIdentificationDetails();
+
+                    // ==============Copy ACCOUNTS FROM LIKE==========
+                    ReadAtm(WModelAtm);
+
+                    Acc.CopyAccountsAtmToAtm(BankId, WModelAtm, BankId, InAtmNo);
+                    if (Acc.RecordFound == false)
+                    {
+                        //MessageBox.Show("There were no accounts to copy. After ATM creation go and create accounts manually please for the added ATM .");
+                        //MessageBox.Show("ATM added without accounts");
+                    }
+                    else
+                    {
+                        // Everything OK 
+                    }
+
+                    //TotalNew = TotalNew + 1;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorFound = true;
+
+                string outmsg = ex.Message;
+                Exception ex1 = ex.InnerException;
+                while (ex1 != null)
+                {
+                    outmsg = @"\r\n\" + outmsg;
+                    ex1 = ex1.InnerException;
+                }
+
+                ErrorOutput = outmsg;
+                CatchDetails(ex);
+
+            }
+
+            ReadAtm(InAtmNo);
+            if (RecordFound = true)
+            {
+                // OK
+            }
+            else
+            {
+                ErrorFound = true;
+                ErrorOutput = "ATM Not Created.Look in RRDM Errors";
+            }
+        }
 
         // 
         // UPDATE ATMs Basic with active or not 

@@ -43,11 +43,11 @@ namespace RRDM4ATMsWin
         DateTime WorkingDtD = new DateTime(2014, 06, 18);
 
         //multilingual
-        CultureInfo culture;
+        //CultureInfo culture;
 
-        RRDMUsersRecords Xa = new RRDMUsersRecords(); // Make class availble 
+        //RRDMUsersRecords Xa = new RRDMUsersRecords(); // Make class availble 
 
-        ResourceManager LocRM = new ResourceManager("RRDM4ATMsWin.appRes", typeof(Form40).Assembly);
+        //ResourceManager LocRM = new ResourceManager("RRDM4ATMsWin.appRes", typeof(Form40).Assembly);
 
         string WCitId;
 

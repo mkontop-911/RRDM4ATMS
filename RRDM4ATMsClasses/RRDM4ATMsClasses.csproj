@@ -85,6 +85,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RRDMJournalRead_HstAtmTxns_AndCreateTable_V2_With_SM_BDC_2 - Copy.cs" />
+    <Compile Include="RRDMJournalRead_HstAtmTxns_AndCreateTable_V2_With_SM_BDC_2 _ALPHA.cs" />
+    <Compile Include="RRDMMatchingOfTxns_V02_MinMaxDt_BDC_4_ALPHA.cs" />
     <Compile Include="RRDMMatchingOfTxns_V02_MinMaxDt_BDC_4 _MOBILE_EGATE.cs" />
     <Compile Include="RRDMMatchingOfTxns_V02_MinMaxDt_BDC_4_ROM.cs" />
     <Compile Include="RRDMMatchingTxns_InGeneralTables_EGATE.cs" />
@@ -92,6 +95,7 @@
     <Compile Include="RRDMMatchingTxns_MasterPoolATMs_ROM.cs" />
     <Compile Include="RRDMRepl_SupervisorMode_Details_ROM.cs" />
     <Compile Include="RRDMRepl_SupervisorMode_Master_ROM.cs" />
+    <Compile Include="RRDM_ATMs_CASH_RECON_MASTER_RECORD.cs" />
     <Compile Include="RRDM_AuditTrailClass_NEW.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="RRDMActions_Occurances_E_WALLET.cs" />
@@ -118,7 +122,9 @@
     <Compile Include="AutoClosingMessageBox.cs" />
     <Compile Include="RRDM_CIT_EXCEL_TO_BANK.cs" />
     <Compile Include="RRDM_DIVIDE_ZIP_FILES.cs" />
+    <Compile Include="RRDM_ATMs_GL_DAILY_TRANSACTIONS.cs" />
     <Compile Include="RRDM_Journal_TransactionSummary_V2.cs" />
+    <Compile Include="RRDM_LoadFiles_InGeneral_EMR_ALPHA.cs" />
     <Compile Include="RRDM_LoadFiles_InGeneral_EMR_BDC_MOBILE_EGATE.cs" />
     <Compile Include="RRDM_LoadFiles_InGeneral_EMR_ROM.cs" />
     <Compile Include="RRDM_LoadFiles_InGeneral_EMR_BDC.cs" />
@@ -137,7 +143,6 @@
     <Compile Include="RRDM_ReversalsTable.cs" />
     <Compile Include="RRDM_BULK_IST_AndOthers_Records_ALL_2.cs" />
     <Compile Include="RRDM_CAP_DATE_GL_PER_CATEGORY_AND_ATM.cs" />
-    <Compile Include="RRDMJournalRead_HstAtmTxns_AndCreateTable_V2_With_SM_BDC_2.cs" />
     <Compile Include="RRDMMatchingTxns_MasterPoolATMs.cs" />
     <Compile Include="RRDM_EXCEL_AND_Directories.cs" />
     <Compile Include="RRDMRepl_SupervisorMode_Details.cs" />
@@ -314,7 +319,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Reactor_Deploy="0" Reactor_Output="" Reactor_Configuration="" Reactor_Project="" Reactor_Commands="" Reactor_Enabled="0" />
+      <UserProperties Reactor_Enabled="0" Reactor_Commands="" Reactor_Project="" Reactor_Configuration="" Reactor_Output="" Reactor_Deploy="0" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

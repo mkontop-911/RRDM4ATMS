@@ -62,12 +62,12 @@
             this.comboBoxFilter = new System.Windows.Forms.ComboBox();
             this.label18 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.labelAllOtherBINS = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.button2 = new System.Windows.Forms.Button();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.labelAllOtherBINS = new System.Windows.Forms.Label();
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -423,7 +423,7 @@
             // textBoxBIN
             // 
             this.textBoxBIN.Location = new System.Drawing.Point(123, 417);
-            this.textBoxBIN.MaxLength = 6;
+            this.textBoxBIN.MaxLength = 8;
             this.textBoxBIN.Name = "textBoxBIN";
             this.textBoxBIN.Size = new System.Drawing.Size(131, 20);
             this.textBoxBIN.TabIndex = 10;
@@ -518,6 +518,16 @@
             this.panel2.Size = new System.Drawing.Size(595, 545);
             this.panel2.TabIndex = 344;
             // 
+            // labelAllOtherBINS
+            // 
+            this.labelAllOtherBINS.AutoSize = true;
+            this.labelAllOtherBINS.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAllOtherBINS.Location = new System.Drawing.Point(13, 498);
+            this.labelAllOtherBINS.Name = "labelAllOtherBINS";
+            this.labelAllOtherBINS.Size = new System.Drawing.Size(133, 16);
+            this.labelAllOtherBINS.TabIndex = 3;
+            this.labelAllOtherBINS.Text = "labelAllOtherBINS";
+            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
@@ -598,16 +608,6 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanelMain.Size = new System.Drawing.Size(1284, 730);
             this.tableLayoutPanelMain.TabIndex = 266;
-            // 
-            // labelAllOtherBINS
-            // 
-            this.labelAllOtherBINS.AutoSize = true;
-            this.labelAllOtherBINS.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelAllOtherBINS.Location = new System.Drawing.Point(13, 498);
-            this.labelAllOtherBINS.Name = "labelAllOtherBINS";
-            this.labelAllOtherBINS.Size = new System.Drawing.Size(133, 16);
-            this.labelAllOtherBINS.TabIndex = 3;
-            this.labelAllOtherBINS.Text = "labelAllOtherBINS";
             // 
             // Form504b
             // 

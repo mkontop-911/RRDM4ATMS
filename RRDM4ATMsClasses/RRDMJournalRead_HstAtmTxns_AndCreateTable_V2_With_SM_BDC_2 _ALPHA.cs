@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace RRDM4ATMs
 {
-    public class RRDMJournalRead_HstAtmTxns_AndCreateTable_V2_With_SM_BDC_2_Pambos2 : Logger
+    public class RRDMJournalRead_HstAtmTxns_AndCreateTable_V2_With_SM_BDC_2_ALPHA : Logger
     {
-        public RRDMJournalRead_HstAtmTxns_AndCreateTable_V2_With_SM_BDC_2_Pambos2() : base() { }
+        public RRDMJournalRead_HstAtmTxns_AndCreateTable_V2_With_SM_BDC_2_ALPHA() : base() { }
 
         public bool RecordFound;
         public bool Major_ErrorFound;
@@ -19,7 +19,7 @@ namespace RRDM4ATMs
         string connectionString = ConfigurationManager.ConnectionStrings
           ["ATMSConnectionString"].ConnectionString;
 
-    
+      
 
         RRDMGasParameters Gp = new RRDMGasParameters();
 
@@ -34,51 +34,45 @@ namespace RRDM4ATMs
         DateTime NullPastDate = new DateTime(1900, 01, 01);
         DateTime NullFutureDate = new DateTime(2050, 11, 21);
 
-      
+       
 
         bool ShowMessage;
 
         DateTime TRanDate;
         DateTime PreTranDate;
 
-    
+     
 
         int TraceNo;
 
-     
-
       int MasterTraceNo;
 
-     
+    
 
         int WSesNo;
 
-      
-
+     
         string PRX; 
 
         public int TotalValidRecords = 0;
         public int TotalTxns = 0;
         public int GrandTotalTxns;
 
-    
+   
 
         int WLoadedAtRMCycle;
 
-       
-
+      
         string WSignedId;
         int WSignRecordNo;
-        //string WBankId;
-
+        
         string WOperator;
+        DateTime WCut_Off_Date;
 
         int WRMCycle; 
-     //   int WAtmsReconcGroup;
+   
         string WAtmNo;
-       // int WFuid;
-
-       // int WMode;
+      
 
         public void ReadJournal_Txns_And_Insert_In_Pool(string InSignedId, int InSignRecordNo, string InOperator,
                                                              int InRMCycle)
@@ -102,7 +96,7 @@ namespace RRDM4ATMs
 
                 WLoadedAtRMCycle = Rjc.ReadLastReconcJobCycleATMsAndNostroWithMinusOne(WOperator, WJobCategory);
 
-                DateTime WCut_Off_Date = Rjc.Cut_Off_Date;
+                WCut_Off_Date = Rjc.Cut_Off_Date;
 
             }
             catch (Exception ex)
@@ -187,17 +181,13 @@ namespace RRDM4ATMs
             + ",[OriginalRecordId] " // seqno // 2
             + ",[UniqueRecordId] " // 3
 
-          
             + ",[MatchingCateg] " // BDC299 // 4
              + ",[FuID] " // fuid // 5
               + ",[SeqNo01] " // WSeqNo // 6 
 
-         
-
             + ",[TXNSRC] " // "1" // 7.1
             + ",[TXNDEST] " // "0" // 7.2 
             + ",[Origin] " // Our ATM // 8
-
 
             + ",[LoadedAtRMCycle] " // 9 
             + ",[TerminalId] " // 10
@@ -210,11 +200,8 @@ namespace RRDM4ATMs
             + ",[TransCurr] " // 15 
             + ",[TransAmount] " // 16 
 
-          
-
              + ",[DepCount] " //17 
-
-          
+ 
 
             + ",[TransDate] " // 18
 
@@ -222,9 +209,10 @@ namespace RRDM4ATMs
             + ",[AtmTraceNo] " // 20
             + ",[MasterTraceNo] " // 21
 
-           
+          
             + ",[MetaExceptionId] " // 22
 
+           
 
             + ",[ResponseCode] "  // 23 
             + ", [Operator] " //24
@@ -259,9 +247,10 @@ namespace RRDM4ATMs
                  + " when TransactionType = 33 THEN ISNULL(acct1, '') "
                  + " else ISNULL(acct2, '') "
              + "end "
-           
+
             //+ ",[TransCurr] "
-            + ", ISNULL(currency, '')  " //15
+            //+ ", Left(Currency, 3) "
+            + ", ISNULL(Left(Currency, 3), '')  " //15
 
              // + ",[TransAmount] "
              + " ,ISNULL(CAmount, 0 )  " //16
@@ -275,26 +264,23 @@ namespace RRDM4ATMs
                  + " else 0 "
              + "end "
 
-             // + ",[TransDate] " // *************************
                + " ,ISNULL(Trandatetime, '') " //18
-            //  + ",[TraceNoWithNoEndZero] "
+           
             + ", ISNULL(TraceNumber, 0)/10 " ///19
-            //+ ",[AtmTraceNo] "
+           
             + ", ISNULL(TraceNumber, 0)/10 " //20
                                              // + ",[MasterTraceNo] "
              + ", ISNULL(TraceNumber, 0)/10 " //21
 
-             // + ",[MetaExceptionId] "
-
+           
              + ",case " // 22
-            //  and TransactionType = 23
-                // + " when (PresenterError = 'PresenterError') THEN 55 "
+         
                   + " when (PresenterError = 'PresenterError' AND TransactionType <> 23) THEN 55 "
                  + " when (SuspectDesc = 'SUSPECT FOUND') THEN 225 "
                  + " else 0 "
              + " end "
-             //  + ",[ResponseCode] "
-              + ",case " // 23
+           
+              + ",case " // 23 Response Code
                  + " when (ISNULL(Source, '') = '000') THEN '0' "
                   + " when (ISNULL(Source, '') = '00') THEN '0' "
                  + " else 0 "
@@ -302,10 +288,9 @@ namespace RRDM4ATMs
            
             + ", @Operator " // 24
 
-           
            + " FROM [ATM_MT_Journals_AUDI].[dbo].[tblHstAtmTxns]" 
            + " WHERE Processed = 0 and Result = 'OK' and TransactionType <> 99 and TransactionType <> 0 and CAmount >0 "
-           
+           //  + " AND TransDate <=@TransDate "
            ;
 
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -321,14 +306,22 @@ namespace RRDM4ATMs
 
                         cmd.Parameters.AddWithValue("@LoadedAtRMCycle", WRMCycle);
 
-                     
+                        //cmd.Parameters.AddWithValue("@TransDate ", MaxDt01_Minus);
+
+                       // cmd.Parameters.AddWithValue("@FileId01", Mcs.SourceFileNameA);
+                      //  cmd.Parameters.AddWithValue("@FileId02", Mcs.SourceFileNameB);
+                      //  cmd.Parameters.AddWithValue("@FileId03", Mcs.SourceFileNameC);
+                      //  cmd.Parameters.AddWithValue("@FileId04", Mcs.SourceFileNameD);
+
                         cmd.CommandTimeout = 1200;  // seconds
                         Counter = cmd.ExecuteNonQuery();
                     }
                     // Close conn
                     conn.Close();
 
-                   
+                    //System.Windows.Forms.MessageBox.Show("Records Inserted" + Environment.NewLine
+                    //             + "..:.." + Counter.ToString());
+
                 }
                 catch (Exception ex)
                 {
@@ -340,8 +333,231 @@ namespace RRDM4ATMs
                     }
                     CatchDetails(ex);
                 }
-            //UPDATE ORIGINAL RECORDS
+            //UPDATE ORIGINAL RECORDS as Processed
             UpdatetSourceTxnsProcessed(WRMCycle);
+
+            //**********************************************************
+            // UPDATE CATEGORY ID BASED ON BINS 
+            //**********************************************************
+
+            SQLCmd = "  UPDATE [RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolATMs] "
+                        + "  SET MatchingCateg = case "  // SET UP THE CATEGORY 
+                        + " WHEN " // CREDIT CARD
+                        + "( Left(CardNumber,6) = '526764' "
+                        + " OR Left(CardNumber,8) = '53281675' "
+                         + " OR Left(CardNumber,8) = '53239590' "
+                          + " OR Left(CardNumber,8) = '53239524' "
+                        + ") "
+                          + " THEN '" + PRX + "302' " // CREDIT Card
+                        + " WHEN " // Debit CARD
+                        + " ( Left(CardNumber,6) = '537485' "
+                        + " OR Left(CardNumber,8) = '53239519' "
+                         + " OR Left(CardNumber,6) = '510215' "
+                            + " OR Left(CardNumber,8) = '53239513' "
+                          + " OR Left(CardNumber,8) = '51508802' "
+                        + ") "
+                        + " THEN '" + PRX + "304' " // Debit Card
+
+                  + " ELSE '" + PRX + "306' "
+                 + " end "
+                        ;
+
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+                try
+                {
+                    conn.StatisticsEnabled = true;
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SQLCmd, conn))
+                    {
+
+                        cmd.CommandTimeout = 350;  // seconds
+                        Counter = cmd.ExecuteNonQuery();
+                        var stats = conn.RetrieveStatistics();
+                        //commandExecutionTimeInMs = (long)stats["ExecutionTime"];
+
+
+                    }
+                    // Close conn
+                    conn.StatisticsEnabled = false;
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.StatisticsEnabled = false;
+                    conn.Close();
+                    //stpErrorText = stpErrorText + "Cancel At_Updating _TransType";
+                    //stpReturnCode = -1;
+
+                    //stpReferenceCode = stpErrorText;
+                    CatchDetails(ex);
+
+                    return;
+                }
+
+
+            //// Update RMCateg
+            //// Initialise counter 
+            //Counter = 0;
+
+            //SQLCmd = "  UPDATE [RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolATMs] "
+            //          + " SET RMCateg =  MatchingCateg "
+            //          + " WHERE IsMatchingDone = 0 AND Origin <> 'Our Atms'  "
+            //          ;
+
+            //using (SqlConnection conn = new SqlConnection(connectionString))
+            //    try
+            //    {
+            //        conn.StatisticsEnabled = true;
+            //        conn.Open();
+            //        using (SqlCommand cmd =
+            //            new SqlCommand(SQLCmd, conn))
+            //        {
+
+            //            cmd.CommandTimeout = 350;  // seconds
+            //            Counter = cmd.ExecuteNonQuery();
+            //            var stats = conn.RetrieveStatistics();
+            //            //commandExecutionTimeInMs = (long)stats["ExecutionTime"];
+
+            //        }
+            //        // Close conn
+            //        conn.StatisticsEnabled = false;
+            //        conn.Close();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        conn.StatisticsEnabled = false;
+            //        conn.Close();
+                   
+            //        CatchDetails(ex);
+
+            //        //return;
+            //    }
+
+           
+
+
+            //
+            // UPDATE Group of ATMS
+            //
+            // Initialise counter 
+            Counter = 0;
+            //KONTO Time Taken = 98 seconds 
+            // We need this. ???? Or we can do this while loading or during changing of ATM group 
+            // Check this 
+            SQLCmd =
+    " UPDATE [RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolATMs] "
+    + " SET "
+    + " RMCateg = 'RECATMS-' + CAST(t2.AtmsReconcGroup As Char) "
+
+    + " FROM [RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolATMs] t1 "
+    + " INNER JOIN  [ATMS].[dbo].[ATMsFields] t2 "
+
+    + " ON "
+    + " t1.TerminalId = t2.AtmNo "
+    + " WHERE  (t1.IsMatchingDone = 0  AND t1.Origin='Our Atms' ) "; // For not processed yet records
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+                try
+                {
+                    conn.StatisticsEnabled = true;
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SQLCmd, conn))
+                    {
+                        // cmd.Parameters.AddWithValue("@RMCycle", InReconcCycleNo);
+                        cmd.CommandTimeout = 350;
+                        Counter = cmd.ExecuteNonQuery();
+                        var stats = conn.RetrieveStatistics();
+                       // commandExecutionTimeInMs = (long)stats["ExecutionTime"];
+
+
+                    }
+                    // Close conn
+                    conn.StatisticsEnabled = false;
+
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.StatisticsEnabled = false;
+
+                    conn.Close();
+
+                   // stpErrorText = stpErrorText + "Cancel At Master updated with ATM Group ...";
+                    CatchDetails(ex);
+                    //return;
+                }
+
+            
+
+            RRDMMatchingCategories Mc = new RRDMMatchingCategories();
+
+            Mc.ReadMatchingCategoriesAndFillTable(WOperator, "ALL");
+
+            // LOOP FOR Matching Categories
+          
+
+            int I = 0;
+
+            while (I <= (Mc.TableMatchingCateg.Rows.Count - 1))
+            {
+                // Do 
+                string WMatchingCateg = (string)Mc.TableMatchingCateg.Rows[I]["Identity"];
+
+                RRDMMatchingCategoriesVsSourcesFiles Mcs = new RRDMMatchingCategoriesVsSourcesFiles();
+
+                Mcs.ReadReconcCategoriesVsSourcesAll(WMatchingCateg);
+
+                //
+                SQLCmd = "  UPDATE [RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolATMs] "
+                          + " SET FileId01 =  @FileId01, FileId02 =  @FileId02, FileId03 =  @FileId03, FileId04 =  @FileId04  "
+                          + " WHERE  IsMatchingDone = 0 AND MatchingCateg = @MatchingCateg    "
+                          ;
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                    try
+                    {
+
+                        conn.Open();
+                        using (SqlCommand cmd =
+                            new SqlCommand(SQLCmd, conn))
+                        {
+
+                            cmd.Parameters.AddWithValue("@MatchingCateg", WMatchingCateg);
+
+                            cmd.Parameters.AddWithValue("@FileId01", Mcs.SourceFileNameA);
+                            cmd.Parameters.AddWithValue("@FileId02", Mcs.SourceFileNameB);
+                            cmd.Parameters.AddWithValue("@FileId03", Mcs.SourceFileNameC);
+                            cmd.Parameters.AddWithValue("@FileId04", Mcs.SourceFileNameD);
+                            cmd.CommandTimeout = 350;  // seconds
+                            Counter = cmd.ExecuteNonQuery();
+                        }
+                        // Close conn
+                        conn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        conn.Close();
+                       
+                        CatchDetails(ex);
+
+                        // return;
+                    }
+
+                I++; // Read Next entry of the table ... Next Category 
+            }
+
+            
+            //
+            // UPDATE GL ACCOUNTS 
+            //
+            RRDMAccountsClass Acc = new RRDMAccountsClass();
+            
+                if (PRX == "EMR")
+                    Acc.ReadAllATMsAndUpdateAccNo_AUDI(WOperator, WCut_Off_Date);
+
 
             return; 
 

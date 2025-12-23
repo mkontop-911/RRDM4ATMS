@@ -1658,13 +1658,30 @@ namespace RRDM4ATMsWin
         // Source Records 
         private void buttonSourceReords_Click(object sender, EventArgs e)
         {
+            if (W_Application=="EGATE")
+            {
+                int Mode = 1;
+
+                Form78d_AllFiles_EGATE NForm78d_AllFiles_EGATE; // 
+
+                NForm78d_AllFiles_EGATE = new Form78d_AllFiles_EGATE(WOperator, WSignedId, W_Application, WSeqNo, Mode);
+
+                NForm78d_AllFiles_EGATE.ShowDialog();
+            }
+            else
+            {
+                //
+                // OTHER MOBILE 
+                //
+                string WMasterTableName = W_Application + ".[dbo]." + W_Application + "_TPF_TXNS_MASTER";
+
+                Form78d_AllFiles_BDC_3_MOBILE NForm78d_AllFiles_BDC_3_MOBILE; // 
+
+                NForm78d_AllFiles_BDC_3_MOBILE = new Form78d_AllFiles_BDC_3_MOBILE(WOperator, WSignedId, WSeqNo, WMatchingCateg, 1, WMasterTableName, W_Application);
+
+                NForm78d_AllFiles_BDC_3_MOBILE.ShowDialog();
+            }
            
-            string  WMasterTableName = W_Application + ".[dbo]." + W_Application + "_TPF_TXNS_MASTER";
-            Form78d_AllFiles_BDC_3_MOBILE NForm78d_AllFiles_BDC_3_MOBILE; // 
-
-            NForm78d_AllFiles_BDC_3_MOBILE = new Form78d_AllFiles_BDC_3_MOBILE(WOperator, WSignedId, WSeqNo, WMatchingCateg, 1, WMasterTableName, W_Application);
-
-            NForm78d_AllFiles_BDC_3_MOBILE.ShowDialog();
         }
 
         // Near Journal 

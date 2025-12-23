@@ -331,14 +331,14 @@ namespace RRDM4ATMsWin
             dataGridView1.Columns[1].Width = 110; //Atms Name
             dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            dataGridView1.Columns[2].Width = 60; //  Branch
+            dataGridView1.Columns[2].Width = 75; //  Branch
             dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            dataGridView1.Columns[3].Width = 60; // Cit
+            dataGridView1.Columns[3].Width = 50; // Group
             dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            dataGridView1.Columns[4].Width = 70; // CashInType
-            dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView1.Columns[4].Width = 70; //ATM Id
+            dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
 
             //RowSelected["AtmNo"] = AtmNo;

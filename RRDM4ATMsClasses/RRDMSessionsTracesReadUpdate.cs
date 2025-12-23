@@ -147,6 +147,7 @@ namespace RRDM4ATMs
         // Define the data table 
         public DataTable ATMsReplCyclesSelectedPeriod = new DataTable();
         public DataTable ATMsReplCyclesTheBaddies = new DataTable();
+        public DataTable ATMsReplCycles_loaded_at_This_Cycle = new DataTable();
 
         public int TotalSelected;
 
@@ -326,7 +327,7 @@ namespace RRDM4ATMs
             {
                 ATMsReplCyclesSelectedPeriod.Columns.Add("ExcelStatus", typeof(string));
             }
-            
+
 
             string SqlString = " SELECT *"
                      + " FROM [dbo].[SessionsStatusTraces] "
@@ -468,7 +469,7 @@ namespace RRDM4ATMs
                                             {
                                                 RowSelected["ExcelStatus"] = ExcelStatus = "5: Should be made manually";
                                             }
-                                            
+
 
                                             break;
                                         }
@@ -901,6 +902,97 @@ namespace RRDM4ATMs
                     return;
                 }
         }
+        // READ ALL THIS CYCLE REPLENISHMENT AND CREATE AND CALCULATE CASH RECONCILIATION RECORD
+        public void ReadReplCycles_Created_This_Cycle_For_CASH_RECO(int In_LoadedAtRMCycle, DateTime InCut_Off_Date)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            ATMsReplCycles_loaded_at_This_Cycle = new DataTable();
+            ATMsReplCycles_loaded_at_This_Cycle.Clear();
+
+            SqlString = " Select * "
+                                  + " FROM [dbo].[SessionsStatusTraces] "
+                                  + " WHERE LoadedAtRMCycle =@LoadedAtRMCycle AND ProcessMode <> -1 "
+                                  + " AND Cast(SesDtTimeEnd as Date) <= @Cut_Off_Date ";
+
+            using (SqlConnection conn =
+                        new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    using (SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString, conn))
+                    {
+
+                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@LoadedAtRMCycle", In_LoadedAtRMCycle);
+                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@Cut_Off_Date", InCut_Off_Date);
+
+                        sqlAdapt.Fill(ATMsReplCycles_loaded_at_This_Cycle);
+
+                    }
+
+                    // Close conn
+                    conn.Close();
+
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    CatchDetails(ex);
+                    return;
+                }
+
+            RRDM_ATMs_CASH_RECON_MASTER_RECORD Cr = new RRDM_ATMs_CASH_RECON_MASTER_RECORD();
+
+            int I = 0;
+
+            while (I <= (ATMsReplCycles_loaded_at_This_Cycle.Rows.Count - 1))
+            {
+                //    RecordFound = true;
+                int WSesNo = (int)ATMsReplCycles_loaded_at_This_Cycle.Rows[I]["SesNo"];
+                string WAtmNo = (string)ATMsReplCycles_loaded_at_This_Cycle.Rows[I]["AtmNo"];
+                string WAtmName = (string)ATMsReplCycles_loaded_at_This_Cycle.Rows[I]["AtmName"];
+
+                DateTime WSesDtTimeStart = (DateTime)ATMsReplCycles_loaded_at_This_Cycle.Rows[I]["WSesDtTimeStart"];
+                DateTime WSesDtTimeEnd = (DateTime)ATMsReplCycles_loaded_at_This_Cycle.Rows[I]["SesDtTimeEnd"];
+
+                string WOperator = (string)ATMsReplCycles_loaded_at_This_Cycle.Rows[I]["Operator"];
+
+                Cr.AtmNo = WAtmNo;
+                Cr.AtmName = WAtmName;
+                Cr.Previous_ReplDate = WSesDtTimeStart;
+                Cr.ReplDate = WSesDtTimeEnd;
+                Cr.ReplCycleNo = WSesNo;
+                Cr.LoadedAtRMCycle = In_LoadedAtRMCycle;
+                Cr.Cut_Off_date = InCut_Off_Date; 
+                Cr.Operator = WOperator; 
+
+                int InsertSeqNo = Cr.Insert_CASH_RECON(WAtmNo, WSesNo);
+
+                Cr.Read_CASH_RECON_BySeqNo(WOperator, InsertSeqNo);
+
+                // Get the totals and Update all Fields 
+      //           ,[SM_DATA]
+      //,[SM_OpeningBalance]
+      //,[SM_Dispensed]
+      //,[SM_Remaining]
+      //,[SM_Cash_Loaded]
+      //,[SM_Cash_Loaded_Minus_SM_Remaining]
+      //,[SM_Deposits]
+        // UPDATE TOTALS 
+               Cr.Update_CASH_RECON(InsertSeqNo); 
+
+
+
+            }
+
+            I = I + 1;
+        }
+
+   
 
         // Methods 
         // Validate new dates 

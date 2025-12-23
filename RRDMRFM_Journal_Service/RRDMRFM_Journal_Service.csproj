@@ -77,7 +77,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ProjectInstaller.resx">
@@ -105,10 +107,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RRDM4ATMsClasses\RRDM4ATMsClasses.csproj">
+      <Project>{7ac63154-20ab-4abe-bb75-57da8db8427e}</Project>
+      <Name>RRDM4ATMsClasses</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RRDMRFM_Journal_Classes\RRDMRFM_Journal_Classes.csproj">
       <Project>{55c49984-b9df-49b0-9aeb-904572e92365}</Project>
       <Name>RRDMRFM_Journal_Classes</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

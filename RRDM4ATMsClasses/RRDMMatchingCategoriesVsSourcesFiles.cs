@@ -211,7 +211,7 @@ namespace RRDM4ATMs
 
         //
         // READ Category vs Source Files TABLE 
-        //
+        // AND DO 
         public void AssignNextLoadingDate(string InOperator, int InWReconcCycleNo, DateTime InCut_Off_Date)
         {
             RecordFound = false;
@@ -266,17 +266,7 @@ namespace RRDM4ATMs
 
                 int SaveSeqNo = SeqNo = (int)RMCategoryFilesDataFiles.Rows[I]["SeqNo"];
 
-                //ReadReconcCategoriesVsSourcebySeqNo(SeqNo);
-
-                //int CurrentCycle = RMCycle;
-
-                ////if (IsReadThisCycle == true || CurrentCycle == 0)
-                ////if ( CurrentCycle == 0)
-                ////{
-                //    // Next Cycle Info
-                //    Rcycle.FindNextCycle(InOperator, CurrentCycle);
-
-                    // Update Source File Record  
+                
 
                     UpdateReconcCategoryVsSourceRecordWithRmCycleNo(SeqNo, InWReconcCycleNo, InCut_Off_Date.Date); 
 
@@ -1064,6 +1054,7 @@ namespace RRDM4ATMs
         public void UpdateReconcCategoryVsSourceRecordProcessCodeToMinusOne(string InSourceFileName, int InRMCycle)
         {
             // Alecos: what is InCategoryId for when the update is done with the CategoryId member??????
+            // ALECOS HAS NOTHING TO DO WITH CATEGORIES BECAUSE FILES ARE LOADED BY RRDM
             ErrorFound = false;
             ErrorOutput = "";
 
@@ -1122,6 +1113,7 @@ namespace RRDM4ATMs
                         new SqlCommand("UPDATE [ATMS].[dbo].[MatchingCategoriesVsSourceFiles] SET "
                               + " RMCycle = @NewRMCycle, "
                               + " ExpectedDate = @ExpectedDate, "
+                               + " ProcessMode = 0 , "
                               + " IsReadThisCycle = @IsReadThisCycle "
                               + " WHERE SeqNo = @SeqNo", conn))
                     {

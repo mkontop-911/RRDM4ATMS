@@ -153,9 +153,14 @@ namespace RRDM4ATMsWin
         {
            
             int WReconcCycleNo;
-           
-            WReconcCycleNo = Rjc.ReadLastReconcJobCycleATMsAndNostroWithMinusOne(WOperator, WJobCategory);
 
+            Rjc.ReadLastReconcJobCycleATMsAndNostroWithMinusOne_Second_version(WOperator, WJobCategory);
+            //ReadLastReconcJobCycleATMsAndNostroWithMinusOne_Second_version
+            WReconcCycleNo = Rjc.JobCycle;
+
+            //WReconcCycleNo = Rjc.ReadLastReconcJobCycleATMsAndNostroWithMinusOne(WOperator, WJobCategory);
+  
+           
             if (Rjc.RecordFound == true)
             {
                 label4.Show();

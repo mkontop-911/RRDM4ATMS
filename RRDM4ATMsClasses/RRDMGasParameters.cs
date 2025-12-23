@@ -116,6 +116,65 @@ namespace RRDM4ATMs
                 }
         }
 
+        public string ReadParametersAndFillDataTable_101()
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            DataTableAllParameters = new DataTable();
+            DataTableAllParameters.Clear();
+
+            TotalSelected = 0;
+          
+
+            string SqlString = "SELECT *"
+                  + " FROM [ATMS].[dbo].[GasParameters] "
+                       + " WHERE ParamId = '101'  "
+                    //    + " ORDER BY ParamId,  OccuranceId "
+                        ;
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        //cmd.Parameters.AddWithValue("@BankId", InUserId);
+                        //cmd.Parameters.AddWithValue("@RefKey", InRefKey);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+
+                            ReadParametersFields(rdr);
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+            return Operator; 
+        }
+            
+        
+
+
         //
         // READ HISTORY
         //

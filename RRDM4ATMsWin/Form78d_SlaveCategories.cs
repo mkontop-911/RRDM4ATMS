@@ -80,14 +80,11 @@ namespace RRDM4ATMsWin
                 labelWhatGrid.Text = "LIST OF CATEGORIES " ;
             } 
 
-
-
         }
 
         private void Form78b_Load(object sender, EventArgs e)
         {
             
-
             if (WMode == 5)
             {
                 Mc.ReadMatchingCategoriesSlavesAndFillTable(WOperator, WRMCateg);

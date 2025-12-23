@@ -454,6 +454,9 @@ namespace RRDM4ATMsWin
                     if (Usi.WFieldNumeric11 == 11)
                     {
                         W_Application = "ETISALAT";
+                        MessageBox.Show(" THIS IS A VERIFICATION MESSAGE" + Environment.NewLine
+                           + "OSMAN THIS IS VERSION 2025_10_08 " + Environment.NewLine
+                           + "Is this the one you must Have? ");
                     }
                     if (Usi.WFieldNumeric11 == 12)
                     {
@@ -1148,7 +1151,7 @@ namespace RRDM4ATMsWin
                                 }
                         }
 
-                      
+
 
                         //*******************************
                     }
@@ -3162,48 +3165,7 @@ namespace RRDM4ATMsWin
             {
 
             }
-            //DateTime HealthTargetDate;
-            //bool Limit = false; 
-            //HealthTargetDate = new DateTime(2050, 03, 24);
-            //string ParId = "822"; // When version of files changes 
-            //string OccurId = "04"; // FOR SYSTEM AVAILABILITY - haelth check 
-            //Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
-            //if (Gp.RecordFound)
-            //{
-            //    Limit = true; 
-            //    try
-            //    {
-            //        HealthTargetDate = Convert.ToDateTime(Gp.OccuranceNm);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show("822 parameter date is wrong");
 
-            //        //ErrorFound = true;
-            //        CatchDetails(ex);
-            //    }
-
-            //}
-            //else
-            //{
-            //    Limit = false; 
-            //    // Not found 
-            //}
-
-            //if (Limit == true)
-            //{
-            //    // Check if current cut off is greater than the limit date 
-            //    if (Rjc.Cut_Off_Date > HealthTargetDate)
-            //    {
-            //        MessageBox.Show("CHECK WITH RRDM." + Environment.NewLine
-            //            + "HEALTH OF SYSTEM MUST BE CHECKED..." + HealthTargetDate.ToShortDateString() + Environment.NewLine
-            //       + "NOW SYSTEM IS NOT AVAILABLE " + Environment.NewLine
-            //       + "IT WILL BE AVAILABLE AFTER CHECKING IS MADE" + Environment.NewLine
-            //       //+ "If UAT is availble then creates needs of supporting it. " + Environment.NewLine
-            //       );
-            //        return;
-            //    }
-            //}
 
             RRDMBanks Ba = new RRDMBanks();
             Ba.ReadBank(WOperator);
@@ -3224,7 +3186,7 @@ namespace RRDM4ATMsWin
                 }
                 else
                 {
-                    if (W_Application == "ETISALAT" || W_Application == "QAHERA" || W_Application == "IPN" )
+                    if (W_Application == "ETISALAT" || W_Application == "QAHERA" || W_Application == "IPN")
                     {
                         Form502_Load_And_Match_MOBILE NForm502_Load_And_Match_MOBILE;
                         NForm502_Load_And_Match_MOBILE = new Form502_Load_And_Match_MOBILE(WSignedId, WSignRecordNo, WOperator, WReconcCycleNo, Mode);
@@ -3306,6 +3268,9 @@ namespace RRDM4ATMsWin
                 NForm502_Check_Loading_AUD = new Form502_Load_And_Match_AUD(WSignedId, WSignRecordNo, WOperator, WReconcCycleNo, Mode);
                 NForm502_Check_Loading_AUD.ShowDialog();
             }
+
+
+
 
             if (Ba.ShortName == "EGA")
             {
@@ -3581,7 +3546,25 @@ namespace RRDM4ATMsWin
         private void button22_Click_1(object sender, EventArgs e)
         {
             // CALL RRDM CLASS TO TRUNCATE THE TABLES
-            if (W_Application == "ATMs")
+            bool RUN_Mobile = false;
+            string RCT3 = "";
+            if (W_Application == "ETISALAT")
+            {
+                RCT3 = "ATMS.[dbo].[Stp_Refresh_Testing_Data_ETISALAT]";
+                RUN_Mobile = true;
+            }
+            if (W_Application == "QAHERA")
+            {
+                RCT3 = "ATMS.[dbo].[Stp_Refresh_Testing_Data_QAHERA]";
+                RUN_Mobile = true;
+            }
+            if (W_Application == "IPN")
+            {
+                RCT3 = "ATMS.[dbo].[Stp_Refresh_Testing_Data_IPN]";
+                RUN_Mobile = true;
+            }
+
+            if (W_Application == "ATMs" || RUN_Mobile == true)
             {
                 if (MessageBox.Show("Do you want to delete all data for all Cycles?  " + Environment.NewLine
                                + "ARE YOU SURE ...? " + Environment.NewLine
@@ -3640,58 +3623,45 @@ namespace RRDM4ATMsWin
                 //*************************************************************
 
                 // RESET UNIQUE KEY
+                if (W_Application == "ATMs")
+                {
+                    string connectionString2 = ConfigurationManager.ConnectionStrings
+                 ["ReconConnectionString"].ConnectionString;
 
-                string connectionString2 = ConfigurationManager.ConnectionStrings
-                  ["ReconConnectionString"].ConnectionString;
+                    string RCT2 = "[RRDM_Reconciliation_ITMX].[dbo].[usp_ResetUniqueId]";
 
-                string RCT2 = "[RRDM_Reconciliation_ITMX].[dbo].[usp_ResetUniqueId]";
-
-                using (SqlConnection conn2 =
-                   new SqlConnection(connectionString2))
-                    try
-                    {
-                        conn2.Open();
-                        using (SqlCommand cmd =
-                           new SqlCommand(RCT2, conn2))
+                    using (SqlConnection conn2 =
+                       new SqlConnection(connectionString2))
+                        try
                         {
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            // Parameters
+                            conn2.Open();
+                            using (SqlCommand cmd =
+                               new SqlCommand(RCT2, conn2))
+                            {
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                // Parameters
 
-                            int rows = cmd.ExecuteNonQuery();
-                            //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-                            //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                                int rows = cmd.ExecuteNonQuery();
+                                //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
+                                //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
 
+                            }
+                            // Close conn
+                            conn2.Close();
                         }
-                        // Close conn
-                        conn2.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
-                    }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
+                        }
+                }
+
             }
 
 
             // 
             // Clear data for MOBILE 
             // 
-            bool RUN_Mobile = false;
-            string RCT3 = "";
-            if (W_Application == "ETISALAT")
-            {
-                RCT3 = "ATMS.[dbo].[Stp_Refresh_Testing_Data_ETISALAT]";
-                RUN_Mobile = true;
-            }
-            if (W_Application == "QAHERA")
-            {
-                RCT3 = "ATMS.[dbo].[Stp_Refresh_Testing_Data_QAHERA]";
-                RUN_Mobile = true;
-            }
-            if (W_Application == "IPN")
-            {
-                RCT3 = "ATMS.[dbo].[Stp_Refresh_Testing_Data_IPN]";
-                RUN_Mobile = true;
-            }
+
 
             if (RUN_Mobile == true)
             {
@@ -4194,18 +4164,19 @@ namespace RRDM4ATMsWin
         {
 
             //return; 
+            //00000017_20250903_EJ_NCR.000
+            //00000018_20250903_EJ_NCR.000
+            //00017002_20250903_EJ_NCR.000
 
-            //C:\RRDM\Archives\Atms_Journals_Txns\20221213_213\00015603_20221206_EJ_WCR.002
-            //C:\RRDM\Archives\Atms_Journals_Txns\20221213_213\00015591_20221205_EJ_WCR.002
-            //C:\RRDM\Archives\Atms_Journals_Txns\20221213_213\00015696_20221206_EJ_WCR.002
             //C:\RRDM\Archives\Atms_Journals_Txns\20221213_213\00000465_20221210_EJ_WCR.000
             //C:\RRDM\FilePool\Atms_Journals_Txns\01900501_20210831_EJ_NCR.001
 
             // "C:\RRDM\FilePool\Atms_Journals_Txns\RA122002_20250403_EJ_BT2.000"
             // RA209002_20250404_EJ_NCR.733
-            string WJournalTxtFile = "C:\\RRDM\\FilePool\\Atms_Journals_Txns\\00017002_20250811_EJ_NCR.000";
-             
-            string jlnFullPathName;
+            // ATM02061_20250819_EJ_HYO.000
+            string WJournalTxtFile = "C:\\RRDM\\FilePool\\Atms_Journals_Txns\\ATM02061_20250819_EJ_HYO.000";
+
+            string jlnFullPathName = "";
             RRDMJournalReadTxns_Text_Class Jrt = new RRDMJournalReadTxns_Text_Class();
             jlnFullPathName = Jrt.ConvertJournal(WJournalTxtFile); // Converted File 
                                                                    // LineCount = Jrt.LineCounter
@@ -4309,7 +4280,7 @@ namespace RRDM4ATMsWin
                         WSortCriteria, FromDt, ToDt, 2, 0, W_Application);
             }
         }
-// Check Active Directory 
+        // Check Active Directory 
         private void buttonCheckActive_Click(object sender, EventArgs e)
         {
             Form40_Active_DIR NForm40_Active_DIR;
@@ -4325,7 +4296,7 @@ namespace RRDM4ATMsWin
 
             //NForm3_PreInv.ShowDialog();
         }
-// CHECK RECORDS IN IST
+        // CHECK RECORDS IN IST
         private void buttonCheckIST_Click(object sender, EventArgs e)
         {
             // SHOW RECORDS IN IST 
@@ -4336,7 +4307,7 @@ namespace RRDM4ATMsWin
             NForm78d_Discre = new Form78d_Discre(WOperator, WSignedId, "", WReconcCycleNo, WMode, "");
             NForm78d_Discre.ShowDialog();
         }
-// Combine files 
+        // Combine files 
         private void buttonReplaceCode_Click(object sender, EventArgs e)
         {
             string[] inputFiles = { "C:\\RRDM\\FilePool_ETI\\ETISALAT_TPF_TXNS\\ETISALAT_TPF_TXNS_20250109.001", "C:\\RRDM\\FilePool_ETI\\ETISALAT_TPF_TXNS\\ETISALAT_TPF_TXNS_20250110_No_header.002" }; // Add your file names here
@@ -4355,11 +4326,11 @@ namespace RRDM4ATMsWin
                             {
                                 writer.WriteLine(line);
                             }
-                          //  writer.WriteLine(); // Add a blank line between files (optional)
+                            //  writer.WriteLine(); // Add a blank line between files (optional)
                         }
                     }
                 }
-                MessageBox.Show("File Created"); 
+                MessageBox.Show("File Created");
             }
             catch (Exception ex)
             {
@@ -4367,7 +4338,7 @@ namespace RRDM4ATMsWin
             }
 
         }
-// Correct the CIT Inconsistencies after Loanding 
+        // Correct the CIT Inconsistencies after Loanding 
         private void buttonCorrectCitExcel_Click(object sender, EventArgs e)
         {
             Form18_CIT_ExcelOutput_Alerts_BDC NForm18_CIT_ExcelOutput_Alerts_BDC;
@@ -4375,7 +4346,7 @@ namespace RRDM4ATMsWin
             NForm18_CIT_ExcelOutput_Alerts_BDC = new Form18_CIT_ExcelOutput_Alerts_BDC(WSignedId, WSignRecordNo, WOperator);
             NForm18_CIT_ExcelOutput_Alerts_BDC.ShowDialog();
         }
-// Divide files 
+        // Divide files 
         private void buttonDivideFiles_Click(object sender, EventArgs e)
         {
             RRDM_DIVIDE_ZIP_FILES Div = new RRDM_DIVIDE_ZIP_FILES();
@@ -4385,12 +4356,12 @@ namespace RRDM4ATMsWin
                 + "The file is expected to be bigger than 40 GB "
                 + "The creater parts will be in the same folder OSMAN_V2 "
                 + "Their names will be BIGFILE.zip.part0000, BIGFILE.zip.part0001 etc "
-                 ); 
+                 );
             // Call method to create 
             Div.SplitZip(zipFilePath, 40);
-            
+
         }
-// Merge 
+        // Merge 
         private void buttonMergeFiles_Click(object sender, EventArgs e)
         {
             RRDM_DIVIDE_ZIP_FILES Div = new RRDM_DIVIDE_ZIP_FILES();
@@ -4401,7 +4372,7 @@ namespace RRDM4ATMsWin
               + "The created file will have the name TPF.zip under the same directory OSMAN_V2 "
                );
             Div.ReconstructZip(outputFile, inputFile);
-           // Div.MergeFiles_ZIP(WSignedId);
+            // Div.MergeFiles_ZIP(WSignedId);
         }
     }
 }

@@ -92,7 +92,7 @@ namespace RRDMRFM_Journal_Classes
                 // TODO Consider reading all parameters in one go...
 
                 RRDMGasParameters Gp = new RRDMGasParameters();
-
+                
                 // Max Threads to start
                 Gp.ReadParametersSpecificId(Operator, "914", "1", "", "");
                 RFMJ_MaxThreadNumber = (int)Gp.Amount;

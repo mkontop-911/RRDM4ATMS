@@ -2,6 +2,8 @@
 using System.ServiceProcess;
 
 using RRDMRFM_Journal_Classes;
+using RRDM4ATMs;
+
 
 namespace RRDMRFM_Journal_Service
 {
@@ -31,6 +33,10 @@ namespace RRDMRFM_Journal_Service
                 argOrigin = args[0];
                 argSourceFileID = args[1];
                 argOperator = args[2];
+
+                RRDMGasParameters Gp = new RRDMGasParameters();
+                argOperator = Gp.ReadParametersAndFillDataTable_101();
+
                 RfmjServer.argOrigin = argOrigin;
                 RfmjServer.argSourceFileID = argSourceFileID;
                 RfmjServer.argOperator = argOperator;

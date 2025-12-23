@@ -458,6 +458,7 @@ namespace RRDMRFM_Journal_Classes
             #endregion
 
             #region Check if system is ready to accept the new file
+            /*
             // Check in the ReconcCategoryVsSourceFiles
             // Categories where this file participates in must all be in either ProcessMode = 1 or ProcessMode = -1 state.
             //
@@ -530,6 +531,7 @@ namespace RRDMRFM_Journal_Classes
 
                 return ProcessFileResult.ReconciliationInProgress;
             }
+            */
             #endregion
 
             #region TODO: Validations

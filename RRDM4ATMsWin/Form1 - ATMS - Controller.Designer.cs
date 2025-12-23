@@ -615,7 +615,7 @@
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.label2.Location = new System.Drawing.Point(10, 12);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(77, 16);
+            this.label2.Size = new System.Drawing.Size(76, 16);
             this.label2.TabIndex = 346;
             this.label2.Text = "ENTITIES";
             // 
@@ -626,7 +626,7 @@
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.label5.Location = new System.Drawing.Point(14, 10);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(72, 16);
+            this.label5.Size = new System.Drawing.Size(71, 16);
             this.label5.TabIndex = 349;
             this.label5.Text = "QUALITY";
             // 
@@ -654,7 +654,7 @@
             this.panel2.ForeColor = System.Drawing.Color.White;
             this.panel2.Location = new System.Drawing.Point(0, 92);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1046, 506);
+            this.panel2.Size = new System.Drawing.Size(1046, 610);
             this.panel2.TabIndex = 49;
             // 
             // textBoxVersionDate
@@ -895,7 +895,7 @@
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.label1.Location = new System.Drawing.Point(21, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(102, 16);
+            this.label1.Size = new System.Drawing.Size(101, 16);
             this.label1.TabIndex = 349;
             this.label1.Text = "OPEN CYCLE";
             // 
@@ -1010,7 +1010,7 @@
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.label3.Location = new System.Drawing.Point(10, 14);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(101, 32);
+            this.label3.Size = new System.Drawing.Size(100, 32);
             this.label3.TabIndex = 487;
             this.label3.Text = "WORK \r\nALLOCATION";
             // 
@@ -1204,7 +1204,7 @@
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.label4.Location = new System.Drawing.Point(4, 124);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(132, 16);
+            this.label4.Size = new System.Drawing.Size(131, 16);
             this.label4.TabIndex = 483;
             this.label4.Text = "LOADING ASSIST";
             // 
@@ -1294,7 +1294,7 @@
             this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.label10.Location = new System.Drawing.Point(4, 16);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(92, 32);
+            this.label10.Size = new System.Drawing.Size(91, 32);
             this.label10.TabIndex = 457;
             this.label10.Text = "LOADING\r\n/MATCHING";
             // 
@@ -1553,7 +1553,7 @@
             this.labelParameters.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.labelParameters.Location = new System.Drawing.Point(43, 12);
             this.labelParameters.Name = "labelParameters";
-            this.labelParameters.Size = new System.Drawing.Size(112, 16);
+            this.labelParameters.Size = new System.Drawing.Size(111, 16);
             this.labelParameters.TabIndex = 393;
             this.labelParameters.Text = "PARAMETERS";
             // 
@@ -1564,7 +1564,7 @@
             this.labelHost.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.labelHost.Location = new System.Drawing.Point(128, 402);
             this.labelHost.Name = "labelHost";
-            this.labelHost.Size = new System.Drawing.Size(95, 16);
+            this.labelHost.Size = new System.Drawing.Size(94, 16);
             this.labelHost.TabIndex = 463;
             this.labelHost.Text = "WORKFLOW";
             this.labelHost.Visible = false;
@@ -1852,7 +1852,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1046, 598);
+            this.ClientSize = new System.Drawing.Size(1046, 702);
             this.ControlBox = false;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.tableLayoutPanelHeader);

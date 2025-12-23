@@ -13,7 +13,7 @@ using System.Configuration;
 
 namespace RRDM4ATMsWin
 {
-    public partial class Form40 : Form
+    public partial class Form40_ALPHA_CY : Form
     {
         //multilingual
         CultureInfo culture;
@@ -99,7 +99,7 @@ namespace RRDM4ATMsWin
 
         ResourceManager LocRM = new ResourceManager("RRDM4ATMsWin.appRes", typeof(Form40).Assembly);
 
-        public Form40()
+        public Form40_ALPHA_CY()
         {
 
             //InitializeComponent();

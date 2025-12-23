@@ -9647,9 +9647,9 @@ namespace RRDM4ATMs
         + " FROM " + InTable + " WITH (NOLOCK) "
              + " WHERE  "
              + "     ([Processed] = 0) "
-            // + " AND ([MatchingCateg] = @MatchingCateg) "
+             + " AND ([TransDate] <> '2050-12-31 00:00:00.000') "
              + " AND (TerminalId = @TerminalId)"
-             + " AND (ResponseCode = '0')";
+             + " AND (ResponseCode = '0' OR ResponseCode = '00')";
 
 
             using (SqlConnection conn =
@@ -9696,7 +9696,7 @@ namespace RRDM4ATMs
              + "     ([Processed] = 0) "
             // + " AND ([MatchingCateg] = @MatchingCateg) "
              + " AND (TerminalId = @TerminalId)"
-             + " AND (ResponseCode = '0')"
+             + " AND (ResponseCode = '0' OR ResponseCode = '00' )"
              + " Order By TransDate Desc ";
 
             using (SqlConnection conn =

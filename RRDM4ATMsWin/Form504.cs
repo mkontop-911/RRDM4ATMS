@@ -150,7 +150,7 @@ namespace RRDM4ATMsWin
 
             WOrigin = Rc.Origin; 
 
-            if (WOrigin == "Our Atms")
+            if (WOrigin == "Our Atms" || WOrigin == "ALPHA ATMs")
             {
                 buttonUpdateHisATMs.Show(); 
             }

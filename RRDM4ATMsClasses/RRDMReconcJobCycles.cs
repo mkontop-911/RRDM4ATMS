@@ -969,7 +969,8 @@ namespace RRDM4ATMs
             SqlString = "SELECT * "
                       + " FROM [ATMS].[dbo].[ReconcJobCycles] "
                       + " WHERE Operator = @Operator AND JobCategory = @JobCategory "
-                      + " ORDER BY JobCycle DESC";
+                      + " AND ProcessMode = -1  "
+                      + " ORDER BY JobCycle ASC";
 
             using (SqlConnection conn =
                           new SqlConnection(connectionString))
@@ -995,11 +996,11 @@ namespace RRDM4ATMs
 
                             ReadTableFields(rdr);
 
-                            if (ProcessMode == -1)
-                            {
-                                JobCycleMinusOne = JobCycle; 
-                                break;
-                            }
+                            //if (ProcessMode == -1)
+                            //{
+                            //    JobCycleMinusOne = JobCycle; 
+                            //    break;
+                            //}
                         }
 
                         // Close Reader
@@ -1016,7 +1017,72 @@ namespace RRDM4ATMs
                     CatchDetails(ex);
 
                 }
-            return JobCycleMinusOne;
+            return JobCycle;
+        }
+
+        //
+        //
+        public void ReadLastReconcJobCycleATMsAndNostroWithMinusOne_Second_version(string InOperator, string InJobCategory)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+
+            int JobCycleMinusOne = 0;
+
+            SqlString = "SELECT * "
+                      + " FROM [ATMS].[dbo].[ReconcJobCycles] "
+                      + " WHERE Operator = @Operator AND JobCategory = @JobCategory "
+                      + " AND ProcessMode = -1  "
+                      + " ORDER BY JobCycle ASC";
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+
+                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+                        cmd.Parameters.AddWithValue("@JobCategory", InJobCategory);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+
+                            RecordFound = true;
+
+                            ReadTableFields(rdr);
+
+                            //if (ProcessMode == -1)
+                            //{
+                            //    JobCycleMinusOne = JobCycle; 
+                            //    break;
+                            //}
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+           // return JobCycle;
         }
 
         //

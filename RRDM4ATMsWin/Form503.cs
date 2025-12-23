@@ -585,7 +585,7 @@ namespace RRDM4ATMsWin
 
             if (WMainCateg == "EWB1"
                 || WMainCateg == PRX + "1"
-                || comboBoxOrigin.Text == "Our Atms"
+                //|| comboBoxOrigin.Text == "Our Atms"
                 )
             {
                 Mc.TargetSystemNm = comboBoxTargetSystems.Text;

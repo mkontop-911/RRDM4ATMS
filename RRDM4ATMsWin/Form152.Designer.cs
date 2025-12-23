@@ -74,6 +74,7 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonFinish = new System.Windows.Forms.Button();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
+            this.linkLabel_OLDREPL = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -368,6 +369,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
+            this.panel3.Controls.Add(this.linkLabel_OLDREPL);
             this.panel3.Controls.Add(this.linkLabel_SM_Cassettes);
             this.panel3.Controls.Add(this.linkLabel_IST_Playback);
             this.panel3.Controls.Add(this.linkLabelForexTotals);
@@ -702,6 +704,17 @@
             this.tableLayoutPanelMain.Size = new System.Drawing.Size(1321, 736);
             this.tableLayoutPanelMain.TabIndex = 266;
             // 
+            // linkLabel_OLDREPL
+            // 
+            this.linkLabel_OLDREPL.AutoSize = true;
+            this.linkLabel_OLDREPL.Location = new System.Drawing.Point(597, 484);
+            this.linkLabel_OLDREPL.Name = "linkLabel_OLDREPL";
+            this.linkLabel_OLDREPL.Size = new System.Drawing.Size(60, 13);
+            this.linkLabel_OLDREPL.TabIndex = 513;
+            this.linkLabel_OLDREPL.TabStop = true;
+            this.linkLabel_OLDREPL.Text = "OLD REPL";
+            this.linkLabel_OLDREPL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_OLDREPL_LinkClicked);
+            // 
             // Form152
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -785,5 +798,6 @@
         private System.Windows.Forms.LinkLabel linkLabelForexDetails;
         private System.Windows.Forms.LinkLabel linkLabel_IST_Playback;
         private System.Windows.Forms.LinkLabel linkLabel_SM_Cassettes;
+        private System.Windows.Forms.LinkLabel linkLabel_OLDREPL;
     }
 }

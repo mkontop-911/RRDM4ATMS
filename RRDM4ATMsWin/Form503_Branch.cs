@@ -72,8 +72,8 @@ namespace RRDM4ATMsWin
             comboBoxDistrict.DataSource = Gp.GetParamOccurancesNm(WOperator);
             comboBoxDistrict.DisplayMember = "DisplayValue";
 
-            comboBoxFilter.DataSource = Gp.GetParamOccurancesNm(WOperator);
-            comboBoxFilter.DisplayMember = "DisplayValue";
+            //comboBoxFilter.DataSource = Gp.GetParamOccurancesNm(WOperator);
+            //comboBoxFilter.DisplayMember = "DisplayValue";
             
             // Countries
             Gp.ParamId = "227";
@@ -89,56 +89,62 @@ namespace RRDM4ATMsWin
             string SelectionCriteria = " WHERE Operator='" + WOperator +"'"; 
             Bb.ReadBranchesAtmAndFillTable(WSignedId,SelectionCriteria);
 
-            dataGridView1.DataSource = Bb.BranchesDataTable.DefaultView;
+            dataGridView2.DataSource = Bb.BranchesDataTable.DefaultView;
 
-            if (dataGridView1.Rows.Count == 0)
+            if (dataGridView2.Rows.Count == 0)
             {
-                buttonAdd.Hide();
-                buttonUpdate.Hide();
-                buttonDelete.Hide();
+                if (checkBox_Make_Branch_2.Checked == false)
+                {
+                    buttonAdd_2.Hide();
+                }
+                
+                buttonUpdate_2.Hide();
+                buttonDelete_2.Hide();
                 return;
             }
 
-            dataGridView1.Columns[0].Width = 60; // Seq No
-            dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridView1.Columns[0].Visible = false;
+            dataGridView2.Columns[0].Width = 60; // Seq No
+            dataGridView2.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView2.Columns[0].Visible = false;
 
-            //dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+            //dataGridView2.Sort(dataGridView2.Columns[1], ListSortDirection.Ascending);
 
-            dataGridView1.Columns[1].Width = 90; // BranchId
-            dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView2.Columns[1].Width = 90; // BranchId
+            dataGridView2.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            dataGridView1.Columns[2].Width = 300; // BranchName
-            dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView2.Columns[2].Width = 300; // BranchName
+            dataGridView2.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            dataGridView1.Columns[3].Width = 20; // CIT that it is not needed. 
-            dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridView1.Columns[3].Visible = false; 
+            dataGridView2.Columns[3].Width = 20; // CIT that it is not needed. 
+            dataGridView2.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView2.Columns[3].Visible = false; 
 
-            dataGridView1.Columns[4].Width = 150; // Street
-            dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView2.Columns[4].Width = 150; // Street
+            dataGridView2.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            dataGridView1.Columns[5].Width = 150; // Town
-            dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView2.Columns[5].Width = 150; // Town
+            dataGridView2.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            dataGridView1.Columns[6].Width = 150; // District
-            dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridView2.Columns[6].Width = 150; // District
+            dataGridView2.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
-            buttonAdd.Hide();
-            buttonUpdate.Show();
-            buttonDelete.Show();
+            //buttonAdd_2.Hide();
+            buttonUpdate_2.Show();
+            buttonDelete_2.Show();
 
         }
         // On Row Enter
 
-        private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
+     
 
-            if (checkBoxMakeNewBranch.Checked == true)
+        private void dataGridView2_RowEnter_1(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridViewRow rowSelected = dataGridView2.Rows[e.RowIndex];
+
+            if (checkBox_Make_Branch_2.Checked == true)
             {
                 InternalChange = true;
-                checkBoxMakeNewBranch.Checked = false;
+                checkBox_Make_Branch_2.Checked = false;
             }
             else
             {
@@ -150,52 +156,23 @@ namespace RRDM4ATMsWin
 
             Bb.ReadBranchBySeqNo(WSeqNo);
 
-            textBoxBranchId.Text = Bb.BranchId ;
-            textBoxBranchName.Text = Bb.BranchName ;
-           // textBoxCitId.Text = Bb.CitId; 
-            textBoxStreet.Text = Bb.Street ;
-            textBoxTownOrVillage.Text = Bb.Town ;
-            comboBoxDistrict.Text = Bb.District ;
-            textBoxPostalCode.Text = Bb.PostalCode ;
+            textBoxBranchId_2.Text = Bb.BranchId;
+            textBoxBranchName_2.Text = Bb.BranchName;
+            // textBoxCitId.Text = Bb.CitId; 
+            textBoxStreet_2.Text = Bb.Street;
+            textBoxTownOrVillage_2.Text = Bb.Town;
+            comboBoxDistrict.Text = Bb.District;
+            textBoxPostalCode_2.Text = Bb.PostalCode;
             comboBoxCountry.Text = comboBoxCountry.Text;
-            textBoxLatitude.Text = Bb.Latitude.ToString();
-            textBoxLongitude.Text = Bb.Longitude.ToString();
+            textBoxLatitude_2.Text = Bb.Latitude.ToString();
+            textBoxLongitude_2.Text = Bb.Longitude.ToString();
 
-            textBoxBranchId.ReadOnly = true; 
+            textBoxBranchId.ReadOnly = true;
 
             buttonUpdate.Show();
         }
-        // ADD
-        private void buttonAdd_Click(object sender, EventArgs e)
-        {
-           
 
-        }
 
-        // UPDATE Branch
-        private void buttonUpdate_Click(object sender, EventArgs e)
-        {
-
-           
-        }
-
-        // DELETE Branch
-        private void buttonDelete_Click(object sender, EventArgs e)
-        {
-           
-        }
-
-        // Change Filter 
-        private void comboBoxFilter_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (WMode == 5)
-            {
-                return;
-            }
-            else Form503_Load(this, new EventArgs());
-        }
-     
-   
         private void button52_Click(object sender, EventArgs e)
         {
             FormHelp helpForm = new FormHelp("Branch Definition");
@@ -208,22 +185,11 @@ namespace RRDM4ATMsWin
             this.Dispose();
         }
 
-        private void checkBoxMakeNewBranch_CheckedChanged(object sender, EventArgs e)
-        {
-            
-        }
         // Search Google
         int WActType;
         string WBranchId; 
-        private void buttonSearchGoogle_Click(object sender, EventArgs e)
-        {
-            
-        }
-// Refresh postition
-        private void buttonRefresh_Click(object sender, EventArgs e)
-        {
-           
-        }
+      
+
 // Print
         private void buttonPrint_Click(object sender, EventArgs e)
         {
@@ -239,28 +205,25 @@ namespace RRDM4ATMsWin
             Report76.Show();
         }
 
-        private void label18_Click(object sender, EventArgs e)
-        {
-
-        }
+      
 // Add
         private void buttonAdd_2_Click(object sender, EventArgs e)
         {
             // Check if Branch Already Exists
-            Bb.ReadBranchByBranchId(textBoxBranchId.Text.Trim());
+            Bb.ReadBranchByBranchId(textBoxBranchId_2.Text.Trim());
             if (Bb.RecordFound == true)
             {
                 MessageBox.Show("Already Exist Branch Id ! ");
                 return;
             }
             Bb.BankId = WOperator;
-            Bb.BranchId = textBoxBranchId.Text.Trim();
-            Bb.BranchName = textBoxBranchName.Text;
+            Bb.BranchId = textBoxBranchId_2.Text.Trim();
+            Bb.BranchName = textBoxBranchName_2.Text;
             Bb.CitId = "1000";
-            Bb.Street = textBoxStreet.Text;
-            Bb.Town = textBoxTownOrVillage.Text;
+            Bb.Street = textBoxStreet_2.Text;
+            Bb.Town = textBoxTownOrVillage_2.Text;
             Bb.District = comboBoxDistrict.Text;
-            Bb.PostalCode = textBoxPostalCode.Text;
+            Bb.PostalCode = textBoxPostalCode_2.Text;
             Bb.Country = comboBoxCountry.Text;
             Bb.Latitude = Convert.ToDouble("14.53");
             Bb.Longitude = Convert.ToDouble("14.53");
@@ -269,28 +232,28 @@ namespace RRDM4ATMsWin
 
             // Insert NEXT LOADING 
 
-            WSeqNo = Bb.InsertBranch(textBoxBranchId.Text.Trim());
+            WSeqNo = Bb.InsertBranch(textBoxBranchId_2.Text.Trim());
 
             ////checkBoxMakeNewVersion.Checked = false;
-            //WRowIndex = dataGridView1.SelectedRows[0].Index;
+            //WRowIndex = dataGridView2.SelectedRows[0].Index;
 
             Form503_Load(this, new EventArgs());
 
-            //dataGridView1.Rows[Mc.PositionInGrid].Selected = true;
-            //dataGridView1_RowEnter(this, new DataGridViewCellEventArgs(1, Mc.PositionInGrid));
+            //dataGridView2.Rows[Mc.PositionInGrid].Selected = true;
+            //dataGridView2_RowEnter(this, new DataGridViewCellEventArgs(1, Mc.PositionInGrid));
         }
         // Update 2
         private void buttonUpdate_2_Click(object sender, EventArgs e)
         {
             Bb.ReadBranchBySeqNo(WSeqNo);
 
-            Bb.BranchId = textBoxBranchId.Text.Trim();
-            Bb.BranchName = textBoxBranchName.Text;
+            Bb.BranchId = textBoxBranchId_2.Text.Trim();
+            Bb.BranchName = textBoxBranchName_2.Text;
             Bb.CitId = "Not_Needed";
-            Bb.Street = textBoxStreet.Text;
-            Bb.Town = textBoxTownOrVillage.Text;
+            Bb.Street = textBoxStreet_2.Text;
+            Bb.Town = textBoxTownOrVillage_2.Text;
             Bb.District = comboBoxDistrict.Text;
-            Bb.PostalCode = textBoxPostalCode.Text;
+            Bb.PostalCode = textBoxPostalCode_2.Text;
             Bb.Country = comboBoxCountry.Text;
             Bb.Latitude = Convert.ToDouble("14.53");
             Bb.Longitude = Convert.ToDouble("14.53");
@@ -302,18 +265,18 @@ namespace RRDM4ATMsWin
 
             MessageBox.Show("Updating Done!");
 
-            WRowIndex = dataGridView1.SelectedRows[0].Index;
+            WRowIndex = dataGridView2.SelectedRows[0].Index;
 
-            int scrollPosition = dataGridView1.FirstDisplayedScrollingRowIndex;
+            int scrollPosition = dataGridView2.FirstDisplayedScrollingRowIndex;
 
             textBoxMsgBoard.Text = "Branch updated.";
 
             Form503_Load(this, new EventArgs());
 
-            dataGridView1.Rows[WRowIndex].Selected = true;
-            dataGridView1_RowEnter(this, new DataGridViewCellEventArgs(1, WRowIndex));
+            dataGridView2.Rows[WRowIndex].Selected = true;
+            dataGridView2_RowEnter_1(this, new DataGridViewCellEventArgs(1, WRowIndex));
 
-            dataGridView1.FirstDisplayedScrollingRowIndex = scrollPosition;
+            dataGridView2.FirstDisplayedScrollingRowIndex = scrollPosition;
         }
 // DELETE 2 
         private void buttonDelete_2_Click(object sender, EventArgs e)
@@ -328,7 +291,7 @@ namespace RRDM4ATMsWin
 
                 textBoxMsgBoard.Text = "Branch Deleted.";
 
-                int WRowIndex1 = dataGridView1.SelectedRows[0].Index;
+                int WRowIndex1 = dataGridView2.SelectedRows[0].Index;
 
                 Form503_Load(this, new EventArgs());
 
@@ -337,8 +300,8 @@ namespace RRDM4ATMsWin
                 if (WRowIndex1 > 0)
                 {
                     WRowIndex1 = WRowIndex1 - 1;
-                    dataGridView1.Rows[WRowIndex1].Selected = true;
-                    dataGridView1_RowEnter(this, new DataGridViewCellEventArgs(1, WRowIndex1));
+                    dataGridView2.Rows[WRowIndex1].Selected = true;
+                    dataGridView2_RowEnter_1(this, new DataGridViewCellEventArgs(1, WRowIndex1));
                 }
             }
             else
@@ -354,25 +317,27 @@ namespace RRDM4ATMsWin
                 return;
             }
 
-            if (checkBoxMakeNewBranch.Checked == true)
+            if (checkBox_Make_Branch_2.Checked == true)
             {
-                buttonAdd.Show();
-                textBoxBranchId.ReadOnly = false;
-                buttonUpdate.Hide();
-                buttonDelete.Hide();
+                buttonAdd_2.Show();
+                textBoxBranchId_2.ReadOnly = false;
+                buttonUpdate_2.Hide();
+                buttonDelete_2.Hide();
 
                 // Enable
 
-                textBoxBranchId.Text = "";
+                textBoxBranchId_2.Text = "";
                 // textBoxCitId.Text = "" ; 
-                textBoxBranchName.Text = "Fill Data";
-                textBoxStreet.Text = "Fill Data";
-                textBoxTownOrVillage.Text = "Fill Data";
+                textBoxBranchName_2.Text = "Fill Data";
+                textBoxStreet_2.Text = "Fill Data";
+                textBoxTownOrVillage_2.Text = "Fill Data";
                 //   comboBoxDistrict.Text = "";
-                textBoxPostalCode.Text = "Fill Data";
+                textBoxPostalCode_2.Text = "Fill Data";
                 //  comboBoxCountry.Text = "";
-                textBoxLatitude.Text = "Fill Data";
+                textBoxLatitude_2.Text = "Fill Data";
                 textBoxLongitude.Text = "Fill Data";
+
+                //Form503_Load(this, new EventArgs());
 
             }
             else
@@ -384,17 +349,17 @@ namespace RRDM4ATMsWin
                 //dataGridView2.Enabled = true;
                 int WRowIndex1 = -1;
 
-                if (dataGridView1.Rows.Count > 0)
+                if (dataGridView2.Rows.Count > 0)
                 {
-                    WRowIndex1 = dataGridView1.SelectedRows[0].Index;
+                    WRowIndex1 = dataGridView2.SelectedRows[0].Index;
                 }
 
                 Form503_Load(this, new EventArgs());
 
-                if (dataGridView1.Rows.Count > 0)
+                if (dataGridView2.Rows.Count > 0)
                 {
-                    dataGridView1.Rows[WRowIndex1].Selected = true;
-                    dataGridView1_RowEnter(this, new DataGridViewCellEventArgs(1, WRowIndex1));
+                    dataGridView2.Rows[WRowIndex1].Selected = true;
+                    dataGridView2_RowEnter_1(this, new DataGridViewCellEventArgs(1, WRowIndex1));
                 }
 
             }
@@ -526,7 +491,7 @@ namespace RRDM4ATMsWin
             }
 
         }
-// Refressh 
+// Refresh 
         private void buttonRefreshPos_Click(object sender, EventArgs e)
         {
             int WMode = 1;
@@ -552,40 +517,24 @@ namespace RRDM4ATMsWin
                 return;
             }
         }
-// ROW ENTER 
-        private void dataGridView2_RowEnter(object sender, DataGridViewCellEventArgs e)
+
+
+        private void Excel_Click(object sender, EventArgs e)
         {
-            DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
+            RRDM_EXCEL_AND_Directories XL = new RRDM_EXCEL_AND_Directories();
 
-            if (checkBoxMakeNewBranch.Checked == true)
-            {
-                InternalChange = true;
-                checkBoxMakeNewBranch.Checked = false;
-            }
-            else
-            {
-                InternalChange = false;
-            }
+            // string ExcelPath = "C:\\_KONTO\\CreateXL\\Files_" + DateTime.Now + ".xls";
+            string ExcelPath = "C:\\RRDM\\Working\\Files_1" + ".xls";
 
-
-            WSeqNo = (int)rowSelected.Cells[0].Value;
-
-            Bb.ReadBranchBySeqNo(WSeqNo);
-
-            textBoxBranchId.Text = Bb.BranchId;
-            textBoxBranchName.Text = Bb.BranchName;
-            // textBoxCitId.Text = Bb.CitId; 
-            textBoxStreet.Text = Bb.Street;
-            textBoxTownOrVillage.Text = Bb.Town;
-            comboBoxDistrict.Text = Bb.District;
-            textBoxPostalCode.Text = Bb.PostalCode;
-            comboBoxCountry.Text = comboBoxCountry.Text;
-            textBoxLatitude.Text = Bb.Latitude.ToString();
-            textBoxLongitude.Text = Bb.Longitude.ToString();
-
-            textBoxBranchId.ReadOnly = true;
-
-            buttonUpdate.Show();
+            string WorkingDir = "C:\\RRDM\\Working\\";
+            XL.ExportToExcel(Bb.BranchesDataTable, WorkingDir, ExcelPath);
         }
+
+        private void label10_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+       
     }
 }

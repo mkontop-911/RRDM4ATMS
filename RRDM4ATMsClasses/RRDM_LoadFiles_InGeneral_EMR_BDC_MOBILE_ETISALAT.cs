@@ -25,7 +25,7 @@ namespace RRDM4ATMs
         public bool RecordFound;
         public bool ErrorFound;
         public string ErrorOutput;
-
+        
         // Find Operator
 
         string PRX; // "+PRX+"
@@ -1153,29 +1153,30 @@ namespace RRDM4ATMs
 
                 int I = 0;
 
-                while (I <= (Mmob.DataTableAllFields.Rows.Count - 1))
-                {
-                    //    RecordFound = true;
-                    int SeqNoA = (int)Mmob.DataTableAllFields.Rows[I]["SeqNo"];
-                    string Meeza_TransactionReference = (string)Mmob.DataTableAllFields.Rows[I]["Meeza_TransactionReference"];
-                    decimal TransAmount = (decimal)Mmob.DataTableAllFields.Rows[I]["TransAmount"];
-                    string ReceivedTelephone = (string)Mmob.DataTableAllFields.Rows[I]["ReceivedTelephone"];
+            while (I <= (Mmob.DataTableAllFields.Rows.Count - 1))
+            {
+                //    RecordFound = true;
+                int SeqNoA = (int)Mmob.DataTableAllFields.Rows[I]["SeqNo"];
+                string Meeza_TransactionReference = (string)Mmob.DataTableAllFields.Rows[I]["Meeza_TransactionReference"];
+                decimal TransAmount = (decimal)Mmob.DataTableAllFields.Rows[I]["TransAmount"];
+                string ReceivedTelephone = (string)Mmob.DataTableAllFields.Rows[I]["ReceivedTelephone"];
 
                 string WSelectionCrriteria = "";
-                bool IsSAIB = false; 
+                bool IsSAIB = false;
 
                 if (Meeza_TransactionReference == "07SAIB-ATM4503" & ReceivedTelephone == "201156565458")
                 {
-                    Meeza_TransactionReference = "07SAIB-ATM4503"; 
+                    Meeza_TransactionReference 
+                        = "07SAIB-ATM4503";
                 }
-                if (Meeza_TransactionReference.Substring(0,6) == "07SAIB")
+                if (Meeza_TransactionReference.Substring(0, 6) == "07SAIB")
                 {
                     // Read if there is other record and find SeqNo. 
                     WSelectionCrriteria = " WHERE  Left(Meeza_TransactionReference, 6) = '06SAIB' "
                                                + " AND TransAmount = " + TransAmount
                                                + " AND ReceivedTelephone ='" + ReceivedTelephone + "'"
                                                + " AND TransType = 'AtmCashOutOffUs' AND IsReversal = 0  "; // AtmCashOutOffUs
-                    IsSAIB = true; 
+                    IsSAIB = true;
                 }
                 else
                 {
@@ -1183,11 +1184,11 @@ namespace RRDM4ATMs
                                                + " AND TransAmount = " + TransAmount
                                                + " AND ReceivedTelephone ='" + ReceivedTelephone + "'"
                                                + " AND TransType = 'AtmCashOutOffUs' AND IsReversal = 0  "; // AtmCashOutOffUs
-                    IsSAIB = false; 
+                    IsSAIB = false;
                 }
 
-                
-                                            ;
+
+                                        ;
                 int WMode = 1;
                 int WDB_Mode = 1;
                 // For Both Update as reversals (IsReversal) 
@@ -1200,7 +1201,7 @@ namespace RRDM4ATMs
 
                     Mmob.UpdateIsReversalBySeqNo(WTableName, SeqNoA);
 
-                    if(IsSAIB == true)
+                    if (IsSAIB == true)
                     {
                         Mmob.UpdateIsReversalBySeqNoWithRefToo(WTableName, SeqNoB, Meeza_TransactionReference); // MAKE THEM EQUAL
                     }
@@ -1236,47 +1237,48 @@ namespace RRDM4ATMs
 
                         Mmob.UpdateIsReversalBySeqNoWithRefToo(WTableName, SeqNoB, Meeza_TransactionReference); // MAKE THEM EQUAL
 
-                      //  Mmob.UpdateIsReversalBySeqNo(WTableName, SeqNoB);
+                        //  Mmob.UpdateIsReversalBySeqNo(WTableName, SeqNoB);
                         // UPDATE BOTH RECORDS As IsReversal = true 
                     }
                 }
 
                 I++; // Read Next entry of the table 
-                }
-
-
-
-            WSelectionCriteria = " WHERE IsReversal = 0 and TransType = 'AgentCashoutReversalOffUs'  ";
-
-            W_Application = "ETISALAT";
-
-            WTableName = "[ETISALAT].[dbo].[ETISALAT_MEEZA_TXNS]";
-
-            WTableName_MATCHED = "";
-            
-            DB_Mode = 1;
-            Mmob.ReadTrans_MASTERTable_Fill_SpecificTable_OneORTwoTables(WTableName, WTableName_MATCHED, WSelectionCriteria,
-                                                           NullPastDate, NullPastDate, DB_Mode, W_Application);
-
-            I = 0;
-
-            while (I <= (Mmob.DataTableAllFields.Rows.Count - 1))
-            {
-                //    RecordFound = true;
-                int SeqNoA = (int)Mmob.DataTableAllFields.Rows[I]["SeqNo"];
-                string Meeza_TransactionReference = (string)Mmob.DataTableAllFields.Rows[I]["Meeza_TransactionReference"];
-                decimal TransAmount = (decimal)Mmob.DataTableAllFields.Rows[I]["TransAmount"];
-                string ReceivedTelephone = (string)Mmob.DataTableAllFields.Rows[I]["ReceivedTelephone"];
-                string WMeeza_TransactionReference = (string)Mmob.DataTableAllFields.Rows[I]["Meeza_TransactionReference"];
-
-                Mmob.UpdateIsReversalByMeezaReference(WTableName, WMeeza_TransactionReference); 
-
-              
-
-                I++; // Read Next entry of the table 
             }
 
+            I = 1; ///
 
+            /*
+                        WSelectionCriteria = " WHERE IsReversal = 0 and TransType = 'AgentCashoutReversalOffUs'  ";
+
+                        W_Application = "ETISALAT";
+
+                        WTableName = "[ETISALAT].[dbo].[ETISALAT_MEEZA_TXNS]";
+
+                        WTableName_MATCHED = "";
+
+                        DB_Mode = 1;
+                        Mmob.ReadTrans_MASTERTable_Fill_SpecificTable_OneORTwoTables(WTableName, WTableName_MATCHED, WSelectionCriteria,
+                                                                       NullPastDate, NullPastDate, DB_Mode, W_Application);
+
+                        I = 0;
+
+                        while (I <= (Mmob.DataTableAllFields.Rows.Count - 1))
+                        {
+                            //    RecordFound = true;
+                            int SeqNoA = (int)Mmob.DataTableAllFields.Rows[I]["SeqNo"];
+                            string Meeza_TransactionReference = (string)Mmob.DataTableAllFields.Rows[I]["Meeza_TransactionReference"];
+                            decimal TransAmount = (decimal)Mmob.DataTableAllFields.Rows[I]["TransAmount"];
+                            string ReceivedTelephone = (string)Mmob.DataTableAllFields.Rows[I]["ReceivedTelephone"];
+                            string WMeeza_TransactionReference = (string)Mmob.DataTableAllFields.Rows[I]["Meeza_TransactionReference"];
+
+                            Mmob.UpdateIsReversalByMeezaReference(WTableName, WMeeza_TransactionReference); 
+
+
+
+                            I++; // Read Next entry of the table 
+                        }
+
+            */
 
         }
 
@@ -4441,6 +4443,56 @@ namespace RRDM4ATMs
                     SqlCommand comd1 = new SqlCommand(SqlString, conn);
                     comd1.CommandTimeout = 300;
                     Total_Non_Processed = Convert.ToInt32(comd1.ExecuteScalar());
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+
+        }
+
+        public void Check_If_GL_ALREADY_Exist(int InRMCycle, DateTime WCutOffDate)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+          
+            string SqlString = "SELECT TOP (1) * "
+                          + "  FROM [ETISALAT].[dbo].[HST_ETISALAT_GL_ENTRIES] "
+                         + "  WHERE LoadedAtRMCycle = @LoadedAtRMCycle "
+                          + "  ";
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString_ETI))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@LoadedAtRMCycle", InRMCycle);
+                     
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+
+                            RecordFound = true;
+                            // Read Fields
+                            int SeqNumber = (int)rdr["Seqno"];
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
 
                     // Close conn
                     conn.Close();

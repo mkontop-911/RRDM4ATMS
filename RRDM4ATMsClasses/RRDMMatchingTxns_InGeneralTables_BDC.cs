@@ -9182,6 +9182,7 @@ namespace RRDM4ATMs
         + " FROM " + InTable
              + " WHERE  "
              + "     ([Processed] = 0) "
+             + " AND ([TransDate] <> '2050-12-31 00:00:00.000') "
              + " AND ([MatchingCateg] = @MatchingCateg) "
              + " AND (TerminalId = @TerminalId)"
              + " AND (ResponseCode = '0')";
@@ -9228,7 +9229,7 @@ namespace RRDM4ATMs
         + " FROM " + InTable + " WITH (NOLOCK) "
              + " WHERE  "
              + "     ([Processed] = 0) "
-            // + " AND ([MatchingCateg] = @MatchingCateg) "
+            + " AND ([TransDate] <> '2050-12-31 00:00:00.000') "
              + " AND (TerminalId = @TerminalId)"
              + " AND (ResponseCode = '0')";
 

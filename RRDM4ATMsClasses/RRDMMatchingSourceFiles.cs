@@ -1273,8 +1273,6 @@ namespace RRDM4ATMs
                             Bio.UNDO_Table_For_Cycle_Delete_Loaded_Only_MOBILE(DB, PhysicalName, InReconcCycleNo);
 
 
-                            
-
                             // DO THE JOB OTHER RRDM STD FILES 
                             PhysicalName = DB + ".[dbo]." + SourceFileId;
                             Bio.UNDO_Table_For_Cycle_MOBILE(DB, PhysicalName, InReconcCycleNo);

@@ -1,32 +1,31 @@
-﻿using Microsoft.Win32;
+﻿using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Collections;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Text;
+using System.Security.Cryptography;
+using System.Windows.Forms;
+using System.Threading;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Data;
 //using System.Data.OleDb;
 using RRDM4ATMs;
 using RRDMAgent_Classes;
-using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Configuration;
-using System.Data;
-using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
 using System.Globalization;
-using System.IO;
-using System.Security.Cryptography;
+using Microsoft.Win32;
 using System.Security.Principal;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
-using Excel = Microsoft.Office.Interop.Excel;
 
 
 // Alecos
 
 namespace RRDM4ATMsWin
 {
-    public partial class Form502_Load_And_Match_BDC : Form
+    public partial class Form502_Load_And_Match_ALP : Form
     {
 
         RRDMMatchingSourceFiles Rs = new RRDMMatchingSourceFiles();
@@ -39,12 +38,13 @@ namespace RRDM4ATMsWin
 
         RRDMMatchingTxns_InGeneralTables_BDC Mgt = new RRDMMatchingTxns_InGeneralTables_BDC();
 
-        RRDM_LoadFiles_InGeneral_EMR_BDC Lf_BDC = new RRDM_LoadFiles_InGeneral_EMR_BDC();
+        //RRDM_LoadFiles_InGeneral_EMR_BDC Lf_ABE = new RRDM_LoadFiles_InGeneral_EMR_BDC();
 
-        RRDM_LoadFiles_InGeneral_EMR_BDC_T24 Lf_BDC_T24 = new RRDM_LoadFiles_InGeneral_EMR_BDC_T24();
+        RRDM_LoadFiles_InGeneral_EMR_ALPHA Lf_ALPHA = new RRDM_LoadFiles_InGeneral_EMR_ALPHA();
 
-        RRDMMatchingOfTxns_V02_MinMaxDt_BDC_4 Mt = new RRDMMatchingOfTxns_V02_MinMaxDt_BDC_4();
-        //RRDMMatchingOfTxns_V02_MinMaxDt_BDC_5 Mt = new RRDMMatchingOfTxns_V02_MinMaxDt_BDC_5();
+        //RRDM_LoadFiles_InGeneral_EMR_ROM Lf_ROM = new RRDM_LoadFiles_InGeneral_EMR_ROM();
+
+        RRDMMatchingOfTxns_V02_MinMaxDt_BDC_4_ALPHA Mt = new RRDMMatchingOfTxns_V02_MinMaxDt_BDC_4_ALPHA();
 
         RRDMPerformanceTraceClass Pt = new RRDMPerformanceTraceClass();
 
@@ -60,29 +60,14 @@ namespace RRDM4ATMsWin
 
         RRDMReconcCategoriesSessions Rcs = new RRDMReconcCategoriesSessions();
 
-        RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
+        RRDM_LoadFiles_InGeneral_EMR_BDC Lf_BDC = new RRDM_LoadFiles_InGeneral_EMR_BDC();
 
         public DataTable SavedSourceFilesDataTable = new DataTable(); // Rs
         public DataTable SavedTableMatchingCateg_Matching_Status = new DataTable(); // Mc
 
-        readonly DateTime NullPastDate = new DateTime(1900, 01, 01);
-
-        // Production from the date we had started after 27th of November 
-        //public DateTime FixedDate = new DateTime(2025, 03, 03); // THIS THE PRODUCTION DATE
-
-        // UAT HAS TO WORK as Normal => delete all before first day => set it to long future 
-
-        // SECOND CASE FOR PRODUCTTION 
-        //public DateTime FixedDate = new DateTime(2025, 07, 05); // THIS THE second case PRODUCTION DATE
-        // UAT DATE
-        public DateTime FixedDate = new DateTime(2050, 07, 05); // THIS THE second case PRODUCTION DATE
         // int WNumberOfLoadingAndMatching;
 
         string ReversedCut_Off_Date;
-
-        string TotalProgressText;
-
-        string TotalProgressTextOpenForm;
 
         string ProcessName;
         string Message;
@@ -90,20 +75,13 @@ namespace RRDM4ATMsWin
 
         string PRX;
 
-        int Counter; 
-
-        bool IsMatchingDone; 
-
         DateTime SavedStartDt;
 
         bool J_UnderLoading;
 
-        bool FirstMessage; 
-
         //  DateTime J_SavedStartDt;
 
         DateTime WCut_Off_Date;
-        string W_Application;
 
         int WSeqNoLeft;
 
@@ -111,7 +89,7 @@ namespace RRDM4ATMsWin
         int WReconcCycleNoFirst;
         DateTime WFirstCut_Off_Date;
 
-        bool T24Version; 
+        bool IsRomaniaVersion;
 
         int WRowIndex;
 
@@ -121,7 +99,7 @@ namespace RRDM4ATMsWin
         int WReconcCycleNo;
         int WMode;
 
-        public Form502_Load_And_Match_BDC(string InSignedId, int SignRecordNo, string InOperator
+        public Form502_Load_And_Match_ALP(string InSignedId, int SignRecordNo, string InOperator
                                                               , int InReconcCycleNo, int InMode)
         {
             WSignedId = InSignedId;
@@ -130,31 +108,8 @@ namespace RRDM4ATMsWin
             WReconcCycleNo = InReconcCycleNo;
             WMode = InMode; // If 1 then is called from the administrator
                             // If 2 then is called for view only 
+
             InitializeComponent();
-
-            RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
-            Usi.ReadSignedActivityByKey(WSignRecordNo);
-
-            TotalProgressTextOpenForm = "";
-            FirstMessage = true;
-
-            TotalProgressTextOpenForm += DateTime.Now + "_"+"Start Showing Loading screen" + "\r\n";
-
-            if (Usi.RecordFound == true)
-            {
-                W_Application = Usi.SignInApplication;
-                //Usi.WFieldNumeric11 = 10; // This is a T24 Version 
-                if (Usi.WFieldNumeric11 == 10)
-                {
-                    T24Version = true;
-                }
-            }
-            else
-            {
-                MessageBox.Show("Sign On Record Not Found due to restart"+Environment.NewLine
-                    + " Sign Off and Sign On Again please "    
-                    ); 
-            }
 
             this.WindowState = FormWindowState.Maximized;
 
@@ -165,22 +120,18 @@ namespace RRDM4ATMsWin
             else
             {
                 PRX = "EMR";
-            }         
+            }
 
             // View Only AND Also USED for UNDO Of File
             if (WMode == 2)
             {
-                labelFieldsDefinition.Show();
-                panelCategories.Show();
-                buttonMatching.Show();
-
                 buttonLoadJournals.Enabled = false;
                 buttonLoadFiles.Enabled = false;
                 buttonDoMatching.Enabled = false;
                 label3.Text = "THE CYCLES";
                 buttonExportToExcel.Hide();
                 //panelFiles.Hide();
-                panelUndo.Hide();
+                // panelUndo.Hide();
 
                 label6.Hide();
                 label7.Hide();
@@ -189,12 +140,6 @@ namespace RRDM4ATMsWin
                 textBoxNumberOfFiles.Hide();
                 textBoxFilesReady.Hide();
                 textBoxNotReady.Hide();
-
-                buttonHST.Hide();
-                label_HST.Hide();
-                textBoxHST_DATE.Hide();
-                buttonDeleteHst.Hide();
-                buttonSummaryOfDeleted.Hide(); 
 
                 buttonShowComment.Hide();
 
@@ -277,45 +222,47 @@ namespace RRDM4ATMsWin
 
             textBoxMsgBoard.Text = "Current Status:Ready";
 
-            // CHECK IF ROMANIA
+            //
+            // Check if ROMANIA VERSION
+            //
 
+            string ParId = "951";
+            string OccurId = "1";
+            //TEST
+            IsRomaniaVersion = false;
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+
+            if (Gp.RecordFound == true)
+            {
+                if (Gp.OccuranceNm == "YES") // ROMANIA 
+                {
+                    IsRomaniaVersion = true;
+                }
+                else
+                {
+                    IsRomaniaVersion = false;
+                }
+
+            }
 
             // GET TOTALS 
-            ShowScreen(); 
         }
-
-        // 
-        // SHOW SCREEN
-        //
-
-        private void ShowScreen()
+        // Load 
+        private void Form502_Load(object sender, EventArgs e)
         {
-            Counter = 0;
-            // CHECK IF MATCHING IS DONE
-            TotalProgressTextOpenForm += DateTime.Now + "_" + "Start checking if Matching is done" + "\r\n";
             Rcs.ReadReconcCategoriesSessions_To_Check_If_MatchingDONE(WReconcCycleNo);
             if (Rcs.RecordFound == true)
             {
-                IsMatchingDone = true;
-                panelLoaded.Show();
                 labelFieldsDefinition.Show();
                 panelCategories.Show();
                 buttonMatching.Show();
-                linkLabelExpand.Show();
-                TotalProgressTextOpenForm += DateTime.Now + "_" + "Response: Matching is done" + "\r\n";
-
             }
             else
             {
-                IsMatchingDone = false;
-                // MessageBox.Show("ATMs records Shown That Matching is not done.");
                 labelFieldsDefinition.Hide();
                 panelCategories.Hide();
                 buttonMatching.Hide();
-                linkLabelExpand.Hide();
-                TotalProgressTextOpenForm += DateTime.Now + "_" + "Response: Matching is not done" + "\r\n";
             }
-
             if (WMode == 2)
             {
 
@@ -325,83 +272,23 @@ namespace RRDM4ATMsWin
             }
             else
             {
-                TotalProgressTextOpenForm += DateTime.Now + "_" + "Start checking loading journals if is done" + "\r\n";
                 CheckLoadingOfJournals();
-                TotalProgressTextOpenForm += DateTime.Now + "_" + "Checking loading journals finish" + "\r\n";
-
-            }
-
-            labelCurrentEntries.Hide();
-            // panelCurrentEntries.Hide();
-            dataGridViewFilesStatus.Hide();
-            label2.Hide();
-            textBoxFileId.Hide();
-            radioButtonCategory.Hide();
-            radioButtonAll.Hide();
-            comboBoxMatchingCateg.Hide();
-            labelCycle.Hide();
-            textBoxCycle.Hide();
-            buttonUndoFile.Hide();
-            buttonNonProcessed.Hide();
-            // buttonProcessed.Hide();
-
-            // FIND HISTORY DATE
-
-            string ParamId = "853";
-            string OccuranceId = "5"; // HST
-
-            Gp.ReadParameterByOccuranceId(ParamId, OccuranceId);
-
-            if (Gp.RecordFound == true & Gp.OccuranceNm != "")
-            {
-
-                if (DateTime.TryParseExact(Gp.OccuranceNm, "yyyy-MM-dd", CultureInfo.InvariantCulture
-                              , System.Globalization.DateTimeStyles.None, out HST_DATE))
-                {
-                    textBoxHST_DATE.Text = HST_DATE.ToShortDateString();
-
-                    textBoxHST_DATE.Show();
-                    label_HST.Show();
-
-                }
             }
             //if (J_UnderLoading == true)
             //{
             //}
-            TotalProgressTextOpenForm += DateTime.Now + "_" + "Start Method Journal Totals" + "\r\n";
-
             JournalTotals();
-
-            TotalProgressTextOpenForm += DateTime.Now + "_" + "Method Journal Totals finishes" + "\r\n";
-
             // Other totals to fill grid
-            // GetTotals();
+            GetTotals();
 
             radioButtonCategory.Checked = true;
             if (WMode == 1)
             {
                 // Source Files (Grid-ONE)
                 // Read them and check them 
+                string Filter1 = "Operator = '" + WOperator + "' AND Enabled = 1  ";
 
-                if (W_Application == "e_MOBILE")
-                {
-                    // Get only the e_MOBILE
-                    string Filter1 = "Operator = '" + WOperator + "' AND Enabled = 1 AND TableStructureId = 'MOBILE_WALLET' ";
-
-                    Rs.ReadReconcSourceFilesToFillDataTableForExistanceInDir(WOperator, Filter1, WReconcCycleNo, WCut_Off_Date);
-
-                }
-                else
-                {
-                    // Normal Case
-                    TotalProgressTextOpenForm += DateTime.Now + "_" + "Start Checking Files in Directories" + "\r\n";
-                    string Filter1 = "Operator = '" + WOperator + "' AND Enabled = 1  AND TableStructureId = 'Atms And Cards' ";
-
-                    Rs.ReadReconcSourceFilesToFillDataTableForExistanceInDir(WOperator, Filter1, WReconcCycleNo, WCut_Off_Date);
-
-                    TotalProgressTextOpenForm += DateTime.Now + "_" + "Finish Checking Files in Directories" + "\r\n";
-
-                }
+                Rs.ReadReconcSourceFilesToFillDataTableForExistanceInDir(WOperator, Filter1, WReconcCycleNo, WCut_Off_Date);
 
                 textBoxNumberOfFiles.Text = Rs.TotalFiles.ToString();
                 textBoxFilesReady.Text = textBoxInDirForLoading.Text = Rs.TotalReady.ToString();
@@ -424,23 +311,13 @@ namespace RRDM4ATMsWin
 
             }
 
+
         }
-        // Load 
-
-        //private void Form502_Load(object sender, EventArgs e)
-        //{
-           
-
-        //}
         // Row FIRST GRID
         string WFileComment;
         private void dataGridViewFiles_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow rowSelected = dataGridViewFiles.Rows[e.RowIndex];
-
-            Counter = Counter + 1;
-
-            if (WMode == 2) Counter = 2; // because for some strange reason it doesnt go twice 
 
             if (WMode == 1)
             {
@@ -468,106 +345,17 @@ namespace RRDM4ATMsWin
                                 + "_and Date_" + WCut_Off_Date.ToShortDateString();
             }
 
-            //if (WMode == 2)
-            //{
-            //    // Check Per Row (Rows show the cycles)
-            //    // CHECK IF MATCHING IS DONE 
-            //    Rcs.ReadReconcCategoriesSessions_To_Check_If_MatchingDONE(WReconcCycleNo);
-            //    if (Rcs.RecordFound == true)
-            //    {
-            //        IsMatchingDone = true;
-            //        panelLoaded.Show();
-            //        labelFieldsDefinition.Show();
-            //        panelCategories.Show();
-            //        buttonMatching.Show();
-            //        linkLabelExpand.Show();
 
-            //    }
-            //    else
-            //    {
-            //        IsMatchingDone = false;
-            //        // MessageBox.Show("ATMs records Shown That Matching is not done.");
-            //        labelFieldsDefinition.Hide();
-            //        panelCategories.Hide();
-            //        buttonMatching.Hide();
-            //        linkLabelExpand.Hide();
-            //    }
-
-            //}
             // GRID 2 LOADED FILES
-            if (Counter == 2 & FirstMessage == true)
-            {
-                TotalProgressTextOpenForm += DateTime.Now + "_" + "Start Preparing Loaded Files table" + "\r\n";
-            }
-
             Flog.ReadLoadedFiles_Fill_Table(WOperator, WReconcCycleNo);
 
-            if (Counter == 2 & FirstMessage == true)
-            {
-                TotalProgressTextOpenForm += DateTime.Now + "_" + "Finish Preparing Loaded Files table" + "..ROWS.." + Flog.DataTableFileMonitorLog.Rows.Count.ToString() + "\r\n";
-            }
-            if (Flog.DataTableFileMonitorLog.Rows.Count >0)
-            {
-                ShowGrid2();
+            ShowGrid2();
 
-                if (IsMatchingDone == true)
-                {
-                    if (Counter == 2 & FirstMessage == true)
-                    {
-                        TotalProgressTextOpenForm += DateTime.Now + "_" + "Start to populate Matching Matrix" + "\r\n";
-                        
-                    }
+            Rc.ReadReconcCategoriesForMatrix(WOperator, WReconcCycleNo, 2);
 
-                    if (Counter == 2)
-                    {
-                        if (WMode == 1)
-                        {
-                            Rc.ReadReconcCategoriesForMatrix(WOperator, WReconcCycleNo, 2);
-                        }
-                        if (WMode == 2)
-                        {
-                            Rc.ReadReconcCategoriesForMatrix(WOperator, WReconcCycleNo, 3);
-                        }
-                            
-                    }
+            ShowGrid4();
 
-                    if (Counter == 2 & FirstMessage == true)
-                    {
-                        TotalProgressTextOpenForm += DateTime.Now + "_" + "Finish Matching Matrix" + "\r\n";
-                    }
-                    if (WMode == 2)
-                    {
-                        labelFieldsDefinition.Show();
-                        panelCategories.Show();
-                        buttonMatching.Show();
-                    }
-                    if (Counter == 2 )
-                    {
-                        ShowGrid4();
-                    }
-                    
-                }            
-            }
-            else
-            {
-                textBoxFilesRight.Text = "0";
 
-                panelLoaded.Hide();
-                label4.Hide();
-                linkLabelExpand.Hide();
-            }
-           
-          
-            if (Counter == 2 & FirstMessage == true)
-            {
-                TotalProgressTextOpenForm += DateTime.Now + "_" + "Show Screen" + "\r\n";
-
-                //MessageBox.Show("TIME TRACES TO SHOW SCREEN...." + Environment.NewLine
-                //         + TotalProgressTextOpenForm);
-                //TotalProgressTextOpenForm = "";
-                FirstMessage = false; 
-            }
-           
         }
 
 
@@ -715,6 +503,7 @@ namespace RRDM4ATMsWin
                 label4.Show();
                 linkLabelExpand.Show();
 
+
                 textBoxFilesRight.Text = dataGridViewLoadedFiles.Rows.Count.ToString();
 
                 dataGridViewLoadedFiles.Columns[0].Width = 60; //"FileName  as in directory "
@@ -830,15 +619,7 @@ namespace RRDM4ATMsWin
 
         private void ShowGrid5()
         {
-            if (T24Version == true)
-            {
-                dataGridViewFilesStatus.DataSource = Lf_BDC_T24.SourceFilesTotals.DefaultView;
-            }
-            else
-            {
-                dataGridViewFilesStatus.DataSource = Lf_BDC.SourceFilesTotals.DefaultView;
-            }
-           
+            dataGridViewFilesStatus.DataSource = Lf_ALPHA.SourceFilesTotals.DefaultView;
 
             // dataGridViewFiles.Sort(dataGridViewFiles.Columns[0], ListSortDirection.Ascending);
             DataGridViewCellStyle style = new DataGridViewCellStyle();
@@ -1015,6 +796,17 @@ namespace RRDM4ATMsWin
             {
                 // Decide whether to move forward or not. 
             }
+
+            RRDMAtmsClass Ac = new RRDMAtmsClass();
+            string DateString;
+            string result0;
+            string Temp;
+            string result1;
+            string Vendor;
+            string JournalName;
+            string WAtmNo;
+            string TempEjournalTypeId = "N/A";
+            string PhysicalId = ""; 
             //
             // FROM NOW ON NOBODY CAN SIGN IN EXCEPT THE CONTROLLER
             //
@@ -1036,18 +828,126 @@ namespace RRDM4ATMsWin
             }
             else
             {
-                // DELETE jln
+                // Change names for ALPHA Journals  
                 foreach (string file in allJournals)
                 {
+                    // EJData_ATM2021_20250819.txt   // As Per Bank
+                    // 95101069_20250819_EJ_HYO.000   // As Per RRDM 
                     string myFilePath = @file;
                     string ext = Path.GetExtension(myFilePath);
+                    string LogicalFileName = Path.GetFileName(myFilePath);
 
-                    if (ext == ".jln")
+                    if (ext == ".txt")
                     {
-                        File.Delete(file);
+                        try
+                        {
+                            string directoryPath = Path.GetDirectoryName(myFilePath);
+                            if (directoryPath == null)
+                            {
+                                throw new Exception($"Directory not found in given path value:{myFilePath}");
+                            }
+
+                            PhysicalId = ""; 
+
+                            string WATM = LogicalFileName.Substring(7, 7); // FOR ALPHA BANK
+                            string ATM_Supplier = "HYO"; // FOR ALPHA BANK
+
+                            // Here we have the logical Name such as ATM2021
+                            // FIND If Exist in ATMS 
+                            Ac.ReadAtm(WATM); // SEARCH For Logical 
+                            if (Ac.RecordFound == true)
+                            {
+                                // Get the name 
+                                RRDMJTMIdentificationDetailsClass Jti = new RRDMJTMIdentificationDetailsClass();
+                                Jti.ReadJTMIdentificationDetailsByAtmNo(WATM); 
+                                if (Jti.RecordFound == true )
+                                {
+                                    if (Jti.ATMAccessID != "")
+                                    {
+                                        PhysicalId = Jti.ATMAccessID; 
+
+                                        Ac.ReadAtm(PhysicalId); 
+
+                                        if (Ac.RecordFound == true)
+                                        {
+                                            // ALL OK 
+                                        }
+                                        else
+                                        {
+                                            // Open Physical 
+                                            // Insert ATM_No
+
+                                            Ac.CreateNewAtmBasedOnGeneral_Mode_ALPHA(WOperator, PhysicalId, ATM_Supplier);
+                                            // Check if created
+                                            Ac.ReadAtm(WATM);
+                                            if (Ac.RecordFound == true)
+                                            {
+                                               // OK 
+                                            }
+                                            else
+                                            {
+                                                // NOT OK 
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Please Update the.."+ WATM+ Environment.NewLine
+                                            +"With the physical Id for this ATM and Load AGAIN"
+                                            );
+                                        return; 
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // WE WILL OPEN the Logical
+                               
+                                Ac.CreateNewAtmBasedOnGeneral_Mode_ALPHA(WOperator, WATM, ATM_Supplier);
+                                // Check if created
+                                Ac.ReadAtm(WATM);
+                                if (Ac.RecordFound == true)
+                                {
+                                    MessageBox.Show("Please Update the.." + WATM + Environment.NewLine
+                                         + "With the physical Id for this ATM and Load AGAIN"
+                                         );
+                                    return; 
+                                }
+                                else
+                                {
+
+                                }        
+
+                            }
+
+                           if ( PhysicalId != "")
+                            {
+                                // CHANGE THE NAME OF THE INPUT JOURNAL BASED ON the Physical 
+                                string WYYYYY = LogicalFileName.Substring(15, 4);
+                                string WMM = LogicalFileName.Substring(19, 2);
+                                string WDD = LogicalFileName.Substring(21, 2);
+
+                                string NewFileName = PhysicalId + "_" + WYYYYY + WMM + WDD + "_EJ_HYO.001";
+                                var newFilenameWithPath = Path.Combine(directoryPath, NewFileName);
+                                FileInfo fileInfo = new FileInfo(myFilePath);
+                                fileInfo.MoveTo(newFilenameWithPath);
+                            }
+
+                           
+                        }
+                        catch (Exception exf)
+                        {
+                            CatchDetails(exf);
+                            MessageBox.Show("Examine Files in directory" + Environment.NewLine
+                                + "Check for correct names amd sizes "
+                                );
+                        }
+
+                        //File.Delete(file);
                         // Count1 = Count1 + 1;
                     }
                 }
+               
                 // MessageBox.Show("Deleted Journals .jln..=.." + Count1.ToString());
                 // After this check you 
                 // Check if Dublicate and delete 
@@ -1064,59 +964,12 @@ namespace RRDM4ATMsWin
                 int Count2 = 0;
                 foreach (string file in allJournals)
                 {
-                    // DELETE THE ONES WITH ZERO SIZE
-                    FileInfo fileInfo = new FileInfo(file);
-                    if (fileInfo.Length ==0)
-                    {
-                        File.Delete(file);
-                        continue; 
-                    }
-                    // DELETE THE DUBLICATES
-                    if (Rs.CheckIfFileIsDublicate(file) == true )
+                    if (Rs.CheckIfFileIsDublicate(file) == true)
                     {
                         // Delete File 
                         File.Delete(file);
                         Count2 = Count2 + 1;
-                        continue;
                     }
-
-                    string Check__ = file.Substring(44, 2);
-                    bool ChangeName = false; 
-
-                    if (Check__== "__")
-                    {
-                        ChangeName = true; 
-                    }
-
-                    if (ChangeName == true)
-                    {
-                        string oldFilePath = file;
-                        string One = file.Substring(0, 44);
-                        string two = file.Substring(45, 7);
-                        string three = file.Substring(52, 12);
-                        string newFilePath = One+two + "0" + three;
-
-                        //string oldFilePath = @"C:\example\oldname.txt";
-                        //string newFilePath = @"C:\example\newname.txt";
-
-                        if (File.Exists(oldFilePath))
-                        {
-                            File.Move(oldFilePath, newFilePath);
-                            //Console.WriteLine("File renamed successfully.");
-                        }
-                        else
-                        {
-                            //Console.WriteLine("File does not exist.");
-                        }
-
-
-
-
-
-                    }
-
-
-
 
                 }
 
@@ -1142,7 +995,7 @@ namespace RRDM4ATMsWin
             }
 
             //MessageBox.Show("Deleted Journals already loaded.=.." + Count2.ToString());
-
+            // Find Number of Threads 
             Gp.ReadParametersSpecificId(WOperator, "914", "1", "", ""); // 
             int NumberOfThreads = (int)Gp.Amount;
 
@@ -1150,94 +1003,6 @@ namespace RRDM4ATMsWin
                                     + " Loading and parsing of Journals will start" + Environment.NewLine
                                       + "NUMBER OF THREADS(PAR=914)..=.." + NumberOfThreads.ToString() + Environment.NewLine
                                      );
-
-            // ************************
-            // CREATE NOT PRESENT ATMS
-            // ************************
-            RRDMAtmsClass Ac = new RRDMAtmsClass();
-            string DateString;
-            string result0;
-            string Temp;
-            string result1;
-            string Vendor;
-            string JournalName;
-            string WAtmNo;
-            string TempEjournalTypeId = "N/A";
-
-
-            foreach (string file in allJournals)
-            {
-                DateString = file.Substring(file.Length - 19);
-                DateString = DateString.Substring(0, 8);
-
-                
-
-                DateTime FileDATEresult;
-
-                if (DateTime.TryParseExact(DateString, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out FileDATEresult))
-                {
-
-                }
-                bool Condition = false; // we do not apply this 
-                if (Condition == true)
-                {
-                    if (FileDATEresult > WCut_Off_Date)
-                    {
-                        MessageBox.Show("There are Journals with Date Creater than the Cycle date." + Environment.NewLine
-                                         + "This is not allowed. Remove and restart." + Environment.NewLine
-                                         + "Journal is: " + file
-                                        );
-                        return;
-                    }
-                }
-
-                result0 = file.Substring(file.Length - 11);
-                Temp = result0.Substring(0, 4);
-                if (Temp == "_EJ_")
-                {
-                    // Valid
-                    string SourceFileName = Path.GetFileName(file);
-                    WAtmNo = file.Substring(0, 8); // temporary
-                    WAtmNo = file.Substring(36 ,8); // temporary
-                    result1 = file.Substring(file.Length - 7);
-                    Vendor = result1.Substring(0, 3);
-                    JournalName = file.Substring(file.Length - 28);
-                    WAtmNo = JournalName.Substring(0, 8);
-                    // 00000102_20191024_EJ_DBL.000
-                    Ac.ReadAtm(WAtmNo);
-                    if (Ac.RecordFound == true)
-                    {
-                        // DO NOTHING WE WILL UPDATE JOURNAL LATER
-                        //// ATM Found
-                        //if (Vendor == "NCR") TempEjournalTypeId = "NCR_01";
-                        //if (Vendor == "DBL") TempEjournalTypeId = "DBLD_01";
-                        //if (Vendor == "WCR") TempEjournalTypeId = "Wincor_01";
-
-                        //if (TempEjournalTypeId != Ac.EjournalTypeId)
-                        //Ac.UpdateEjournalTypeId(WAtmNo, TempEjournalTypeId);
-                    }
-                    else
-                    {
-                        // Insert ATM_No
-                        Ac.CreateNewAtmBasedOnGeneral_Model(WOperator, WAtmNo, JournalName);
-                    }
-                }
-                else
-                {
-                    // Not Valid 
-                }
-
-            }
-
-
-            //************************************
-            //************************************
-            // TRUNCATE Temp Table 
-            // Do it every morning 
-            //  RRDMJournalReadTxns_Text_Class Jc = new RRDMJournalReadTxns_Text_Class();
-            string WFile = "[ATM_MT_Journals_AUDI].[dbo].[tblHstEjText_Short]";
-            Jc.TruncateTempTable(WFile);
-
 
             string ParamId;
 
@@ -1249,8 +1014,6 @@ namespace RRDM4ATMsWin
 
             if (Available == true)
             {
-               
-                // Start Service
                 //
                 // Insert Command 
                 Aq.ReqDateTime = DateTime.Now;
@@ -1500,7 +1263,7 @@ namespace RRDM4ATMsWin
                     }
                 }
 
-                ShowScreen();
+                Form502_Load(this, new EventArgs());
 
                 // Close Service 
             }
@@ -1512,29 +1275,15 @@ namespace RRDM4ATMsWin
         // DO MATCHING BASED ON THE READY CATEGORIES
         bool StopTimer;
         bool MatchedPressed = false;
-        DateTime HST_DATE;
-        int AgingDays_HST;
-
-        //int AgingDays_HST; // This is the dates from moving to History data Base
-        //                   // eg Moving From MATCHED to MATCHED_HST
-        //int AgingCycle_HST; // THIS IS THE CYCLE FOR MOVING TO HISTORY
         private void buttonDoMatching_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This is version UAT"); 
-            //
+
             // Start Service
             buttonMatching.Show();
             // Find the ready categories
 
             Mt.MatchReadyCategoriesEnquiry(WOperator, WSignedId,
                                      WReconcCycleNo);
-
-            RRDMGasParameters Gp = new RRDMGasParameters();
-            string ParamId;
-
-            string OccuranceId;
-
-            DateTime DeleteDate = NullPastDate;
 
             if (MessageBox.Show("Do you want to Start Matching?" + Environment.NewLine
                                  + "For Ready Categories " + Environment.NewLine
@@ -1544,82 +1293,27 @@ namespace RRDM4ATMsWin
             {
                 // YES Proceed
 
-                // FIND CURRENT HISTORY DATE
+                //*******************************
+                //Mode = 5; // Updating Action 
+                //ProcessName = "MatchingProcess";
+                //Message = "Matching Process Starts. ";
+                //SavedStartDt = DateTime.Now;
 
-                Mode = 5; // Updating Action 
-                ProcessName = "Matching_Preparation";
-                Message = "Matching Preparation Starts. Cycle:.." + WReconcCycleNo.ToString();
-                SavedStartDt = DateTime.Now;
-
-                Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
-
-                int TempMode = 0;
-
-                ParamId = "853";
-                OccuranceId = "5"; // HST
-
-                Gp.ReadParameterByOccuranceId(ParamId, OccuranceId);
-
-                if (Gp.RecordFound == true)
-                {
-                    AgingDays_HST = (int)Gp.Amount; // 
-
-                    //AgingDays_HST = 0; 
-
-                    // Current CutOffdate
-                    string WSelection = " WHERE JobCycle =" + WReconcCycleNo;
-                    Rjc.ReadReconcJobCyclesBySelectionCriteria(WSelection);
-
-                    DateTime WAgingDateLimit_HST = Rjc.Cut_Off_Date.AddDays(-AgingDays_HST);
-
-                    Rjc.ReadReconcJobCyclesByCutOffDateEqualOrLess(WAgingDateLimit_HST);
-
-                    if (Rjc.RecordFound == true)
-                    {
-                        DeleteDate = Rjc.Cut_Off_Date.AddDays(1); // leave it here to cover cases of Undo particularly for POS
-                        TempMode = 2;
-                    }
-                    else
-                    {
-                        DeleteDate = WFirstCut_Off_Date; // Trans before this date will be deleted
-                        TempMode = 1;
-                    }
-                }
-                else
-                {
-                    DeleteDate = WFirstCut_Off_Date; // Trans before this date will be deleted
-                    TempMode = 1;
-                }
-
-                //radioButtonMaster.Checked = true; 
+                //Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
+                //******************************
 
                 // DELETE UNWANTED RECORDS FROM TABLES 
-                // IF WITH TODAYS LOADING TRANSACTIONS COME BEFORE THAT DATE WE DO NOT WANT THEM
-                // WE DELETE THEM NOT TO TAKE PART IN TODAY's LOADING
                 RRDMMatchingTxns_InGeneralTables_BDC Mgt = new RRDMMatchingTxns_InGeneralTables_BDC();
+                DateTime DeleteDate = WFirstCut_Off_Date; // Trans before this date will be deleted
+                DeleteDate = DeleteDate.AddDays(-1); 
 
-                if (WOperator == "BCAIEGCX" & WCut_Off_Date >= FixedDate)
-                {
-                    // SPECIAL FIX FOR BANK DE CAIRE 2025-02-08
-                    // SECOND SPECIAL FIX FOR BANK DE CAIRE 2025 - 07 - 05
-                    if (WCut_Off_Date == FixedDate)
-                    {
-                        MessageBox.Show("From now on the delete date for the past txns will be "+Environment.NewLine 
-                            + FixedDate.ToShortDateString());
-                    }
+               text = "Transactions will be deleted prior to..Date.." + DeleteDate.ToShortDateString();
+                caption = "MATCHING";
+                timeout = 5000;
+                AutoClosingMessageBox.Show(text, caption, timeout);
 
-                        DeleteDate = FixedDate; 
-                }
-
-                if (T24Version == true)
-                {
-                    Lf_BDC_T24.DeleteRecordsToSetStartingPoint(WOperator, DeleteDate, WCut_Off_Date, WReconcCycleNo, TempMode);
-                }
-                else
-                {
-                    Lf_BDC.DeleteRecordsToSetStartingPoint(WOperator, DeleteDate, WCut_Off_Date, WReconcCycleNo, TempMode);
-                }
-                
+                MessageBox.Show("Transactions will be deleted prior to..Date.." + DeleteDate.ToShortDateString());
+                Lf_ALPHA.DeleteRecordsToSetStartingPoint(WOperator, DeleteDate, WCut_Off_Date, WReconcCycleNo);
             }
             else
             {
@@ -1632,55 +1326,32 @@ namespace RRDM4ATMsWin
             //*****************************************************
             // UPDATE TRACES and other infor In Order to sychronise files and have journal lines during reconciliation
             //*****************************************************
-            if (T24Version == true)
-            {
-                Lf_BDC_T24.UpdateRecordsWithTraceAndOther(WOperator, WReconcCycleNo, 0, 2, WCut_Off_Date);
-            }
-            else
-            {
-                Lf_BDC.UpdateRecordsWithTraceAndOther(WOperator, WReconcCycleNo, 0, 2, WCut_Off_Date);
-            }
-
+           
+            Lf_ALPHA.UpdateRecordsWithTraceAndOther(WOperator, WReconcCycleNo, 0, 2, WCut_Off_Date);
+            
             //
             // Before start we check the sign on users.
             //
             bool IsAllowedToSignIn = false;
-           // bool ThereAreUsersInSystem = CheckForSignInUsers(IsAllowedToSignIn);
+            bool ThereAreUsersInSystem = CheckForSignInUsers(IsAllowedToSignIn);
 
-            //if (ThereAreUsersInSystem == true)
-            //{
-            //    // Decide whether to move forward or not. 
-            //}
-
-
-            // CREATE TABLE WITH MINIMAX DATES
-
-            if (T24Version == true)
+            if (ThereAreUsersInSystem == true)
             {
-                // Insert here the T24 version 
-                Lf_BDC.Create_ATMS_AtmsMinMaxWorking_FLEX_Or_COREBANKING(WOperator, WReconcCycleNo, 2);
-            }
-            else
-            {
-                Lf_BDC.Create_ATMS_AtmsMinMaxWorking_FLEX_Or_COREBANKING(WOperator, WReconcCycleNo, 1);
+                // Decide whether to move forward or not. 
             }
 
-            Mode = 5; // Updating Action 
-            ProcessName = "Matching_Preparation";
-            Message = "Matching Preparation Finishes. Cycle:.." + WReconcCycleNo.ToString();
-            SavedStartDt = DateTime.Now;
+            // Clear Tables 
+            RRDMAtmsMinMax Mm = new RRDMAtmsMinMax();
+            Mm.DeleteTableATMsMinMax();
 
-            Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, DateTime.Now, Message, WSignedId, WReconcCycleNo);
-
-
-            // MATCHING 
+            
+            //Lf_BDC.Create_ATMS_AtmsMinMaxWorking_FLEX_Or_COREBANKING(WOperator, WReconcCycleNo, 1);
+            
 
             text = "Matching Starts Now";
             caption = "MATCHING";
             timeout = 5000;
             AutoClosingMessageBox.Show(text, caption, timeout);
-
-            //MessageBox.Show("Matching Starts Now");
 
             //Thread thr16 = new Thread(Method16);
             //thr16.Start();
@@ -1696,6 +1367,8 @@ namespace RRDM4ATMsWin
 
             int WMode = 2; // Do matching for all ready categories 
             //
+            // SPECIAL FOR ALPHA
+            // 
             Mt.MatchReadyCategoriesUpdate(WOperator, WSignedId,
                                            WReconcCycleNo);
             // *****************************
@@ -1708,9 +1381,8 @@ namespace RRDM4ATMsWin
             //*********************************
 
             MatchedPressed = true;
-            //
+
             // UPDATE GL RECORDS 
-            //
 
             int WWMode;
             //Mgt.CreateRecords_CAP_DATE_For_Category(WOperator, WCut_Off_Date, WReconcCycleNo, WWMode);
@@ -1720,54 +1392,6 @@ namespace RRDM4ATMsWin
 
             // UPDATE Mpa with 818 where we Have EGP
             Mpa.UpdateMatchingTxnsMasterPoolATMsCurrency(WOperator);
-
-            bool MasterTwoCurrencies; 
-
-            DateTime TwoCcyNewVersionDt = new DateTime(2050, 03, 24);
-            string ParId = "822"; // When version of files changes 
-            string OccurId = "03"; // For IST and flexube and Meeza Global LCL  
-            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
-            if (Gp.RecordFound)
-            {
-                try
-                {
-                    TwoCcyNewVersionDt = Convert.ToDateTime(Gp.OccuranceNm);
-
-                    MasterTwoCurrencies = true;
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("822 parameter date is wrong for two currency");
-                    MasterTwoCurrencies = false;
-                    CatchDetails(ex);
-                }
-
-
-                // MessageBox.Show("Master"); 
-
-                //DateTime NewVersion3 = Convert.ToDateTime("24/03/2021");
-                // date of change 
-            }
-            else
-            {
-                // Not found 
-                MasterTwoCurrencies = false;
-            }
-           
-            if (MasterTwoCurrencies == true)
-            {
-                if (T24Version== true)
-                {
-                    Lf_BDC_T24.UpdateMasterAfterMatchingWithSecondCurrency(WOperator, WReconcCycleNo);
-                }
-                else
-                {
-                    Lf_BDC.UpdateMasterAfterMatchingWithSecondCurrency(WOperator, WReconcCycleNo);
-                }
-                // Update second currency amount in spare field
-                
-            }
 
             // SETTLEMENT DEPARTMENT 
             // Declare fields
@@ -1815,7 +1439,6 @@ namespace RRDM4ATMsWin
                 Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
 
             }
-           
             // ΜΕΕΖΑ
             // ΜΕΕΖΑ
             //
@@ -1839,77 +1462,6 @@ namespace RRDM4ATMsWin
                 Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
 
             }
-            //
-            // NEW ΜΕΕΖΑ GLOBAL LCL
-            // ΜΕΕΖΑ - ISSUER 
-            //
-            WMatchingCateg = PRX + "277";
-            Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
-
-            if (Cgl.RecordFound == true)
-            {
-                // Already Created
-                // You should not create it
-            }
-            else
-            {
-                // Create entries
-                WFileId = "MEEZA_GLOBAL_LCL";
-                // For Categories BDC277 and BDC278
-                WCategories = "('" + PRX + "277','" + PRX + "278'" + ")"; // Issuer
-                WIdentity = "MEEZA TXNS_Bank_Is_Issuer";
-                WWMode = 4;
-                //Mgt.CreateRecords_GL_ENTRIES_For_Category_SecondVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WWMode);
-                Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
-
-            }
-
-            // NEW ΜΕΕΖΑ GLOBAL LCL
-            // ΜΕΕΖΑ - ISSUER - //TELDA
-            //
-            WMatchingCateg = PRX + "279";
-            Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
-
-            if (Cgl.RecordFound == true)
-            {
-                // Already Created
-                // You should not create it
-            }
-            else
-            {
-                // Create entries
-                WFileId = "MEEZA_GLOBAL_LCL";
-                // For Categories BDC277 and BDC278
-                WCategories = "('" + PRX + "279' )";  // Issuer
-                WIdentity = "MEEZA TXNS_Bank_Is_Issuer_TELDA";
-                WWMode = 5 ;
-                //Mgt.CreateRecords_GL_ENTRIES_For_Category_SecondVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WWMode);
-                Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
-
-            }
-
-            //
-            // New MEEZA GLOBAL LCL 
-            //
-            WMatchingCateg = PRX + "279";
-            Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
-
-            if (Cgl.RecordFound == true & Cgl.W_Identity == "MEEZA TXNS_Bank_Is_Acquirer")
-            {
-                // Already Created
-                // You should not create it
-            }
-            else
-            {
-                // Create entries
-                WFileId = "MEEZA_GLOBAL_LCL";
-                // For Category BDC279
-                WCategories = "('" + PRX + "279' )"; // Acquirer
-                WIdentity = "MEEZA TXNS_Bank_Is_Acquirer";
-                WWMode = 2;
-                Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
-
-            }
 
             WMatchingCateg = PRX + "272";
             Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
@@ -1926,8 +1478,7 @@ namespace RRDM4ATMsWin
                 // For Categories BDC272 and BDC273
                 WCategories = "('" + PRX + "272','" + PRX + "273'" + ")"; // Issuer POS
                 WIdentity = "MEEZA POS TXNS_Bank_Is_Issuer";
-                WWMode = 4; // New one based on extented BIN
-                //WWMode = 1; OLD ONE based on BIN
+                WWMode = 1;
                 //Mgt.CreateRecords_GL_ENTRIES_For_Category_SecondVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WWMode);
                 Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
 
@@ -1952,7 +1503,7 @@ namespace RRDM4ATMsWin
                 Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
 
             }
-            
+
             // MASTER CARD - Bank Is Issuer
             // MASTER CARD
             //
@@ -1993,34 +1544,11 @@ namespace RRDM4ATMsWin
                 // Create entries
                 WFileId = "MASTER_CARD";
                 // For Categories BDC235 and BDC236? 
-                WCategories = "('" + PRX + "235','" + PRX + "236'" + ")"; // Acquirer
-               // WCategories = "('" + PRX + "235' )"; // Acquirer
+                WCategories = "('" + PRX + "235' )"; // Acquirer
                 WIdentity = "MASTER TXNS_Bank_Is_Acquirer";
                 WWMode = 2;
                 //Mgt.CreateRecords_GL_ENTRIES_For_Category_SecondVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WWMode);
                 Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
-            }
-
-            WMatchingCateg = PRX + "231";
-            Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
-
-            if (Cgl.RecordFound == true)
-            {
-                // Already Created
-                // You should not create it
-            }
-            else
-            {
-                // Create entries
-                WFileId = "MASTER_POS";
-                // For Categories BDC272 and BDC273
-                WCategories = "('" + PRX + "231','" + PRX + "233'" + ")"; // Issuer POS
-                WIdentity = "MASTER POS TXNS_Bank_Is_Issuer";
-                WWMode = 4; // New one based on extented BIN
-                //WWMode = 1; OLD ONE based on BIN
-                //Mgt.CreateRecords_GL_ENTRIES_For_Category_SecondVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WWMode);
-                Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
-
             }
 
             // Credit Card
@@ -2046,48 +1574,35 @@ namespace RRDM4ATMsWin
                 Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
             }
 
-            //
-            // VISA 
-            //
-            WMatchingCateg = PRX + "225";
-            Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
 
-            if (Cgl.RecordFound == true)
-            {
-                // Already Created
-                // You should not create it
-            }
-            else
-            {
-                WFileId = "VISA_CARD";
-                // For Category BDC215
-                WCategories = "('" + PRX + "225' )"; // Acquirer
-                WIdentity = "VISA TXNS_Bank_Is_Acquirer";
-                WWMode = 2;
-                Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
+            textBoxMsgBoard.Text = "Current Status : Moving Records Process";
 
-            }
+            text = "Matching has Finished" + Environment.NewLine
+                               + "Process of Moving records to Matched starts.";
+            caption = "MATCHING";
+            timeout = 5000;
+            AutoClosingMessageBox.Show(text, caption, timeout);
 
 
+            Mode = 5; // Updating Action 
+            ProcessName = "Moving Records To MATCHED Data Base";
+            Message = "Moving Records Process Starts. Cycle:.." + WReconcCycleNo.ToString();
+            SavedStartDt = DateTime.Now;
+
+            Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
 
             //UPDATE Mpa Replenishment Cycle After Matching for the 01 and 011
             // *********************************
-            if (T24Version == true)
-            {
-                Lf_BDC_T24.UPDATE_Mpa_After_Matching_With_ReplCycle(WOperator, WReconcCycleNo);
-            }
-            else
-            {
-                Lf_BDC.UPDATE_Mpa_After_Matching_With_ReplCycle(WOperator, WReconcCycleNo);
-            }
-            
+
+            Lf_ALPHA.UPDATE_Mpa_After_Matching_With_ReplCycle(WOperator, WReconcCycleNo);
 
             // Exclude presenter if so 
             //
             // Presenter
             bool Is_Presenter_InReconciliation = false;
-            ParId = "946";
-            OccurId = "1";
+            string ParId = "946";
+            string OccurId = "1";
+            RRDMGasParameters Gp = new RRDMGasParameters();
 
             Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
 
@@ -2102,37 +1617,17 @@ namespace RRDM4ATMsWin
                 Mpa.ReadPoolAndFindTotals_Presenter_Unmatched(WOperator, WReconcCycleNo);
             }
 
-            text = "Matching has Finished" + Environment.NewLine
-                             + "Process of Moving records to Matched starts."; 
-            caption = "MATCHING";
-            timeout = 5000;
-            AutoClosingMessageBox.Show(text, caption, timeout);
 
-            //MessageBox.Show("Matching has Finished" + Environment.NewLine
-            //+ "Process of Moving records to Matched starts."
-            //);
-
-           
             //******************************
             // 
             // MOVE MATCHED TXNS POOL 
             // stp_00_MOVE_TXNS_TO_MATCHED_DB_01_POOL
             //******************************
-            textBoxMsgBoard.Text = "Current Status : Moving Records Process";
-
-            Mode = 5; // Updating Action 
-            ProcessName = "Moving Records To MATCHED Data Base";
-            Message = "Moving Records to MATCHED Process Starts. Cycle:.." + WReconcCycleNo.ToString();
-            SavedStartDt = DateTime.Now;
-
-            Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
-
-
-            TotalProgressText = "MOVE TO MATCHED Cycle: ..."
+            string TotalProgressText = "Cycle: ..."
                                      + WReconcCycleNo.ToString() + Environment.NewLine;
-            
+            RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
             RRDMMatchingSourceFiles Mf = new RRDMMatchingSourceFiles();
-            string WSelectionCriteria = " WHERE Operator = @Operator ";
+            string WSelectionCriteria = " WHERE Operator = @Operator AND Enabled = 1";
             Mf.ReadReconcSourceFilesToFillDataTable_FULL(WOperator, WSelectionCriteria);
 
             int I = 0;
@@ -2156,52 +1651,9 @@ namespace RRDM4ATMsWin
                         WFileName = Mf.SourceFileId;
                     }
 
-                    // Check That File Exist in target data base 
-                    string TargetDB = "[RRDM_Reconciliation_MATCHED_TXNS]";
-                    Cv.ReadTableToSeeIfExist(TargetDB, WFileName);
+                    // MessageBox.Show("Start Moving file.." + WFileName); 
 
-                    if (Cv.RecordFound == true)
-                    {
-                        // File Exist
-                    }
-                    else
-                    {
-                        // File do not exist
-                        MessageBox.Show("File.." + WFileName + Environment.NewLine
-                            + "DOES NOT EXIST In MATCHED_TXNS Data Base."
-                            + "REPORT TO THE HELP DESK."
-                            );
-                        I = I + 1;
-                        continue;
-                    }
-                    
-                    if ( WFileName == "Switch_IST_Txns")
-                    {
-                        // For IST Use not the current cycle but the previous
-                        // in order to delete the Dublicates 
-                        string WJobCategory = "ATMs";
-                        Rjc.ReadLastReconcJobCycle_Closed_Cycle(WOperator, WJobCategory);
-
-                        if (Rjc.RecordFound == true)
-                        {
-                            int WRMCycleNo = Rjc.JobCycle;
-                            // WE WILL  NOT MOVE TO MATCH TILL CORRECTED
-                            Cv.MOVE_ITMX_TXNS_TO_MATCHED(WFileName, WRMCycleNo);
-                        }
-                        else
-                        {
-                            // this is the first cycle (-1)
-                            // Do not move any IST
-                            I = I + 1;
-                            continue;
-                        }
-                        
-                    }
-                    else
-                    {
-                        Cv.MOVE_ITMX_TXNS_TO_MATCHED(WFileName, WReconcCycleNo);
-                    }
-                   
+                    Cv.MOVE_ITMX_TXNS_TO_MATCHED(WFileName, WReconcCycleNo);
 
                     if (Cv.ret == 0)
                     {
@@ -2220,8 +1672,8 @@ namespace RRDM4ATMsWin
                                        + "ERROR REFERENCE.." + Cv.ErrorReference + Environment.NewLine
                                        + ""
                                        );
-                        I = I + 1;
-                        continue;
+
+                        return;
 
                     }
 
@@ -2236,253 +1688,34 @@ namespace RRDM4ATMsWin
             // *****************************
 
             Mode = 5; // Updating Action 
-            ProcessName = "Moving Records To MATCHED Data Base";
-            Message = "Moving Records to Matched Process Finishes.";
+            ProcessName = "MovingRecordsProcess";
+            Message = "MovingRecords Process Finishes.";
+
+            textBoxMsgBoard.Text = "Current Status : Ready";
 
             Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, DateTime.Now, Message, WSignedId, WReconcCycleNo);
             //*********************************
 
             //MessageBox.Show(TotalProgressText);
 
-            text = "Moving records to Matched has finished";
-            caption = "MOVING RECORDS";
-            timeout = 5000;
-            AutoClosingMessageBox.Show(text, caption, timeout);
+            // MATCHING HAS FINISHED 
+            // ALLOW users to sign In. 
+            //
+            IsAllowedToSignIn = true;
+            CheckForSignInUsers(IsAllowedToSignIn);
 
-            //MessageBox.Show("Moving records to Matched has finished" + Environment.NewLine
-            //                + ""
-            //                );
-
-            // FIND LIMIT DATE FOR HISTORY 
-
-            // MOVE FROM MATCHED TO MATCHED_HST
-            //WSelection = " WHERE JobCycle =" + InReconcCycleNo;
-            //Rjc.ReadReconcJobCyclesBySelectionCriteria(WSelection);
-            bool MoveToHistory = false;
-            ParamId = "853";
-            OccuranceId = "5"; // HST
-            DateTime DatefromDeletion = NullPastDate; 
-
-            Gp.ReadParameterByOccuranceId(ParamId, OccuranceId);
-
-            if (Gp.RecordFound == true)
+            if (ThereAreUsersInSystem == true)
             {
-                MoveToHistory = true;
+                // Decide whether to move forward or not. 
             }
-
-                //AgingDays_HST = (int)Gp.Amount; // 
-
-                ////AgingDays_HST = 0; 
-
-                //// Current CutOffdate
-                //string WSelection = " WHERE JobCycle =" + WReconcCycleNo;
-                //Rjc.ReadReconcJobCyclesBySelectionCriteria(WSelection);
-
-                //DateTime WAgingDateLimit_HST = Rjc.Cut_Off_Date.AddDays(-AgingDays_HST);
-
-                //Rjc.ReadReconcJobCyclesByCutOffDateEqualOrLess(WAgingDateLimit_HST);
-
-                //if (Rjc.RecordFound == true)
-                //{
-                //    string ReversedCut_Off_Date = Rjc.Cut_Off_Date.ToString("yyyy-MM-dd");
-
-                //    ParamId = "853";
-                //    OccuranceId = "6"; // HST
-
-                //    Gp.ReadParameterByOccuranceId(ParamId, OccuranceId);
-                //    if (Gp.RecordFound == true)
-                //    {
-                //        int Int_DeleteFrom_HST = (int)Gp.Amount; // 
-                //        DatefromDeletion = WCut_Off_Date.AddDays(-Int_DeleteFrom_HST); 
-                //    }
-
-                //    MessageBox.Show("Moving records to History Starts" + Environment.NewLine
-                //           + "For date equal or less than.." + ReversedCut_Off_Date + Environment.NewLine
-                //            + "Also Deletion of Records from HST will be done." + DatefromDeletion.ToShortDateString()
-                //           );
-                //    MoveToHistory = true;
-                //}
-            //}
-            //MoveToHistory = true;
-            if (MoveToHistory == true)
-            {
-                //******************************
-                // 
-                // MOVE TO HST
-                // stp_00_MOVE_TXNS_TO_HISTORY_DB_01_POOL
-                //******************************
-                Mode = 5; // Updating Action 
-                ProcessName = "Moving To HST And Delete From HST";
-                Message = "Moving To HST And Delete From HST Process Starts. Cycle:.." + WReconcCycleNo.ToString();
-
-                text = "Moving records to History Starts";
-                caption = "MOVING RECORDS";
-                timeout = 5000;
-                AutoClosingMessageBox.Show(text, caption, timeout);
-
-                //MessageBox.Show("Moving records to History Starts" + Environment.NewLine
-                //            + ""
-                //            );
-
-                SavedStartDt = DateTime.Now;
-
-                Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
-
-
-                TotalProgressText = "MOVE TO HISTORY Cycle: ..."
-                                         + WReconcCycleNo.ToString() + Environment.NewLine;
-                //RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
-                //RRDMMatchingSourceFiles Mf = new RRDMMatchingSourceFiles();
-                WSelectionCriteria = " WHERE Operator = @Operator ";
-                Mf.ReadReconcSourceFilesToFillDataTable_FULL(WOperator, WSelectionCriteria);
-
-                I = 0;
-                K = 0;
-
-                while (I <= (Mf.SourceFilesDataTable.Rows.Count - 1))
-                {
-                    //    RecordFound = true;
-                    int SeqNo = (int)Mf.SourceFilesDataTable.Rows[I]["SeqNo"];
-                    Mf.ReadReconcSourceFilesBySeqNo(SeqNo);
-
-                    if (Mf.IsMoveToMatched == true || Mf.SourceFileId == "Atms_Journals_Txns") // the indication that this table is a moving table 
-                    {
-                        if (Mf.SourceFileId == "Atms_Journals_Txns")
-                        {
-                            WFileName = "tblMatchingTxnsMasterPoolATMs";
-                        }
-                        else
-                        {
-                            WFileName = Mf.SourceFileId;
-                        }
-
-                        // Check That File Exist in target data base 
-                        string TargetDB = "[RRDM_Reconciliation_ITMX_HST]";
-                        Cv.ReadTableToSeeIfExist(TargetDB, WFileName);
-
-                        if (Cv.RecordFound == true)
-                        {
-                            // File Exist
-                        }
-                        else
-                        {
-                            // File do not exist
-                            MessageBox.Show("File.." + WFileName + Environment.NewLine
-                                + "DOES NOT EXIST In ITMX_HST Data Base."
-                                + "REPORT TO THE HELP DESK."
-                                );
-                            I = I + 1;
-                            continue;
-                        }
-
-                        // Check That File Exist in target data base 
-                        TargetDB = "[RRDM_Reconciliation_MATCHED_TXNS_HST]";
-                        Cv.ReadTableToSeeIfExist(TargetDB, WFileName);
-
-                        if (Cv.RecordFound == true)
-                        {
-                            // File Exist
-                        }
-                        else
-                        {
-                            // File do not exist
-                            MessageBox.Show("File.." + WFileName + Environment.NewLine
-                                + "DOES NOT EXIST In MATCHED_TXNS_HST Data Base."
-                                + "REPORT TO THE HELP DESK."
-                                );
-                            I = I + 1;
-                            continue;
-                        }
-
-                        // MessageBox.Show("Start Moving file.." + WFileName); 
-
-                        Cv.MOVE_ITMX_TXNS_TO_HST(WFileName, WReconcCycleNo);
-
-                        if (Cv.ret == 0)
-                        {
-                            // GOOD
-                            K = K + 1;
-                            TotalProgressText = TotalProgressText + Cv.ProgressText;
-                        }
-                        else
-                        {
-                            // NO GOOD
-                            // public string ProgressText;
-                            //public string ErrorReference;
-                            //public int ret;
-                            MessageBox.Show("VITAL SYSTEM ERROR DURING MOVING TO HISTORY" + Environment.NewLine
-                                           + "PROGRESS TEXT.." + Cv.ProgressText + Environment.NewLine
-                                           + "ERROR REFERENCE.." + Cv.ErrorReference + Environment.NewLine
-                                           + ""
-                                           );
-
-                            //  return;
-
-                            I = I + 1;
-                            continue;
-
-                        }
-
-                    }
-
-                    I = I + 1;
-                }
-
-                TotalProgressText = TotalProgressText + DateTime.Now + " Moving of TXNS to HST has finished" + Environment.NewLine;
-                TotalProgressText = TotalProgressText + DateTime.Now + " Number of moved tables..." + K.ToString() + Environment.NewLine;
-
-                // *****************************
-                //
-                // DELETE RECORDS FROM HISTORY DATA BASES BASED ON PARAMETER 853
-                //
-                text = "Moving Records to History Finishes" + Environment.NewLine
-                            + "Delete Records From History Starts if any proper parameneter present";
-                caption = "MOVING RECORDS";
-                timeout = 5000;
-                AutoClosingMessageBox.Show(text, caption, timeout);
-
-                //MessageBox.Show("Moving Records to History Finishes" + Environment.NewLine
-                //            + "Delete Records From History Starts if any proper parameneter present"
-                //            );
-                int WWWMode = 0;
-                Cv.DELETE_DELETE_TXNS_FROM_HST_MAIN(WOperator, WSignedId, WReconcCycleNo, WWWMode);
-
-                Mode = 5; // Updating Action 
-                ProcessName = "Moving To HST And Delete From HST";
-                Message = "Moving To HST And Delete From HST.";
-
-                text = "Delete From HST has finished";
-                caption = "MOVING RECORDS";
-                timeout = 5000;
-                AutoClosingMessageBox.Show(text, caption, timeout);
-                //MessageBox.Show("Delete From HST has finished" + Environment.NewLine
-                //             + ""
-                //             );
-
-                textBoxMsgBoard.Text = "Current Status : Ready";
-
-                Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, DateTime.Now, Message, WSignedId, WReconcCycleNo);
-                //*********************************
-
-              //  MessageBox.Show(TotalProgressText);
-
-            }
-
-            // MATCHING AND MOVING RECORDS HAS FINISHED 
-
 
             // AT the END UPDATE STATS
 
             // 
             // 
-            // AT the END UPDATE STATS
-
             string connectionStringITMX = ConfigurationManager.ConnectionStrings
-                 ["ReconConnectionString"].ConnectionString;
+             ["ReconConnectionString"].ConnectionString;
 
-            // AT the END UPDATE STATS
-            int ReturnCode = -1;
-            int ret;
             string RCT = "[RRDM_Reconciliation_ITMX].[dbo].[Stp_00_UPDATE_DB_System_Stats]";
 
             using (SqlConnection conn =
@@ -2495,14 +1728,8 @@ namespace RRDM4ATMsWin
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         // Parameters
-                        SqlParameter retCode = new SqlParameter("@ReturnCode", ReturnCode);
-                        retCode.Direction = ParameterDirection.Output;
-                        retCode.SqlDbType = SqlDbType.Int;
-                        cmd.Parameters.Add(retCode);
 
-                        cmd.ExecuteNonQuery();
-
-                        ret = (int)cmd.Parameters["@ReturnCode"].Value;
+                        int rows = cmd.ExecuteNonQuery();
                         //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
                         //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
 
@@ -2514,30 +1741,31 @@ namespace RRDM4ATMsWin
                 {
                     MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
                 }
-            
-            IsAllowedToSignIn = true;
-            CheckForSignInUsers(IsAllowedToSignIn);
+            //*******************************************
+            // UPDATE TODAYS ATMs_CASH_RECON_MASTER_RECORD
+            // 
+            RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
 
-            //if (ThereAreUsersInSystem == true)
-            //{
-            //    // Decide whether to move forward or not. 
-            //}
-            text = "Matching and movings of records process has finished";
-            caption = "MATCHING";
+            //Ta.ReadReplCycles_Created_This_Cycle_For_CASH_RECO(WReconcCycleNo, WCut_Off_Date); 
+
+            //********************************************
+
+            // MessageBox.Show("Matching and movings of records process has finished");
+            text = "Matching and moving of records process has finished";
+            caption = "MATCHING AND MOVING RECORDS";
             timeout = 5000;
             AutoClosingMessageBox.Show(text, caption, timeout);
-            //MessageBox.Show("Matching and movings of records process has finished");
 
-            ShowScreen();
+            Form502_Load(this, new EventArgs());
 
         }
         //
         // LOAD FILES
         //
         string FullFileName;
-        string text ;
-        string caption ;
-        int timeout; 
+        string text;
+        string caption;
+        int timeout;
 
         private void buttonLoadFiles_Click(object sender, EventArgs e)
         {
@@ -2546,36 +1774,25 @@ namespace RRDM4ATMsWin
             timeout = 5000;
             AutoClosingMessageBox.Show(text, caption, timeout);
 
-           
-
-            //*******************************
-            Mode = 5; // Updating Action 
-            ProcessName = "LoadingOfFiles";
-            Message = "Loading Of Files starts. Cycle:.." + WReconcCycleNo.ToString();
-            SavedStartDt = DateTime.Now;
-
-            Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
-
-            //MessageBox.Show("Loading from Journals DB to Master STARTS");
             DateTime startTime = DateTime.Now;
-            // READ AUDI AND INSERT IN Master file 
-            RRDMJournalRead_HstAtmTxns_AndCreateTable_V2_With_SM_BDC_2_Pambos2 PambosLoad = new RRDMJournalRead_HstAtmTxns_AndCreateTable_V2_With_SM_BDC_2_Pambos2();
-            // GET FROM PAMBOS TO MASTER
-            PambosLoad.ReadJournal_Txns_And_Insert_In_Pool(WSignedId, WSignRecordNo, WOperator, WReconcCycleNo);
+
+            // RRDMJournalRead_HstAtmTxns_AndCreateTable_V2_With_SM_BDC_2_Pambos2 PambosLoad = new RRDMJournalRead_HstAtmTxns_AndCreateTable_V2_With_SM_BDC_2_Pambos2();
+            RRDMJournalRead_HstAtmTxns_AndCreateTable_V2_With_SM_BDC_2_ALPHA ALPHA_LOAD = new RRDMJournalRead_HstAtmTxns_AndCreateTable_V2_With_SM_BDC_2_ALPHA();
+            //ReadJournal_Txns_And_Insert_In_Pool(string InSignedId, int InSignRecordNo, string InOperator,
+            //                                                 int InAtmsReconcGroup, string InAtmNo, int InFuid, int InMode)
+
+            ALPHA_LOAD.ReadJournal_Txns_And_Insert_In_Pool(WSignedId, WSignRecordNo, WOperator, WReconcCycleNo);
 
             DateTime endTime = DateTime.Now;
 
             TimeSpan span = endTime.Subtract(startTime);
 
             text = "Loading from Journals DB to Master FINISHES" + Environment.NewLine
-                + "Time Elapsed In Minutes.." + span.TotalMinutes; 
+              + "Time Elapsed In Minutes.." + span.TotalMinutes;
             caption = "LOADING";
             timeout = 5000;
             AutoClosingMessageBox.Show(text, caption, timeout);
 
-            //MessageBox.Show("Loading from Journals DB to Master FINISHES" + Environment.NewLine
-            //    + "Time Elapsed In Minutes.." + span.TotalMinutes
-            //    );
 
             CheckLoadingOfJournals();
 
@@ -2607,139 +1824,63 @@ namespace RRDM4ATMsWin
 
             Jc.TruncateTempTable(WFile);
 
-            startTime = DateTime.Now;
+            bool Is_SuperisorMode = false;
+            string ParId = "720";
+            string OccurId = "1";
+            //RRDMGasParameters Gp = new RRDMGasParameters();
 
-            text = "Supervisor mode Work starts"; 
-            caption = "LOADING";
-            timeout = 5000;
-            AutoClosingMessageBox.Show(text, caption, timeout);
-
-           // MessageBox.Show("Supervisor mode Work starts");
-            textBoxMsgBoard.Text = "Current Status : Supervisor Mode data loading process";
-
-            // CHECK IF RECYCLING ATMS
-            string ParId = "948";
-            string OccurId = "1"; // 
             Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
-            if (Gp.RecordFound & Gp.OccuranceNm == "YES")
+
+            if (Gp.OccuranceNm == "YES")
             {
-                RRDMRepl_SupervisorMode_Master_Recycle Smaster = new RRDMRepl_SupervisorMode_Master_Recycle();
-
-                int Sm_Mode = 3;
-                Smaster.CreateReplCyclesFrom_Pambos_Details_Of_Supervisor_Mode(WSignedId, WSignRecordNo, WOperator,
-                                                                 Sm_Mode, "NO_Form153");
-
-                endTime = DateTime.Now;
-
-                span = endTime.Subtract(startTime);
-
-                text = "Supervisor mode Work FINISHES" + Environment.NewLine
-                    + "Time Elapsed In Minutes.." + span.TotalMinutes; 
-                caption = "LOADING";
-                timeout = 5000;
-                AutoClosingMessageBox.Show(text, caption, timeout);
-
-                //MessageBox.Show("Supervisor mode Work FINISHES" + Environment.NewLine
-                //    + "Time Elapsed In Minutes.." + span.TotalMinutes
-                //    );
+                Is_SuperisorMode = true;
             }
             else
             {
+                Is_SuperisorMode = false;
+            }
+
+            if (Is_SuperisorMode == true)
+            {
+                //MessageBox.Show("Supervisor mode Work starts");
+                textBoxMsgBoard.Text = "Current Status : Supervisor Mode data loading process";
                 //
                 // Supervisor mode
                 //
 
+
+
                 RRDMRepl_SupervisorMode_Master Smaster = new RRDMRepl_SupervisorMode_Master();
                 int Sm_Mode = 3;
-                //
-                // HERE IS NO RECYCLE
-                //
                 Smaster.CreateReplCyclesFrom_Pambos_Details_Of_Supervisor_Mode(WSignedId, WSignRecordNo, WOperator,
-                                                                 Sm_Mode, "NO_Form153");
+                                                             Sm_Mode, "NO_Form153");
+                
 
-                endTime = DateTime.Now;
-
-                span = endTime.Subtract(startTime);
-
-                MessageBox.Show("Supervisor mode Work FINISHES" + Environment.NewLine
-                    + "Time Elapsed In Minutes.." + span.TotalMinutes
-                    );
             }
 
 
-            // CLEAR Duplicates due to NCR problems
-            //*****************************************
-
-            ParId = "103";
-            OccurId = "1"; // 
-            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
-            if (Gp.RecordFound & Gp.OccuranceNm == "YES")
-            {
-                // Means delete duplicates from loaded journals due to NCR Vision problem 
-
-                // Dublicates in A : 
-
-
-                RRDMMatchingTxns_MasterPoolATMs Mpa = new RRDMMatchingTxns_MasterPoolATMs();
-
-                Mpa.DeleteDuplicates_NCR_Vision(WReconcCycleNo);
-
-                if (Mpa.Count > 0)
-                {
-                    text = "Deleted Duplicates due to NCR Vision problem." + Environment.NewLine
-                             + "Number deleted..=" + Mpa.Count.ToString();
-                    caption = "NCR DUPLICATE";
-                    timeout = 5000;
-                    AutoClosingMessageBox.Show(text, caption, timeout);
-                    //MessageBox.Show("Deleted Duplicates due to NCR Vision problem." + Environment.NewLine
-                    //         + "Number deleted..=" + Mpa.Count.ToString()
-                    //          );
-                }
-                else
-                {
-                    //MessageBox.Show("NO Duplicates FOUND due NCR Vision problem." + Environment.NewLine
-                    //                + "Maybe NCR has corrected problem." + Environment.NewLine
-                    //                + " Please check and report"
-                    //                 );
-                }
-            }
-            RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
-            string WFileName = "CIT_EXCEL_TO_BANK";
-            string TargetDB = "[RRDM_Reconciliation_ITMX]";
-            Cv.ReadTableToSeeIfExist(TargetDB, WFileName);
-
-            if (Cv.RecordFound == true)
-            {
-                //
-                // CREATE WORKING TABLE FOR IST Vs CIT Transactions
-                //
-                // Here CREATE THE FILE FOR CIT REPLENISHMENT for Journals 
-                RRDM_CIT_EXCEL_TO_BANK Ce = new RRDM_CIT_EXCEL_TO_BANK();
-                string WTableId = "[RRDM_Reconciliation_ITMX].[dbo].[CIT_JOURNAL_TXNS]";
-                Ce.Insert_JOURNAL_TXNS_For_CIT(WTableId, WReconcCycleNo);
-            }
-
-           
 
             // return; // for testing 
-            text = "Loading of files starts."; 
+
+            text = "Loading of files starts.";
             caption = "LOADING";
             timeout = 5000;
             AutoClosingMessageBox.Show(text, caption, timeout);
-            //MessageBox.Show("Loading of files starts." + Environment.NewLine
-            //                + "" + Environment.NewLine
-            //               );
-
+            //
             textBoxMsgBoard.Text = "Current Status : Loading of Files process";
 
 
+            //*******************************
+            Mode = 5; // Updating Action 
+            ProcessName = "LoadingOfFiles";
+            Message = "Loading Of Files starts. Cycle:.." + WReconcCycleNo.ToString();
+            SavedStartDt = DateTime.Now;
 
-           
+            Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
             //******************************
             // ************************
             // UPDATE CORRECT JOURNAL AND CREATE NOT PRESENT ATMS
             // ************************
-
 
             Jc.ReadJournal_tmpATMs_Journal_TypeAndUpdateAtms(WOperator);
 
@@ -2752,22 +1893,10 @@ namespace RRDM4ATMsWin
             // 
             //IST 01 / 07
 
-            if (W_Application == "e_MOBILE")
-            {
-                // Get only the e_MOBILE
-                string Filter1 = "Operator = '" + WOperator + "' AND Enabled = 1 AND TableStructureId = 'MOBILE_WALLET' ";
+            // Source Files (Grid-ONE)
+            string Filter1 = "Operator = '" + WOperator + "' AND Enabled = 1  ";
 
-                Rs.ReadReconcSourceFilesToFillDataTableForExistanceInDir(WOperator, Filter1, WReconcCycleNo, WCut_Off_Date);
-
-            }
-            else
-            {
-                // Normal Case
-                string Filter1 = "Operator = '" + WOperator + "' AND Enabled = 1  AND TableStructureId = 'Atms And Cards' ";
-
-                Rs.ReadReconcSourceFilesToFillDataTableForExistanceInDir(WOperator, Filter1, WReconcCycleNo, WCut_Off_Date);
-
-            }
+            Rs.ReadReconcSourceFilesToFillDataTableForExistanceInDir(WOperator, Filter1, WReconcCycleNo, WCut_Off_Date);
 
             SavedSourceFilesDataTable = Rs.Table_Files_In_Dir;
 
@@ -2778,51 +1907,11 @@ namespace RRDM4ATMsWin
             //
             METHOD_LoadFiles();
             //
-
-            //
-            Mode = 5; // Updating Action 
-            ProcessName = "LoadingOfFiles";
-            Message = "Loading Of Files Finishes. ";
-
-            Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, DateTime.Now, Message, WSignedId, WReconcCycleNo);
-            //*********************************
-            text = "Loading Of Files has Finished";
-            caption = "LOADING";
-            timeout = 5000;
-            AutoClosingMessageBox.Show(text, caption, timeout);
             //****************************
-            string Temp = "NOT Panicos"; //  Check IST 
-            if (Temp == "Panicos....")
-            {
 
-                string TableId = "[RRDM_Reconciliation_ITMX].[dbo].[Switch_IST_Txns]";
-                string WCase = "Dublicate In IST";
-                int WPos = 1;
-                RRDMMatchingCategStageVsMatchingFields Mf = new RRDMMatchingCategStageVsMatchingFields();
-                Mf.CreateStringOfMatchingFieldsForStageX(PRX + "999", "Stage A");
-                string ListMatchingFields = Mf.Dublicate_List_FieldsStageX + ", FullDtTm";
-                string OnMatchingFields = Mf.Dublicate_ON_FieldsStageX + " AND  y.FullDtTm = dt.FullDtTm";
 
-                RRDMMatchingTxns_InGeneralTables_BDC Mgt = new RRDMMatchingTxns_InGeneralTables_BDC();
-                Mgt.FindDuplicateAddTableFromFileLoading(TableId, WCase, WPos, ListMatchingFields, OnMatchingFields);
-
-                if (Mgt.TableDublicates.Rows.Count > 1)
-                {
-                    Form78d_BasedOnDataTable NForm78d_DublicateRecords;
-                    // textBoxFileId.Text
-                    int WMode = 1; //
-
-                    NForm78d_DublicateRecords = new Form78d_BasedOnDataTable(WOperator, WSignedId, "Switch_IST_Txns", Mgt.TableDublicates
-                                                                                                                , WMode);
-                    NForm78d_DublicateRecords.Show();
-                }
-
-                //Mgt.DeleteDuplicatesInIST(WReconcCycleNo); 
-                
-            }
-
-            Temp = "NO_Panicos2"; //  Check Authorisations
-            if (Temp == "NO_Panicos2")
+            string Temp = "NO_Panicos2"; //  Check Authorisations
+            if (Temp == "NO_Panicos2" & IsRomaniaVersion == false)
             {
 
 
@@ -2841,9 +1930,21 @@ namespace RRDM4ATMsWin
                 }
             }
 
-           
 
-            //MessageBox.Show("Loading Of Files has Finished");
+
+            //
+            Mode = 5; // Updating Action 
+            ProcessName = "LoadingOfFiles";
+            Message = "Loading Of Files Finishes. ";
+
+            Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, DateTime.Now, Message, WSignedId, WReconcCycleNo);
+            //*********************************
+            //*********************************
+            text = "Loading Of Files has Finished";
+            caption = "LOADING";
+            timeout = 5000;
+            AutoClosingMessageBox.Show(text, caption, timeout);
+
             // LOADING HAS FINISHED 
             // ALLOW users to sign In. 
             //
@@ -2857,7 +1958,7 @@ namespace RRDM4ATMsWin
 
             textBoxMsgBoard.Text = "Current Status : Ready";
             // Refresh 
-            ShowScreen();
+            Form502_Load(this, new EventArgs());
 
             //Thread thr15 = new Thread(Method15);
             //thr15.Start();
@@ -2891,65 +1992,6 @@ namespace RRDM4ATMsWin
             // 2) USING A STORE PROCEDURE DELETE AND UPDATE OF RRDM GENERAL TABLES 
             // 3) USE AN RRDM CLASS TO DELETE UPDATE TABLES IN ITMX eg Delete loaded records 
 
-            string sourceDir = @"C:\RRDM\FilesArchives\" + ReversedCut_Off_Date + "_" + WReconcCycleNo.ToString(); // directory to zip
-            string zipFilePath = @"C:\RRDM\FilesArchives\" + ReversedCut_Off_Date + "_" + WReconcCycleNo.ToString() + ".zip"; // output file
-
-            if (File.Exists(zipFilePath))
-            {
-                MessageBox.Show("Action A : Unzip file.." + zipFilePath + " " + Environment.NewLine
-                    + "Action B : Delete.." + zipFilePath + " " + Environment.NewLine
-                    + " AND TRY AGAIN"
-                    );
-                return;
-
-                //try
-                //{
-                //    string zipFilePath = @"C:\RRDM\FilesArchives\20250306_200.zip";
-                //    string extractPath = @"C:\RRDM\FilesArchives\20250306_200";
-
-                //    // Overwrite existing folder
-                //    if (System.IO.Directory.Exists(extractPath))
-                //        System.IO.Directory.Delete(extractPath, true);
-
-                //    ZipFile.ExtractToDirectory(zipFilePath, extractPath);
-
-                //    MessageBox.Show("UN_ZIP DONE");
-
-                //    Thread.Sleep(100);
-
-                //    // Delete directory
-                //    try
-                //    {
-                //        File.Delete(zipFilePath);
-                //        // Console.WriteLine("Folder deleted successfully.");
-                //        //"C:\RRDM\FilesArchives\20250306_200.zip"
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        //Console.WriteLine($"Failed to delete folder: {ex.Message}");
-                //        MessageBox.Show($"Failed to delete folder: {ex.Message}");
-                //    }
-                //}
-                //catch (Exception ex)
-                //{
-
-                //    CatchDetails(ex);
-
-                //}
-            }
-
-            if (Directory.Exists(sourceDir))
-            {
-                //OK
-            }
-            else
-            {
-                MessageBox.Show("Directory.." + sourceDir + " " + Environment.NewLine
-                    + " Not Found "
-                    );
-
-            }
-
             if (MessageBox.Show("Do you want to UNDO Loading and Matching " + Environment.NewLine
                                  + "For this Cycle ...? " + Environment.NewLine
                                  + WReconcCycleNo.ToString()
@@ -2957,8 +1999,8 @@ namespace RRDM4ATMsWin
                           == DialogResult.Yes)
             {
                 // YES Proceed
-                MessageBox.Show("This process might take few minutes. " + Environment.NewLine
-                               + "Wait till a final message is shown. ");
+                //MessageBox.Show("This process might take few minutes. " + Environment.NewLine
+                  //             + "Wait till a final message is shown. ");
             }
             else
             {
@@ -2969,18 +2011,23 @@ namespace RRDM4ATMsWin
             textBoxMsgBoard.Text = "Current Status : Undo Matching and Loading Files process";
             //*******************************
 
+            // Find Excel Cycle 
+            RRDM_Cit_ExcelProcessedCycles Cec = new RRDM_Cit_ExcelProcessedCycles();
+            string TempSelection = " Where RMCycle=" + WReconcCycleNo;
+            Cec.ReadExcelLoadCyclesBySelectionCriteria(TempSelection);
+
             Mode = 5; // Updating Action 
             ProcessName = "UNDO_LoadingAndMatchingProcess";
-            Message = "UNDO Matching and Loading of Files STARTS. Cycle .." + WReconcCycleNo.ToString();
+            Message = "UNDO Matching and Loading of Files STARTS CYCLE.." + WReconcCycleNo.ToString();
             SavedStartDt = DateTime.Now;
 
             Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
             // BEFORE UNDO 
-            TotalProgressText = DateTime.Now + "Moving TXNs from Matched to ITMX Starts" + Environment.NewLine;
+            string TotalProgressText = DateTime.Now + "Moving TXNs from Matched to ITMX Starts" + Environment.NewLine;
 
             RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
             RRDMMatchingSourceFiles Mf = new RRDMMatchingSourceFiles();
-            string WSelectionCriteria = " WHERE Operator = @Operator ";
+            string WSelectionCriteria = " WHERE Operator = @Operator  AND Enabled = 1 ";
             Mf.ReadReconcSourceFilesToFillDataTable_FULL(WOperator, WSelectionCriteria);
             //
             // MOVE TRANSACTIONS FROM MATCHED TO ITMX
@@ -3006,24 +2053,6 @@ namespace RRDM4ATMsWin
                         WFileName = Mf.SourceFileId;
                     }
 
-                    string TargetDB = "[RRDM_Reconciliation_ITMX]";
-                    Cv.ReadTableToSeeIfExist(TargetDB, WFileName);
-
-                    if (Cv.RecordFound == true)
-                    {
-                        // File Exist
-                    }
-                    else
-                    {
-                        // File do not exist
-                        MessageBox.Show("File.." + WFileName + Environment.NewLine
-                            + "DOES NOT EXIST In ITMX Data Base."
-                            + "REPORT TO THE HELP DESK."
-                            );
-                        I = I + 1;
-                        continue;
-                    }
-
                     Cv.MOVE_MATCHED_TXNS_TO_ITMX(WFileName, WReconcCycleNo);
 
                     if (Cv.ret == 0)
@@ -3045,7 +2074,7 @@ namespace RRDM4ATMsWin
                                        + ""
                                        );
 
-                        // return;
+                        return;
 
                     }
 
@@ -3057,7 +2086,7 @@ namespace RRDM4ATMsWin
             TotalProgressText = TotalProgressText + DateTime.Now + " MOVING OF TXNS FROM MATCHED HAS FINISHED" + Environment.NewLine;
             TotalProgressText = TotalProgressText + DateTime.Now + " Number of moved tables..." + K.ToString() + Environment.NewLine;
 
-            MessageBox.Show(TotalProgressText);
+            // MessageBox.Show(TotalProgressText);
 
 
             //******************************
@@ -3075,7 +2104,7 @@ namespace RRDM4ATMsWin
             string connectionStringITMX = ConfigurationManager.ConnectionStrings
                  ["ReconConnectionString"].ConnectionString;
 
-            string SPName = "[RRDM_Reconciliation_ITMX].[dbo].[stp_00_UNDO_RMCYCLE_FILES_MATCHING]";
+            string SPName = "[RRDM_Reconciliation_ITMX].[dbo].[stp_00_UNDO_RMCYCLE_FILES_MATCHING_ALPHA]";
 
             using (SqlConnection conn2 = new SqlConnection(connectionStringITMX))
             {
@@ -3090,11 +2119,7 @@ namespace RRDM4ATMsWin
 
                     // the first are input parameters
 
-                    //cmd.Parameters.Add(new SqlParameter("@RMCycleNo", WReconcCycleNo));
-                    SqlParameter WCycleNo = new SqlParameter("@RMCycleNo", WReconcCycleNo);
-                    WCycleNo.Direction = ParameterDirection.Input;
-                    WCycleNo.SqlDbType = SqlDbType.Int;
-                    cmd.Parameters.Add(WCycleNo);
+                    cmd.Parameters.Add(new SqlParameter("@RMCycleNo", WReconcCycleNo));
 
                     // the following are output parameters
 
@@ -3133,16 +2158,10 @@ namespace RRDM4ATMsWin
             }
             //
             // UNDO STATISTICS 
-            if (T24Version == true)
-            {
-                Lf_BDC_T24.HandleDailyStatisticsForAtms_UNDO(WReconcCycleNo);
-            }
-            else
-            {
-                Lf_BDC.HandleDailyStatisticsForAtms_UNDO(WReconcCycleNo);
-            }
-               
+            Lf_ALPHA.HandleDailyStatisticsForAtms_UNDO(WReconcCycleNo);
 
+            // UNDO Intbl_CIT_Bank_Repl_Entries and Posted Txns ( BOTH ) 
+            Lf_ALPHA.HandleSM_Bank_Records_UNDO(WReconcCycleNo, WCut_Off_Date);
             //
             // 1. UNDO SesStatus Traces if -1 not available make the last one available
             // 2. Make PANICOS_SM_Table records as not processed for this cycle
@@ -3157,10 +2176,6 @@ namespace RRDM4ATMsWin
             RRDMRepl_SupervisorMode_Details SM = new RRDMRepl_SupervisorMode_Details();
             bool WRRDM_Processed = false;
             SM.Update_SM_RecordsForCycle(WReconcCycleNo, WRRDM_Processed);
-
-            // Turn the process code to 0 with loading has become to -1 and with mathing to 1  
-            RRDMMatchingCategoriesVsSourcesFiles Mcf = new RRDMMatchingCategoriesVsSourcesFiles();
-            Mcf.UpdateReconcCategoryVsSourceRecordProcessCodeToZeroForCycle(WReconcCycleNo);
             //
             // CALL RRDM CLASS TO DELETE AND ALSO UPDATE RECORDS OF THIS CYCLE 
             //
@@ -3171,16 +2186,7 @@ namespace RRDM4ATMsWin
             // DELETE THIS THAT IS not taking care from above
             // THESE ARE THE LEFT OVERS FROM ABOVE
             RRDM_BULK_IST_AndOthers_Records_ALL_2 Bio = new RRDM_BULK_IST_AndOthers_Records_ALL_2();
-            //
-            // NEW SWITCH IST 
-            //  
-            string PhysicalName = "[RRDM_Reconciliation_ITMX].[dbo].[BULK_Switch_IST_Txns_ALL_2]";
-            Bio.UNDO_Table_For_Cycle_Delete_Loaded_Only(PhysicalName, WReconcCycleNo);
-            //
-            // NEW NCR FOREX_CHILD 
-            //
-            PhysicalName = "[RRDM_Reconciliation_ITMX].[dbo].BULK_NCR_FOREX_CHILD_ALL";
-            Bio.UNDO_Table_For_Cycle_Delete_Loaded_Only(PhysicalName, WReconcCycleNo);
+           
 
             ProgressText = ProgressText + Msf.ProgressText_2;
             // UNDO the files from the Directories
@@ -3205,8 +2211,8 @@ namespace RRDM4ATMsWin
             {
 
                 // OK
-                MessageBox.Show("VALID CALL" + Environment.NewLine
-                            + ProgressText);
+                //MessageBox.Show("VALID CALL" + Environment.NewLine
+                //            + ProgressText);
             }
             else
             {
@@ -3218,8 +2224,7 @@ namespace RRDM4ATMsWin
             textBoxMsgBoard.Text = "Current Status : Ready";
 
             // AT the END UPDATE STATS
-            ReturnCode = -1; 
-            int rows;
+
             string RCT = "[RRDM_Reconciliation_ITMX].[dbo].[Stp_00_UPDATE_DB_System_Stats]";
 
             using (SqlConnection conn =
@@ -3232,14 +2237,8 @@ namespace RRDM4ATMsWin
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         // Parameters
-                        SqlParameter retCode = new SqlParameter("@ReturnCode", ReturnCode);
-                        retCode.Direction = ParameterDirection.Output;
-                        retCode.SqlDbType = SqlDbType.Int;
-                        cmd.Parameters.Add(retCode);
 
-                        cmd.ExecuteNonQuery();
-
-                        ret = (int)cmd.Parameters["@ReturnCode"].Value;
+                        int rows = cmd.ExecuteNonQuery();
                         //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
                         //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
 
@@ -3252,7 +2251,7 @@ namespace RRDM4ATMsWin
                     MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
                 }
 
-            ShowScreen();
+            Form502_Load(this, new EventArgs());
         }
         //
         // METHOD LOAD FILES 
@@ -3284,22 +2283,8 @@ namespace RRDM4ATMsWin
 
                     // Update with -1 = ready for Matched 
 
-                    //if (SourceFileId == "Switch_IST_Txns")
-                    //{
-                    //    // DUE TO IST PROBLEM DO ALWAYS THIS
-                    //    Mcf.UpdateReconcCategoryVsSourceRecordProcessCodeToMinusOne(SourceFileId, WReconcCycleNo);
-                    //}
-                    if (SourceFileId == "Flexcube" & T24Version== true & IsGood == "YES")
-                    {
-                        MessageBox.Show("This is a T24Version. Why do you load Flexcube?");
-                        IsGood = "NO"; 
-                    }
-                    if (SourceFileId == "COREBANKING" & T24Version == false & IsGood == "YES")
-                    {
-                        MessageBox.Show("There is a good COREBANKING file but the T24 version was not selected.");
-                        IsGood = "NO";
-                    }
-
+                   
+                    //IsGood = "YES";
                     if (IsPresent == true & IsGood == "YES" & SourceFileId != "Atms_Journals_Txns")
                     {
                         // Check if still exist in Directory
@@ -3335,6 +2320,7 @@ namespace RRDM4ATMsWin
                                 Flog.DateExpected = WCut_Off_Date;
                                 //Flog.DateOfFile = WCut_Off_Date.Date.Year + "-" + WCut_Off_Date.Date.Month+"-"+WCut_Off_Date.Date.Day;
                                 Flog.DateOfFile = WCut_Off_Date.ToString("yyyy-MM-dd");
+
                                 Flog.FileHASH = HASHValue;
                                 Flog.LineCount = 999;
                                 Flog.stpFuid = 0;
@@ -3344,121 +2330,60 @@ namespace RRDM4ATMsWin
 
                                 FlogSeqNo = Flog.Insert(); // WReconcCycleNo
                                                            // LOAD FILE 
-                                if (T24Version)
-                                {
-                                    // T24 Version
-                                    Lf_BDC_T24.InsertRecordsInTableFromTextFile_InBulk(WOperator, SourceFileId, FullFileName, Ms.InportTableName, Ms.Delimiter, FlogSeqNo);
-                                }
-                                else
-                                {
-                                    // Not T24 Version
-                                    Lf_BDC.InsertRecordsInTableFromTextFile_InBulk(WOperator, SourceFileId, FullFileName, Ms.InportTableName, Ms.Delimiter, FlogSeqNo);
 
-                                }
-
-                                // IT IS TEMPORARY 
-                                // ALECOS WILL INSERT THIS
-
-                                //if (Environment.UserInteractive)
-                                //{
+                                Lf_ALPHA.InsertRecordsInTableFromTextFile_InBulk(WOperator, SourceFileId, FullFileName, Ms.InportTableName, Ms.Delimiter, FlogSeqNo);
 
                                 Flog.ReadLoadedFilesBySeqNo(FlogSeqNo);
 
                                 Flog.StatusVerbose = "";
 
-                                if (T24Version ==true)
-                                {
-                                    Flog.LineCount = Lf_BDC_T24.stpLineCount;
+                                Flog.LineCount = Lf_ALPHA.stpLineCount;
 
-                                    Flog.stpReturnCode = Lf_BDC_T24.stpReturnCode;
-                                    Flog.stpErrorText = Lf_BDC_T24.stpErrorText;
-                                    Flog.stpReferenceCode = Lf_BDC_T24.stpReferenceCode;
-                                    if (Lf_BDC_T24.stpReturnCode == 0)
-                                        Flog.Status = 1; // Success
-                                    else Flog.Status = 0; //Failure
-                                }
-                                else
-                                {
-                                    Flog.LineCount = Lf_BDC.stpLineCount;
+                                Flog.stpReturnCode = Lf_ALPHA.stpReturnCode;
+                                Flog.stpErrorText = Lf_ALPHA.stpErrorText;
+                                Flog.stpReferenceCode = Lf_ALPHA.stpReferenceCode;
 
-                                    Flog.stpReturnCode = Lf_BDC.stpReturnCode;
-                                    Flog.stpErrorText = Lf_BDC.stpErrorText;
-                                    Flog.stpReferenceCode = Lf_BDC.stpReferenceCode;
-
-                                    if (Lf_BDC.stpReturnCode == 0)
-                                        Flog.Status = 1; // Success
-                                    else Flog.Status = 0; //Failure
-                                }      
-                                // Update Flog
-                                //Flog.Update(Lf_BDC.WFlogSeqNo);
-
+                                if (Lf_ALPHA.stpReturnCode == 0)
+                                    Flog.Status = 1; // Success
+                                else Flog.Status = 0; //Failure
                                 Flog.Update(FlogSeqNo);
 
-                                if (Flog.SourceFileID == "GL_Balances_Atms_Daily" || Flog.SourceFileID == "CIT_EXCEL_TO_BANK")
+
+
+                                if (Flog.SourceFileID == "GL_Balances_Atms_Daily")
                                 {
-                                    // Do not find Max date CIT_EXCEL_TO_BANK
+                                    // Do not find Max date
                                 }
                                 else
                                 {
                                     Flog.Update_MAX_DATE(Flog.SourceFileID, FlogSeqNo, WReconcCycleNo);
                                 }
 
-                                //Flog.Update_MAX_DATE(Flog.SourceFileID, FlogSeqNo, WReconcCycleNo);
 
                                 // Update with -1 = ready for Matched if File is good
-                                if (Lf_BDC.stpReturnCode == 0 & T24Version == false)
+                                if (Lf_ALPHA.stpReturnCode == 0)
                                 {
                                     Mcf.UpdateReconcCategoryVsSourceRecordProcessCodeToMinusOne(SourceFileId, WReconcCycleNo);
 
-                                    if (SourceFileId == "Switch_IST_Txns" || SourceFileId == "Flexcube")
-                                    {
-                                        // LEAVE IT HERE to cover the Twin that are created from Switch_IST
-                                        // Make Twin 
-                                        Mcf.UpdateReconcCategoryVsSourceRecordProcessCodeToMinusOne("Switch_IST_Txns_TWIN", WReconcCycleNo);
+                                    //if (SourceFileId == "Switch_IST_Txns" || SourceFileId == "COREBANKING")
+                                    //{
+                                    //    // LEAVE IT HERE to cover the Twin that are created from Switch_IST
+                                    //    // Make Twin 
+                                    //    Mcf.UpdateReconcCategoryVsSourceRecordProcessCodeToMinusOne("Switch_IST_Txns_TWIN", WReconcCycleNo);
 
-                                    }
+                                    //}
 
-                                    if (SourceFileId == "NCR_FOREX")
-                                    {
-                                        // LEAVE IT HERE to cover if testing with only FOREX
-                                        // Make Twin 
-                                        Mcf.UpdateReconcCategoryVsSourceRecordProcessCodeToMinusOne("Switch_IST_Txns", WReconcCycleNo);
+                                    //if (SourceFileId == "NCR_FOREX")
+                                    //{
+                                    //    // LEAVE IT HERE to cover if testing with only FOREX
+                                    //    // Make Twin 
+                                    //    Mcf.UpdateReconcCategoryVsSourceRecordProcessCodeToMinusOne("Switch_IST_Txns", WReconcCycleNo);
 
-                                    }
+                                    //}
                                 }
-                                if (Lf_BDC_T24.stpReturnCode == 0 & T24Version == true)
-                                {
-                                    Mcf.UpdateReconcCategoryVsSourceRecordProcessCodeToMinusOne(SourceFileId, WReconcCycleNo);
 
-                                    if (SourceFileId == "Switch_IST_Txns" || SourceFileId == "COREBANKING")
-                                    {
-                                        // LEAVE IT HERE to cover the Twin that are created from Switch_IST
-                                        // Make Twin 
-                                        Mcf.UpdateReconcCategoryVsSourceRecordProcessCodeToMinusOne("Switch_IST_Txns_TWIN", WReconcCycleNo);
-
-                                    }
-
-                                    if (SourceFileId == "NCR_FOREX")
-                                    {
-                                        // LEAVE IT HERE to cover if testing with only FOREX
-                                        // Make Twin 
-                                        Mcf.UpdateReconcCategoryVsSourceRecordProcessCodeToMinusOne("Switch_IST_Txns", WReconcCycleNo);
-
-                                    }
-                                }
-                                int r;
-                                string D; 
-                                if (T24Version)
-                                {
-                                    r = Lf_BDC_T24.stpReturnCode;
-                                    D = Lf_BDC_T24.stpErrorText;
-                                }
-                                else
-                                {
-                                    r = Lf_BDC.stpReturnCode;
-                                    D = Lf_BDC.stpErrorText;
-                                }
-                                
+                                int r = Lf_ALPHA.stpReturnCode;
+                                string D = Lf_ALPHA.stpErrorText;
                             }
 
                         }
@@ -3473,29 +2398,16 @@ namespace RRDM4ATMsWin
                 // UPDATE TRACES and other infor In Order to sychronise files and have journal lines during reconciliation
                 //*****************************************************
                 //MessageBox.Show("ALL Files Loaded");
+
                 //MessageBox.Show("We Start update records with traces");
-                string text = "Extra work during loading in progress";
-                string caption = "LOADING OF FILES";
-                int timeout = 2000;
-                AutoClosingMessageBox.Show(text, caption, timeout);
-                if (T24Version == true)
-                {
-                    Lf_BDC_T24.UpdateRecordsWithTraceAndOther(WOperator, WReconcCycleNo, FlogSeqNo, 1, WCut_Off_Date);
-                    //
-                    // EXTRA FIELDS
-                    //MessageBox.Show("We Start extra fields");
-                    Lf_BDC_T24.UpdateFiles_With_EXTRA(WOperator, WReconcCycleNo);
-                    //MessageBox.Show("We finish extra fields");
-                }
-                else
-                {
-                    Lf_BDC.UpdateRecordsWithTraceAndOther(WOperator, WReconcCycleNo, FlogSeqNo, 1, WCut_Off_Date);
-                    //
-                    // EXTRA FIELDS
-                    //MessageBox.Show("We Start extra fields");
-                    Lf_BDC.UpdateFiles_With_EXTRA(WOperator, WReconcCycleNo);
-                    //MessageBox.Show("We finish extra fields");
-                }
+
+                Lf_ALPHA.UpdateRecordsWithTraceAndOther(WOperator, WReconcCycleNo, FlogSeqNo, 1, WCut_Off_Date);
+                //
+                // EXTRA FIELDS
+                //MessageBox.Show("We Start extra fields");
+               // Lf_ALPHA.UpdateFiles_With_EXTRA(WOperator, WReconcCycleNo);
+                //MessageBox.Show("We finish extra fields");
+
 
 
             }
@@ -3589,35 +2501,19 @@ namespace RRDM4ATMsWin
 
         }
 
-      
-        // GET TOTALS
-
-        private void buttonShowEntries_Click(object sender, EventArgs e)
+        // Refresh Total Entries
+        private void buttonRefreshTotals_Click(object sender, EventArgs e)
         {
-            labelCurrentEntries.Show();
-            //panelCurrentEntries.Show();
-            dataGridViewFilesStatus.Show();
-            label2.Show();
-            textBoxFileId.Show();
-            radioButtonCategory.Show();
-            radioButtonAll.Show();
-            comboBoxMatchingCateg.Show();
-            labelCycle.Show();
-            textBoxCycle.Show();
-            buttonUndoFile.Show();
-            buttonNonProcessed.Show();
-            //buttonProcessed.Show(); 
-            if (T24Version == true)
-            {
-                Lf_BDC_T24.GetTotals(WOperator, WReconcCycleNo);
-            }
-            else
-            {
-                Lf_BDC.GetTotals(WOperator, WReconcCycleNo);
-            }
-                
+            GetTotals();
+        }
+        // GET TOTALS
+        private void GetTotals()
+        {
+            Lf_ALPHA.GetTotals(WOperator, WReconcCycleNo);
 
             ShowGrid5();
+
+
         }
 
         // View Line Details
@@ -3711,17 +2607,17 @@ namespace RRDM4ATMsWin
 
         private void buttonProcessed_Click(object sender, EventArgs e)
         {
-            //string WMatchingCateg = comboBoxMatchingCateg.Text.Substring(0, 6);
+            string WMatchingCateg = comboBoxMatchingCateg.Text.Substring(0, 6);
 
-            //Form78d_FileRecords NForm78d_FileRecords;
-            //// textBoxFileId.Text
-            //int WMode = 2; //
-            //               // InMode = 1 : Not processed yet 
-            //               // InMode = 2 : Processed this Cycle
-            //if (radioButtonAll.Checked == true) WCategoryOnly = false;
-            //else WCategoryOnly = true;
-            //NForm78d_FileRecords = new Form78d_FileRecords(WOperator, WSignedId, textBoxFileId.Text, "", WReconcCycleNo, WMatchingCateg, WMode, WCategoryOnly);
-            //NForm78d_FileRecords.ShowDialog();
+            Form78d_FileRecords NForm78d_FileRecords;
+            // textBoxFileId.Text
+            int WMode = 2; //
+                           // InMode = 1 : Not processed yet 
+                           // InMode = 2 : Processed this Cycle
+            if (radioButtonAll.Checked == true) WCategoryOnly = false;
+            else WCategoryOnly = true;
+            NForm78d_FileRecords = new Form78d_FileRecords(WOperator, WSignedId, textBoxFileId.Text, "", WReconcCycleNo, WMatchingCateg, WMode, WCategoryOnly);
+            NForm78d_FileRecords.ShowDialog();
         }
         // Discrepancies
         private void buttonDiscrep_Click(object sender, EventArgs e)
@@ -3873,8 +2769,8 @@ namespace RRDM4ATMsWin
                          == DialogResult.Yes)
             {
                 // YES Proceed
-                MessageBox.Show("This process will move the unloaded Journals to directory. " + Environment.NewLine
-                               + "");
+                //MessageBox.Show("This process will move the unloaded Journals to directory. " + Environment.NewLine
+                //               + "");
             }
             else
             {
@@ -3891,28 +2787,28 @@ namespace RRDM4ATMsWin
                 return;
             }
 
-            if (MessageBox.Show("Do you want to UNDO The Loaded Journals " + Environment.NewLine
-                                + "For this Cycle ...? " + Environment.NewLine
-                                + WReconcCycleNo.ToString()
-                                , "Verification Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-                         == DialogResult.Yes)
-            {
-                // YES Proceed
-                MessageBox.Show("................. " + Environment.NewLine
-                               + "Wait till a final message is shown. ");
-            }
-            else
-            {
-                // Stop 
-                return;
-            }
+            //if (MessageBox.Show("Do you want to UNDO The Loaded Journals " + Environment.NewLine
+            //                    + "For this Cycle ...? " + Environment.NewLine
+            //                    + WReconcCycleNo.ToString()
+            //                    , "Verification Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            //             == DialogResult.Yes)
+            //{
+            //    // YES Proceed
+            //    MessageBox.Show("................. " + Environment.NewLine
+            //                   + "Wait till a final message is shown. ");
+            //}
+            //else
+            //{
+            //    // Stop 
+            //    return;
+            //}
 
             textBoxMsgBoard.Text = "Current Status : Unloading Journals";
 
             //*******************************
             Mode = 5; // Updating Action 
             ProcessName = "UNDO_LoadingOfJournals";
-            Message = "UNDO of Loading Of Journals STARTS..Cycle" + WReconcCycleNo.ToString();
+            Message = "UNDO of Loading Of Journals STARTS.CYCLE.." + WReconcCycleNo.ToString();
             SavedStartDt = DateTime.Now;
 
             Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
@@ -3976,6 +2872,7 @@ namespace RRDM4ATMsWin
                     {
 
                         // OK
+
                         // RRDMJournalReadTxns_Text_Class Ed = new RRDMJournalReadTxns_Text_Class();
                         RRDM_EXCEL_AND_Directories Ed = new RRDM_EXCEL_AND_Directories();
 
@@ -4017,7 +2914,7 @@ namespace RRDM4ATMsWin
                         }
                         else
                         {
-                            MessageBox.Show("No Journals to move. No such directory..." + Environment.NewLine
+                            MessageBox.Show("This Directory does not exist." + Environment.NewLine
                                            + WorkingDirectory
                                             );
                         }
@@ -4047,7 +2944,8 @@ namespace RRDM4ATMsWin
                         }
                         else
                         {
-                            MessageBox.Show("There are no exceptions to move. "
+                            MessageBox.Show("This Directory does not exist." + Environment.NewLine
+                                           + WorkingDirectory
                                             );
                         }
 
@@ -4072,42 +2970,44 @@ namespace RRDM4ATMsWin
 
                     // Delete Archiving Directories
 
-                    ShowScreen();
+                    Form502_Load(this, new EventArgs());
                 }
                 catch (Exception ex)
                 {
                     conn2.Close();
                     CatchDetails(ex);
                 }
+
             }
             //
             // UPdate STatistics 
             //
-            //string RCT = "[RRDM_Reconciliation_ITMX].[dbo].[Stp_00_UPDATE_DB_System_Stats]";
+            string RCT = "[RRDM_Reconciliation_ITMX].[dbo].[Stp_00_UPDATE_DB_System_Stats]";
 
-            //using (SqlConnection conn =
-            //   new SqlConnection(connectionStringITMX))
-            //    try
-            //    {
-            //        conn.Open();
-            //        using (SqlCommand cmd =
-            //           new SqlCommand(RCT, conn))
-            //        {
-            //            cmd.CommandType = CommandType.StoredProcedure;
-            //            // Parameters
+            using (SqlConnection conn =
+               new SqlConnection(connectionStringITMX))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                       new SqlCommand(RCT, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        // Parameters
 
-            //            int rows = cmd.ExecuteNonQuery();
-            //            //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-            //            //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+                        int rows = cmd.ExecuteNonQuery();
+                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
+                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
 
-            //        }
-            //        // Close conn
-            //        conn.Close();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
-            //    }
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
+                }
+
 
             textBoxMsgBoard.Text = "Current Status : Ready ";
         }
@@ -4137,11 +3037,6 @@ namespace RRDM4ATMsWin
         // View Gaps
         private void buttonViewGaps_Click(object sender, EventArgs e)
         {
-            // 
-            //MessageBox.Show("To get full results load IST and then press this button."+Environment.NewLine
-            //    + "If you have already loaded it then ignore this message."
-            //    );
-            //return; 
             Form18_LoadedFilesStatus_GAPS NForm18_LoadedFilesStatus_GAPS;
 
             int Mode = 16; // only the GAPS 
@@ -4189,8 +3084,6 @@ namespace RRDM4ATMsWin
         //
         private void buttonTest_Click_1(object sender, EventArgs e)
         {
-
-
             //// UPDATE TOTALS
             //string WMatchingCateg = PRX + "210";
 
@@ -4225,7 +3118,7 @@ namespace RRDM4ATMsWin
 
             // WRowIndex = dataGridViewFiles.SelectedRows[0].Index;
 
-            ShowScreen();
+            Form502_Load(this, new EventArgs());
 
             //   dataGridViewFiles.Rows[WRowIndex].Selected = true;
             //   dataGridViewFiles_RowEnter(this, new DataGridViewCellEventArgs(1, WRowIndex));
@@ -4238,14 +3131,14 @@ namespace RRDM4ATMsWin
         int ret;
         private void buttonUndoFile_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("Avoid using this functionality." + Environment.NewLine
-            //    + "Contact RRDM for further information"
-            //    );
-            //return;
+            MessageBox.Show("Avoid using this functionality." + Environment.NewLine
+                + "Contact RRDM for further information"
+                );
+            return;
 
             if (WFileId == "Atms_Journals_Txns"
                 || WFileId == "Switch_IST_Txns"
-                  || WFileId == "Flexcube"
+                  || WFileId == "COREBANKING"
                 )
             {
                 MessageBox.Show("This File You cannot Undo Alone" + Environment.NewLine
@@ -4314,7 +3207,7 @@ namespace RRDM4ATMsWin
 
             Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
             // BEFORE UNDO 
-            TotalProgressText = DateTime.Now + "Moving TXNs from Matched to ITMX Starts" + Environment.NewLine;
+            string TotalProgressText = DateTime.Now + "Moving TXNs from Matched to ITMX Starts" + Environment.NewLine;
 
             RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
 
@@ -4367,9 +3260,9 @@ namespace RRDM4ATMsWin
 
                 //stp_00_UNDO_RMCYCLE_FILES_MATCHING(WReconcCycleNo, Msvf.CategoryId, TempFiled);
                 // 
-                if (Msvf.SourceFileNameC == "Flexcube")
+                if (Msvf.SourceFileNameC == "COREBANKING")
                 {
-                    TempFiled = "Flexcube";
+                    TempFiled = "COREBANKING";
                     Cv.MOVE_MATCHED_TXNS_TO_ITMX_By_Category(TempFiled, WorkingRMCycle, WCategoryId);
                 }
 
@@ -4430,9 +3323,9 @@ namespace RRDM4ATMsWin
             Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, DateTime.Now, Message, WSignedId, WReconcCycleNo);
             //*********************************
 
-            MessageBox.Show(TotalProgressText);
+            //MessageBox.Show(TotalProgressText);
 
-            ShowScreen();
+            Form502_Load(this, new EventArgs());
         }
         ////
         //// Store procedure to Undo files from Matching
@@ -4628,7 +3521,7 @@ namespace RRDM4ATMsWin
             }
 
 
-            if ((InIsAllowedToSignIn == false)
+            if ((InIsAllowedToSignIn == false & ThereAreUsersInSystem == false)
                 || (InIsAllowedToSignIn == true)
                 )
             {
@@ -4672,654 +3565,116 @@ namespace RRDM4ATMsWin
             return ThereAreUsersInSystem;
 
         }
-        // Not in IST
+        // NOT IN IST
         private void buttonNotInIst_Click(object sender, EventArgs e)
         {
             MessageBox.Show("YOU USE THIS BUTTON ONLY AFTER IST LOADING AND BEFORE MATCHING." + Environment.NewLine
-                + "IT DOES NOT SHOW CORRECT RESULTS AFTER MATCHING BECAUSE RECORDS ARE MOVED FROM ONE DATA BASE TO ANOTHER"
-                );
+                            + "IT DOES NOT SHOW CORRECT RESULTS AFTER MATCHING BECAUSE RECORDS ARE MOVED FROM ONE DATA BASE TO ANOTHER"
+                            );
             Form78d_Discre NForm78d_Discre;
             int WMode = 5; // Not In IST
             NForm78d_Discre = new Form78d_Discre(WOperator, WSignedId, textBoxCateg.Text, WReconcCycleNo, WMode, "");
             NForm78d_Discre.ShowDialog();
         }
-        // Move to History 
-        private void buttonHST_Click(object sender, EventArgs e)
+        // excel to tap 
+        private void buttonTemp_Click(object sender, EventArgs e)
         {
-            // MOVE FROM MATCHED TO MATCHED_HST
-            //WSelection = " WHERE JobCycle =" + InReconcCycleNo;
-            //Rjc.ReadReconcJobCyclesBySelectionCriteria(WSelection);
-            RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
-            RRDMMatchingSourceFiles Mf = new RRDMMatchingSourceFiles();
-
-            bool MoveToHistory = false;
-            string ParamId = "853";
-            string OccuranceId = "5"; // HST
-
-            Gp.ReadParameterByOccuranceId(ParamId, OccuranceId);
-
-            if (Gp.RecordFound == true)
-            {
-                AgingDays_HST = (int)Gp.Amount; // 
-
-                //AgingDays_HST = 0; 
-
-                // Current CutOffdate
-                string WSelection = " WHERE JobCycle =" + WReconcCycleNo;
-                Rjc.ReadReconcJobCyclesBySelectionCriteria(WSelection);
-                //AgingDays_HST = 0; 
-                DateTime WAgingDateLimit_HST = Rjc.Cut_Off_Date.AddDays(-AgingDays_HST);
-
-                //WAgingDateLimit_HST = Rjc.Cut_Off_Date.AddDays(-0);
-
-                Rjc.ReadReconcJobCyclesByCutOffDateEqualOrLess(WAgingDateLimit_HST);
-
-                if (Rjc.RecordFound == true)
-                {
-                    string ReversedCut_Off_Date = Rjc.Cut_Off_Date.ToString("yyyy-MM-dd");
-
-                    MessageBox.Show("Moving records to History Starts" + Environment.NewLine
-                           + "For date equal or less than.." + ReversedCut_Off_Date
-                           );
-                    MoveToHistory = true;
-                }
-            }
-
-            string WFileName = "";
-            //MoveToHistory = true;
-            if (MoveToHistory == true)
-            {
-                //******************************
-                // 
-                // MOVE TO HST
-                // stp_00_MOVE_TXNS_TO_HISTORY_DB_01_POOL
-                //******************************
-                Mode = 5; // Updating Action 
-                ProcessName = "Moving Records To HST Data Base";
-                Message = "Moving Records to HST Process Starts. Cycle:.." + WReconcCycleNo.ToString();
-                SavedStartDt = DateTime.Now;
-
-                Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
-
-
-                TotalProgressText = "MOVE TO HISTORY Cycle: ..."
-                                         + WReconcCycleNo.ToString() + Environment.NewLine;
-                //RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
-                //RRDMMatchingSourceFiles Mf = new RRDMMatchingSourceFiles();
-                string WSelectionCriteria = " WHERE Operator = @Operator ";
-                Mf.ReadReconcSourceFilesToFillDataTable_FULL(WOperator, WSelectionCriteria);
-
-                int I = 0;
-                int K = 0;
-
-                while (I <= (Mf.SourceFilesDataTable.Rows.Count - 1))
-                {
-                    //    RecordFound = true;
-                    int SeqNo = (int)Mf.SourceFilesDataTable.Rows[I]["SeqNo"];
-                    Mf.ReadReconcSourceFilesBySeqNo(SeqNo);
-
-                    if (Mf.IsMoveToMatched == true || Mf.SourceFileId == "Atms_Journals_Txns") // the indication that this table is a moving table 
-                    {
-                        if (Mf.SourceFileId == "Atms_Journals_Txns")
-                        {
-                            WFileName = "tblMatchingTxnsMasterPoolATMs";
-                        }
-                        else
-                        {
-                            WFileName = Mf.SourceFileId;
-                        }
-
-                        // Check That File Exist in target data base 
-
-                        string TargetDB = "[RRDM_Reconciliation_ITMX_HST]";
-                        Cv.ReadTableToSeeIfExist(TargetDB, WFileName);
-
-                        if (Cv.RecordFound == true)
-                        {
-                            // File Exist
-                        }
-                        else
-                        {
-                            // File do not exist
-                            MessageBox.Show("File.." + WFileName + Environment.NewLine
-                                + "DOES NOT EXIST In ITMX_HST Data Base."
-                                + "REPORT TO THE HELP DESK."
-                                );
-                            I = I + 1;
-                            continue;
-                        }
-
-                        // Check That File Exist in target data base 
-                        TargetDB = "[RRDM_Reconciliation_MATCHED_TXNS_HST]";
-                        Cv.ReadTableToSeeIfExist(TargetDB, WFileName);
-
-                        if (Cv.RecordFound == true)
-                        {
-                            // File Exist
-                        }
-                        else
-                        {
-                            // File do not exist
-                            MessageBox.Show("File.." + WFileName + Environment.NewLine
-                                + "DOES NOT EXIST In MATCHED_TXNS_HST Data Base."
-                                + "REPORT TO THE HELP DESK."
-                                );
-                            I = I + 1;
-                            continue;
-                        }
-
-                        // MessageBox.Show("Start Moving file.." + WFileName); 
-
-                        Cv.MOVE_ITMX_TXNS_TO_HST(WFileName, WReconcCycleNo);
-
-                        if (Cv.ret == 0)
-                        {
-                            // GOOD
-                            K = K + 1;
-                            TotalProgressText = TotalProgressText + Cv.ProgressText;
-                        }
-                        else
-                        {
-                            // NO GOOD
-                            // public string ProgressText;
-                            //public string ErrorReference;
-                            //public int ret;
-                            MessageBox.Show("VITAL SYSTEM ERROR DURING MOVING TO HISTORY" + Environment.NewLine
-                                           + "PROGRESS TEXT.." + Cv.ProgressText + Environment.NewLine
-                                           + "ERROR REFERENCE.." + Cv.ErrorReference + Environment.NewLine
-                                           + ""
-                                           );
-
-                            //  return;
-
-                            I = I + 1;
-                            continue;
-
-                        }
-
-                    }
-
-                    I = I + 1;
-                }
-
-                TotalProgressText = TotalProgressText + DateTime.Now + " Moving of TXNS to HST has finished" + Environment.NewLine;
-                TotalProgressText = TotalProgressText + DateTime.Now + " Number of moved tables..." + K.ToString() + Environment.NewLine;
-
-                // *****************************
-
-                Mode = 5; // Updating Action 
-                ProcessName = "Moving Records To HST Data Base";
-                Message = "MovingRecords To HST Process Finishes.";
-
-                textBoxMsgBoard.Text = "Current Status : Ready";
-
-                Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, DateTime.Now, Message, WSignedId, WReconcCycleNo);
-                //*********************************
-
-                MessageBox.Show(TotalProgressText);
-                
-            }
-
-           // ShowScreen();
+            RRDM_EXCEL_AND_Directories Eto = new RRDM_EXCEL_AND_Directories();
+            string WExcelId = "Excel Provided By Speed";
+            Eto.ConvertToTapDelimiterFile(WExcelId);
         }
-        // Find Recycle 
-        int CountRecycling; 
-        private void buttonFIND_Recycle_Click(object sender, EventArgs e)
+        // Report AUDI
+        private void buttonReplReport_Click(object sender, EventArgs e)
         {
-            CountRecycling = 0 ;
-            //
-            // Clear destination directory 
-            //
-            string[] filePaths = Directory.GetFiles("C:\\RRDM\\Working_Recycling");
-            foreach (string filePath in filePaths)
-                File.Delete(filePath);
+            string WOrigin = "Our Atms";
 
-            string SourceFileId = "Atms_Journals_Txns";
+            string WJobCategory = "ATMs";
 
-            Rs.ReadReconcSourceFilesByFileId(SourceFileId);
+            int WReconcCycleNo = Rjc.ReadLastReconcJobCycleATMsAndNostroWithMinusOne(WOperator, WJobCategory);
 
-            string InSourceDirectory = Rs.SourceDirectory;
-
-           // InSourceDirectory = "C:\\RRDM\\Archives\\Atms_Journals_Txns\\20220806_200";
-
-            string[] allJournals = Directory.GetFiles(InSourceDirectory, "*.*");
-
-
-            if (allJournals.Length == 0)
+            if (WReconcCycleNo == 0)
             {
-                // Re Check here
-                MessageBox.Show(" There are no files to check");
-                textBox1.Text = "0";
-                textBoxMsgBoard.Text = "Current Status:Ready";
-                return;
-            }
-            int Count2 = 0;
-            foreach (string file in allJournals)
-            {
-                string WAtmNo = file.Substring(36, 8);
-              //  WAtmNo = file.Substring(49, 8);
-                CheckReplenishment(WOperator, WSignedId, WAtmNo, file);
-
-                //if (Rs.CheckIfFileIsDublicate(file) == true)
-                //{
-                //    // Delete File 
-                //    File.Delete(file);
-                //    Count2 = Count2 + 1;
-                //}
-
-            }
-
-            if (CountRecycling > 0)
-            {
-                MessageBox.Show("RECYCLING Journals found " + Environment.NewLine
-                          + "Number of journals :.. " + CountRecycling.ToString()
-                           );
+                if (Environment.UserInteractive)
+                {
+                    MessageBox.Show("Cut Off Cycle is Zero. Start a new Cycle.");
+                    return;
+                }
             }
             else
             {
-                MessageBox.Show("RECYCLING Journals Not found " + Environment.NewLine
-                        //  + "Number of journals :.. " + CountRecycling.ToString()
-                           );
+
             }
+            //RRDMGL_Balances_Atms_Daily_AUDI Gl = new RRDMGL_Balances_Atms_Daily_AUDI();
+
+            //Gl.UpdateCalculatedGL_For_All_ATMs(WReconcCycleNo, Rjc.Cut_Off_Date); 
+            RRDMAccountsClass Acc = new RRDMAccountsClass();
+            Acc.ReadAllATMsAndUpdateAccNo_AUDI(WOperator, Rjc.Cut_Off_Date);
+
+            Form503_SesCombined NForm503_SesCombined;
+            int Mode = 1;
+            string TemoAtmNo = "";
+            int TempReplCycle = 0;
+            NForm503_SesCombined = new Form503_SesCombined(WSignedId, WSignRecordNo, WOperator, WOrigin, WReconcCycleNo, TemoAtmNo, TempReplCycle, Mode);
+            NForm503_SesCombined.ShowDialog();
 
         }
-
-        private void CheckReplenishment(string InOperator, string InSignedId, string InAtmNo
-             , string InJournalTxtFile)
+        // GL View 
+        private void buttonGL_View_Click(object sender, EventArgs e)
         {
-            //RecordFound = false;
-            //ErrorFound = false;
-            //ErrorOutput = "";
-            int ReturnCode = -1;
-            string WJournalTxtFile = InJournalTxtFile;
-            string EjournalTypeId = "";
-
-            string ErrorText = "";
-            string ErrorReference = "";
-
-            string connectionString_AUDI = ConfigurationManager.ConnectionStrings
-                   ["JournalsConnectionString_AUDI"].ConnectionString;
-
-
-            //WJournalId = "[ATM_MT_Journals_AUDI].[dbo].[tblHstEjText]";
-
-            // CREATE JOURNAL IF NOT AVAILABLE
+            // 
+            // UPDATE GL ENTRIES
             //
-            //RRDMReconcFileMonitorLog Flog = new RRDMReconcFileMonitorLog();
-            RRDMAtmsClass Ac = new RRDMAtmsClass();
+            MessageBox.Show("At this point we will calculate ATMs GL balances " + Environment.NewLine
+                + "And compare them with the Banks Books GL balances "
+                );
 
-            //#region Create a new file with sequence number in front of each line
-            //// Add sequence number in front of each line of the line
-            //string jlnFullPathName;
-            //RRDMJournalReadTxns_Text_Class Jrt = new RRDMJournalReadTxns_Text_Class();
-            //jlnFullPathName = Jrt.ConvertJournal(WJournalTxtFile); // Converted File 
-            //                                                       // LineCount = Jrt.LineCounter;
-            //#endregion
+            DateTime Test_Cut_Off_Date = new DateTime(2021, 09, 05); // Testing date 
+            RRDMGL_Balances_Atms_Daily_AUDI Gl = new RRDMGL_Balances_Atms_Daily_AUDI();
+            Gl.UpdateCalculatedGL_For_All_ATMs(WReconcCycleNo, Test_Cut_Off_Date);
 
-            Ac.ReadAtm(InAtmNo);
-            EjournalTypeId = Ac.EjournalTypeId;
-
-            string SPName = "[ATM_MT_Journals_AUDI].[dbo].[stp_CheckReplenishment]";
-
-            using (
-                SqlConnection conn2 = new SqlConnection(connectionString_AUDI))
+            // Find If AUDI Type 
+            // If found and it is 1 is Audi Type If Zero then is normal 
+            // FOR AUDI TYPE WE LOAD GL AND WE ALSO USE OTHER FORM For Replenishment 
+            // 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            bool AudiType = false;
+            int IsAmountOneZero;
+            Gp.ReadParametersSpecificId(WOperator, "945", "4", "", ""); // 
+            if (Gp.RecordFound == true)
             {
-                try
+                IsAmountOneZero = (int)Gp.Amount;
+
+                if (IsAmountOneZero == 1)
                 {
-                    int ret = -1;
-
-                    conn2.Open();
-
-                    SqlCommand cmd = new SqlCommand(SPName, conn2);
-
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    // the first are input parameters
-
-                    cmd.Parameters.Add(new SqlParameter("@AtmNo", InAtmNo));
-                    cmd.Parameters.Add(new SqlParameter("@FullPath", WJournalTxtFile));
-                    cmd.Parameters.Add(new SqlParameter("@JournalType", EjournalTypeId));
-
-                    // the following are output parameters
-
-                    SqlParameter retCode = new SqlParameter("@ReturnCode", ReturnCode);
-                    retCode.Direction = ParameterDirection.Output;
-                    retCode.SqlDbType = SqlDbType.Int;
-                    cmd.Parameters.Add(retCode);
-
-                    SqlParameter retErrorText = new SqlParameter("@ErrorText", ErrorText);
-                    retErrorText.Direction = ParameterDirection.Output;
-                    retErrorText.SqlDbType = SqlDbType.NVarChar;
-                    cmd.Parameters.Add(retErrorText);
-
-                    SqlParameter retErrorReference = new SqlParameter("@ErrorReference", ErrorReference);
-                    retErrorReference.Direction = ParameterDirection.Output;
-                    retErrorReference.SqlDbType = SqlDbType.NVarChar;
-                    cmd.Parameters.Add(retErrorReference);
-
-                    // execute the command
-                    cmd.CommandTimeout = 750;  // seconds
-                    cmd.ExecuteNonQuery(); // errors will be caught in CATCH
-
-                    ret = (int)cmd.Parameters["@ReturnCode"].Value;
-
-                    conn2.Close();
-
-                    if (ret == 0)
-                    {
-                        // OK
-                        //  MEANS IT IS A RECYCLE AND HAS a REPLENISHEMENT 
-
-                        CountRecycling = CountRecycling + 1; 
-                        RRDM_EXCEL_AND_Directories Ed = new RRDM_EXCEL_AND_Directories();
-
-                        Ed.CopyFileFromOneDirectoryToAnother(WJournalTxtFile, "C:\\RRDM\\Working_Recycling");
-
-                        
-                    }
-                    else
-                    {
-                        //  NOT RECYCLE ATM
-                        // NOT OK
-                    }
+                    // Transactions will be done at the end 
+                    AudiType = true;
                 }
-                catch (Exception ex)
+                else
                 {
-                    conn2.Close();
-                    // CatchDetails(ex);
+                    AudiType = false;
                 }
             }
-        }
-
-        private void buttonBad2_Click(object sender, EventArgs e)
-        {
-            Form78e NForm78e;
-
-            int Mode = 3; // The Deposits with Wrong Repl Cycle 
-            string InHeader = "THE DEPOSITS WITH WRONG REPL CYCLE =.." + WReconcCycleNo.ToString();
-
-            NForm78e = new Form78e(WSignedId, WSignRecordNo, WOperator, WReconcCycleNo, WCut_Off_Date, InHeader, Mode);
-            NForm78e.ShowDialog();
-        }
-// DELETE FROM HST
-        private void buttonDeleteHst_Click(object sender, EventArgs e)
-        {
-           
-            RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
-            int WMode = 2; 
-            Cv.DELETE_DELETE_TXNS_FROM_HST_MAIN(WOperator, WSignedId, WReconcCycleNo, WMode);
-
-            //return; 
-            //RRDMMatchingSourceFiles Mf = new RRDMMatchingSourceFiles();
-
-            //bool DeleteRecords = false;
-            //int DeleteDays; 
-            //string ParamId = "853";
-            //string OccuranceId = "6"; // DELETE
-            //string S_DeleteDateLimit = "";
-            //DateTime DeleteDateLimit = NullPastDate;
-            //DateTime StartDeletionForFile = DateTime.Now; 
-
-            //Gp.ReadParameterByOccuranceId(ParamId, OccuranceId);
-
-            //if (Gp.RecordFound == true)
-            //{
-            //    DeleteDays = (int)Gp.Amount; // 
-
-            //    //AgingDays_HST = 0; 
-
-            //    // Current CutOffdate
-            //    string WSelection = " WHERE JobCycle =" + WReconcCycleNo;
-            //    Rjc.ReadReconcJobCyclesBySelectionCriteria(WSelection);
-
-            //    DeleteDateLimit = Rjc.Cut_Off_Date.AddDays(-DeleteDays);
-
-            //    //WAgingDateLimit_HST = Rjc.Cut_Off_Date.AddDays(-0);
-
-            //    Rjc.ReadReconcJobCyclesByCutOffDateEqualOrLess(DeleteDateLimit);
-
-            //    if (Rjc.RecordFound == true)
-            //    {
-            //        S_DeleteDateLimit = Rjc.Cut_Off_Date.ToString("yyyy-MM-dd");
-
-            //        //MessageBox.Show("DELETE RECORDS FROM HST Starts" + Environment.NewLine
-            //        //       + "For date equal or less than.." + S_DeleteDateLimit
-            //        //       );
-            //        DeleteRecords = true;
-            //    }
-            //}
-
-            //if (MessageBox.Show("Do you want to delete from History records " + Environment.NewLine
-            //                    + "Less than date "+ S_DeleteDateLimit +"...????" 
-            //                    //+ Mt.W_MPComment
-            //                    , "Verification Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-            //             == DialogResult.Yes)
-            //{
-            //    // YES Proceed
-            //}
-            //else
-            //{
-            //    // Stop 
-            //    return;
-            //}
-
-            //string WFileName = "";
-            ////MoveToHistory = true;
-            //if (DeleteRecords == true)
-            //{
-            //    //******************************
-            //    // 
-            //    // DELETE FROM HST 
-            //    // 
-            //    //******************************
-            //    int Mode = 17; // Updating Action 
-            //    ProcessName = "DELETE Records from HST Data Base";
-            //    Message = "DELETE RECORDS STARTS for Days before:.." + S_DeleteDateLimit;
-            //    SavedStartDt = DateTime.Now;
-
-            //    Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
-
-            //    string TotalProgressText = "Delete Cycle: ..."
-            //                             + WReconcCycleNo.ToString() + Environment.NewLine;
-            //    //RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
-            //    //RRDMMatchingSourceFiles Mf = new RRDMMatchingSourceFiles();
-            //    string WSelectionCriteria = " WHERE Operator = @Operator ";
-            //    Mf.ReadReconcSourceFilesToFillDataTable_FULL(WOperator, WSelectionCriteria);
-
-            //    int I = 0;
-            //    int K = 0;
-
-            //    while (I <= (Mf.SourceFilesDataTable.Rows.Count - 1))
-            //    {
-            //        //    RecordFound = true;
-            //        int SeqNo = (int)Mf.SourceFilesDataTable.Rows[I]["SeqNo"];
-            //        Mf.ReadReconcSourceFilesBySeqNo(SeqNo);
-
-            //        if (Mf.IsMoveToMatched == true || Mf.SourceFileId == "Atms_Journals_Txns") // the indication that this table is a moving table 
-            //        {
-            //            if (Mf.SourceFileId == "Atms_Journals_Txns")
-            //            {
-            //                WFileName = "tblMatchingTxnsMasterPoolATMs";
-            //            }
-            //            else
-            //            {
-            //                WFileName = Mf.SourceFileId;
-            //            }
-
-            //            // Check That File Exist in target data base 
-            //            string TargetDB = "[RRDM_Reconciliation_ITMX_HST]";
-            //            Cv.ReadTableToSeeIfExist(TargetDB, WFileName);
-
-            //            if (Cv.RecordFound == true)
-            //            {
-            //                // File Exist
-            //            }
-            //            else
-            //            {
-            //                // File do not exist
-            //                MessageBox.Show("File.." + WFileName + Environment.NewLine
-            //                    + "DOES NOT EXIST In ITMX_HST Data Base."
-            //                    + "REPORT TO THE HELP DESK."
-            //                    );
-            //                I = I + 1;
-            //                continue;
-            //            }
-
-            //            // Check That File Exist in target data base 
-            //            TargetDB = "[RRDM_Reconciliation_MATCHED_TXNS_HST]";
-            //            Cv.ReadTableToSeeIfExist(TargetDB, WFileName);
-
-            //            if (Cv.RecordFound == true)
-            //            {
-            //                // File Exist
-            //            }
-            //            else
-            //            {
-            //                // File do not exist
-            //                MessageBox.Show("File.." + WFileName + Environment.NewLine
-            //                    + "DOES NOT EXIST In MATCHED_TXNS_HST Data Base."
-            //                    + "REPORT TO THE HELP DESK."
-            //                    );
-            //                I = I + 1;
-            //                continue;
-            //            }
-
-            //            // START DELETION 
-            //            StartDeletionForFile = DateTime.Now;
-
-            //            Cv.DELETE_TXNS_FROM_HST(WFileName, WReconcCycleNo, DeleteDateLimit);
-
-            //        }
-
-            //        Mode = 17; // 
-            //        ProcessName = "DELETE Records from HST Data Base" ;
-            //        Message = "DELETED RECORDS for FILE.." + WFileName + "..Number=."+Cv.TotalDeleted.ToString();
-            //        DateTime FinishDeletion = DateTime.Now; 
-            //        Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", StartDeletionForFile, FinishDeletion, Message, WSignedId, WReconcCycleNo);
-
-            //        I = I + 1;
-            //    }
-
-            //    //TotalProgressText = TotalProgressText + DateTime.Now + " DELETE FROM HST has finished" + Environment.NewLine;
-            //    //TotalProgressText = TotalProgressText + DateTime.Now + " Number of moved tables..." + K.ToString() + Environment.NewLine;
-
-            //    // *****************************
-
-            //    Mode = 17; // Updating Action 
-            //    ProcessName = "DELETE Records from HST Data Base";
-            //    Message = "DELETE RECORDS HAS FINISHED.for Days before:.." + S_DeleteDateLimit; 
-
-            //    textBoxMsgBoard.Text = "Current Status : Ready";
-
-            //    Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, DateTime.Now, Message, WSignedId, WReconcCycleNo);
-            //    //*********************************
-
-            //    MessageBox.Show("Delete of Records has finished");
-
-            //    Form8_Traces_Oper NForm8_Traces_Oper;
-            //    int MMode = 4; 
-            //    NForm8_Traces_Oper = new Form8_Traces_Oper(WSignedId, WSignRecordNo, "7", WOperator, MMode);
-            //    NForm8_Traces_Oper.ShowDialog();
-                // Form502_Load(this, new EventArgs());
-           // }
-        }
-// Show Deleted 
-        private void buttonSummaryOfDeleted_Click(object sender, EventArgs e)
-        {
-            Form8_Traces_Oper NForm8_Traces_Oper;
-            int MMode = 4;
-            NForm8_Traces_Oper = new Form8_Traces_Oper(WSignedId, WSignRecordNo, "7", WOperator, MMode);
-            NForm8_Traces_Oper.ShowDialog();
-        }
-// View BULK 
-        private void buttonViewBULK_Click(object sender, EventArgs e)
-        {
-            DateTime NullPastDate = new DateTime(1900, 01, 01);
-            string MinDateTm = "";
-            string MaxDateTm = "";
-            Flog.ReadLoadedFilesBySeqNo(WSeqNoLoadedFile);
-
-            MessageBox.Show("It will show only the todays records of file.."+ Flog.SourceFileID);
-           
-            // SHOW BULK
-            //
-            Form78d_BULK_Records NForm78d_BULK_Records;
-            //int WMode = 4; // 
-            NForm78d_BULK_Records = new Form78d_BULK_Records(WOperator, WSignedId, Flog.SourceFileID);
-            NForm78d_BULK_Records.ShowDialog();
-        }
-        // Invalid CIT Entries 
-        readonly string recconConnString = ConfigurationManager.ConnectionStrings["ReconConnectionString"].ConnectionString;
-        private void buttonInvalidCit_Click(object sender, EventArgs e)
-        {
-            Form18_CIT_ExcelOutput_Alerts_BDC NForm18_CIT_ExcelOutput_Alerts_BDC;
-            // string InSignedId, int SignRecordNo, string InOperator
-            NForm18_CIT_ExcelOutput_Alerts_BDC = new Form18_CIT_ExcelOutput_Alerts_BDC(WSignedId, WSignRecordNo, WOperator);
-            NForm18_CIT_ExcelOutput_Alerts_BDC.ShowDialog();
-            return; 
-
-            // Check if CIT excel is operational do the following 
-            //RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
-            string WFileName_CIT = "CIT_EXCEL_TO_BANK";
-            string TargetDB_CIT = "[RRDM_Reconciliation_ITMX]";
-            Cv.ReadTableToSeeIfExist(TargetDB_CIT, WFileName_CIT);
-            // CHECK THE ATMS THAT DO NOT HAVE A CORRESPONDING ATM Group and OWNER 
-            if (Cv.RecordFound == true)
+            else
             {
-                //
-                // UPDATE OTHER INFO FROM UsersAtmTable
-                //
-                string SQLCmd =
-              " UPDATE [RRDM_Reconciliation_ITMX].[dbo].[CIT_EXCEL_TO_BANK] "
-              + " SET  "
-              + " GroupOfAtmsRRDM = t2.GroupOfAtms "
-              + ",UserId = t2.UserId "
-              + " FROM [RRDM_Reconciliation_ITMX].[dbo].[CIT_EXCEL_TO_BANK] t1 "
-              + " INNER JOIN [ATMS].[dbo].[UsersAtmTable] t2"
-              + " ON t1.AtmNo = t2.AtmNo "
-
-              + " WHERE t1.GroupOfAtmsRRDM = 0  "; // Upade ONLY These without Group 
-
-                using (SqlConnection conn = new SqlConnection(recconConnString))
-                    try
-                    {
-                        conn.StatisticsEnabled = true;
-                        conn.Open();
-                        using (SqlCommand cmd =
-                            new SqlCommand(SQLCmd, conn))
-                        {
-                           // cmd.Parameters.AddWithValue("@LoadedAtRMCycle", InReconcCycleNo);
-                            cmd.CommandTimeout = 350;
-                            Counter = cmd.ExecuteNonQuery();
-                            var stats = conn.RetrieveStatistics();
-                            //commandExecutionTimeInMs = (long)stats["ExecutionTime"];
-
-
-                        }
-                        // Close conn
-                        conn.StatisticsEnabled = false;
-
-                        conn.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        conn.StatisticsEnabled = false;
-
-                        conn.Close();
-                       
-                        CatchDetails(ex);
-                        return;
-                    }
-
-                Form78d_Matched NForm78d_Matched;
-                int _WMode = 5; // For Excel entries without ATM Group and Owner 
-                NForm78d_Matched = new Form78d_Matched(WOperator, WSignedId, textBoxCateg.Text, WReconcCycleNo, _WMode = 5);
-                NForm78d_Matched.ShowDialog();
+                AudiType = false;
             }
 
+            RRDMAccountsClass Acc = new RRDMAccountsClass();
+            // Manage accounts for individual ATM
+            // ATM Cash Balance
+            // ATM Excess Account
+            // ATM Shortage 
+            // If not found we insert
+            Acc.ReadAllATMsAndUpdateAccNo_AUDI(WOperator, Rjc.Cut_Off_Date);
+
+            if (AudiType == true)
+            {
+                // GL FILE WAS LOADED 
+                Form503_GL_STATUS NForm503_GL_STATUS;
+                int Mode = 1;
+                NForm503_GL_STATUS = new Form503_GL_STATUS(WSignedId, WSignRecordNo, WOperator, WReconcCycleNo, WCut_Off_Date, Mode);
+                NForm503_GL_STATUS.ShowDialog();
+            }
         }
     }
-
 }
-
-

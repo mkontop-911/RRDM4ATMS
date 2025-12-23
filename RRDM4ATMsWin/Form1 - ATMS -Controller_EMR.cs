@@ -1409,36 +1409,13 @@ namespace RRDM4ATMsWin
 
             int Mode = 1; // From the administrator
 
-            if (Ba.ShortName == "BDC")
-            {
-                
-                Form502_Load_And_Match_BDC NForm502_Check_Loading;
-
-                NForm502_Check_Loading = new Form502_Load_And_Match_BDC(WSignedId, WSignRecordNo, WOperator, WReconcCycleNo, Mode);
-                NForm502_Check_Loading.ShowDialog();
-            }
-
-            if (Ba.ShortName == "ABE")
+            if (Ba.ShortName == "ALP")
             {
 
-                Form502_Load_And_Match_ABE NForm502_Check_Loading_ABE;
+                Form502_Load_And_Match_ALP NForm502_Check_Loading_ALP;
 
-                NForm502_Check_Loading_ABE = new Form502_Load_And_Match_ABE(WSignedId, WSignRecordNo, WOperator, WReconcCycleNo, Mode);
-                NForm502_Check_Loading_ABE.ShowDialog();
-                //Form502_Load_And_Match_AUD NForm502_Check_Loading_AUD;
-
-                //NForm502_Check_Loading_AUD = new Form502_Load_And_Match_AUD(WSignedId, WSignRecordNo, WOperator, WReconcCycleNo, Mode);
-                //NForm502_Check_Loading_AUD.ShowDialog();
-
-            }
-
-            if (Ba.ShortName == "AUD" || Ba.ShortName == "BT")
-            {
-
-                Form502_Load_And_Match_AUD NForm502_Check_Loading_AUD;
-
-                NForm502_Check_Loading_AUD = new Form502_Load_And_Match_AUD(WSignedId, WSignRecordNo, WOperator, WReconcCycleNo, Mode);
-                NForm502_Check_Loading_AUD.ShowDialog();
+                NForm502_Check_Loading_ALP = new Form502_Load_And_Match_ALP(WSignedId, WSignRecordNo, WOperator, WReconcCycleNo, Mode);
+                NForm502_Check_Loading_ALP.ShowDialog();
             }
         }
         // GET ATM INFO THROUGH IST
@@ -1769,11 +1746,7 @@ namespace RRDM4ATMsWin
 // Category view
         private void button24_Click(object sender, EventArgs e)
         {
-            //if (Environment.MachineName != "DESKTOP-77PU6PG")
-            //{
-            //    MessageBox.Show(" UNDER CONTRUCTION... ");
-            //    return;
-            //}
+           
             Form80a3 NForm80a3;
             string WFunction = "View";
             string Category = "All";
@@ -2155,6 +2128,25 @@ namespace RRDM4ATMsWin
 
             //NForm502_Check_Loading_BOC = new Form502_Load_And_Match_BOC(WSignedId, WSignRecordNo, WOperator, WReconcCycleNo, 1);
             //NForm502_Check_Loading_BOC.ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Form200JobCycles_Reports NForm200JobCycles_Reports;
+
+            string RunningGroup = WOperator;
+            NForm200JobCycles_Reports = new Form200JobCycles_Reports(WSignedId, WSignRecordNo, WSecLevel, WOperator, RunningGroup);
+            // NForm200JobCycles_Presenter.FormClosed += NForm200JobCycles_FormClosed; ;
+            NForm200JobCycles_Reports.ShowDialog();
+        }
+// Dispute Pre Investigation 
+        private void buttonDisputePreInv_Click(object sender, EventArgs e)
+        {
+            Form3_PreInv NForm3_PreInv;
+
+            NForm3_PreInv = new Form3_PreInv(WSignedId, WSignRecordNo, WSecLevel, WOperator);
+
+            NForm3_PreInv.ShowDialog();
         }
     }
 }

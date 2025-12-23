@@ -1,6 +1,6 @@
 ﻿namespace RRDM4ATMsWin
 {
-    partial class Form200JobCycles_Reports_EWALLET
+    partial class Form200JobCycles_Reports_EGATE
     {
         /// <summary>
         /// Required designer variable.
@@ -370,7 +370,7 @@
             this.panel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1329, 677);
+            this.panel1.Size = new System.Drawing.Size(1329, 717);
             this.panel1.TabIndex = 245;
             // 
             // label5
@@ -877,7 +877,7 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1335, 723);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1335, 763);
             this.tableLayoutPanelMain.TabIndex = 259;
             // 
             // tableLayoutPanel2
@@ -891,7 +891,7 @@
             this.tableLayoutPanel2.Controls.Add(this.textBoxMsgBoard, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonBack, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 686);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 726);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
@@ -952,7 +952,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1335, 723);
+            this.ClientSize = new System.Drawing.Size(1335, 763);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.DoubleBuffered = true;

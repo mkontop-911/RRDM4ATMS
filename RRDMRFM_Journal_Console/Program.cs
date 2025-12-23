@@ -87,27 +87,30 @@ namespace RRDMRFM_Journal_Console
             }
 
             string fstr = "RFMJ stared with the following parameters:\n" +
-              "\tMaxThreads:{0}\n" +
-              "\tSleepWaitEmptyThreadSlot:{1}ms\n" +
-              "\tThreadStartTimeout:{2}ms\n" +
-              "\tThreadMonitorInterval:{3}ms\n" +
-              "\tThreadAbortWaitTime:{4}ms\n" +
-              "\tMaxThreadLifeSpan:{5}sec\n" +
-              "\tStored Procedure for Parsing:{6}\n" +
-              "\tRefresh Interval:{7}\n" +
-              "\tFilePoolRoot Relative to SQL:{8}"
-              ;
-
+                              "MaxThreads:{0}\n" +
+                              "SleepWaitEmptyThreadSlot:{1}ms\n" +
+                              "ThreadStartTimeout:{2}ms\n" +
+                              "ThreadMonitorInterval:{3}ms\n" +
+                              "ThreadAbortWaitTime:{4}ms\n" +
+                              "MaxThreadLifeSpan:{5}sec\n" +
+                              "Stored Procedure for Parsing:{6}\n" +
+                              "Refresh Interval:{7}\n" +
+                              "FilePoolRoot Relative to SQL:{8}\n" +
+                              "Operator is:{9}"
+                              ;
+            //
             string msg1 = string.Format(fstr, RfmjServer.RfmjOp.RfmjMaxThreadNumber,
-                                     RfmjServer.RfmjOp.RfmjSleepWaitEmptyThreadSlot,
-                                      RfmjServer.RfmjOp.RfmjStartWorkerThreadTimeout,
-                                      RfmjServer.RfmjOp.RfmjThreadMonitorInterval,
-                                      RfmjServer.RfmjOp.RfmjThreadAbortWait,
-                                      RfmjServer.RfmjOp.RfmjMaxThreadLifeSpan,
-                                      RfmjServer.RfmjOp.RfmjStoredProcedure,
-                                      RfmjServer.RfmjOp.RfmjRefreshInterval,
-                                      RfmjServer.RfmjOp.RfmjSQLRelativeFilePoolPath);
+                               RfmjServer.RfmjOp.RfmjSleepWaitEmptyThreadSlot,
+                                RfmjServer.RfmjOp.RfmjStartWorkerThreadTimeout,
+                                RfmjServer.RfmjOp.RfmjThreadMonitorInterval,
+                                RfmjServer.RfmjOp.RfmjThreadAbortWait,
+                                RfmjServer.RfmjOp.RfmjMaxThreadLifeSpan,
+                                RfmjServer.RfmjOp.RfmjStoredProcedure,
+                                RfmjServer.RfmjOp.RfmjRefreshInterval,
+                                RfmjServer.RfmjOp.RfmjSQLRelativeFilePoolPath,
+                                RfmjServer.argOperator);
 
+          //  Rfmj_Params.Operator);
             Console.WriteLine(msg1);
             Console.WriteLine(Environment.NewLine);
             //Console.WriteLine("Press ENTER to continue...");
@@ -131,7 +134,8 @@ namespace RRDMRFM_Journal_Console
                           RfmjServer.RfmjOp.RfmjMaxThreadLifeSpan,
                           RfmjServer.RfmjOp.RfmjStoredProcedure,
                           RfmjServer.RfmjOp.RfmjRefreshInterval,
-                          RfmjServer.RfmjOp.RfmjSQLRelativeFilePoolPath);
+                          RfmjServer.RfmjOp.RfmjSQLRelativeFilePoolPath,
+                RfmjServer.argOperator);
 
                 Console.WriteLine(msg1);
                 Console.WriteLine(Environment.NewLine);

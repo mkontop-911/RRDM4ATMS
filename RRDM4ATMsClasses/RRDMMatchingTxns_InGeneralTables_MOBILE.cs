@@ -2010,7 +2010,7 @@ namespace RRDM4ATMs
                             BillingAmt_Dec = 0;
                             Action = "";
 
-                            if (MatchMask == "01" & OriginalRecordId == 448578)
+                            if (MatchMask == "01" & RRNumber == "b1c6921d-1a3a-43f9-bc84-5678920808fb")
                             {
                                 MatchMask = MatchMask; 
                             }
@@ -2032,22 +2032,29 @@ namespace RRDM4ATMs
                                     SelectionCriteria = " WHERE  SeqNo=" + OriginalRecordId;
                                 }
                                 
-
-                                //BULK_ETISALAT_TPF_TXNS_ALL
-                                string TableName = W_Application + ".[dbo].BULK_" + W_Application + "_TPF_TXNS_ALL";
-
-                                ReadTransSpecificFrom_BULK_TPF_MOBILE_2(SelectionCriteria, TableName, 1, W_Application);
-
-                                if (RecordFound == true)
+                                if (MatchMask == "01")
                                 {
-                                    // Already read
-                                    //string WTransactionType = TransactionType;
-                                    //decimal WCardHolderBillingAmount = BillingAmt_Dec;
-                                    //string WAction = Action;
+                                    BillingAmt_Dec = TransAmount; 
                                 }
                                 else
                                 {
-                                    
+                                    //BULK_ETISALAT_TPF_TXNS_ALL
+                                    string TableName = W_Application + ".[dbo].BULK_" + W_Application + "_TPF_TXNS_ALL";
+
+                                    ReadTransSpecificFrom_BULK_TPF_MOBILE_2(SelectionCriteria, TableName, 1, W_Application);
+
+                                    if (RecordFound == true)
+                                    {
+                                        // Already read
+                                        //string WTransactionType = TransactionType;
+                                        //decimal WCardHolderBillingAmount = BillingAmt_Dec;
+                                        //string WAction = Action;
+                                    }
+                                    else
+                                    {
+
+                                    }
+
                                 }
 
                             }

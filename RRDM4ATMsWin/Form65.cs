@@ -866,8 +866,13 @@ namespace RRDM4ATMsWin
                         Ac.UpdateATM(WAtmNo);
 
                         Acc.ReadAccountsAndFillTableForAtmNo(WOperator, WAtmNo);
-                        Acc.BranchId = Ac.Branch;
-                        Acc.UpdateAccount(Acc.SeqNumber, WOperator); 
+
+                        if (Acc.RecordFound == true)
+                        {
+                            Acc.BranchId = Ac.Branch;
+                            Acc.UpdateAccount(Acc.SeqNumber, WOperator);
+                        }
+                        
                     }
 
                     if (WActType == 3 || WActType == 4)
@@ -1060,7 +1065,7 @@ namespace RRDM4ATMsWin
 
                     Jd.ATMWindowsAuth = checkBoxWindowsAuth.Checked;
 
-                    Jd.ATMAccessID = textBox11.Text;
+                    Jd.ATMAccessID = textBoxPhysicalName.Text;
                     Jd.ATMAccessPassword = textBox12.Text;
 
                     Jd.TypeOfJournal = comboBox26.Text;
@@ -1304,7 +1309,7 @@ namespace RRDM4ATMsWin
 
             checkBoxWindowsAuth.Checked = Jd.ATMWindowsAuth;
 
-            textBox11.Text = Jd.ATMAccessID;
+            textBoxPhysicalName.Text = Jd.ATMAccessID;
 
             textBox12.Text = Jd.ATMAccessPassword;
             textBox15.Text = Jd.ATMAccessPassword;
@@ -1401,14 +1406,17 @@ namespace RRDM4ATMsWin
                 {
                     // Hybrid Repl and Reconciliation not accepted
                     // Ac.ReadAtm(WAtmNo);
-                    if (TempCitId == "1000" & AtmsReplGroup == AtmsReconcGroup)
-                    {
-                        MessageBox.Show("Not allowed Operation"+Environment.NewLine
+                    if (TempCitId == "1000" & AtmsReplGroup == AtmsReconcGroup & WOperator != "ALPHA_CY")
+                    {  if (WOperator == "BCAIEGCX") // BANK DE CAIRE
+                        {
+                            MessageBox.Show("Not allowed Operation" + Environment.NewLine
                             + "With Current functionality ATM must belong to a CIT." + Environment.NewLine
                               + "Set ATMs Repl Group to zero"
                             );
-                        ErrInResult = true;
-                        return;
+                            ErrInResult = true;
+                            return;
+                        }
+                        
                     }
                 }
             }

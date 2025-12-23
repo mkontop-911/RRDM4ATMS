@@ -65,10 +65,13 @@ namespace RRDM4ATMs
 
 
         // Uses ReconConnection String
-        //string connectionString = ConfigurationManager.ConnectionStrings["ReconConnectionString"].ConnectionString;
+        string connectionString = ConfigurationManager.ConnectionStrings["ReconConnectionString"].ConnectionString;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-         ["ATMSConnectionString"].ConnectionString;
+        //string connectionString = ConfigurationManager.ConnectionStrings
+        // ["ATMSConnectionString"].ConnectionString;
+
+        //string ReconConnectionString = ConfigurationManager.ConnectionStrings
+        //["RRDM_Reconciliation_ITMX"].ConnectionString;
 
         // Read Fields In Table 
         private void ReadFieldsInTable(SqlDataReader rdr)
@@ -291,6 +294,8 @@ namespace RRDM4ATMs
 
             //+ InTableId; 
             TotalSelected = 0;
+
+          
 
             //// DATA TABLE ROWS DEFINITION 
 

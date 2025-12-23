@@ -21,13 +21,13 @@ using System.Globalization;
 
 namespace RRDM4ATMsWin
 {
-    public partial class Form200JobCycles_Reports : Form
+    public partial class Form200JobCycles_Reports_EGATE : Form
     {
         // Variables
 
         Form54 NForm54;
         Form55 NForm55;
-
+        
         public bool Prive;
 
         //int WAction;
@@ -36,9 +36,11 @@ namespace RRDM4ATMsWin
 
         string WCategoryId;
 
-        DateTime WCut_Off_Date;
+        DateTime WCut_Off_Date; 
 
         string MsgFilter;
+
+        RRDMMatchingTxns_InGeneralTables_EGATE Mmob = new RRDMMatchingTxns_InGeneralTables_EGATE();
 
         RRDMBanks Ba = new RRDMBanks();
 
@@ -56,7 +58,7 @@ namespace RRDM4ATMsWin
 
         RRDMMatchingCategories Mc = new RRDMMatchingCategories();
 
-        RRDMReconcCategories Rc = new RRDMReconcCategories();
+        RRDMReconcCategories Rc = new RRDMReconcCategories(); 
 
         RRDMReconcCategoriesSessions Rcs = new RRDMReconcCategoriesSessions();
 
@@ -90,25 +92,27 @@ namespace RRDM4ATMsWin
         string WSecLevel;
         string WOperator;
 
-        // string WMatchingRunningGroup;
+       // string WMatchingRunningGroup;
         string WJobCategory;
+
+        string W_Application; 
 
         // Methods 
         // READ ATMs Main
         // 
-        public Form200JobCycles_Reports(string InSignedId, int SignRecordNo, string InSecLevel, string InOperator, string InJobCategory)
+        public Form200JobCycles_Reports_EGATE(string InSignedId, int SignRecordNo, string InSecLevel, string InOperator, string InJobCategory)
         {
             WSignedId = InSignedId;
             WSignRecordNo = SignRecordNo;
             WSecLevel = InSecLevel;
             WOperator = InOperator;
 
-            WJobCategory = InJobCategory;
+            W_Application =  WJobCategory = InJobCategory;
 
             InitializeComponent();
 
             // Set Working Date 
-
+          
             labelToday.Text = DateTime.Now.ToShortDateString();
 
             pictureBox1.BackgroundImage = appResImg.logo2;
@@ -155,21 +159,30 @@ namespace RRDM4ATMsWin
             if (Ba.ShortName == "ABE")
             {
                 buttonAll_TXNS.Hide();
-                buttonAllRepl.Hide();
-                buttonAllOutstandingRepl.Hide();
+                //buttonAllRepl.Hide();
+              //  buttonAllOutstandingRepl.Hide();
+                buttonCUT_OFF_SUMMARY.Hide(); 
+            }
+
+            if (Ba.ShortName == "EGA")
+            {
+                buttonNotSettledALLCycles.Hide();
+                buttonActionsALLCycles.Hide();
                 buttonCUT_OFF_SUMMARY.Hide();
+                buttonDisputePreInvestigation.Hide();
+                buttonTEST_4_GRIDS.Hide();
+                buttonGL_AND_Disputes.Hide(); 
             }
 
 
         }
-
+        
         // Load
         private void Form200JobCycles_Load(object sender, EventArgs e)
         {
-
-            int WReconcCycleNo = 0;
-            WReconcCycleNo = WReconcCycleNo; 
-
+           
+            int WReconcCycleNo;
+           
             WReconcCycleNo = Rjc.ReadLastReconcJobCycleATMsAndNostroWithMinusOne(WOperator, WJobCategory);
 
             if (Rjc.RecordFound == true)
@@ -185,25 +198,25 @@ namespace RRDM4ATMsWin
                 textBoxCutOff.Hide();
             }
 
-            string SelectionCriteria = " WHERE Operator='" + WOperator + "' AND JobCategory ='" + WJobCategory + "'";
+            string SelectionCriteria = " WHERE Operator='" + WOperator + "' AND JobCategory ='"+ WJobCategory+ "'";
             Rjc.ReadReconcJobCyclesFillTable(SelectionCriteria);
 
-            ShowGrid1();
-
+            ShowGrid1(); 
+          
         }
 
         // ROW ENTER FOR JOB CYCLE 
         string WLatestStatus;
         string WTableId;
         DateTime HST_DATE;
-        bool Is_In_HST;
+        bool Is_In_HST; 
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow rowSelected = dataGridView1.Rows[e.RowIndex];
 
             WJobCycleNo = (int)rowSelected.Cells[0].Value;
 
-            textBoxReconcCycle.Text = WJobCycleNo.ToString();
+            textBoxReconcCycle.Text = WJobCycleNo.ToString(); 
 
             //Flog.ReadDataTableFileMonitorLogByCycleNo_For_Not_Loaded(WOperator, WSignedId, WJobCycleNo);
 
@@ -244,48 +257,49 @@ namespace RRDM4ATMsWin
 
             // Show the two Grids on the right
 
-            if (Environment.MachineName == "RRDM-PANICOS")
+           if ( Environment.MachineName == "RRDM-PANICOS")
             {
                 // OK Continue 
             }
-            else
+           else
             {
                 // SET it accordingly not to be used for not authorised BDC
-                Is_In_HST = false;
+                Is_In_HST = false; 
             }
 
 
             if (Is_In_HST == false)
             {
-                Mpa.ReadTablePoolDataToGetMaskTableMasks_1(WJobCycleNo);
+                Mpa.ReadTablePoolDataToGetMaskTableMasks_1_E_Wallet(WJobCycleNo, W_Application); 
             }
             else
             {
                 // In History
-                Mpa.ReadTablePoolDataToGetMaskTableMasks_1_HST(WJobCycleNo);
-
+               // ReadTablePoolDataToGetMaskTableMasks_1_HST_E_Wallet(int InRMCycleNo, string W_Application)
+                Mpa.ReadTablePoolDataToGetMaskTableMasks_1_HST_E_Wallet(WJobCycleNo, W_Application);
             }
-
-
+                     
             ShowGrid2();
 
             if (Is_In_HST == false)
             {
-                Mpa.ReadTablePoolDataToGetMaskTableMasks_2(WJobCycleNo);
+                Mpa.ReadTablePoolDataToGetMaskTableMasks_2_E_Wallet(WJobCycleNo, W_Application);
             }
             else
             {
                 // In History
-                Mpa.ReadTablePoolDataToGetMaskTableMasks_2_HST(WJobCycleNo);
+                Mpa.ReadTablePoolDataToGetMaskTableMasks_2_HST_E_Wallet(WJobCycleNo, W_Application);
             }
             ShowGrid3();
+
+            panel4.Show();
         }
 
         // Row Enter second grid
         //int WUniqueRecordId = 0;
         //int WSeqNo;
-        string WMatchMask_2;
-        string WCategory_2;
+        string WMatchMask_2 ;
+        string WCategory_2 ;
 
         private void dataGridView2_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
@@ -294,7 +308,7 @@ namespace RRDM4ATMsWin
             WMatchMask_2 = (string)rowSelected.Cells[0].Value;
             WCategory_2 = (string)rowSelected.Cells[1].Value;
 
-
+            
         }
         string WMatchMask_3;
         private void dataGridView3_RowEnter(object sender, DataGridViewCellEventArgs e)
@@ -309,14 +323,12 @@ namespace RRDM4ATMsWin
 
             dataGridView1.DataSource = Rjc.TableReconcJobCycles.DefaultView;
 
-
-
             dataGridView1.Columns[0].Width = 60; // JobCycle;
             dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             //dataGridView1.Columns[1].Width = 200; // JobCategory;
             dataGridView1.Columns[1].Visible = false;
-
+            
             dataGridView1.Columns[2].Width = 120; // StartDateTm.ToString();
             dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
@@ -338,7 +350,7 @@ namespace RRDM4ATMsWin
             dataGridView2.DataSource = Mpa.TableMasks_1.DefaultView;
 
 
-            dataGridView2.Columns[0].Width = 80;
+            dataGridView2.Columns[0].Width = 80; 
             dataGridView2.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             dataGridView2.Columns[1].Width = 80;
@@ -401,8 +413,8 @@ namespace RRDM4ATMsWin
         {
             this.Dispose();
         }
-
-
+       
+       
         RRDMMatchingCategoriesVsSourcesFiles Mcf = new RRDMMatchingCategoriesVsSourcesFiles();
         // Show Matching Files 
 
@@ -420,22 +432,21 @@ namespace RRDM4ATMsWin
                                                                                  , WCut_Off_Date, 0);
             NForm78d_FileRecords_IST_PRESENTER.ShowDialog();
         }
-
+     
         // Not Settled transactions 
         private void buttonNotSettled_Click(object sender, EventArgs e)
         {
-
             WRowIndexLeft = dataGridView1.SelectedRows[0].Index;
 
-            Form80b3 NForm80b3;
+            Form80b3_MOBILE NForm80b3_MOBILE;
 
             WFunction = "View";
 
             int Type = 18;
 
-            NForm80b3 = new Form80b3(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
-            NForm80b3.FormClosed += NForm80b3_FormClosed;
-            NForm80b3.ShowDialog();
+            NForm80b3_MOBILE = new Form80b3_MOBILE(WSignedId, WSignRecordNo, WOperator, W_Application, NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
+            NForm80b3_MOBILE.FormClosed += NForm80b3_FormClosed;
+            NForm80b3_MOBILE.ShowDialog();
 
 
         }
@@ -449,29 +460,29 @@ namespace RRDM4ATMsWin
 
             int WMode = 6; // CUT OFF GL Summary for Categories
             string WMatchingCateg = "";
-            string WAtmNo = "";
+            string WAtmNo = ""; 
             NForm78d_CUT_OFF_GL = new Form78d_CUT_OFF_GL(WOperator, WSignedId, WCut_Off_Date, WMatchingCateg, WAtmNo
                            , WJobCycleNo, WMode);
             NForm78d_CUT_OFF_GL.ShowDialog();
         }
 
-
+       
         // Auditors Report 
         int WRowIndexLeft;
-        string WFunction;
+        string WFunction; 
         private void buttonAuditorsReport_Click(object sender, EventArgs e)
         {
             WRowIndexLeft = dataGridView1.SelectedRows[0].Index;
 
-            Form80b3 NForm80b3;
+            Form80b3_MOBILE NForm80b3_MOBILE;
 
             WFunction = "View";
 
             int Type = 17;
 
-            NForm80b3 = new Form80b3(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
-            NForm80b3.FormClosed += NForm80b3_FormClosed;
-            NForm80b3.ShowDialog();
+            NForm80b3_MOBILE = new Form80b3_MOBILE(WSignedId, WSignRecordNo, WOperator, W_Application , NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
+            NForm80b3_MOBILE.FormClosed += NForm80b3_FormClosed;
+            NForm80b3_MOBILE.ShowDialog();
         }
 
         private void NForm80b3_FormClosed(object sender, FormClosedEventArgs e)
@@ -487,100 +498,119 @@ namespace RRDM4ATMsWin
 
             dataGridView1.FirstDisplayedScrollingRowIndex = scrollPosition;
         }
-        // Discrepancies 
+// Discrepancies 
         private void buttonDiscrepancies_Click(object sender, EventArgs e)
         {
 
             WRowIndexLeft = dataGridView1.SelectedRows[0].Index;
 
-            Form80b3 NForm80b3;
+            Form80b3_MOBILE NForm80b3_MOBILE;
 
             WFunction = "View";
 
             int Type = 19;
 
-            NForm80b3 = new Form80b3(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
-            NForm80b3.FormClosed += NForm80b3_FormClosed;
-            NForm80b3.ShowDialog();
+            NForm80b3_MOBILE = new Form80b3_MOBILE(WSignedId, WSignRecordNo, WOperator, W_Application, NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
+            NForm80b3_MOBILE.FormClosed += NForm80b3_FormClosed;
+            NForm80b3_MOBILE.ShowDialog();
 
         }
         // Show line of grid 2 
         private void buttonShowLine_2_Click(object sender, EventArgs e)
         {
 
-            Form80b3 NForm80b3;
+            Form80b3_MOBILE NForm80b3_MOBILE;
 
             WFunction = "View";
 
             int Type = 20;
 
-            string WUniqueId = WMatchMask_2;
+            NForm80b3_MOBILE = new Form80b3_MOBILE(WSignedId, WSignRecordNo, WOperator, W_Application, NullPastDate, NullPastDate, "", WCategory_2, WJobCycleNo, WMatchMask_2, 0, Type, WFunction, "", 0, NullPastDate, "", "");
+            NForm80b3_MOBILE.FormClosed += NForm80b3_FormClosed;
+            NForm80b3_MOBILE.ShowDialog();
 
-            NForm80b3 = new Form80b3(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate, "", WCategory_2, WJobCycleNo, WUniqueId, 0, Type, WFunction, "", 0, NullPastDate, "", "");
-            NForm80b3.FormClosed += NForm80b3_FormClosed;
-            NForm80b3.ShowDialog();
+            //Form80b3_MOBILE NForm80b3_MOBILE;
+
+            //WFunction = "View";
+
+            //int Type = 20;
+
+            //string WUniqueId = WMatchMask_2;
+
+            //NForm80b3_MOBILE = new Form80b3_MOBILE(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate, "", WCategory_2, WJobCycleNo, WUniqueId, 0, Type, WFunction, "", 0, NullPastDate, "", "");
+            //NForm80b3_MOBILE.FormClosed += NForm80b3_FormClosed;
+            //NForm80b3_MOBILE.ShowDialog();
         }
         // Show line of grid 3
         private void buttonShowLine_3_Click(object sender, EventArgs e)
         {
-            Form80b3 NForm80b3;
+            Form80b3_MOBILE NForm80b3_MOBILE;
 
             WFunction = "View";
 
             int Type = 21;
 
-            string WUniqueId = WMatchMask_3;
+            NForm80b3_MOBILE = new Form80b3_MOBILE(WSignedId, WSignRecordNo, WOperator, W_Application, NullPastDate, NullPastDate, "", WCategory_2, WJobCycleNo, WMatchMask_2, 0, Type, WFunction, "", 0, NullPastDate, "", "");
+            NForm80b3_MOBILE.FormClosed += NForm80b3_FormClosed;
+            NForm80b3_MOBILE.ShowDialog();
 
-            NForm80b3 = new Form80b3(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate, "", "", WJobCycleNo, WUniqueId, 0, Type, WFunction, "", 0, NullPastDate, "", "");
-            NForm80b3.FormClosed += NForm80b3_FormClosed;
-            NForm80b3.ShowDialog();
+            //Form80b3 NForm80b3;
+
+            //WFunction = "View";
+
+            //int Type = 21;
+
+            //string WUniqueId = WMatchMask_3;
+
+            //NForm80b3 = new Form80b3(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate, "", "", WJobCycleNo, WUniqueId, 0, Type, WFunction, "", 0, NullPastDate, "", "");
+            //NForm80b3.FormClosed += NForm80b3_FormClosed;
+            //NForm80b3.ShowDialog();
         }
-        // Actions this Cycle
+// Actions this Cycle
         private void buttonActionsThisCycle_Click(object sender, EventArgs e)
         {
             WRowIndexLeft = dataGridView1.SelectedRows[0].Index;
 
-            Form80b3 NForm80b3;
+            Form80b3_MOBILE NForm80b3_MOBILE;
 
             WFunction = "View";
 
             int Type = 25;
 
-            NForm80b3 = new Form80b3(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
-            NForm80b3.FormClosed += NForm80b3_FormClosed;
-            NForm80b3.ShowDialog();
+            NForm80b3_MOBILE = new Form80b3_MOBILE(WSignedId, WSignRecordNo, WOperator, W_Application, NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
+            NForm80b3_MOBILE.FormClosed += NForm80b3_FormClosed;
+            NForm80b3_MOBILE.ShowDialog();
         }
-        // not settled all Cycles
+// not settled all Cycles
         private void buttonNotSettledALLCycles_Click(object sender, EventArgs e)
         {
             WRowIndexLeft = dataGridView1.SelectedRows[0].Index;
-
-            Form80b3 NForm80b3;
+            Form80b3_MOBILE NForm80b3_MOBILE;
 
             WFunction = "View";
 
             int Type = 26;
 
-            NForm80b3 = new Form80b3(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
-            NForm80b3.FormClosed += NForm80b3_FormClosed;
-            NForm80b3.ShowDialog();
+            NForm80b3_MOBILE = new Form80b3_MOBILE(WSignedId, WSignRecordNo, WOperator, W_Application, NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
+            NForm80b3_MOBILE.FormClosed += NForm80b3_FormClosed;
+            NForm80b3_MOBILE.ShowDialog();
         }
-        // Actions ALL Cycles 
+// Actions ALL Cycles 
         private void buttonActionsALLCycles_Click(object sender, EventArgs e)
         {
             WRowIndexLeft = dataGridView1.SelectedRows[0].Index;
 
-            Form80b3 NForm80b3;
+            Form80b3_MOBILE NForm80b3_MOBILE;
 
             WFunction = "View";
 
             int Type = 27;
 
-            NForm80b3 = new Form80b3(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
-            NForm80b3.FormClosed += NForm80b3_FormClosed;
-            NForm80b3.ShowDialog();
+            NForm80b3_MOBILE = new Form80b3_MOBILE(WSignedId, WSignRecordNo, WOperator, W_Application, NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
+            NForm80b3_MOBILE.FormClosed += NForm80b3_FormClosed;
+            NForm80b3_MOBILE.ShowDialog();
         }
-        // All Transactions this Cycle
+// All Transactions this Cycle
         private void button1_Click(object sender, EventArgs e)
         {
             // READ ALL IN THIS CYCLE
@@ -616,7 +646,7 @@ namespace RRDM4ATMsWin
             NForm14b_All_Actions = new Form14b_All_Actions(WSignedId, WOperator, TempTxnsTableFromAction, 1);
             NForm14b_All_Actions.ShowDialog();
         }
-        // ALL REPLENISHMENTS THIS CYCLE
+// ALL REPLENISHMENTS THIS CYCLE
         private void button2_Click(object sender, EventArgs e)
         {
             DateTime NullPastDate = new DateTime(1900, 01, 01);
@@ -630,7 +660,7 @@ namespace RRDM4ATMsWin
                 , WJobCycleNo, NullPastDate, NullPastDate, Mode);
             NForm67_Cycle_Rich_Picture.ShowDialog();
         }
-        // All Outstanding to be replenished 
+// All Outstanding to be replenished 
         private void buttonAllOutstandingRepl_Click(object sender, EventArgs e)
         {
             DateTime NullPastDate = new DateTime(1900, 01, 01);
@@ -643,7 +673,7 @@ namespace RRDM4ATMsWin
                                    , WJobCycleNo, NullPastDate, NullPastDate, Mode);
             NForm67_Cycle_Rich_Picture.ShowDialog();
         }
-        // View Categories 
+// View Categories 
         private void linkLabelExpand_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // SHOW ALL Categories 
@@ -651,71 +681,35 @@ namespace RRDM4ATMsWin
             Form78d_SlaveCategories NForm78d_SlaveCategories;
             int WMode = 4; // show all categories  
             NForm78d_SlaveCategories = new Form78d_SlaveCategories(WOperator, WSignRecordNo, WSignedId, "", WJobCycleNo, WMode);
-            NForm78d_SlaveCategories.ShowDialog();
+            NForm78d_SlaveCategories.ShowDialog(); 
         }
-        // SHOW SOLO 
-        private void button_SOLO_Click(object sender, EventArgs e)
+// GL AND DISPUTE ENTRIES
+        private void buttonGL_AND_Disputes_Click(object sender, EventArgs e)
         {
-            WRowIndexLeft = dataGridView1.SelectedRows[0].Index;
+            Form200JobCycles_GL_Mobile NForm200JobCycles_GL_Mobile;
 
-            Form80b3 NForm80b3;
+            string WJobCateg = W_Application;
+            NForm200JobCycles_GL_Mobile = new Form200JobCycles_GL_Mobile(WSignedId, WSignRecordNo, "", WOperator, WJobCateg);
+            NForm200JobCycles_GL_Mobile.ShowDialog();
+        }
+// Dispute pre investigation 
+        private void buttonDisputePreInvestigation_Click(object sender, EventArgs e)
+        {
+            Form3_PreInv_MOBILE NForm3_PreInv_MOBILE;
+            //Form3_PreInv_MOBILE(string InSignedId, string InOperator, string InApplication ,int InRMCycle)
+            NForm3_PreInv_MOBILE = new Form3_PreInv_MOBILE(WOperator, WSignedId, W_Application, WJobCycleNo);
+            NForm3_PreInv_MOBILE.ShowDialog();
+        }
+// 4 grids 
+        private void buttonTEST_4_GRIDS_Click(object sender, EventArgs e)
+        {
 
-            WFunction = "View";
+            Form78d_MOBILE_4_Grids NForm78d_MOBILE_4_Grids;
+            int WMode = 8; //
+            string WMatchedCat = "ETI310";
+            NForm78d_MOBILE_4_Grids = new Form78d_MOBILE_4_Grids(WOperator, WSignedId, WMatchedCat, WJobCycleNo, WMode, W_Application);
+            NForm78d_MOBILE_4_Grids.ShowDialog();
 
-            int Type = 96;
-
-            NForm80b3 = new Form80b3(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
-            NForm80b3.FormClosed += NForm80b3_FormClosed;
-            NForm80b3.ShowDialog();
-
-            return; 
-            // READ ALL IN THIS CYCLE
-            RRDMActions_Occurances Aoc = new RRDMActions_Occurances();
-
-            string WSelectionCriteria = " WHERE RMCycle =" + WJobCycleNo + " AND STAGE = '03'"
-                                                + " AND OriginWorkFlow = 'Dispute' AND ActionId in ( '95','96')";
-                                                      // 95 is refund money to customer in Flexcube 
-                                                      // and 96 Refund to Settlement 
-                                                // 
-            Aoc.ReadActionsOccurancesAndFillTable_Big(WSelectionCriteria);
-
-            Aoc.ClearTableTxnsTableFromAction();
-
-            int I = 0;
-
-            while (I <= (Aoc.TableActionOccurances_Big.Rows.Count - 1))
-            {
-
-                int WSeqNo = (int)Aoc.TableActionOccurances_Big.Rows[I]["SeqNo"];
-
-                Aoc.ReadActionsOccuarnceBySeqNo(WSeqNo);
-
-                int WMode2 = 1; // 
-
-                Aoc.ReadActionsTxnsCreateTableByUniqueKey(Aoc.UniqueKeyOrigin, Aoc.UniqueKey, Aoc.ActionId, Aoc.Occurance
-                                                             , Aoc.OriginWorkFlow, WMode2);
-                I = I + 1;
-            }
-
-            DataTable TempTxnsTableFromAction;
-            TempTxnsTableFromAction = Aoc.TxnsTableFromAction;
-
-            Form14b_All_Actions NForm14b_All_Actions;
-
-            NForm14b_All_Actions = new Form14b_All_Actions(WSignedId, WOperator, TempTxnsTableFromAction, 1);
-            NForm14b_All_Actions.ShowDialog();
-
-            return;
-
-            //Form80b3 NForm80b3;
-
-            //WFunction = "View";
-
-            //int Type = 95;
-
-            //NForm80b3 = new Form80b3(WSignedId, WSignRecordNo, WOperator, NullPastDate, NullPastDate, "", WCategoryId, WJobCycleNo, "", 0, Type, WFunction, "", 0, NullPastDate, "", "");
-            //NForm80b3.FormClosed += NForm80b3_FormClosed;
-            //NForm80b3.ShowDialog();
         }
     }
 }

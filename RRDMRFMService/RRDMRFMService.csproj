@@ -105,10 +105,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RRDM4ATMsClasses\RRDM4ATMsClasses.csproj">
+      <Project>{7ac63154-20ab-4abe-bb75-57da8db8427e}</Project>
+      <Name>RRDM4ATMsClasses</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RRDMRFMClasses\RRDMRFMClasses.csproj">
       <Project>{b5f5c1e6-ce36-4b9d-bd8d-8bd7f381fdf8}</Project>
       <Name>RRDMRFMClasses</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

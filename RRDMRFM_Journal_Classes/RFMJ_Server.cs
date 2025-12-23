@@ -145,8 +145,13 @@ namespace RRDMRFM_Journal_Classes
             string dirName = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
             // executableDirectory = dirName;
             RfmjOp.RfmjStartDir = dirName;
-
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            argOperator = Gp.ReadParametersAndFillDataTable_101();
+            
             RfmjParameters Rfmj_Params = new RfmjParameters(argOperator);
+            Rfmj_Params.Operator = argOperator;
+
+
             if (Rfmj_Params.IsSuccess == false)
             {
                 status = RfmjOp.IsSuccess = false;
@@ -166,7 +171,8 @@ namespace RRDMRFM_Journal_Classes
                               "MaxThreadLifeSpan:{5}sec\n" +
                               "Stored Procedure for Parsing:{6}\n" +
                               "Refresh Interval:{7}\n" +
-                              "FilePoolRoot Relative to SQL:{8}"
+                              "FilePoolRoot Relative to SQL:{8}\n" +
+                              "Operator is:{9}"
                               ;
 
                 string msg1 = string.Format(fstr, Rfmj_Params.RFMJ_MaxThreadNumber,
@@ -177,7 +183,8 @@ namespace RRDMRFM_Journal_Classes
                                           Rfmj_Params.RFMJ_MaxThreadLifeSpan,
                                           Rfmj_Params.Rfmj_StoredProcedure,
                                           Rfmj_Params.RFMJ_RefreshInterval,
-                                          Rfmj_Params.SQLRelativeFilePoolPath);
+                                          Rfmj_Params.SQLRelativeFilePoolPath,
+                                          Rfmj_Params.Operator);
                 EventLogging.MessageOut(msg1, EventLogEntryType.Information);
             }
 
@@ -192,6 +199,7 @@ namespace RRDMRFM_Journal_Classes
             RfmjOp.RfmjStoredProcedure = glbStoredProc = Rfmj_Params.Rfmj_StoredProcedure;
             RfmjOp.RfmjRefreshInterval = Rfmj_Params.RFMJ_RefreshInterval; // in seconds
             RfmjOp.RfmjSQLRelativeFilePoolPath = Rfmj_Params.SQLRelativeFilePoolPath;
+            // RfmjOp.
 
             #region Read the record from MatchingSourceFiles and check if Source/Archive/Exceptions dirs exist           
             // Read the record from from RRDMMatchingSourceFiles 
@@ -319,11 +327,13 @@ namespace RRDMRFM_Journal_Classes
             EventLogging.RecordEventMsg(argums, EventLogEntryType.Information);
             #endregion
 
-            #region Enable xp_cmdshell
-            xpMsg = "Enabling xp_cmdshell";
-            EventLogging.RecordEventMsg(xpMsg, EventLogEntryType.Information);
-            xpResult = SqlXpCmdshell(true);
-            #endregion
+            //#region Enable xp_cmdshell
+           
+            //xpMsg = "Enabling xp_cmdshell";
+            //EventLogging.RecordEventMsg(xpMsg, EventLogEntryType.Information);
+            //xpResult = SqlXpCmdshell(true);
+           
+            //#endregion
 
             #region Enter the server loop to process incoming files...
             try
@@ -481,15 +491,16 @@ namespace RRDMRFM_Journal_Classes
             }
             #endregion
 
-            #region Disable xp_cmdshell
-            xpMsg = "Disabling xp_cmdshell";
-            EventLogging.RecordEventMsg(xpMsg, EventLogEntryType.Information);
-            xpResult = SqlXpCmdshell(false);
-            #endregion
+            //#region Disable xp_cmdshell
+            //xpMsg = "Disabling xp_cmdshell";
+            //EventLogging.RecordEventMsg(xpMsg, EventLogEntryType.Information);
+            //xpResult = SqlXpCmdshell(false);
+            //#endregion
         }
         #endregion
 
         #region SqlXpCmdshell
+        /*
         private bool SqlXpCmdshell(bool Enable)
         {
           
@@ -546,6 +557,7 @@ namespace RRDMRFM_Journal_Classes
             
             return (retCode);
         }
+        */
         #endregion
 
         #region Get List of files in the pool
