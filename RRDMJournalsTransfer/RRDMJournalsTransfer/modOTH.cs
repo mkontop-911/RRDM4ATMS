@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.VisualBasic;
+using Microsoft.Extensions.Configuration;
 
 static class ModOTH
 {
@@ -16,17 +17,16 @@ static class ModOTH
     public static string FilesNotProcessed = string.Empty;
     public static bool ErrorIndicator;
 
-    public static void ProcessOthDirectory()
+    public static void ProcessOthDirectory(IConfiguration config)
     {
         // ' The Structure of the Directory will be as follows
         // ' \Root\Files.DAT
         try
         {
-            System.Configuration.AppSettingsReader appSettingsReaderX = new System.Configuration.AppSettingsReader();
-
-            string sOthExtension = System.Convert.ToString(appSettingsReaderX.GetValue("OTH_Extension", typeof(System.String)));
-            string sNewExtension = System.Convert.ToString(appSettingsReaderX.GetValue("OTH_Extension", typeof(System.String)));
-            string sRenameCopy = System.Convert.ToString(appSettingsReaderX.GetValue("RenameCopy", typeof(System.String)));
+            string sOthExtension = config["OTH_Extension"];
+            // Original code read OTH_Extension into sNewExtension as well, preserving behavior (though logic seems unused)
+            string sNewExtension = config["OTH_Extension"]; 
+            string sRenameCopy = config["RenameCopy"];
 
 
             string sPath;

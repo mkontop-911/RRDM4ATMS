@@ -1,14 +1,21 @@
 ﻿using System;
-using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace TWF_ProcessFiles
 {
     public class ProcessFiles
     {
+        private readonly IConfiguration _configuration;
+
+        public ProcessFiles(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public enum FileTransferType
         {
             DBL,
@@ -46,8 +53,10 @@ namespace TWF_ProcessFiles
             _sTargetDirectory = this.TargetDirectory;
             _dtReferenceDate = this.ReferenceDate;
             _dtMaxReturnDate = this.MaxReturnDate;
-            _iForwardNoOfDays = Int32.Parse((string)ConfigurationManager.AppSettings["ForwardNoOfDays"]);
-            _iBackwardNoOfDays = Int32.Parse((string)ConfigurationManager.AppSettings["BackwardNoOfDays"]);
+            
+            _iForwardNoOfDays = int.Parse(_configuration["ForwardNoOfDays"]);
+            _iBackwardNoOfDays = int.Parse(_configuration["BackwardNoOfDays"]);
+
             _ErrorIndicator = false;
             _sErrorMessage = string.Empty;
             _sFilesNotProcessed = string.Empty;
@@ -90,18 +99,18 @@ namespace TWF_ProcessFiles
             ModDBL.MaxReturnDate = _dtMaxReturnDate;
 
             if (string.IsNullOrEmpty(_sSourceDirectory))
-                ModDBL.SourceDirectory = (string)ConfigurationManager.AppSettings["DBL_Path"];
+                ModDBL.SourceDirectory = _configuration["DBL_Path"];
             else
                 ModDBL.SourceDirectory = _sSourceDirectory;
 
             if (string.IsNullOrEmpty(_sTargetDirectory))
-                ModDBL.TargetDirectory = (string)ConfigurationManager.AppSettings["DBL_TargetDir"];
+                ModDBL.TargetDirectory = _configuration["DBL_TargetDir"];
             else
                 ModDBL.TargetDirectory = _sTargetDirectory;
 
             try
             {
-                ModDBL.ProcessDblDirectory();
+                ModDBL.ProcessDblDirectory(_configuration);
 
                 _iNoOfFiles = ModDBL.NoOfFiles;
                 _ErrorIndicator = ModDBL.ErrorIndicator;
@@ -142,18 +151,18 @@ namespace TWF_ProcessFiles
             ModNCR.ReferenceDate = _dtReferenceDate;
             ModNCR.MaxReturnDate = _dtMaxReturnDate;
             if (string.IsNullOrEmpty(_sSourceDirectory))
-                ModNCR.SourceDirectory = (string)ConfigurationManager.AppSettings["NCR_Path"];
+                ModNCR.SourceDirectory = _configuration["NCR_Path"];
             else
                 ModNCR.SourceDirectory = _sSourceDirectory;
 
             if (string.IsNullOrEmpty(_sTargetDirectory))
-                ModNCR.TargetDirectory = (string)ConfigurationManager.AppSettings["NCR_TargetDir"];
+                ModNCR.TargetDirectory = _configuration["NCR_TargetDir"];
             else
                 ModNCR.TargetDirectory = _sTargetDirectory;
             try
             {
 
-                ModNCR.ProcessNcrDirectory();
+                ModNCR.ProcessNcrDirectory(_configuration);
 
                 _iNoOfFiles = ModNCR.NoOfFiles;
                 _ErrorIndicator = ModNCR.ErrorIndicator;
@@ -193,18 +202,18 @@ namespace TWF_ProcessFiles
             ModNcrVision.ReferenceDate = _dtReferenceDate;
             ModNcrVision.MaxReturnDate = _dtMaxReturnDate;
             if (string.IsNullOrEmpty(_sSourceDirectory))
-                ModNcrVision.SourceDirectory = (string)ConfigurationManager.AppSettings["NCR_Vision_Path"];
+                ModNcrVision.SourceDirectory = _configuration["NCR_Vision_Path"];
             else
                 ModNcrVision.SourceDirectory = _sSourceDirectory;
 
             if (string.IsNullOrEmpty(_sTargetDirectory))
-                ModNcrVision.TargetDirectory = (string)ConfigurationManager.AppSettings["NCR_Vision_TargetDir"];
+                ModNcrVision.TargetDirectory = _configuration["NCR_Vision_TargetDir"];
             else
                 ModNcrVision.TargetDirectory = _sTargetDirectory;
             try
             {
 
-                ModNcrVision.ProcessNcrVisionDirectory();
+                ModNcrVision.ProcessNcrVisionDirectory(_configuration);
                 _iNoOfFiles = ModNcrVision.NoOfFiles;
                 _ErrorIndicator = ModNcrVision.ErrorIndicator;
                 _sErrorMessage = ModNcrVision.ErrorMessage;
@@ -245,18 +254,18 @@ namespace TWF_ProcessFiles
             ModOTH.MaxReturnDate = _dtMaxReturnDate;
 
             if (string.IsNullOrEmpty(_sSourceDirectory))
-                ModOTH.SourceDirectory = (string)ConfigurationManager.AppSettings["OTH_Path"];
+                ModOTH.SourceDirectory = _configuration["OTH_Path"];
             else
                 ModOTH.SourceDirectory = _sSourceDirectory;
 
             if (string.IsNullOrEmpty(_sTargetDirectory))
-                ModOTH.TargetDirectory = (string)ConfigurationManager.AppSettings["OTH_TargetDir"];
+                ModOTH.TargetDirectory = _configuration["OTH_TargetDir"];
             else
                 ModOTH.TargetDirectory = _sTargetDirectory;
             try
             {
 
-                ModOTH.ProcessOthDirectory();
+                ModOTH.ProcessOthDirectory(_configuration);
 
                 _iNoOfFiles = ModOTH.NoOfFiles;
                 _ErrorIndicator = ModOTH.ErrorIndicator;
@@ -298,18 +307,18 @@ namespace TWF_ProcessFiles
             ModWCR.ReferenceDate = _dtReferenceDate;
             ModWCR.MaxReturnDate = _dtMaxReturnDate;
             if (string.IsNullOrEmpty(_sSourceDirectory))
-                ModWCR.SourceDirectory = (string)ConfigurationManager.AppSettings["WCR_Path"];
+                ModWCR.SourceDirectory = _configuration["WCR_Path"];
             else
                 ModWCR.SourceDirectory = _sSourceDirectory;
 
             if (string.IsNullOrEmpty(_sTargetDirectory))
-                ModWCR.TargetDirectory = (string)ConfigurationManager.AppSettings["WCR_TargetDir"];
+                ModWCR.TargetDirectory = _configuration["WCR_TargetDir"];
             else
                 ModWCR.TargetDirectory = _sTargetDirectory;
             try
             {
 
-                ModWCR.ProcessWcrDirectory();
+                ModWCR.ProcessWcrDirectory(_configuration);
 
                 _iNoOfFiles = ModWCR.NoOfFiles;
                 _ErrorIndicator = ModWCR.ErrorIndicator;

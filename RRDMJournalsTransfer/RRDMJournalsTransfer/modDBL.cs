@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Configuration;
 
 static class ModDBL
 {
@@ -17,7 +18,7 @@ static class ModDBL
     public static string FilesNotProcessed;
     public static bool ErrorIndicator;
 
-    public static void ProcessDblDirectory()
+    public static void ProcessDblDirectory(IConfiguration config)
     {
 
         // ' The Structure of the Directory will be as follows
@@ -27,12 +28,10 @@ static class ModDBL
 
         try
         {
-            System.Configuration.AppSettingsReader appSettingsReaderX = new System.Configuration.AppSettingsReader();
-
-            string dblExtension = System.Convert.ToString(appSettingsReaderX.GetValue("DBL_Extension", typeof(System.String)));
-            string sNewExtension = System.Convert.ToString(appSettingsReaderX.GetValue("New_Extension", typeof(System.String)));
-            string sRenameCopy = System.Convert.ToString(appSettingsReaderX.GetValue("RenameCopy", typeof(System.String)));
-            int iNoOfBackwardMonths = System.Convert.ToInt32(appSettingsReaderX.GetValue("BackwardNoOfMonths", typeof(System.String)));
+            string dblExtension = config["DBL_Extension"];
+            string sNewExtension = config["New_Extension"];
+            string sRenameCopy = config["RenameCopy"];
+            int iNoOfBackwardMonths = int.Parse(config["BackwardNoOfMonths"]);
 
             bool bRenameCopy = (sRenameCopy == "True");
             ErrorMessage = string.Empty;
@@ -72,7 +71,7 @@ static class ModDBL
                     {
                         // 'Process the Files in the ATM Directory
                         sAtmName = sAtmName.Replace("-", "");
-                        FilesSearchDbl(oDirAtmInfo, sAtmName, sExtension, sNewExtension, bRenameCopy);
+                        FilesSearchDbl(oDirAtmInfo, sAtmName, sExtension, sNewExtension, bRenameCopy, config);
                     }
                 }
             }
@@ -99,7 +98,7 @@ static class ModDBL
         }
     }
 
-    private static void FilesSearchDbl(DirectoryInfo oDirInfo, string sAtmName, string sOldExtension, string sNewExtension, bool bRenameCopy)
+    private static void FilesSearchDbl(DirectoryInfo oDirInfo, string sAtmName, string sOldExtension, string sNewExtension, bool bRenameCopy, IConfiguration config)
     {
 
         // 'Get files of directory
@@ -111,8 +110,7 @@ static class ModDBL
         string sBackDatedFileName;
         DateTime dtWFromDate;
 
-        System.Configuration.AppSettingsReader oAppSettingsReader = new System.Configuration.AppSettingsReader();
-        string sFileRegex = System.Convert.ToString(oAppSettingsReader.GetValue("DBL_Regex", typeof(System.String)));
+        string sFileRegex = config["DBL_Regex"];
         Regex regex = new Regex(sFileRegex);
         try
         {

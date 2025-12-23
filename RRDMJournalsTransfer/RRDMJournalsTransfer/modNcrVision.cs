@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.VisualBasic;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Configuration;
 
 static class ModNcrVision
 {
@@ -16,17 +17,15 @@ static class ModNcrVision
     public static string FilesNotProcessed;
     public static bool ErrorIndicator;
 
-    public static void ProcessNcrVisionDirectory()
+    public static void ProcessNcrVisionDirectory(IConfiguration config)
     {
         try
         {
-            System.Configuration.AppSettingsReader appSettingsReaderX = new System.Configuration.AppSettingsReader();
+            string ncrNewExtension = config["NCR_Vision_Extension"];
+            string newExtension = config["New_Extension"];
+            string sRenameCopy = config["RenameCopy"];
 
-            string ncrNewExtension = System.Convert.ToString(appSettingsReaderX.GetValue("NCR_Vision_Extension", typeof(System.String)));
-            string newExtension = System.Convert.ToString(appSettingsReaderX.GetValue("New_Extension", typeof(System.String)));
-            string sRenameCopy = System.Convert.ToString(appSettingsReaderX.GetValue("RenameCopy", typeof(System.String)));
-
-            int iNoOfBackwardMonths = System.Convert.ToInt32(appSettingsReaderX.GetValue("BackwardNoOfMonths", typeof(System.String)));
+            int iNoOfBackwardMonths = int.Parse(config["BackwardNoOfMonths"]);
 
             string sPath;
             string sWorkingPath;
@@ -79,7 +78,7 @@ static class ModNcrVision
                     System.IO.DirectoryInfo oDirFileInfo = new System.IO.DirectoryInfo(sWorkingPath);
                     // Find the files in directory & Process them
 
-                    FilesSearchNcrVision(oDirFileInfo, sExtension, newExtension, bRenameCopy);
+                    FilesSearchNcrVision(oDirFileInfo, sExtension, newExtension, bRenameCopy, config);
                 }
             }
             else // ' Directory not Found
@@ -105,9 +104,8 @@ static class ModNcrVision
     }
 
 
-    private static void FilesSearchNcrVision(DirectoryInfo oDirInfo, string sOldExtension, string sNewExtension, bool bRenameCopy)
+    private static void FilesSearchNcrVision(DirectoryInfo oDirInfo, string sOldExtension, string sNewExtension, bool bRenameCopy, IConfiguration config)
     {
-        System.Configuration.AppSettingsReader oAppSettingsReader = new System.Configuration.AppSettingsReader();
         FileInfo wFileName;
 
         // 'Get files of directory
@@ -121,7 +119,7 @@ static class ModNcrVision
 
 
         // NCR_Vision_Regex = (?i)\d{8}_\d{8}.txt
-        string sFileRegex = System.Convert.ToString(oAppSettingsReader.GetValue("NCR_Vision_Regex", typeof(System.String)));
+        string sFileRegex = config["NCR_Vision_Regex"];
         Regex regex = new Regex(sFileRegex);
 
         try

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Configuration;
 
 static class ModWCR
 {
@@ -15,7 +16,7 @@ static class ModWCR
     public static string FilesNotProcessed;
     public static bool ErrorIndicator;
 
-    public static void ProcessWcrDirectory()
+    public static void ProcessWcrDirectory(IConfiguration config)
     {
 
         // ' The Structure of the Directory will be as follows
@@ -24,13 +25,11 @@ static class ModWCR
 
         try
         {
-            System.Configuration.AppSettingsReader appSettingsReaderX = new System.Configuration.AppSettingsReader();
+            string WCRExtension = config["WCR_Extension"];
+            string sNewExtension = config["New_Extension"];
+            string sRenameCopy = config["RenameCopy"];
 
-            string WCRExtension = System.Convert.ToString(appSettingsReaderX.GetValue("WCR_Extension", typeof(System.String)));
-            string sNewExtension = System.Convert.ToString(appSettingsReaderX.GetValue("New_Extension", typeof(System.String)));
-            string sRenameCopy = System.Convert.ToString(appSettingsReaderX.GetValue("RenameCopy", typeof(System.String)));
-
-            int iNoOfBackwardMonths = System.Convert.ToInt32(appSettingsReaderX.GetValue("BackwardNoOfMonths", typeof(System.String)));
+            int iNoOfBackwardMonths = int.Parse(config["BackwardNoOfMonths"]);
 
             bool bRenameCopy = (sRenameCopy == "True");
 
@@ -100,7 +99,7 @@ static class ModWCR
                                 string sWorkingDir = sAtmYear + RRDM4ATMs.PublicFn.fnRight(("00" + sAtmYearMonth), 2);
 
                                 if ((Int64.Parse(sWorkingDir) >= Int64.Parse(sWorkingDir)) && (Int64.Parse(sWorkingDir) <= Int64.Parse(sRangeToDir)))
-                                    FilesSearchWcr(oDirYearMonthInfo, sAtmName, sAtmYear, sAtmYearMonth, sExtension, sNewExtension, bRenameCopy);
+                                    FilesSearchWcr(oDirYearMonthInfo, sAtmName, sAtmYear, sAtmYearMonth, sExtension, sNewExtension, bRenameCopy, config);
                             }
                         }
                     }
@@ -128,7 +127,7 @@ static class ModWCR
         }
     }
 
-    private static void FilesSearchWcr(DirectoryInfo oDirInfo, string sAtmLevel, string sYearLevel, string sMonthLevel, string sOldExtension, string sNewExtension, bool bRenameCopy)
+    private static void FilesSearchWcr(DirectoryInfo oDirInfo, string sAtmLevel, string sYearLevel, string sMonthLevel, string sOldExtension, string sNewExtension, bool bRenameCopy, IConfiguration config)
     {
         try
         {
@@ -149,8 +148,7 @@ static class ModWCR
             int iPos;
             string sDayLevel;
 
-            System.Configuration.AppSettingsReader oAppSettingsReader = new System.Configuration.AppSettingsReader();
-            string sFileRegex = System.Convert.ToString(oAppSettingsReader.GetValue("WCR_Regex", typeof(System.String)));
+            string sFileRegex = config["WCR_Regex"];
             Regex regex = new Regex(sFileRegex);
 
 

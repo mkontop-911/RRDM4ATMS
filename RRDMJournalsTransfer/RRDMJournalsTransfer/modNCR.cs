@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Configuration;
 
 static class ModNCR
 {
@@ -15,7 +16,7 @@ static class ModNCR
     public static string FilesNotProcessed;
     public static bool ErrorIndicator;
 
-    public static void ProcessNcrDirectory()
+    public static void ProcessNcrDirectory(IConfiguration config)
     {
 
         ErrorMessage = string.Empty;
@@ -23,14 +24,12 @@ static class ModNCR
 
         try
         {
-            System.Configuration.AppSettingsReader appSettingsReaderX = new System.Configuration.AppSettingsReader();
+            string ncrPath = config["NCR_Path"];
+            string ncrExtension = config["NCR_Extension"];
+            string newExtension = config["New_Extension"];
 
-            string ncrPath = System.Convert.ToString(appSettingsReaderX.GetValue("NCR_Path", typeof(System.String)));
-            string ncrExtension = System.Convert.ToString(appSettingsReaderX.GetValue("NCR_Extension", typeof(System.String)));
-            string newExtension = System.Convert.ToString(appSettingsReaderX.GetValue("New_Extension", typeof(System.String)));
-
-            string sRenameCopy = System.Convert.ToString(appSettingsReaderX.GetValue("RenameCopy", typeof(System.String)));
-            int iNoOfBackwardMonths = System.Convert.ToInt32(appSettingsReaderX.GetValue("BackwardNoOfMonths", typeof(System.String)));
+            string sRenameCopy = config["RenameCopy"];
+            int iNoOfBackwardMonths = int.Parse(config["BackwardNoOfMonths"]);
 
             string sExtension = "";
 
@@ -91,7 +90,7 @@ static class ModNCR
                         {
                             sWorkingPath = SourceDirectory + @"\" + sAtmName + @"\" + sAtmYear + @"\";
                             // Find the files in directory & Process them
-                            FilesSearchNcr(dirYearInfo, sAtmName, sAtmYear, sExtension, newExtension, bRenameCopy);
+                            FilesSearchNcr(dirYearInfo, sAtmName, sAtmYear, sExtension, newExtension, bRenameCopy, config);
                         }
                     }
                 }
@@ -119,7 +118,7 @@ static class ModNCR
         }
     }
 
-    private static void FilesSearchNcr(DirectoryInfo oDirInfo, string sAtmLevel, string sYearLevel, string sOldExtension, string sNewExtension, bool bRenameCopy)
+    private static void FilesSearchNcr(DirectoryInfo oDirInfo, string sAtmLevel, string sYearLevel, string sOldExtension, string sNewExtension, bool bRenameCopy, IConfiguration config)
     {
         try
         {
@@ -139,9 +138,7 @@ static class ModNCR
 
 
 
-            System.Configuration.AppSettingsReader oAppSettingsReader = new System.Configuration.AppSettingsReader();
-
-            string sFileRegex = System.Convert.ToString(oAppSettingsReader.GetValue("NCR_Regex", typeof(System.String)));
+            string sFileRegex = config["NCR_Regex"];
             Regex regex = new Regex(sFileRegex);
 
             dtWFromDate = ReferenceDate;
