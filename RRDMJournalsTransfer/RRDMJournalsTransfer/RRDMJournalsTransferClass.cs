@@ -11,6 +11,15 @@ namespace TWF_ProcessFiles
     {
         private readonly IConfiguration _configuration;
 
+        public ProcessFiles()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+                .AddJsonFile("RRDMJournalsTransfer_appsettings.json", optional: true, reloadOnChange: true);
+
+            _configuration = builder.Build();
+        }
+
         public ProcessFiles(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -129,7 +138,7 @@ namespace TWF_ProcessFiles
             catch (Exception ex)
             {
                 var sb = new System.Text.StringBuilder();
-                sb.AppendLine("ProcessDbl -An exception has occured while processing DBL Files. The Operation is aborted.");
+                sb.AppendLine("ProcessDbl - An exception has occured while processing DBL Files. The Operation is aborted.");
                 sb.AppendLine("Exception Details:");
                 sb.AppendLine(ex.Message);
                 _sErrorMessage = sb.ToString();
