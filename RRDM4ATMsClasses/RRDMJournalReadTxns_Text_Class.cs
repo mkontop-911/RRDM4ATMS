@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
-using System.Text;
-using System.IO;
 //using System.Windows.Forms;
 using System.Data.SqlClient;
-using System.Configuration;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 
@@ -92,6 +93,59 @@ namespace RRDM4ATMs
 
                 // Read in lines from file.
                 string[] lineArrayIn = File.ReadAllLines(fullFileName, Encoding.GetEncoding(1253));
+                //string[] lineArrayIn = File.ReadAllLines(fullFileName);
+                int lineCount = lineArrayIn.Length;
+                string[] lineArrayOut = new string[lineCount];
+
+                for (LineCounter = 0; LineCounter < lineCount; LineCounter++)
+                {
+                    lineNumber++;
+                    lineArrayOut[LineCounter] = string.Format("{0,0000000} {1}", lineNumber, lineArrayIn[LineCounter]);
+
+                }
+                //File.WriteAllLines(fileName_Out, lineArrayOut, Encoding.GetEncoding(1253));
+                File.WriteAllLines(fileName_Out, lineArrayOut, Encoding.GetEncoding(1253));
+
+            }
+            catch (Exception ex)
+            {
+                ErrorFound = true;
+                ErrorOutput = string.Format("Exception encountered while creating the JLN file for source file: {0}\r\nThe message is:\r\n{1}\r\nThe StackTrace is:\r\n{2}", fullFileName, ex.Message, ex.StackTrace);
+                fileName_Out = "";
+                CatchDetails(ex);
+            }
+            return fileName_Out;
+        }
+
+        public string ConvertJournal_2LessThan_4000(string fullFileName)
+        {
+            //string[] lines = File.ReadAllLines("data.txt");
+
+            //string[] filtered = lines
+            //.Where(line => line.Length < 4000)
+            //.ToArray();
+
+            // string fileName_In;
+            string fileName_Out = "";
+            string fileDir;
+            string msg;
+
+            try
+            {
+                fileDir = Path.GetDirectoryName(fullFileName);
+                string fileOut = Path.GetFileName(fullFileName);
+                fileOut += ".jln";
+                fileName_Out = Path.Combine(fileDir, fileOut);
+
+                FileStream fs = null;
+                int lineNumber = 1000000;
+
+                // Read in lines from file.
+                string[] lines = File.ReadAllLines(fullFileName, Encoding.GetEncoding(1253));
+
+                string[] lineArrayIn = lines
+                  .Where(line => line.Length < 2000)
+                   .ToArray();
                 //string[] lineArrayIn = File.ReadAllLines(fullFileName);
                 int lineCount = lineArrayIn.Length;
                 string[] lineArrayOut = new string[lineCount];

@@ -235,7 +235,7 @@ namespace RRDM4ATMsWin
                     }
                     else
                     {
-                        checkBox_Allow_Balance.Checked = false;
+                       // checkBox_Allow_Balance.Checked = false;
                         labelRecycleNote.Hide();
                         // labelGuadingMessage.Hide();
                         // panelGuidingInfo.Hide();
@@ -445,7 +445,7 @@ namespace RRDM4ATMsWin
             {
                 // Means that manual balance was inputed 
                 InternalChange = true;
-                checkBox_Allow_Balance.Checked = true;
+                //checkBox_Allow_Balance.Checked = true;
                 OpeningBal = Na.GL_Balance;
 
             }
@@ -883,7 +883,7 @@ namespace RRDM4ATMsWin
                     }
                     else
                     {
-                        MessageBox.Show("Please enter valid remain Depoits amount in EGP ");
+                        MessageBox.Show("Please enter valid remain Deposits amount in EGP ");
                         return;
                     }
 
@@ -1357,7 +1357,8 @@ namespace RRDM4ATMsWin
                     return;
                 }
             }
-
+           // MessageBox.Show("TEST 1 : Just before CreateActions_Occurances_Unloaded"); 
+                 
             // CREATE GL TRANSACTIONS UNLOADED
             CreateActions_Occurances_Unloaded();
 
@@ -1371,12 +1372,13 @@ namespace RRDM4ATMsWin
                     );
                 //return;
             }
-
+            //MessageBox.Show("TEST 2 : CreateActions_OccurancesDeposits");
             // Create Transactions for deposits 
 
             //InputDepositsAmt = ISTDifferenceCR 
             CreateActions_OccurancesDeposits(InputDepositsAmt);
 
+            //MessageBox.Show("TEST 3 : CreateActions_Occurances_Excess_Short_Disputes");
             // Disputes handling 
             CreateActions_Occurances_Excess_Short_Disputes(); 
 
@@ -1385,6 +1387,7 @@ namespace RRDM4ATMsWin
 
             if (CashInAmount > 0)
             {
+                //MessageBox.Show("TEST 4 : CreateActions_Occurances_CreateActions_Occurances");
                 CreateActions_Occurances(CashInAmount);
             }
 
@@ -1408,7 +1411,9 @@ namespace RRDM4ATMsWin
 
             Na.UpdateSessionsNotesAndValues(WAtmNo, WSesNo);
 
-            // UPDATE STEP
+          
+
+                // UPDATE STEP
 
             Usi.ReadSignedActivityByKey(WSignRecordNo);
 
@@ -1563,6 +1568,7 @@ namespace RRDM4ATMsWin
             WUniqueRecordId = WSesNo; // SesNo 
             WCcy = "EGP";
 
+
             //
             // CLEAR PREVIOUS ACTIONS FOR THIS REPLENISHMENT
             //
@@ -1571,46 +1577,28 @@ namespace RRDM4ATMsWin
             WActionId = "25";
             Aoc.DeleteActionsOccurancesUniqueKeyAndActionID(WUniqueRecordIdOrigin, WUniqueRecordId, WActionId);
 
+            //MessageBox.Show("TEST 1.1 : IN CreateActions_Occurances_Unloaded" + Environment.NewLine
+             //   + "" + Environment.NewLine
+              //  );
+
             if (HybridRepl == false)
             {
+               // MessageBox.Show("TEST 1.2 : IN CreateActions_Occurances_Unloaded" + Environment.NewLine
+               //+ "HybridRepl equal to false and about to delete action 29 " + Environment.NewLine
+               //);
                 WUniqueRecordIdOrigin = "Replenishment";
                 WUniqueRecordId = WSesNo;
                 WActionId = "29";
                 Aoc.DeleteActionsOccurancesUniqueKeyAndActionID(WUniqueRecordIdOrigin, WUniqueRecordId, WActionId);
             }
 
-            //if (HybridRepl == true)
-            //{
-            //    WActionId = "39";
-            //    Aoc.DeleteActionsOccurancesUniqueKeyAndActionID(WUniqueRecordIdOrigin, WUniqueRecordId, WActionId);
-            //}
-
-            ////
-            //WActionId = "30";
-            //Aoc.DeleteActionsOccurancesUniqueKeyAndActionID(WUniqueRecordIdOrigin, WUniqueRecordId, WActionId);
-
-            // Delete create Dispute Shortage
-
-            //if (HybridRepl == false)
-            //{
-            //    WActionId = "87";
-            //    Aoc.DeleteActionsOccurancesUniqueKeyAndActionID(WUniqueRecordIdOrigin, WUniqueRecordId, WActionId);
-            //}
-
-            //if (HybridRepl == true)
-            //{
-            //    WActionId = "77";
-            //    Aoc.DeleteActionsOccurancesUniqueKeyAndActionID(WUniqueRecordIdOrigin, WUniqueRecordId, WActionId);
-            //}
-
-            ////
-            //WActionId = "88";
-            //Aoc.DeleteActionsOccurancesUniqueKeyAndActionID(WUniqueRecordIdOrigin, WUniqueRecordId, WActionId);
-
-
+            
 
             if (HybridRepl == false & DoubleEntryAmt != 0)
             {
+             //   MessageBox.Show("TEST 1.3 : IN CreateActions_Occurances_Unloaded" + Environment.NewLine
+             //+ "HybridRepl equal to false and ABOUT to create action 25 " + Environment.NewLine
+             //);
                 // FIRST DOUBLE ENTRY 
                 WActionId = "25"; // 25_DEBIT_ CIT Account/CR_AtmCash (UNLOAD)
                                   // WUniqueRecordIdOrigin = "Replenishment"
@@ -1625,6 +1613,8 @@ namespace RRDM4ATMsWin
             }
             else
             {
+            //    MessageBox.Show("TEST 1.4 : IN CreateActions_Occurances_Unloaded" + Environment.NewLine
+            //+ "HybridRepl equal to true " + Environment.NewLine); 
                 //if (DoubleEntryAmt == 0)
                 //{
                 //    WUniqueRecordIdOrigin = "Replenishment";
@@ -1633,220 +1623,7 @@ namespace RRDM4ATMsWin
                 //    Aoc.DeleteActionsOccurancesUniqueKeyAndActionID(WUniqueRecordIdOrigin, WUniqueRecordId, WActionId);
                 //}
             }
-            ////
-            //// CREATE GL for Excess or shortage
-            ////
-            //decimal DiffGL = 0;
-
-            //if (radioButtonGLBased_IST.Checked == true)
-            //{
-            //    if (decimal.TryParse(textBoxNetResult_IST.Text, out DiffGL))
-            //    {
-            //    }
-            //    else
-            //    {
-            //        //MessageBox.Show(textBoxDiffExp.Text, "Please enter a valid number for Expected!");
-
-            //        //return;
-            //    }
-            //}
-
-            //if (radioButtonGLBased_Journal.Checked == true)
-            //{
-            //    if (decimal.TryParse(textBoxNetResult_JNL.Text, out DiffGL))
-            //    {
-            //    }
-            //    else
-            //    {
-            //        //MessageBox.Show(textBoxDiffExp.Text, "Please enter a valid number for Expected!");
-
-            //        //return;
-            //    }
-            //}
-
-
-            //if (DiffGL == 0)
-            //{
-            //    // do nothing
-            //}
-
-
-
-            //if (DiffGL > 0 ) 
-            //{
-            //    MessageBox.Show("The amount of Difference:.." + DiffGL.ToString("#,##0.00") + Environment.NewLine
-            //             + "Will be moved to the Branch excess account "
-            //        );
-            //    // Move to Excess 
-            //    // SECOND DOUBLE ENTRY 
-            //    WActionId = "30"; //30_CREDIT Branch Excess / DR_AtmCash(UNLOAD)
-            //                      // WUniqueRecordIdOrigin = "Replenishment";
-            //    WUniqueRecordId = WSesNo; // SesNo 
-            //    WCcy = "EGP";
-            //    DoubleEntryAmt = DiffGL;
-            //    WMaker_ReasonOfAction = "UnLoad From ATM-Excess";
-            //    Aoc.CreateActionsTxnsPerActionId(WOperator, WSignedId,
-            //                                          WActionId, WUniqueRecordIdOrigin,
-            //                                          WUniqueRecordId, WCcy, DoubleEntryAmt, WAtmNo, WSesNo
-            //                                          , WMaker_ReasonOfAction, "Replenishment");
-
-            //    TEMPTableFromAction = Aoc.TxnsTableFromAction;
-            //}
-            //if (DiffGL < 0 )
-            //{
-            //    MessageBox.Show("The amount of Difference:.." + DiffGL.ToString("#,##0.00") + Environment.NewLine
-            //            + "Will be moved to the Branch shortage account "
-            //             );
-            //    // Move to Shortage
-            //    // SECOND DOUBLE ENTRY 
-            //    if (HybridRepl == false)
-            //    {
-            //        WActionId = "29"; // 29_DEBIT_CIT Shortages/CR_AtmCash(UNLOAD)
-            //    }
-            //    if (HybridRepl == true)
-            //    {
-            //        WActionId = "39"; // 29_DEBIT_Branch Shortages/CR_AtmCash(UNLOAD)
-            //    }
-
-            //    //WUniqueRecordIdOrigin = "Replenishment";
-            //    WUniqueRecordId = WSesNo; // SesNo 
-            //    WCcy = "EGP";
-            //    DoubleEntryAmt = -DiffGL; // Turn it to positive 
-            //    WMaker_ReasonOfAction = "UnLoad From ATM-Shortage";
-            //    Aoc.CreateActionsTxnsPerActionId(WOperator, WSignedId,
-            //                                          WActionId, WUniqueRecordIdOrigin,
-            //                                          WUniqueRecordId, WCcy, DoubleEntryAmt, WAtmNo, WSesNo,
-            //                                          WMaker_ReasonOfAction, "Replenishment");
-            //    TEMPTableFromAction = Aoc.TxnsTableFromAction;
-            //}
-
-            // Handle Any Balance In Action Occurances 
-            //string WSelectionCriteria = "WHERE AtmNo ='" + WAtmNo
-            //           + "' AND ReplCycle =" + WSesNo
-            //           + " AND ( (Maker ='" + WSignedId + "' AND Stage<>'03') OR Stage = '03') ";
-
-            //Aoc.ReadActionsOccurancesBySelectionCriteriaToGetTotals(WSelectionCriteria);
-
-            //if (Aoc.Current_DisputeShortage != 0)
-            //{
-            //    MessageBox.Show("Also note that Dispute Shortage will be handle here." + Environment.NewLine
-            //             + "The Dispute Shortage is :" + Aoc.Current_DisputeShortage.ToString("#,##0.00") + Environment.NewLine
-            //             + "Look at the resulted transactions");
-
-
-            //    decimal CIT_Shortage = 0;
-            //    decimal Shortage = 0;
-            //    decimal Dispute_Shortage = -(Aoc.Current_DisputeShortage);
-            //    decimal WExcess = Aoc.Excess;
-
-            //    if (HybridRepl == false)
-            //    {
-            //        CIT_Shortage = -(Aoc.CIT_Shortage);
-            //    }
-            //    if (HybridRepl == true)
-            //    {
-            //        Shortage = -(Aoc.CIT_Shortage);
-            //    }
-
-
-            //    if (WExcess > 0)
-            //    {
-            //        if (WExcess >= Dispute_Shortage)
-            //        {
-            //            // A
-            //            WActionId = "88"; //88_CREDIT Dispute Shortage/DEBIT Branch Excess
-            //                              // 
-            //            WUniqueRecordId = WSesNo; // SesNo 
-            //            WCcy = "EGP";
-            //            DoubleEntryAmt = Dispute_Shortage;
-            //            WMaker_ReasonOfAction = "Settle Dispute Shortage";
-            //            Aoc.CreateActionsTxnsPerActionId(WOperator, WSignedId,
-            //                                                  WActionId, WUniqueRecordIdOrigin,
-            //                                                  WUniqueRecordId, WCcy, DoubleEntryAmt, WAtmNo, WSesNo
-            //                                                  , WMaker_ReasonOfAction, "Replenishment");
-
-            //            TEMPTableFromAction = Aoc.TxnsTableFromAction;
-
-            //        }
-            //        else
-            //        {   // A
-            //            // Use all amount of Excess
-            //            WActionId = "88"; //88_CREDIT Dispute Shortage/DEBIT Branch Excess
-            //                              // 
-            //            WUniqueRecordId = WSesNo; // SesNo 
-            //            WCcy = "EGP";
-            //            DoubleEntryAmt = WExcess; // Use all amount iin Excess
-            //            WMaker_ReasonOfAction = "Settle Dispute Shortage Through Excess and Shortage 1";
-            //            Aoc.CreateActionsTxnsPerActionId(WOperator, WSignedId,
-            //                                                  WActionId, WUniqueRecordIdOrigin,
-            //                                                  WUniqueRecordId, WCcy, DoubleEntryAmt, WAtmNo, WSesNo
-            //                                                  , WMaker_ReasonOfAction, "Replenishment");
-
-            //            TEMPTableFromAction = Aoc.TxnsTableFromAction;
-
-            //            // The rest you take it from Shortage
-
-            //            decimal TempDiff1 = Dispute_Shortage - WExcess;
-            //            if (TempDiff1 > 0)
-            //            {
-            //                // Diff1 goes to Shortage
-            //                // B
-            //                if (HybridRepl == false)
-            //                {
-            //                    WActionId = "87"; //87_CREDIT Dispute Shortage/DEBIT CIT Branch Shortage
-            //                }
-
-            //                if (HybridRepl == true)
-            //                {
-            //                    WActionId = "77"; //77_CREDIT Dispute Shortage/DEBIT CIT Branch Shortage
-            //                }
-
-            //                // 
-            //                WUniqueRecordId = WSesNo; // SesNo 
-            //                WCcy = "EGP";
-            //                DoubleEntryAmt = TempDiff1;
-            //                WMaker_ReasonOfAction = "Settle Dispute Shortage Through Excess and Shortage 2";
-            //                Aoc.CreateActionsTxnsPerActionId(WOperator, WSignedId,
-            //                                                      WActionId, WUniqueRecordIdOrigin,
-            //                                                      WUniqueRecordId, WCcy, DoubleEntryAmt, WAtmNo, WSesNo
-            //                                                      , WMaker_ReasonOfAction, "Replenishment");
-
-            //                TEMPTableFromAction = Aoc.TxnsTableFromAction;
-            //            }
-
-            //        }
-            //    }
-
-            //    if ((CIT_Shortage > 0 || (WExcess == 0 & CIT_Shortage == 0) & HybridRepl == false)
-            //        || (Shortage > 0 || (WExcess == 0 & Shortage == 0) & HybridRepl == true)
-            //        )
-            //    {
-            //        // 
-            //        if (HybridRepl == false)
-            //        {
-            //            WActionId = "87"; //87_CREDIT Dispute Shortage/DEBIT CIT Branch Shortage
-            //        }
-            //        if (HybridRepl == true)
-            //        {
-            //            WActionId = "77"; //77_CREDIT Dispute Shortage/DEBIT Branch Shortage
-            //        }
-            //        // 
-            //        WUniqueRecordId = WSesNo; // SesNo 
-            //        WCcy = "EGP";
-            //        DoubleEntryAmt = Dispute_Shortage;
-            //        WMaker_ReasonOfAction = "Settle Dispute Shortage through Shortage";
-            //        Aoc.CreateActionsTxnsPerActionId(WOperator, WSignedId,
-            //                                              WActionId, WUniqueRecordIdOrigin,
-            //                                              WUniqueRecordId, WCcy, DoubleEntryAmt, WAtmNo, WSesNo
-            //                                              , WMaker_ReasonOfAction, "Replenishment");
-
-            //        TEMPTableFromAction = Aoc.TxnsTableFromAction;
-            //    }
-
-            //    //label43.Show();
-            //    //textBoxDisp.Show();
-            //    //textBoxDisp.Text = "0.00";
-            //}
+         
 
         }
 
@@ -2450,7 +2227,7 @@ namespace RRDM4ATMsWin
 
             }
             Form154 NForm154;
-            int WMode = 1;
+            int WMode = 2;
             NForm154 = new Form154(WOperator, WSignedId, WReconcCycleNo, WMode, WAtmNo);
             NForm154.FormClosed += NForm154_FormClosed;
             NForm154.ShowDialog();

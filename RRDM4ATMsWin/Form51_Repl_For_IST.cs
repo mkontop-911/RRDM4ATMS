@@ -118,7 +118,8 @@ namespace RRDM4ATMsWin
             labelATMno.Text = WAtmNo;
             labelSessionNo.Text = WSesNo.ToString();
             //labelReplDate.Text = DateTime.Now.ToShortDateString();
-            this.WindowState = FormWindowState.Maximized;
+
+            //this.WindowState = FormWindowState.Maximized;
 
             if (W_IsFromExcel == true)
             {
@@ -187,9 +188,17 @@ namespace RRDM4ATMsWin
                 MessageBox.Show("Replenishment Cycle Doesnt exist");
                 return;
             }
+            else
+            {
+               // ALL MARK this way are related
+               // This is an indication that the authorisation passes from here
+                Ta.Stats1.NoOfCheques = 1; // 
+                Ta.UpdateSessionsStatusTraces(WAtmNo, WSesNo);
+                
+            }
 
-            // Get the date 
-            labelCycleStart.Text = Ta.SesDtTimeStart.ToShortDateString();
+                // Get the date 
+                labelCycleStart.Text = Ta.SesDtTimeStart.ToShortDateString();
             labelReplDate.Text = Ta.SesDtTimeEnd.ToShortDateString();
 
             bool Reject = false;
@@ -1037,7 +1046,7 @@ namespace RRDM4ATMsWin
                                     Ta.Repl1.DiffRepl = true;
                                     Ta.ReconcAtRMCycle = WRMCycle;
                                     Ta.Recon1.RecFinDtTm = DateTime.Now;
-                                    Ta.Stats1.NoOfCheques = 1;
+                                    //Ta.Stats1.NoOfCheques = 1; // ALREADY DONE
                                     Ta.UpdateSessionsStatusTraces(WAtmNo, WSesNo);
                                     
                                 }
@@ -1047,7 +1056,7 @@ namespace RRDM4ATMsWin
                                     Ta.Repl1.DiffRepl = false;
                                     Ta.ReconcAtRMCycle = WRMCycle;
                                     Ta.Recon1.RecFinDtTm = DateTime.Now;
-                                    Ta.Stats1.NoOfCheques = 1;
+                                    //Ta.Stats1.NoOfCheques = 1;
                                     Ta.UpdateSessionsStatusTraces(WAtmNo, WSesNo);
 
                                 }

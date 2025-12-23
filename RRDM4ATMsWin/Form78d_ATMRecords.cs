@@ -77,6 +77,8 @@ namespace RRDM4ATMsWin
 
             // 21 : TXNS From [ATM_MT_Journals_AUDI].[dbo].[tblHstAtmTxnsROM] between two days (cycle dates )  
 
+            // 24 : ALPHA Master Daily Reconciliation per ATM
+
             InitializeComponent();
 
             if ( WMode == 8)

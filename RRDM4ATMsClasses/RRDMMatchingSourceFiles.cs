@@ -324,6 +324,29 @@ namespace RRDM4ATMs
 
                     // Check ******************* and fill table in the Method called
                     // 
+                    if (InOperator == "ALPHA_CY")
+                    {
+
+                      //  string folder = @"C:\path\to\folder";
+                      //= WSourceDirectory; 
+
+                        foreach (string file in Directory.GetFiles(WSourceDirectory, "*.csv"))
+                        {
+                            try
+                            {
+                                string newName = Path.ChangeExtension(file, ".001");
+                                File.Move(file, newName);
+                            }
+                            catch (Exception ex)
+                            {
+                                //  conn.Close();
+                                CatchDetails(ex);
+                            }
+                           
+                        }
+
+                       
+                            }
 
                     CheckIfFileInDirectory(InOperator, WSourceFileId, WSourceDirectory, Rfm.DateExpected, WFileNameMask, 1);
 

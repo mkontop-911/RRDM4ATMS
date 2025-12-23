@@ -317,11 +317,15 @@ namespace RRDM4ATMsWin
                             }
                             else
                             {
-                                SelectionCriteria = " WHERE RMCateg ='"
-                                               + WRMCategoryId + "' AND MatchingAtRMCycle =" + WRMCycleNo
-                                               + " AND IsMatchingDone = 1 AND FastTrack = 0 "
-                                               + "  AND (Matched = 0 AND MetaExceptionId <> 55) AND SettledRecord = 1 " + " AND ActionType != '07' ";
-
+                                //SelectionCriteria = " WHERE RMCateg ='"
+                                //               + WRMCategoryId + "' AND MatchingAtRMCycle =" + WRMCycleNo
+                                //               + " AND IsMatchingDone = 1 AND FastTrack = 0 "
+                                //               + "  AND (Matched = 0 AND MetaExceptionId <> 55) AND SettledRecord = 1 " + " AND ActionType != '07' ";
+                                SelectionCriteria = " WHERE Operator ='" + WOperator
+                          + "' AND RMCateg ='" + WRMCategoryId + "'"
+                          + "  AND MatchingAtRMCycle =" + WRMCycleNo
+                          + "  AND IsMatchingDone = 1 "
+                          + "  AND FastTrack = 0   AND Matched = 0 AND ActionType != '07'  AND MetaExceptionId <> 55 ";
                             }
 
                             CallingMode = 1; // View
@@ -1919,27 +1923,7 @@ namespace RRDM4ATMsWin
         // NOTES FOR RM CYCLE 
         private void buttonNotes2_Click(object sender, EventArgs e)
         {
-            Form197 NForm197;
-            string WParameter3 = "";
-            WParameter4 = "Force Matching for" + " Category: " + WRMCategoryId + " Matching SesNo: " + WRMCycleNo;
-            string SearchP4 = "";
-
-            if (ViewWorkFlow == true) WMode = "Read";
-            else WMode = "Update";
-
-            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, "", WParameter3, WParameter4, WMode, SearchP4);
-            NForm197.ShowDialog();
-
-            // NOTES 
-            Order = "Descending";
-            WParameter4 = "Force Matching for" + " Category: " + WRMCategoryId + " Matching SesNo: " + WRMCycleNo;
-            WSearchP4 = "";
-            Cn.ReadAllNotes(WParameter4, WSignedId, Order, WSearchP4);
-            if (Cn.RecordFound == true)
-            {
-                labelNumberNotes2.Text = Cn.TotalNotes.ToString();
-            }
-            else labelNumberNotes2.Text = "0";
+           
         }
         // NOTES FOR ITEM 
         private void buttonNotes3_Click(object sender, EventArgs e)
@@ -3700,6 +3684,31 @@ namespace RRDM4ATMsWin
         private void labelNumberNotes3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonNotes2_Click_1(object sender, EventArgs e)
+        {
+            Form197 NForm197;
+            string WParameter3 = "";
+            WParameter4 = "Force Matching for" + " Category: " + WRMCategoryId + " Matching SesNo: " + WRMCycleNo;
+            string SearchP4 = "";
+
+            if (ViewWorkFlow == true) WMode = "Read";
+            else WMode = "Update";
+
+            NForm197 = new Form197(WSignedId, WSignRecordNo, WOperator, "", WParameter3, WParameter4, WMode, SearchP4);
+            NForm197.ShowDialog();
+
+            // NOTES 
+            Order = "Descending";
+            WParameter4 = "Force Matching for" + " Category: " + WRMCategoryId + " Matching SesNo: " + WRMCycleNo;
+            WSearchP4 = "";
+            Cn.ReadAllNotes(WParameter4, WSignedId, Order, WSearchP4);
+            if (Cn.RecordFound == true)
+            {
+                labelNumberNotes2.Text = Cn.TotalNotes.ToString();
+            }
+            else labelNumberNotes2.Text = "0";
         }
         //void NForm3_FormClosed(object sender, FormClosedEventArgs e)
         //{

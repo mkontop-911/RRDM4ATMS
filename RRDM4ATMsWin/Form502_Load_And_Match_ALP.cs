@@ -731,7 +731,6 @@ namespace RRDM4ATMsWin
             }
         }
 
-
         // Show ready Categories
         private void buttonShowReadyCateg_Click(object sender, EventArgs e)
         {
@@ -742,45 +741,7 @@ namespace RRDM4ATMsWin
 
             MessageBox.Show(Mt.W_MPComment);
         }
-        ////
-        //// Confirm
-        ////
-        //bool Confirmed;
-        //private void buttonConfirm_Click(object sender, EventArgs e)
-        //{
-        //    Mt.MatchReadyCategoriesEnquiry(WOperator, WSignedId,
-        //                           WReconcCycleNo);
-
-        //    //MessageBox.Show(Mt.W_MPComment);
-
-
-
-        //    // Verification Message 
-        //    if (MessageBox.Show("Do you want to Start Loading And Matching?" + Environment.NewLine
-        //                       + "For Ready Categories " + Environment.NewLine
-        //                       + Mt.W_MPComment
-        //                       , "Verification Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-        //                == DialogResult.Yes)
-        //    {
-        //        // YES Proceed
-        //        // Update Reconciliation Cycle 
-        //        RRDMReconcJobCycles Rjc = new RRDMReconcJobCycles();
-
-        //        WNumberOfLoadingAndMatching = WNumberOfLoadingAndMatching + 1;
-
-        //        Rjc.UpdateLoadingAndMatchingField(WReconcCycleNo, WNumberOfLoadingAndMatching);
-
-        //      //  textBoxConfirmed.Show();
-        //      //  Confirmed = true;
-
-        //        //  buttonLoad.Show(); 
-        //    }
-        //    else
-        //    {
-        //        // Stop 
-        //        return;
-        //    }
-        //}
+       
         //
         // Load Journals 
         //
@@ -806,7 +767,8 @@ namespace RRDM4ATMsWin
             string JournalName;
             string WAtmNo;
             string TempEjournalTypeId = "N/A";
-            string PhysicalId = ""; 
+            string PhysicalId = "";
+            bool IsPhysicalMissing = false; 
             //
             // FROM NOW ON NOBODY CAN SIGN IN EXCEPT THE CONTROLLER
             //
@@ -828,6 +790,25 @@ namespace RRDM4ATMsWin
             }
             else
             {
+                string ParId = "952";
+                string OccurId = "1";
+                //TEST
+                bool LeaveLogicalName = false;
+                Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+
+                if (Gp.RecordFound == true)
+                {
+                    if (Gp.OccuranceNm == "YES") // LeaveLogicalName
+                    {
+                        LeaveLogicalName = true;
+                    }
+                    else
+                    {
+                        LeaveLogicalName = false;
+                    }
+
+                }
+                
                 // Change names for ALPHA Journals  
                 foreach (string file in allJournals)
                 {
@@ -835,6 +816,7 @@ namespace RRDM4ATMsWin
                     // 95101069_20250819_EJ_HYO.000   // As Per RRDM 
                     string myFilePath = @file;
                     string ext = Path.GetExtension(myFilePath);
+
                     string LogicalFileName = Path.GetFileName(myFilePath);
 
                     if (ext == ".txt")
@@ -847,62 +829,86 @@ namespace RRDM4ATMsWin
                                 throw new Exception($"Directory not found in given path value:{myFilePath}");
                             }
 
-                            PhysicalId = ""; 
+                            PhysicalId = "";
 
-                            string WATM = LogicalFileName.Substring(7, 7); // FOR ALPHA BANK
+                            string WATM_1 = LogicalFileName.Substring(0, 3);
+                            string WATM_2 =  LogicalFileName.Substring(3, 4) ; // FOR ALPHA BANK
                             string ATM_Supplier = "HYO"; // FOR ALPHA BANK
-
+                            string WATM = WATM_1 +"-" +WATM_2;
                             // Here we have the logical Name such as ATM2021
                             // FIND If Exist in ATMS 
                             Ac.ReadAtm(WATM); // SEARCH For Logical 
                             if (Ac.RecordFound == true)
                             {
-                                // Get the name 
-                                RRDMJTMIdentificationDetailsClass Jti = new RRDMJTMIdentificationDetailsClass();
-                                Jti.ReadJTMIdentificationDetailsByAtmNo(WATM); 
-                                if (Jti.RecordFound == true )
+                                if (LeaveLogicalName == false) // Move to Physical 
                                 {
-                                    if (Jti.ATMAccessID != "")
+                                    // Get the name 
+                                    RRDMJTMIdentificationDetailsClass Jti = new RRDMJTMIdentificationDetailsClass();
+                                    Jti.ReadJTMIdentificationDetailsByAtmNo(WATM);
+                                    if (Jti.RecordFound == true)
                                     {
-                                        PhysicalId = Jti.ATMAccessID; 
-
-                                        Ac.ReadAtm(PhysicalId); 
-
-                                        if (Ac.RecordFound == true)
+                                        if (Jti.ATMAccessID != "")
                                         {
-                                            // ALL OK 
-                                        }
-                                        else
-                                        {
-                                            // Open Physical 
-                                            // Insert ATM_No
+                                            PhysicalId = Jti.ATMAccessID;
 
-                                            Ac.CreateNewAtmBasedOnGeneral_Mode_ALPHA(WOperator, PhysicalId, ATM_Supplier);
-                                            // Check if created
-                                            Ac.ReadAtm(WATM);
+                                            Ac.ReadAtm(PhysicalId);
+
                                             if (Ac.RecordFound == true)
                                             {
-                                               // OK 
+                                                // ALL OK 
                                             }
                                             else
                                             {
-                                                // NOT OK 
+                                                // Open Physical 
+                                                // Insert ATM_No
+
+                                                Ac.CreateNewAtmBasedOnGeneral_Mode_ALPHA(WOperator, PhysicalId, ATM_Supplier);
+                                                // Check if created
+                                                Ac.ReadAtm(WATM);
+                                                if (Ac.RecordFound == true)
+                                                {
+                                                    // OK 
+                                                }
+                                                else
+                                                {
+                                                    // NOT OK 
+                                                }
                                             }
                                         }
+                                        else
+                                        {
+                                            MessageBox.Show("Please Update the.." + WATM + Environment.NewLine
+                                                + "With the physical Id for this ATM and Load AGAIN"
+                                                );
+                                            return;
+                                        }
                                     }
-                                    else
+                                }
+                                else
+                                {
+                                    // CHECK IF THE PHYSICAL ID Is Inserted 
+                                    RRDMJTMIdentificationDetailsClass Jti = new RRDMJTMIdentificationDetailsClass();
+                                    Jti.ReadJTMIdentificationDetailsByAtmNo(WATM);
+                                    if (Jti.RecordFound == true)
                                     {
-                                        MessageBox.Show("Please Update the.."+ WATM+ Environment.NewLine
-                                            +"With the physical Id for this ATM and Load AGAIN"
-                                            );
-                                        return; 
+                                        if (Jti.ATMAccessID != "")
+                                        {
+                                            PhysicalId = Jti.ATMAccessID;
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Please Update the.." + WATM + Environment.NewLine
+                                                + "With the physical Id for this ATM and Load AGAIN"
+                                                );
+                                            IsPhysicalMissing = true; 
+                                        }
                                     }
                                 }
                             }
                             else
                             {
                                 // WE WILL OPEN the Logical
-                               
+
                                 Ac.CreateNewAtmBasedOnGeneral_Mode_ALPHA(WOperator, WATM, ATM_Supplier);
                                 // Check if created
                                 Ac.ReadAtm(WATM);
@@ -911,29 +917,58 @@ namespace RRDM4ATMsWin
                                     MessageBox.Show("Please Update the.." + WATM + Environment.NewLine
                                          + "With the physical Id for this ATM and Load AGAIN"
                                          );
-                                    return; 
+                                    IsPhysicalMissing = true;
+                                    //return;
                                 }
                                 else
                                 {
 
-                                }        
+                                }
 
                             }
 
-                           if ( PhysicalId != "")
+
+                            if (LeaveLogicalName == false) // Move to Physical 
                             {
-                                // CHANGE THE NAME OF THE INPUT JOURNAL BASED ON the Physical 
-                                string WYYYYY = LogicalFileName.Substring(15, 4);
-                                string WMM = LogicalFileName.Substring(19, 2);
-                                string WDD = LogicalFileName.Substring(21, 2);
+                                if (PhysicalId != "")
+                                {
+                                    // CHANGE THE NAME OF THE INPUT JOURNAL BASED ON the Physical 
+                                    string WYYYYY = LogicalFileName.Substring(15, 4);
+                                    string WMM = LogicalFileName.Substring(19, 2);
+                                    string WDD = LogicalFileName.Substring(21, 2);
 
-                                string NewFileName = PhysicalId + "_" + WYYYYY + WMM + WDD + "_EJ_HYO.001";
-                                var newFilenameWithPath = Path.Combine(directoryPath, NewFileName);
-                                FileInfo fileInfo = new FileInfo(myFilePath);
-                                fileInfo.MoveTo(newFilenameWithPath);
+                                    string NewFileName = PhysicalId + "_" + WYYYYY + WMM + WDD + "_EJ_HYO.001";
+                                    var newFilenameWithPath = Path.Combine(directoryPath, NewFileName);
+                                    FileInfo fileInfo = new FileInfo(myFilePath);
+                                    fileInfo.MoveTo(newFilenameWithPath);
+                                }
+
                             }
 
-                           
+                            if (LeaveLogicalName == true & PhysicalId != "") // LEAVE the logical 
+                            {
+                                // CHANGE THE NAME OF THE INPUT JOURNAL BASED ON the LOGICAL
+                                // EJData_ATM2021_20250819.txt   // As Per Bank
+                                // 95101069_20250819_EJ_HYO.000   // As Per RRDM 
+                                //string WATM = LogicalFileName.Substring(7, 7); // FOR ALPHA BANK
+                                //string ATM_Supplier = "HYO"; // FOR ALPHA BANK
+                                    string WATM_ID_1 = LogicalFileName.Substring(0, 3);
+                                    string WATM_ID_2 = LogicalFileName.Substring(3, 4);
+                                    string WYYYYY = LogicalFileName.Substring(8, 4);
+                                    string WMM = LogicalFileName.Substring(12, 2);
+                                    string WDD = LogicalFileName.Substring(14, 2);
+                                    string Plin = "-";
+
+                                // string NewFileName = WATM+ Space + "_" + WYYYYY + WMM + WDD + "_EJ_HYO.001";
+                                   string NewFileName = WATM_ID_1 + Plin + WATM_ID_2 + "_" + WYYYYY + WMM + WDD + "_EJ_HYO.001";
+                                    var newFilenameWithPath = Path.Combine(directoryPath, NewFileName);
+                                    FileInfo fileInfo = new FileInfo(myFilePath);
+                                    fileInfo.MoveTo(newFilenameWithPath);
+                                
+
+                            }
+
+
                         }
                         catch (Exception exf)
                         {
@@ -992,6 +1027,14 @@ namespace RRDM4ATMsWin
                     return;
                 }
 
+            }
+            // Check if missing information before you proceed
+            if (IsPhysicalMissing == true)
+            {
+                MessageBox.Show("There are one or more Physical ATM ID Missing" + Environment.NewLine
+                                    + " It must be inserted before you continue" + Environment.NewLine
+                                     );
+                return; 
             }
 
             //MessageBox.Show("Deleted Journals already loaded.=.." + Count2.ToString());
@@ -1312,7 +1355,7 @@ namespace RRDM4ATMsWin
                 timeout = 5000;
                 AutoClosingMessageBox.Show(text, caption, timeout);
 
-                MessageBox.Show("Transactions will be deleted prior to..Date.." + DeleteDate.ToShortDateString());
+                //MessageBox.Show("Transactions will be deleted prior to..Date.." + DeleteDate.ToShortDateString());
                 Lf_ALPHA.DeleteRecordsToSetStartingPoint(WOperator, DeleteDate, WCut_Off_Date, WReconcCycleNo);
             }
             else
@@ -1393,208 +1436,17 @@ namespace RRDM4ATMsWin
             // UPDATE Mpa with 818 where we Have EGP
             Mpa.UpdateMatchingTxnsMasterPoolATMsCurrency(WOperator);
 
-            // SETTLEMENT DEPARTMENT 
-            // Declare fields
-            string WFileId = "";
-            string WCategories = "";
-            string WIdentity = "";
-
-            RRDM_CAP_DATE_GL_PER_CATEGORY_AND_ATM Cgl = new RRDM_CAP_DATE_GL_PER_CATEGORY_AND_ATM();
-            string WMatchingCateg = PRX + "210";
-            Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
-
-            if (Cgl.RecordFound == true)
-            {
-                // Already Created
-                // You should not create it
-            }
-            else
-            {
-                // Create entries
-                WFileId = "Egypt_123_NET";
-                // For Categories BDC210 and BDC211
-                WCategories = "('" + PRX + "210','" + PRX + "211'" + ")"; // Issuer
-                WIdentity = "123 TXNS_Bank_Is_Issuer";
-
-                WWMode = 1;
-                //Mgt.CreateRecords_GL_ENTRIES_For_Category_SecondVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WWMode);
-                Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
-            }
-
-            WMatchingCateg = PRX + "215";
-            Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
-
-            if (Cgl.RecordFound == true)
-            {
-                // Already Created
-                // You should not create it
-            }
-            else
-            {
-                WFileId = "Egypt_123_NET";
-                // For Category BDC215
-                WCategories = "('" + PRX + "215' )"; // Acquirer
-                WIdentity = "123 TXNS_Bank_Is_Acquirer";
-                WWMode = 2;
-                Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
-
-            }
-            // ΜΕΕΖΑ
-            // ΜΕΕΖΑ
-            //
-            WMatchingCateg = PRX + "270";
-            Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
-
-            if (Cgl.RecordFound == true)
-            {
-                // Already Created
-                // You should not create it
-            }
-            else
-            {
-                // Create entries
-                WFileId = "MEEZA_OTHER_ATMS";
-                // For Categories BDC270 and BDC271
-                WCategories = "('" + PRX + "270','" + PRX + "271'" + ")"; // Issuer
-                WIdentity = "MEEZA TXNS_Bank_Is_Issuer";
-                WWMode = 4;
-                //Mgt.CreateRecords_GL_ENTRIES_For_Category_SecondVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WWMode);
-                Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
-
-            }
-
-            WMatchingCateg = PRX + "272";
-            Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
-
-            if (Cgl.RecordFound == true)
-            {
-                // Already Created
-                // You should not create it
-            }
-            else
-            {
-                // Create entries
-                WFileId = "MEEZA_POS";
-                // For Categories BDC272 and BDC273
-                WCategories = "('" + PRX + "272','" + PRX + "273'" + ")"; // Issuer POS
-                WIdentity = "MEEZA POS TXNS_Bank_Is_Issuer";
-                WWMode = 1;
-                //Mgt.CreateRecords_GL_ENTRIES_For_Category_SecondVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WWMode);
-                Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
-
-            }
-
-            WMatchingCateg = PRX + "275";
-            Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
-
-            if (Cgl.RecordFound == true)
-            {
-                // Already Created
-                // You should not create it
-            }
-            else
-            {
-                // Create entries
-                WFileId = "MEEZA_OWN_ATMS";
-                // For Category BDC215
-                WCategories = "('" + PRX + "275' )"; // Acquirer
-                WIdentity = "MEEZA TXNS_Bank_Is_Acquirer";
-                WWMode = 2;
-                Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
-
-            }
-
-            // MASTER CARD - Bank Is Issuer
-            // MASTER CARD
-            //
-            WMatchingCateg = PRX + "230";
-            Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
-
-            if (Cgl.RecordFound == true)
-            {
-                // Already Created
-                // You should not create it
-            }
-            else
-            {
-                // Create entries
-                WFileId = "MASTER_CARD";
-                // For Categories BDC230 and BDC232
-                WCategories = "('" + PRX + "230','" + PRX + "232'" + ")"; // Issuer
-                WIdentity = "MASTER TXNS_Bank_Is_Issuer";
-                WWMode = 1;
-                //Mgt.CreateRecords_GL_ENTRIES_For_Category_SecondVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WWMode);
-                Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
-
-            }
-
-            // MASTER CARD BANK is Acquirer
-            // MASTER CARD
-            //
-            WMatchingCateg = PRX + "235";
-            Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
-
-            if (Cgl.RecordFound == true)
-            {
-                // Already Created
-                // You should not create it
-            }
-            else
-            {
-                // Create entries
-                WFileId = "MASTER_CARD";
-                // For Categories BDC235 and BDC236? 
-                WCategories = "('" + PRX + "235' )"; // Acquirer
-                WIdentity = "MASTER TXNS_Bank_Is_Acquirer";
-                WWMode = 2;
-                //Mgt.CreateRecords_GL_ENTRIES_For_Category_SecondVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WWMode);
-                Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
-            }
-
-            // Credit Card
-            // 
-            //
-            WMatchingCateg = PRX + "240";
-            Cgl.Read_SettlementDate_ByCycleNo(WReconcCycleNo, WMatchingCateg);
-
-            if (Cgl.RecordFound == true)
-            {
-                // Already Created
-                // You should not create it
-            }
-            else
-            {
-                // Create entries
-                WFileId = "Credit_Card";
-                // For Categories BDC240
-                WCategories = "('" + PRX + "240' )"; // 
-                WIdentity = "Credit Card Txns";
-                WWMode = 3;
-                //Mgt.CreateRecords_GL_ENTRIES_For_Category_SecondVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WWMode);
-                Mgt.CreateRecords_GL_ENTRIES_For_Category_ThirdVersion(WOperator, WFileId, WCategories, WReconcCycleNo, WIdentity, WWMode);
-            }
-
-
-            textBoxMsgBoard.Text = "Current Status : Moving Records Process";
-
-            text = "Matching has Finished" + Environment.NewLine
-                               + "Process of Moving records to Matched starts.";
-            caption = "MATCHING";
-            timeout = 5000;
-            AutoClosingMessageBox.Show(text, caption, timeout);
-
-
-            Mode = 5; // Updating Action 
-            ProcessName = "Moving Records To MATCHED Data Base";
-            Message = "Moving Records Process Starts. Cycle:.." + WReconcCycleNo.ToString();
-            SavedStartDt = DateTime.Now;
-
-            Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
-
             //UPDATE Mpa Replenishment Cycle After Matching for the 01 and 011
             // *********************************
 
             Lf_ALPHA.UPDATE_Mpa_After_Matching_With_ReplCycle(WOperator, WReconcCycleNo);
+
+            //*******************************************
+            // UPDATE TODAYS ATMs_CASH_RECON_MASTER_RECORD
+            // 
+            RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
+
+            Ta.ReadReplCycles_Created_This_Cycle_For_CASH_RECO(WReconcCycleNo, WCut_Off_Date);      
 
             // Exclude presenter if so 
             //
@@ -1617,83 +1469,106 @@ namespace RRDM4ATMsWin
                 Mpa.ReadPoolAndFindTotals_Presenter_Unmatched(WOperator, WReconcCycleNo);
             }
 
+            //********************************************
 
-            //******************************
-            // 
-            // MOVE MATCHED TXNS POOL 
-            // stp_00_MOVE_TXNS_TO_MATCHED_DB_01_POOL
-            //******************************
-            string TotalProgressText = "Cycle: ..."
-                                     + WReconcCycleNo.ToString() + Environment.NewLine;
-            RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
-            RRDMMatchingSourceFiles Mf = new RRDMMatchingSourceFiles();
-            string WSelectionCriteria = " WHERE Operator = @Operator AND Enabled = 1";
-            Mf.ReadReconcSourceFilesToFillDataTable_FULL(WOperator, WSelectionCriteria);
+            textBoxMsgBoard.Text = "Current Status : Moving Records Process";
 
-            int I = 0;
-            int K = 0;
-            string WFileName;
+            text = "Matching has Finished" + Environment.NewLine
+                               + "Process of Moving records to Matched starts.";
+            caption = "MATCHING";
+            timeout = 5000;
+            AutoClosingMessageBox.Show(text, caption, timeout);
 
-            while (I <= (Mf.SourceFilesDataTable.Rows.Count - 1))
-            {
-                //    RecordFound = true;
-                int SeqNo = (int)Mf.SourceFilesDataTable.Rows[I]["SeqNo"];
-                Mf.ReadReconcSourceFilesBySeqNo(SeqNo);
-
-                if (Mf.IsMoveToMatched == true || Mf.SourceFileId == "Atms_Journals_Txns") // the indication that this table is a moving table 
-                {
-                    if (Mf.SourceFileId == "Atms_Journals_Txns")
-                    {
-                        WFileName = "tblMatchingTxnsMasterPoolATMs";
-                    }
-                    else
-                    {
-                        WFileName = Mf.SourceFileId;
-                    }
-
-                    // MessageBox.Show("Start Moving file.." + WFileName); 
-
-                    Cv.MOVE_ITMX_TXNS_TO_MATCHED(WFileName, WReconcCycleNo);
-
-                    if (Cv.ret == 0)
-                    {
-                        // GOOD
-                        K = K + 1;
-                        TotalProgressText = TotalProgressText + Cv.ProgressText;
-                    }
-                    else
-                    {
-                        // NO GOOD
-                        // public string ProgressText;
-                        //public string ErrorReference;
-                        //public int ret;
-                        MessageBox.Show("VITAL SYSTEM ERROR" + Environment.NewLine
-                                       + "PROGRESS TEXT.." + Cv.ProgressText + Environment.NewLine
-                                       + "ERROR REFERENCE.." + Cv.ErrorReference + Environment.NewLine
-                                       + ""
-                                       );
-
-                        return;
-
-                    }
-
-                }
-
-                I = I + 1;
-            }
-
-            TotalProgressText = TotalProgressText + DateTime.Now + " Moving of TXNS to matched has finished" + Environment.NewLine;
-            TotalProgressText = TotalProgressText + DateTime.Now + " Number of moved tables..." + K.ToString() + Environment.NewLine;
-
-            // *****************************
 
             Mode = 5; // Updating Action 
-            ProcessName = "MovingRecordsProcess";
-            Message = "MovingRecords Process Finishes.";
+            ProcessName = "Moving Records To MATCHED Data Base";
+            Message = "Moving Records Process Starts. Cycle:.." + WReconcCycleNo.ToString();
+            SavedStartDt = DateTime.Now;
 
-            textBoxMsgBoard.Text = "Current Status : Ready";
+            Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, SavedStartDt, Message, WSignedId, WReconcCycleNo);
 
-            Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, DateTime.Now, Message, WSignedId, WReconcCycleNo);
+            bool Panicos = true; 
+
+            if (Panicos == true)
+            {
+                //******************************
+                // 
+                // MOVE MATCHED TXNS POOL 
+                // stp_00_MOVE_TXNS_TO_MATCHED_DB_01_POOL
+                //******************************
+                string TotalProgressText = "Cycle: ..."
+                                         + WReconcCycleNo.ToString() + Environment.NewLine;
+                RRDM_Copy_Txns_From_IST_ToMatched_And_Vice Cv = new RRDM_Copy_Txns_From_IST_ToMatched_And_Vice();
+                RRDMMatchingSourceFiles Mf = new RRDMMatchingSourceFiles();
+                string WSelectionCriteria = " WHERE Operator = @Operator AND Enabled = 1";
+                Mf.ReadReconcSourceFilesToFillDataTable_FULL(WOperator, WSelectionCriteria);
+
+                int I = 0;
+                int K = 0;
+                string WFileName;
+
+                while (I <= (Mf.SourceFilesDataTable.Rows.Count - 1))
+                {
+                    //    RecordFound = true;
+                    int SeqNo = (int)Mf.SourceFilesDataTable.Rows[I]["SeqNo"];
+                    Mf.ReadReconcSourceFilesBySeqNo(SeqNo);
+
+                    if (Mf.IsMoveToMatched == true || Mf.SourceFileId == "Atms_Journals_Txns") // the indication that this table is a moving table 
+                    {
+                        if (Mf.SourceFileId == "Atms_Journals_Txns")
+                        {
+                            WFileName = "tblMatchingTxnsMasterPoolATMs";
+                        }
+                        else
+                        {
+                            WFileName = Mf.SourceFileId;
+                        }
+
+                        // MessageBox.Show("Start Moving file.." + WFileName); 
+
+                        Cv.MOVE_ITMX_TXNS_TO_MATCHED(WFileName, WReconcCycleNo);
+
+                        if (Cv.ret == 0)
+                        {
+                            // GOOD
+                            K = K + 1;
+                            TotalProgressText = TotalProgressText + Cv.ProgressText;
+                        }
+                        else
+                        {
+                            // NO GOOD
+                            // public string ProgressText;
+                            //public string ErrorReference;
+                            //public int ret;
+                            MessageBox.Show("VITAL SYSTEM ERROR" + Environment.NewLine
+                                           + "PROGRESS TEXT.." + Cv.ProgressText + Environment.NewLine
+                                           + "ERROR REFERENCE.." + Cv.ErrorReference + Environment.NewLine
+                                           + ""
+                                           );
+
+                            return;
+
+                        }
+
+                    }
+
+                    I = I + 1;
+                }
+
+                TotalProgressText = TotalProgressText + DateTime.Now + " Moving of TXNS to matched has finished" + Environment.NewLine;
+                TotalProgressText = TotalProgressText + DateTime.Now + " Number of moved tables..." + K.ToString() + Environment.NewLine;
+
+                // *****************************
+
+                Mode = 5; // Updating Action 
+                ProcessName = "MovingRecordsProcess";
+                Message = "MovingRecords Process Finishes.";
+
+                textBoxMsgBoard.Text = "Current Status : Ready";
+
+                Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, DateTime.Now, Message, WSignedId, WReconcCycleNo);
+
+            }
             //*********************************
 
             //MessageBox.Show(TotalProgressText);
@@ -1741,14 +1616,7 @@ namespace RRDM4ATMsWin
                 {
                     MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
                 }
-            //*******************************************
-            // UPDATE TODAYS ATMs_CASH_RECON_MASTER_RECORD
-            // 
-            RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
-
-            //Ta.ReadReplCycles_Created_This_Cycle_For_CASH_RECO(WReconcCycleNo, WCut_Off_Date); 
-
-            //********************************************
+            
 
             // MessageBox.Show("Matching and movings of records process has finished");
             text = "Matching and moving of records process has finished";
@@ -1783,15 +1651,15 @@ namespace RRDM4ATMsWin
 
             ALPHA_LOAD.ReadJournal_Txns_And_Insert_In_Pool(WSignedId, WSignRecordNo, WOperator, WReconcCycleNo);
 
-            DateTime endTime = DateTime.Now;
+            //DateTime endTime = DateTime.Now;
 
-            TimeSpan span = endTime.Subtract(startTime);
+            //TimeSpan span = endTime.Subtract(startTime);
 
-            text = "Loading from Journals DB to Master FINISHES" + Environment.NewLine
-              + "Time Elapsed In Minutes.." + span.TotalMinutes;
-            caption = "LOADING";
-            timeout = 5000;
-            AutoClosingMessageBox.Show(text, caption, timeout);
+            //text = "Loading from Journals DB to Master FINISHES" + Environment.NewLine
+            //  + "Time Elapsed In Minutes.." + span.TotalMinutes;
+            //caption = "LOADING";
+            //timeout = 5000;
+            //AutoClosingMessageBox.Show(text, caption, timeout);
 
 
             CheckLoadingOfJournals();
@@ -1850,7 +1718,7 @@ namespace RRDM4ATMsWin
 
 
 
-                RRDMRepl_SupervisorMode_Master Smaster = new RRDMRepl_SupervisorMode_Master();
+                RRDMRepl_SupervisorMode_Master_ALPHA Smaster = new RRDMRepl_SupervisorMode_Master_ALPHA();
                 int Sm_Mode = 3;
                 Smaster.CreateReplCyclesFrom_Pambos_Details_Of_Supervisor_Mode(WSignedId, WSignRecordNo, WOperator,
                                                              Sm_Mode, "NO_Form153");

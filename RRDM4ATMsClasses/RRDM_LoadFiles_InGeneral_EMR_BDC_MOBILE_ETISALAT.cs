@@ -947,7 +947,7 @@ namespace RRDM4ATMs
                     cmd.Parameters.Add(retErrorReference);
 
                     // execute the command
-                    cmd.CommandTimeout = 750;  // seconds
+                    cmd.CommandTimeout = 1000;  // seconds
                     cmd.ExecuteNonQuery(); // errors will be caught in CATCH
 
                     ret = (int)cmd.Parameters["@ReturnCode"].Value;

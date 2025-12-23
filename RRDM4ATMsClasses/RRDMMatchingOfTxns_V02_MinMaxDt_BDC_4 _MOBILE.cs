@@ -1738,9 +1738,9 @@ namespace RRDM4ATMs
                 }
                 else
                 {
-                    MakeMatchingOf_2_Working_Tables(WOperator, WSignedId,
-                                                             InMatchingCateg, InReconcCateg,
-                                                             WRMCycle);
+                   // MakeMatchingOf_2_Working_Tables(WOperator, WSignedId,
+                           //                                  InMatchingCateg, InReconcCateg,
+                               //                              WRMCycle);
 
                 }
             }
@@ -3350,294 +3350,294 @@ namespace RRDM4ATMs
         //*************************************
         // MAKE MATCHING FOR TWO WORKING FILES 
         //*************************************
-        public void MakeMatchingOf_2_Working_Tables
-          (string InOperator, string InSignedId,
-                string InMatchingCateg, string InReconcCateg,
-                                      int InRMCycle)
-        {
-            RecordFound = false;
-            ErrorFound = false;
-            ErrorOutput = "";
-
-            NumberOfDublicates = 0;
-            NumberOfUnmatched = 0;
-
-            // MOBILE LIKE ETISALAT
-            // MOBILE LIKE QAHERA                                       
-
-            #region UnMatched Table Definition
-
-            TableUnMatched = new DataTable();
-            TableUnMatched.Clear();
-            TotalSelected = 0;
-
-            UnmatchedTableFieldsDefinition();
-
-            if (IS_Matching_At_SET_DATE == true)
-            {
-                TotalSelected = TotalSelected;
-                // ETI375
-            }
-            if (InMatchingCateg == "ETI360")
-            {
-                MatchingCateg = MatchingCateg;
-            }
-
-            #endregion
-
-            #region Find dublicates 
+        //public void MakeMatchingOf_2_Working_Tables
+        //  (string InOperator, string InSignedId,
+        //        string InMatchingCateg, string InReconcCateg,
+        //                              int InRMCycle)
+        //{
+        //    RecordFound = false;
+        //    ErrorFound = false;
+        //    ErrorOutput = "";
+
+        //    NumberOfDublicates = 0;
+        //    NumberOfUnmatched = 0;
+
+        //    // MOBILE LIKE ETISALAT
+        //    // MOBILE LIKE QAHERA                                       
+
+        //    #region UnMatched Table Definition
+
+        //    TableUnMatched = new DataTable();
+        //    TableUnMatched.Clear();
+        //    TotalSelected = 0;
+
+        //    UnmatchedTableFieldsDefinition();
+
+        //    if (IS_Matching_At_SET_DATE == true)
+        //    {
+        //        TotalSelected = TotalSelected;
+        //        // ETI375
+        //    }
+        //    if (InMatchingCateg == "ETI310")
+        //    {
+        //        MatchingCateg = MatchingCateg;
+        //    }
+
+        //    #endregion
+
+        //    #region Find dublicates 
 
-            //string FileId;
-            int WPos;
-
-            string FileIdA;
-            string FileIdB;
-            //string WCase;
+        //    //string FileId;
+        //    int WPos;
+
+        //    string FileIdA;
+        //    string FileIdB;
+        //    //string WCase;
 
-            // Dublicates 
-            // Dublicates in A : 
-            TableId = SourceTable_A;
-            WCase = "Dublicate In File01";
-            WPos = 1;
-
-            Mf.CreateStringOfMatchingFieldsForStageX_ABS(InMatchingCateg, "Stage A");
-            ListMatchingFields = Mf.Dublicate_List_FieldsStageX;
-            OnMatchingFields = Mf.Dublicate_ON_FieldsStageX;
-
-            FindDuplicateAddTable(TableId, WCase, WPos, ListMatchingFields, OnMatchingFields, InMatchingCateg, IS_Matching_At_SET_DATE);
-
-            // Dublicates in B : 
-            TableId = SourceTable_B;
-            WCase = "Dublicate In File02";
-            WPos = 2;
+        //    // Dublicates 
+        //    // Dublicates in A : 
+        //    TableId = SourceTable_A;
+        //    WCase = "Dublicate In File01";
+        //    WPos = 1;
+
+        //    Mf.CreateStringOfMatchingFieldsForStageX_ABS(InMatchingCateg, "Stage A");
+        //    ListMatchingFields = Mf.Dublicate_List_FieldsStageX;
+        //    OnMatchingFields = Mf.Dublicate_ON_FieldsStageX;
+
+        //    FindDuplicateAddTable(TableId, WCase, WPos, ListMatchingFields, OnMatchingFields, InMatchingCateg, IS_Matching_At_SET_DATE);
+
+        //    // Dublicates in B : 
+        //    TableId = SourceTable_B;
+        //    WCase = "Dublicate In File02";
+        //    WPos = 2;
 
-            Mf.CreateStringOfMatchingFieldsForStageX_ABS(InMatchingCateg, "Stage A");
-            ListMatchingFields = Mf.Dublicate_List_FieldsStageX;
-            OnMatchingFields = Mf.Dublicate_ON_FieldsStageX;
+        //    Mf.CreateStringOfMatchingFieldsForStageX_ABS(InMatchingCateg, "Stage A");
+        //    ListMatchingFields = Mf.Dublicate_List_FieldsStageX;
+        //    OnMatchingFields = Mf.Dublicate_ON_FieldsStageX;
 
-            FindDuplicateAddTable(TableId, WCase, WPos, ListMatchingFields, OnMatchingFields, InMatchingCateg, IS_Matching_At_SET_DATE);
+        //    FindDuplicateAddTable(TableId, WCase, WPos, ListMatchingFields, OnMatchingFields, InMatchingCateg, IS_Matching_At_SET_DATE);
 
-            if (NumberOfDublicates > 0)
-            {
-                NumberOfUnmatchedForCategory = NumberOfUnmatchedForCategory + NumberOfDublicates;
-                Message = "Dublicates identified :"
-                                                  + NumberOfDublicates.ToString();
-
-                // Pt.InsertPerformanceTrace(WOperator, WOperator, 2, "Matching", WMatchingCateg, DateTime.Now, DateTime.Now, Message);
-                if (ShowMessage == true & Environment.UserInteractive)
-                {
-                    System.Windows.Forms.MessageBox.Show(Message);
-                }
-            }
-            if (NumberOfDublicates == 0)
-            {
-                Message = "No Dublicates identified ";
-
-                //Pt.InsertPerformanceTrace(WOperator, WOperator, 2, "Matching", WMatchingCateg, DateTime.Now, DateTime.Now, Message);
-                if (ShowMessage == true & Environment.UserInteractive)
-                {
-                    System.Windows.Forms.MessageBox.Show(Message);
-                }
-            }
-
-            #endregion
-
-            #region Do Matching based on the TABLES
-
-            // *******************************
-            // In A and Not In B 
-            // *******************************
+        //    if (NumberOfDublicates > 0)
+        //    {
+        //        NumberOfUnmatchedForCategory = NumberOfUnmatchedForCategory + NumberOfDublicates;
+        //        Message = "Dublicates identified :"
+        //                                          + NumberOfDublicates.ToString();
+
+        //        // Pt.InsertPerformanceTrace(WOperator, WOperator, 2, "Matching", WMatchingCateg, DateTime.Now, DateTime.Now, Message);
+        //        if (ShowMessage == true & Environment.UserInteractive)
+        //        {
+        //            System.Windows.Forms.MessageBox.Show(Message);
+        //        }
+        //    }
+        //    if (NumberOfDublicates == 0)
+        //    {
+        //        Message = "No Dublicates identified ";
+
+        //        //Pt.InsertPerformanceTrace(WOperator, WOperator, 2, "Matching", WMatchingCateg, DateTime.Now, DateTime.Now, Message);
+        //        if (ShowMessage == true & Environment.UserInteractive)
+        //        {
+        //            System.Windows.Forms.MessageBox.Show(Message);
+        //        }
+        //    }
+
+        //    #endregion
+
+        //    #region Do Matching based on the TABLES
+
+        //    // *******************************
+        //    // In A and Not In B 
+        //    // *******************************
 
-            TableX = SourceTable_A;
-            TableY = SourceTable_B;
-            WCase = "In File01 And Not In File02";
-            WPosA = 1;
-            WPosB = 2; // If NOT FOUND IN THIS POSITION
+        //    TableX = SourceTable_A;
+        //    TableY = SourceTable_B;
+        //    WCase = "In File01 And Not In File02";
+        //    WPosA = 1;
+        //    WPosB = 2; // If NOT FOUND IN THIS POSITION
 
-            Mf.CreateStringOfMatchingFieldsForStageX_ABS(InMatchingCateg, "Stage A");
-            MatchingFields = Mf.MatchingFieldsStageX;
+        //    Mf.CreateStringOfMatchingFieldsForStageX_ABS(InMatchingCateg, "Stage A");
+        //    MatchingFields = Mf.MatchingFieldsStageX;
 
-            //MatchingFields = "c2.TransAmount = c1.TransAmount AND  c2.RRNumber = c1.RRNumber ";
-            FindNotExistAddTableTableXToTableY_MOBILE(TableX, TableY, WCase, WPosA, WPosB, MatchingFields, InMatchingCateg, IS_Matching_At_SET_DATE, WRMCycle);
+        //    //MatchingFields = "c2.TransAmount = c1.TransAmount AND  c2.RRNumber = c1.RRNumber ";
+        //    FindNotExistAddTableTableXToTableY_MOBILE(TableX, TableY, WCase, WPosA, WPosB, MatchingFields, InMatchingCateg, IS_Matching_At_SET_DATE, WRMCycle);
 
-            // ******************************
-            // In B and Not In A
-            // ******************************
+        //    // ******************************
+        //    // In B and Not In A
+        //    // ******************************
 
-            TableX = SourceTable_B;
-            TableY = SourceTable_A;
-            WCase = "In File02 And Not In File01";
-            WPosA = 2;
-            WPosB = 1; // If NOT FOUND IN THIS POSITION
+        //    TableX = SourceTable_B;
+        //    TableY = SourceTable_A;
+        //    WCase = "In File02 And Not In File01";
+        //    WPosA = 2;
+        //    WPosB = 1; // If NOT FOUND IN THIS POSITION
 
-            Mf.CreateStringOfMatchingFieldsForStageX_ABS(InMatchingCateg, "Stage A");
-            MatchingFields = Mf.MatchingFieldsStageX;
+        //    Mf.CreateStringOfMatchingFieldsForStageX_ABS(InMatchingCateg, "Stage A");
+        //    MatchingFields = Mf.MatchingFieldsStageX;
 
-            FindNotExistAddTableTableXToTableY_MOBILE(TableX, TableY, WCase, WPosA, WPosB, MatchingFields, InMatchingCateg, IS_Matching_At_SET_DATE, WRMCycle);
+        //    FindNotExistAddTableTableXToTableY_MOBILE(TableX, TableY, WCase, WPosA, WPosB, MatchingFields, InMatchingCateg, IS_Matching_At_SET_DATE, WRMCycle);
 
-            // HERE YOU HAVE IDENTIFY ALL DISCREPANCIES SET ALL RECORDS TO MATCHED
-            // AFTER BASED ON MISSMATCHED 
-            string MatchMask = "";
+        //    // HERE YOU HAVE IDENTIFY ALL DISCREPANCIES SET ALL RECORDS TO MATCHED
+        //    // AFTER BASED ON MISSMATCHED 
+        //    string MatchMask = "";
 
-            MatchMask = "11";
+        //    MatchMask = "11";
 
-            // UPDATE Master
+        //    // UPDATE Master
 
-            TableId = SourceTable_A;
-            Mmob.UpdateSourceTablesAsProcessed_MOBILE_Based_ON_ALL(WMatchingCateg, TableId, WRMCycle, MatchMask);
+        //    TableId = SourceTable_A;
+        //    Mmob.UpdateSourceTablesAsProcessed_MOBILE_Based_ON_ALL(WMatchingCateg, TableId, WRMCycle, MatchMask);
 
-            // Update SourceTable_B with Processed = 1 and RMCycle
-            //FileId = "[RRDM_Reconciliation_ITMX].[dbo].[IntblBankSwitchTxns]"; 
-            TableId = SourceTable_B;
+        //    // Update SourceTable_B with Processed = 1 and RMCycle
+        //    //FileId = "[RRDM_Reconciliation_ITMX].[dbo].[IntblBankSwitchTxns]"; 
+        //    TableId = SourceTable_B;
 
-            Mmob.UpdateSourceTablesAsProcessed_MOBILE_Based_ON_ALL(WMatchingCateg, TableId, WRMCycle, MatchMask);
-
-            //*****************************************
-
-            if (NumberOfUnmatched > 0 || NumberOfDublicates > 0)
-            {
-                NumberOfUnmatchedForCategory = NumberOfUnmatchedForCategory + NumberOfUnmatched;
-                Message = "UnMatched identified : "
-                                                  + NumberOfUnmatched.ToString();
-
-                //Pt.InsertPerformanceTrace(WOperator, WOperator, 2, "Matching", WMatchingCateg, DateTime.Now, DateTime.Now, Message);
-                if (ShowMessage == true & Environment.UserInteractive)
-                {
-                    System.Windows.Forms.MessageBox.Show(Message);
-                }
-
-
-                #region Create Report
-
-                ////ReadTable And Insert In Sql Table 
-                RRDMTempTablesForReportsATMS Tr = new RRDMTempTablesForReportsATMS();
-                //  RRDMMatchingDiscrepancies Md = new RRDMMatchingDiscrepancies();
-
-                //Clear Table 
-                Tr.DeleteWReport97_ForMatching_MOBILE(WSignedId, WMatchingCateg);
-                int number = TableUnMatched.Columns.Count;
-                //Insert Records For WReport97_ForMatching
-                using (SqlConnection conn2 =
-                               new SqlConnection(connectionStringATMs))
-                    try
-                    {
-                        conn2.Open();
-
-                        using (SqlBulkCopy s = new SqlBulkCopy(conn2))
-                        {
-                            s.DestinationTableName = "[ATMS].[dbo].[WReport97_ForMatching_MOBILE]";
-
-                            foreach (var column in TableUnMatched.Columns)
-                                s.ColumnMappings.Add(column.ToString(), column.ToString());
-
-                            s.WriteToServer(TableUnMatched);
-                        }
-                        conn2.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        conn2.Close();
-
-                        W_MPComment = W_MPComment + "Process has been cancelled stage 241" + Environment.NewLine;
-
-                        W_MPComment += DateTime.Now;
-
-                        Rcs.UpdateReconcCategorySessionAtMatchingProcess_MPComment(WReconcCategoryId, WRMCycle, W_MPComment);
-
-                        CatchDetails(ex, "606");
-                    }
-
-                #endregion
-
-                #region Saved Dicrepancies And Summarise (compress) Discrepancies
-                //Insert Records For MatchingDiscrepancies_BDC
-                //using (SqlConnection conn2 =
-                //               new SqlConnection(connectionStringATMs))
-                //    try
-                //    {
-                //        conn2.Open();
-
-                //        using (SqlBulkCopy s = new SqlBulkCopy(conn2))
-                //        {
-                //            s.DestinationTableName = "[RRDM_Reconciliation_ITMX].[dbo].[MatchingDiscrepancies_MOBILE]";
-
-                //            foreach (var column in TableUnMatched.Columns)
-                //                s.ColumnMappings.Add(column.ToString(), column.ToString());
-
-                //            s.WriteToServer(TableUnMatched);
-                //        }
-                //        conn2.Close();
-
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        conn2.Close();
-                //        W_MPComment = W_MPComment + "Process has been cancelled stage 242" + Environment.NewLine;
-
-                //        W_MPComment += DateTime.Now;
-
-                //        Rcs.UpdateReconcCategorySessionAtMatchingProcess_MPComment(WReconcCategoryId, WRMCycle, W_MPComment);
-
-                //        CatchDetails(ex, "607");
-                //    }
-                //
-                // SAVE TABLE BECAUSE IT WILL USE FOR OTHER PURPOSE
-                //
-                if (NumberOfDublicates > 0 || NumberOfUnmatched > 0)
-                {
-                    TableUnMatchedSaved = TableUnMatched;
-                }
-                //
-                // COMPRESS FOUND CASES
-                //
-                if (NumberOfDublicates > 0 || NumberOfUnmatched > 0)
-                {
-                    // UPDATE Mpa with unmatched records
-                    if (NumberOfUnmatched > 0)
-                    {
-                        if (NumberOfUnmatched > 2000)
-                        {
-                            MessageBox.Show("There are high number of discrepancies!" + Environment.NewLine
-                                + "Reconciliation Matching Category: " + WReconcCategoryId + Environment.NewLine
-                                + "Number of discrepancies :.. " + NumberOfUnmatched.ToString()
-                                );
-                        }
-                        ReadExceptionsAndCompressAndUpdatefor_2_Tables();
-                    }
-
-                    if (NumberOfDublicates > 0)
-                    {
-                        // Dublicate 
-                        ReadDublicatesAndCompressAndUpdateExceptionsforTables();
-                    }
-
-                    //
-                    // CREATE COPRESSED TABLE
-                    // 
-
-                    ReadMpaAndFindDiscrepanciesfromMatching_Cards(MatchingCateg, RMCycle);
-
-
-                }
-                #endregion
-
-            }
-            if (NumberOfUnmatched == 0)
-            {
-                Message = "No UnMatched Records found. ";
-
-                //Pt.InsertPerformanceTrace(WOperator, WOperator, 2, "Matching", WMatchingCateg, DateTime.Now, DateTime.Now, Message);
-
-                if (ShowMessage == true & Environment.UserInteractive)
-                {
-                    System.Windows.Forms.MessageBox.Show(Message);
-                }
-
-            }
-
-            #endregion
-
-        }
+        //    Mmob.UpdateSourceTablesAsProcessed_MOBILE_Based_ON_ALL(WMatchingCateg, TableId, WRMCycle, MatchMask);
+
+        //    //*****************************************
+
+        //    if (NumberOfUnmatched > 0 || NumberOfDublicates > 0)
+        //    {
+        //        NumberOfUnmatchedForCategory = NumberOfUnmatchedForCategory + NumberOfUnmatched;
+        //        Message = "UnMatched identified : "
+        //                                          + NumberOfUnmatched.ToString();
+
+        //        //Pt.InsertPerformanceTrace(WOperator, WOperator, 2, "Matching", WMatchingCateg, DateTime.Now, DateTime.Now, Message);
+        //        if (ShowMessage == true & Environment.UserInteractive)
+        //        {
+        //            System.Windows.Forms.MessageBox.Show(Message);
+        //        }
+
+
+        //        #region Create Report
+
+        //        ////ReadTable And Insert In Sql Table 
+        //        RRDMTempTablesForReportsATMS Tr = new RRDMTempTablesForReportsATMS();
+        //        //  RRDMMatchingDiscrepancies Md = new RRDMMatchingDiscrepancies();
+
+        //        //Clear Table 
+        //        Tr.DeleteWReport97_ForMatching_MOBILE(WSignedId, WMatchingCateg);
+        //        int number = TableUnMatched.Columns.Count;
+        //        //Insert Records For WReport97_ForMatching
+        //        using (SqlConnection conn2 =
+        //                       new SqlConnection(connectionStringATMs))
+        //            try
+        //            {
+        //                conn2.Open();
+
+        //                using (SqlBulkCopy s = new SqlBulkCopy(conn2))
+        //                {
+        //                    s.DestinationTableName = "[ATMS].[dbo].[WReport97_ForMatching_MOBILE]";
+
+        //                    foreach (var column in TableUnMatched.Columns)
+        //                        s.ColumnMappings.Add(column.ToString(), column.ToString());
+
+        //                    s.WriteToServer(TableUnMatched);
+        //                }
+        //                conn2.Close();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                conn2.Close();
+
+        //                W_MPComment = W_MPComment + "Process has been cancelled stage 241" + Environment.NewLine;
+
+        //                W_MPComment += DateTime.Now;
+
+        //                Rcs.UpdateReconcCategorySessionAtMatchingProcess_MPComment(WReconcCategoryId, WRMCycle, W_MPComment);
+
+        //                CatchDetails(ex, "606");
+        //            }
+
+        //        #endregion
+
+        //        #region Saved Dicrepancies And Summarise (compress) Discrepancies
+        //        //Insert Records For MatchingDiscrepancies_BDC
+        //        //using (SqlConnection conn2 =
+        //        //               new SqlConnection(connectionStringATMs))
+        //        //    try
+        //        //    {
+        //        //        conn2.Open();
+
+        //        //        using (SqlBulkCopy s = new SqlBulkCopy(conn2))
+        //        //        {
+        //        //            s.DestinationTableName = "[RRDM_Reconciliation_ITMX].[dbo].[MatchingDiscrepancies_MOBILE]";
+
+        //        //            foreach (var column in TableUnMatched.Columns)
+        //        //                s.ColumnMappings.Add(column.ToString(), column.ToString());
+
+        //        //            s.WriteToServer(TableUnMatched);
+        //        //        }
+        //        //        conn2.Close();
+
+        //        //    }
+        //        //    catch (Exception ex)
+        //        //    {
+        //        //        conn2.Close();
+        //        //        W_MPComment = W_MPComment + "Process has been cancelled stage 242" + Environment.NewLine;
+
+        //        //        W_MPComment += DateTime.Now;
+
+        //        //        Rcs.UpdateReconcCategorySessionAtMatchingProcess_MPComment(WReconcCategoryId, WRMCycle, W_MPComment);
+
+        //        //        CatchDetails(ex, "607");
+        //        //    }
+        //        //
+        //        // SAVE TABLE BECAUSE IT WILL USE FOR OTHER PURPOSE
+        //        //
+        //        if (NumberOfDublicates > 0 || NumberOfUnmatched > 0)
+        //        {
+        //            TableUnMatchedSaved = TableUnMatched;
+        //        }
+        //        //
+        //        // COMPRESS FOUND CASES
+        //        //
+        //        if (NumberOfDublicates > 0 || NumberOfUnmatched > 0)
+        //        {
+        //            // UPDATE Mpa with unmatched records
+        //            if (NumberOfUnmatched > 0)
+        //            {
+        //                if (NumberOfUnmatched > 2000)
+        //                {
+        //                    MessageBox.Show("There are high number of discrepancies!" + Environment.NewLine
+        //                        + "Reconciliation Matching Category: " + WReconcCategoryId + Environment.NewLine
+        //                        + "Number of discrepancies :.. " + NumberOfUnmatched.ToString()
+        //                        );
+        //                }
+        //                ReadExceptionsAndCompressAndUpdatefor_2_Tables();
+        //            }
+
+        //            if (NumberOfDublicates > 0)
+        //            {
+        //                // Dublicate 
+        //                ReadDublicatesAndCompressAndUpdateExceptionsforTables();
+        //            }
+
+        //            //
+        //            // CREATE COPRESSED TABLE
+        //            // 
+
+        //            ReadMpaAndFindDiscrepanciesfromMatching_Cards(MatchingCateg, RMCycle);
+
+
+        //        }
+        //        #endregion
+
+        //    }
+        //    if (NumberOfUnmatched == 0)
+        //    {
+        //        Message = "No UnMatched Records found. ";
+
+        //        //Pt.InsertPerformanceTrace(WOperator, WOperator, 2, "Matching", WMatchingCateg, DateTime.Now, DateTime.Now, Message);
+
+        //        if (ShowMessage == true & Environment.UserInteractive)
+        //        {
+        //            System.Windows.Forms.MessageBox.Show(Message);
+        //        }
+
+        //    }
+
+        //    #endregion
+
+        //}
 
         //*************************************
         // MAKE MATCHING FOR TWO WORKING FILES 
@@ -3663,7 +3663,7 @@ namespace RRDM4ATMs
             TempCount1 = 0;
             TempCount2 = 0;
             TempCount3 = 0;
-            // Call stored Procedure to create files
+            // 
             // Insert Records In File01Y from Mpa
             // This is the master table 
             TempCount1 = Mtw.PopulateWorkingFile_ATMs_Working01_WALLET("01", SourceTable_A, WMatchingCateg, WRMCycle, W_Application);

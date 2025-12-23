@@ -666,7 +666,7 @@ namespace RRDM4ATMsWin
                             {
 
                                 // CALL THE SAME If Recycle or not 
-                                bool IsFromExcel = true;
+                                bool IsFromExcel = false;
                                 Form51_Repl_For_IST NForm51_Repl_For_IST;
                                 NForm51_Repl_For_IST = new Form51_Repl_For_IST(WSignedId, WSignRecordNo, WOperator, WAtmNo, WReplCycle, IsFromExcel);
                                 NForm51_Repl_For_IST.FormClosed += NForm51_FormClosed;

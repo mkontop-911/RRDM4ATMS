@@ -167,5 +167,46 @@ namespace RRDM4ATMsWin
             WorkingDir = "C:\\RRDM\\Working\\";
             XL.ExportToExcel(Ua.UserGroups_ToAtms_Table, ExcelPath);
         }
+// DELETE ALL OUTSTANDING
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            if (WOperator != "BCAIEGCX")
+            {
+                MessageBox.Show(" This fuctionality is for other Bank");
+                return; 
+            }
+            // Find Current Replenishement Cycle 
+            RRDMReconcJobCycles Rjc = new RRDMReconcJobCycles();
+            string W_Application = "ATMs";
+            int WReconcCycleNo = Rjc.ReadLastReconcJobCycleATMsAndNostroWithMinusOne(WOperator, W_Application);
+           
+            RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
+
+            if (MessageBox.Show("Warning: Do you want to delete " + Environment.NewLine
+                + " all Outstanding Replenishment Cycles prior to the input date?",
+                "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                          == DialogResult.Yes)
+            {
+                int I = 0;
+                //I = I + 1; 
+
+                while (I <= (Ua.UserGroups_ToAtms_Table.Rows.Count - 1))
+                {
+                    //   
+                   
+                    string WAtmNo = (string)Ua.UserGroups_ToAtms_Table.Rows[I]["AtmNo"];
+
+                    Ta.UpdateTracesForOutstaningForceComplete(WAtmNo, dateTimePicker1.Value, WReconcCycleNo);
+                    //(string InAtmNo, DateTime InDate, int InRMCycle)
+
+                    I = I + 1;
+
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
     }
 }

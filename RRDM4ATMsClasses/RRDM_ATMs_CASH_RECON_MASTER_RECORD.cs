@@ -13,54 +13,6 @@ namespace RRDM4ATMs
     {
         public RRDM_ATMs_CASH_RECON_MASTER_RECORD() : base() { }
 
-        //        SeqNo int Unchecked
-        //AtmNo nvarchar(30)    Unchecked
-        //AtmName nvarchar(100)   Unchecked
-        //Previous_ReplDate   datetime Unchecked
-        //ReplDate datetime    Unchecked
-
-        //ReplCycleNo int Unchecked
-        //FUI int Unchecked
-        //SM_DATA nvarchar(25)    Unchecked
-        //SM_OpeningBalance   decimal (18, 2)	Unchecked
-        // SM_Dispensed    decimal (18, 2)	Unchecked
-
-        //  SM_Remaining    decimal (18, 2)	Unchecked
-        //   SM_Cash_Loaded  decimal (18, 2)	Unchecked
-        //    SM_Cash_Loaded_Minus_SM_Remaining   decimal (18, 2)	Unchecked
-        //     SM_Deposits decimal (18, 2)	Unchecked
-        //      FOUND_BY_RRDM   nvarchar(25)    Unchecked
-
-        //      RRDM_PresentedErrors    decimal (18, 2)	Unchecked
-        //       RRDM_Deposits_Retracted decimal (18, 2)	Unchecked
-        //        GL_ENTRIES_IN_BOOKS nvarchar(25)    Unchecked
-        //        ATM_Replenishment   decimal (18, 2)	Unchecked
-        //         ATM_Deposits    decimal (18, 2)	Unchecked
-
-        //          DB_Corrections_on_ATM   decimal (18, 2)	Unchecked
-        //           CR_Corrections_on_ATM   decimal (18, 2)	Unchecked
-        //            IsDifferent bit Unchecked
-        //OverFound decimal (18, 2)	Unchecked
-        //ShortFound  decimal (18, 2)	Unchecked
-
-        //Closing_REMARKS nvarchar(300)   Unchecked
-        //SUM_TXNS_Journals_DSP   decimal (18, 2)	Unchecked
-        // SUM_TXNS_Journal_DEP    decimal (18, 2)	Unchecked
-        //  SUM_TXNS_SWITCH_DSP decimal (18, 2)	Unchecked
-        //   SUM_TXNS_SWITCH_DEP decimal (18, 2)	Unchecked
-
-        //    SUM_TXNS_COREBANKING_DSP    decimal (18, 2)	Unchecked
-        //     SUM_TXNS_COREBANKING_DEP    decimal (18, 2)	Unchecked
-        //      CreatedDate datetime Unchecked
-        //Cut_Off_date1 date    Unchecked
-        //LoadedAtRMCycle int Unchecked
-        //Operator nvarchar(8) Unchecked
-
-        //        SeqNo int Unchecked
-        //AtmNo nvarchar(30)    Unchecked
-        //AtmName nvarchar(100)   Unchecked
-        //Previous_ReplDate   datetime Unchecked
-        //ReplDate datetime    Unchecked
         public int SeqNo;
 
         public string AtmNo;
@@ -68,60 +20,55 @@ namespace RRDM4ATMs
         public DateTime Previous_ReplDate;
         public DateTime ReplDate;
 
-
-        //ReplCycleNo int Unchecked
-        //FUI int Unchecked
-        //SM_DATA nvarchar(25)    Unchecked
-        //SM_OpeningBalance   decimal (18, 2)	Unchecked
-        // SM_Dispensed    decimal (18, 2)	Unchecked
-
         public int ReplCycleNo;
         public int FUI;
+
         public string SM_DATA;
         public decimal SM_OpeningBalance;
         public decimal SM_Dispensed;
-
-        //  SM_Remaining    decimal (18, 2)	Unchecked
-        //   SM_Cash_Loaded  decimal (18, 2)	Unchecked
-        //    SM_Cash_Loaded_Minus_SM_Remaining   decimal (18, 2)	Unchecked
-        //     SM_Deposits decimal (18, 2)	Unchecked
-        //      FOUND_BY_RRDM   nvarchar(25)    Unchecked
 
         public decimal SM_Remaining;
         public decimal SM_Cash_Loaded;
         public decimal SM_Cash_Loaded_Minus_SM_Remaining;
         public decimal SM_Deposits;
+       
+        public string SWITCH_DATA;
+        public decimal SWITCH_OpeningBalance;
+        public decimal SWITCH_Dispensed;
+
+        public decimal SWITCH_Remaining;
+        public decimal SWITCH_Cash_Loaded;
+        public decimal SWITCH_Cash_Loaded_Minus_SWITCH_Remaining;
+        public decimal SWITCH_Deposits;
+
         public string FOUND_BY_RRDM;
 
-        //      RRDM_PresentedErrors    decimal (18, 2)	Unchecked
-        //       RRDM_Deposits_Retracted decimal (18, 2)	Unchecked
-        //        GL_ENTRIES_IN_BOOKS nvarchar(25)    Unchecked
-        //        ATM_Replenishment   decimal (18, 2)	Unchecked
-        //         ATM_Deposits    decimal (18, 2)	Unchecked
-
         public decimal RRDM_PresentedErrors;
+        public decimal RRDM_SuspectFound; 
+
         public decimal RRDM_Deposits_Retracted;
         public string GL_ENTRIES_IN_BOOKS;
         public decimal ATM_Replenishment; //  Same terminology as in bMaster
         public decimal ATM_Deposits; // Same terminology as in bMaster
-
-        //          DB_Corrections_on_ATM   decimal (18, 2)	Unchecked
-        //           CR_Corrections_on_ATM   decimal (18, 2)	Unchecked
-        //            IsDifferent bit Unchecked
-        //OverFound decimal (18, 2)	Unchecked
-        //ShortFound  decimal (18, 2)	Unchecked
-
+   
         public decimal DB_Corrections_on_ATM; //  Same terminology as in bMaster
         public decimal CR_Corrections_on_ATM; //  Same terminology as in bMaster
         public bool IsDifferent; // SHOWS THAT DO NOT RECONCILE 
-        public decimal OverFound;
-        public decimal ShortFound;
 
-        //Closing_REMARKS nvarchar(300)   Unchecked
-        //SUM_TXNS_Journals_DSP   decimal (18, 2)	Unchecked
-        // SUM_TXNS_Journal_DEP    decimal (18, 2)	Unchecked
-        //  SUM_TXNS_SWITCH_DSP decimal (18, 2)	Unchecked
-        //   SUM_TXNS_SWITCH_DEP decimal (18, 2)	Unchecked
+        public decimal OverFound_Cassettes;
+        public decimal ShortFound_Cassettes;
+
+        public decimal OverFound_Deposits;
+        public decimal ShortFound_Deposits;
+      
+        public decimal OverFound_Cassettes_SWITCH;
+        public decimal ShortFound_Cassettes_SWITCH;
+
+        public decimal OverFound_Deposits_SWITCH;
+        public decimal ShortFound_Deposits_SWITCH;
+
+        public decimal InsuranceAmt;
+        public bool IsWithinInsurance; // If Loaded <= to insurance for the range of dates 
 
         public string Closing_REMARKS;
         public decimal SUM_TXNS_Journals_DSP;
@@ -129,11 +76,6 @@ namespace RRDM4ATMs
         public decimal SUM_TXNS_SWITCH_DSP;
         public decimal SUM_TXNS_SWITCH_DEP;
 
-        //    SUM_TXNS_COREBANKING_DSP    decimal (18, 2)	Unchecked
-        //     SUM_TXNS_COREBANKING_DEP    decimal (18, 2)	Unchecked
-        //      CreatedDate datetime Unchecked
-        //Cut_Off_date date    Unchecked
-        //LoadedAtRMCycle int Unchecked
         public decimal SUM_TXNS_COREBANKING_DSP;
         public decimal SUM_TXNS_COREBANKING_DEP;
         public DateTime CreatedDate;
@@ -147,6 +89,8 @@ namespace RRDM4ATMs
 
         // Define the data table 
         public DataTable Table_RECONC_RECORDS = new DataTable();
+
+        public DataTable Table_RECONC_RECORDS_CYCLE = new DataTable();
 
         public int TotalSelected;
 
@@ -164,69 +108,64 @@ namespace RRDM4ATMs
         // SQL Reader Fields
         private void ReadRecordFields(SqlDataReader rdr)
         {
-            //        SeqNo int Unchecked
-            //AtmNo nvarchar(30)    Unchecked
-            //AtmName nvarchar(100)   Unchecked
-            //Previous_ReplDate   datetime Unchecked
-            //ReplDate datetime    Unchecked
+           
             SeqNo = (int)rdr["SeqNo"];
             AtmNo = (string)rdr["AtmNo"];
             AtmName = (string)rdr["AtmName"];
             Previous_ReplDate = (DateTime)rdr["Previous_ReplDate"];
             ReplDate = (DateTime)rdr["ReplDate"];
 
-            //ReplCycleNo int Unchecked
-            //FUI int Unchecked
-            //SM_DATA nvarchar(25)    Unchecked
-            //SM_OpeningBalance   decimal (18, 2)	Unchecked
-            // SM_Dispensed    decimal (18, 2)	Unchecked
 
             ReplCycleNo = (int)rdr["ReplCycleNo"];
             FUI = (int)rdr["FUI"];
+
             SM_DATA = (string)rdr["SM_DATA"];
             SM_OpeningBalance = (decimal)rdr["SM_OpeningBalance"];
             SM_Dispensed = (decimal)rdr["SM_Dispensed"];
-
-            //  SM_Remaining    decimal (18, 2)	Unchecked
-            //   SM_Cash_Loaded  decimal (18, 2)	Unchecked
-            //    SM_Cash_Loaded_Minus_SM_Remaining   decimal (18, 2)	Unchecked
-            //     SM_Deposits decimal (18, 2)	Unchecked
-            //      FOUND_BY_RRDM   nvarchar(25)    Unchecked
-
             SM_Remaining = (decimal)rdr["SM_Remaining"];
             SM_Cash_Loaded = (decimal)rdr["SM_Cash_Loaded"];
-            SM_Cash_Loaded_Minus_SM_Remaining = (decimal)rdr[" SM_Cash_Loaded_Minus_SM_Remaining"];
+            SM_Cash_Loaded_Minus_SM_Remaining = (decimal)rdr["SM_Cash_Loaded_Minus_SM_Remaining"];
             SM_Deposits = (decimal)rdr["SM_Deposits"];
+           
+
+            SWITCH_DATA = (string)rdr["SWITCH_DATA"];
+            SWITCH_OpeningBalance = (decimal)rdr["SWITCH_OpeningBalance"];
+            SWITCH_Dispensed = (decimal)rdr["SWITCH_Dispensed"];
+            SWITCH_Remaining = (decimal)rdr["SWITCH_Remaining"];
+            SWITCH_Cash_Loaded = (decimal)rdr["SWITCH_Cash_Loaded"];
+            SWITCH_Cash_Loaded_Minus_SWITCH_Remaining = (decimal)rdr["SWITCH_Cash_Loaded_Minus_SWITCH_Remaining"];
+            SWITCH_Deposits = (decimal)rdr["SWITCH_Deposits"];
+
             FOUND_BY_RRDM = (string)rdr["FOUND_BY_RRDM"];
 
-            //      RRDM_PresentedErrors    decimal (18, 2)	Unchecked
-            //       RRDM_Deposits_Retracted decimal (18, 2)	Unchecked
-            //        GL_ENTRIES_IN_BOOKS nvarchar(25)    Unchecked
-            //        ATM_Replenishment   decimal (18, 2)	Unchecked
-            //         ATM_Deposits    decimal (18, 2)	Unchecked
-
             RRDM_PresentedErrors = (decimal)rdr["RRDM_PresentedErrors"];
+            RRDM_SuspectFound = (decimal)rdr["RRDM_SuspectFound"];
+
             RRDM_Deposits_Retracted = (decimal)rdr["RRDM_Deposits_Retracted"];
+
             GL_ENTRIES_IN_BOOKS = (string)rdr["GL_ENTRIES_IN_BOOKS"];
             ATM_Replenishment = (decimal)rdr["ATM_Replenishment"];
             ATM_Deposits = (decimal)rdr["ATM_Deposits"];
 
-            //          DB_Corrections_on_ATM   decimal (18, 2)	Unchecked
-            //           CR_Corrections_on_ATM   decimal (18, 2)	Unchecked
-            //            IsDifferent bit Unchecked
-            //OverFound decimal (18, 2)	Unchecked
-            //ShortFound  decimal (18, 2)	Unchecked
             DB_Corrections_on_ATM = (decimal)rdr["DB_Corrections_on_ATM"];
             CR_Corrections_on_ATM = (decimal)rdr["CR_Corrections_on_ATM"];
             IsDifferent = (bool)rdr["IsDifferent"];
-            OverFound = (decimal)rdr["OverFound"];
-            ShortFound = (decimal)rdr["ShortFound"];
 
-            //Closing_REMARKS nvarchar(300)   Unchecked
-            //SUM_TXNS_Journals_DSP   decimal (18, 2)	Unchecked
-            // SUM_TXNS_Journal_DEP    decimal (18, 2)	Unchecked
-            //  SUM_TXNS_SWITCH_DSP decimal (18, 2)	Unchecked
-            //   SUM_TXNS_SWITCH_DEP decimal (18, 2)	Unchecked
+            OverFound_Cassettes = (decimal)rdr["OverFound_Cassettes"];
+            ShortFound_Cassettes = (decimal)rdr["ShortFound_Cassettes"];
+
+            OverFound_Deposits = (decimal)rdr["OverFound_Deposits"];
+            ShortFound_Deposits = (decimal)rdr["ShortFound_Deposits"];
+
+            OverFound_Cassettes_SWITCH = (decimal)rdr["OverFound_Cassettes_SWITCH"];
+            ShortFound_Cassettes_SWITCH = (decimal)rdr["ShortFound_Cassettes_SWITCH"];
+
+            OverFound_Deposits_SWITCH = (decimal)rdr["OverFound_Deposits_SWITCH"];
+            ShortFound_Deposits_SWITCH = (decimal)rdr["ShortFound_Deposits_SWITCH"];
+
+            InsuranceAmt = (decimal)rdr["InsuranceAmt"];
+            IsWithinInsurance = (bool)rdr["IsWithinInsurance"];
+
             Closing_REMARKS = (string)rdr["Closing_REMARKS"];
             SUM_TXNS_Journals_DSP = (decimal)rdr["SUM_TXNS_Journals_DSP"];
             SUM_TXNS_Journal_DEP = (decimal)rdr["SUM_TXNS_Journal_DEP"];
@@ -234,11 +173,6 @@ namespace RRDM4ATMs
             SUM_TXNS_SWITCH_DEP = (decimal)rdr["SUM_TXNS_SWITCH_DEP"];
 
 
-            //    SUM_TXNS_COREBANKING_DSP    decimal (18, 2)	Unchecked
-            //     SUM_TXNS_COREBANKING_DEP    decimal (18, 2)	Unchecked
-            //      CreatedDate datetime Unchecked
-            //Cut_Off_date date    Unchecked
-            //LoadedAtRMCycle int Unchecked
             SUM_TXNS_COREBANKING_DSP = (decimal)rdr["SUM_TXNS_COREBANKING_DSP"];
             SUM_TXNS_COREBANKING_DEP = (decimal)rdr["SUM_TXNS_COREBANKING_DEP"];
             CreatedDate = (DateTime)rdr["CreatedDate"];
@@ -292,6 +226,155 @@ namespace RRDM4ATMs
                 {
                     conn.Close();
                     CatchDetails(ex);
+                }
+        }
+        //
+        // For CASH RECONCILIATION
+        //
+        public void Read_Cash_Recon_By_Cycle(string InSelectionCriteria)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            Table_RECONC_RECORDS_CYCLE = new DataTable();
+            Table_RECONC_RECORDS_CYCLE.Clear();
+
+            TotalSelected = 0;
+
+            // DATA TABLE ROWS DEFINITION 
+            Table_RECONC_RECORDS_CYCLE.Columns.Add("Line Type", typeof(string));
+            Table_RECONC_RECORDS_CYCLE.Columns.Add("ATM No", typeof(string));
+            Table_RECONC_RECORDS_CYCLE.Columns.Add("Date", typeof(string));
+
+            Table_RECONC_RECORDS_CYCLE.Columns.Add("Opening", typeof(string));
+            Table_RECONC_RECORDS_CYCLE.Columns.Add("Remaining", typeof(string));
+            Table_RECONC_RECORDS_CYCLE.Columns.Add("New Loaded", typeof(string));
+
+            Table_RECONC_RECORDS_CYCLE.Columns.Add("Added Cash", typeof(string));
+            Table_RECONC_RECORDS_CYCLE.Columns.Add("GL Cash", typeof(string));
+
+            Table_RECONC_RECORDS_CYCLE.Columns.Add("Deposits", typeof(string));
+            Table_RECONC_RECORDS_CYCLE.Columns.Add("GL Deposits", typeof(string));
+
+            Table_RECONC_RECORDS_CYCLE.Columns.Add("Count Excess", typeof(string));
+            Table_RECONC_RECORDS_CYCLE.Columns.Add("Count Shortage", typeof(string));
+
+            Table_RECONC_RECORDS_CYCLE.Columns.Add("DIFF", typeof(string));
+
+
+
+            string SqlString = " SELECT  * "
+                      + " FROM [RRDM_Reconciliation_ITMX].[dbo].[ATMs_CASH_RECON_MASTER_RECORD] "
+                     + InSelectionCriteria
+                     + " Order by AtmNo ";
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+
+                        //  cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+
+                            RecordFound = true;
+
+                            ReadRecordFields(rdr);
+
+                            TotalSelected = TotalSelected + 1;
+                            // -------- INSERT FIRST LINE --------
+                            DataRow row1 = Table_RECONC_RECORDS_CYCLE.NewRow();
+
+                            row1["Line Type"] = "JOURNAL";
+                            row1["ATM No"] = AtmNo;
+                            row1["Date"] = ReplDate.ToString();
+
+                            row1["Opening"] = SM_OpeningBalance.ToString("#,##0.00");
+                            row1["Remaining"] = SM_Remaining.ToString("#,##0.00");
+                            row1["New Loaded"] = SM_Cash_Loaded.ToString("#,##0.00");
+
+                            row1["Added Cash"] = SM_Cash_Loaded_Minus_SM_Remaining.ToString("#,##0.00");
+                            row1["GL Cash"] = ATM_Replenishment.ToString("#,##0.00");
+
+                            row1["Deposits"] = SM_Deposits.ToString("#,##0.00");
+                            row1["GL Deposits"] = ATM_Deposits.ToString("#,##0.00");
+
+                        
+                            row1["Count Excess"] = OverFound_Cassettes.ToString("#,##0.00");
+                            row1["Count Shortage"] = ShortFound_Cassettes.ToString("#,##0.00");
+
+                            if (OverFound_Cassettes == 0 & ShortFound_Cassettes == 0)
+                            {
+                                row1["DIFF"] ="NO DIFF";
+                            }
+                            else
+                            {
+                                row1["DIFF"] = "YES DIFF";
+                            }
+                           
+
+                            Table_RECONC_RECORDS_CYCLE.Rows.Add(row1);
+
+                            // -------- INSERT SECOND LINE --------
+                            DataRow row2 = Table_RECONC_RECORDS_CYCLE.NewRow();
+
+                            row2["Line Type"] = "SWITCH";
+                            row2["ATM No"] = "SAME";
+                            row2["Date"] = "SAME";
+
+                            row2["Opening"] = SWITCH_OpeningBalance.ToString("#,##0.00");
+                            row2["Remaining"] = SWITCH_Remaining.ToString("#,##0.00");
+                            row2["New Loaded"] = SWITCH_Cash_Loaded.ToString("#,##0.00");
+
+                            row2["Added Cash"] = SWITCH_Cash_Loaded_Minus_SWITCH_Remaining.ToString("#,##0.00");
+                            row2["GL Cash"] = ATM_Replenishment.ToString("#,##0.00");
+
+                            row2["Deposits"] = SWITCH_Deposits.ToString("#,##0.00");
+                            row2["GL Deposits"] = ATM_Deposits.ToString("#,##0.00");
+
+
+                            row2["Count Excess"] = OverFound_Cassettes_SWITCH.ToString("#,##0.00");
+                            row2["Count Shortage"] = ShortFound_Cassettes_SWITCH.ToString("#,##0.00");
+
+                            if (OverFound_Cassettes_SWITCH == 0 & ShortFound_Cassettes_SWITCH == 0)
+                            {
+                                row2["DIFF"] = "NO DIFF";
+                            }
+                            else
+                            {
+                                row2["DIFF"] = "YES DIFF";
+                            }
+
+
+                            Table_RECONC_RECORDS_CYCLE.Rows.Add(row2);
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+
+                    //  InsertWReportAtmRepl(InSignedId);
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+                    CatchDetails(ex);
+
                 }
         }
         //
@@ -483,16 +566,26 @@ namespace RRDM4ATMs
            + " ,[ReplCycleNo] "
 
            + " ,[FUI] "
+
            + " ,[SM_DATA] "
            + " ,[SM_OpeningBalance] "
            + " ,[SM_Dispensed] "
            + " ,[SM_Remaining] "
-
            + " ,[SM_Cash_Loaded] "
            + " ,[SM_Cash_Loaded_Minus_SM_Remaining] "
            + " ,[SM_Deposits] "
+
+           + " ,[SWITCH_DATA] "
+           + " ,[SWITCH_OpeningBalance] "
+           + " ,[SWITCH_Dispensed] "
+           + " ,[SWITCH_Remaining] "
+           + " ,[SWITCH_Cash_Loaded] "
+           + " ,[SWITCH_Cash_Loaded_Minus_SWITCH_Remaining] "
+           + " ,[SWITCH_Deposits] "
+
            + " ,[FOUND_BY_RRDM] "
            + " ,[RRDM_PresentedErrors] "
+            + " ,[RRDM_SuspectFound] "
 
            + " ,[RRDM_Deposits_Retracted] "
            + " ,[GL_ENTRIES_IN_BOOKS] "
@@ -502,11 +595,18 @@ namespace RRDM4ATMs
 
            + " ,[CR_Corrections_on_ATM] "
            + " ,[IsDifferent] "
-           + " ,[OverFound] "
-           + " ,[ShortFound] "
+           + " ,[OverFound_Cassettes] "
+           + " ,[ShortFound_Cassettes] "
+             + " ,[OverFound_Deposits] "
+           + " ,[ShortFound_Deposits] "
+           + " ,[OverFound_Cassettes_SWITCH] "
+           + " ,[ShortFound_Cassettes_SWITCH] "
+             + " ,[OverFound_Deposits_SWITCH] "
+           + " ,[ShortFound_Deposits_SWITCH] "
+             + " ,[InsuranceAmt] "
+               + " ,[IsWithinInsurance] "
            + " ,[Closing_REMARKS] "
-
-           + " ,[SUM_TXNS_Journals_DSP] "
+            + " ,[SUM_TXNS_Journals_DSP] "
            + " ,[SUM_TXNS_Journal_DEP] "
            + " ,[SUM_TXNS_SWITCH_DSP] "
            + "  ,[SUM_TXNS_SWITCH_DEP] "
@@ -528,16 +628,26 @@ namespace RRDM4ATMs
            + " ,@ReplCycleNo "
 
            + " ,@FUI "
+
            + " ,@SM_DATA "
            + " ,@SM_OpeningBalance "
            + " ,@SM_Dispensed "
            + " ,@SM_Remaining "
-
            + " ,@SM_Cash_Loaded "
            + " ,@SM_Cash_Loaded_Minus_SM_Remaining "
            + " ,@SM_Deposits "
+
+           + " ,@SWITCH_DATA "
+           + " ,@SWITCH_OpeningBalance "
+           + " ,@SWITCH_Dispensed "
+           + " ,@SWITCH_Remaining "
+           + " ,@SWITCH_Cash_Loaded "
+           + " ,@SWITCH_Cash_Loaded_Minus_SWITCH_Remaining "
+           + " ,@SWITCH_Deposits "
+
            + " ,@FOUND_BY_RRDM "
            + " ,@RRDM_PresentedErrors "
+             + " ,@RRDM_SuspectFound "
 
            + " ,@RRDM_Deposits_Retracted "
            + " ,@GL_ENTRIES_IN_BOOKS "
@@ -547,8 +657,16 @@ namespace RRDM4ATMs
 
            + " ,@CR_Corrections_on_ATM "
            + " ,@IsDifferent "
-           + " ,@OverFound "
-           + " ,@ShortFound "
+           + " ,@OverFound_Cassettes "
+           + " ,@ShortFound_Cassettes "
+             + " ,@OverFound_Deposits "
+           + " ,@ShortFound_Deposits "
+              + " ,@OverFound_Cassettes_SWITCH "
+           + " ,@ShortFound_Cassettes_SWITCH "
+             + " ,@OverFound_Deposits_SWITCH "
+           + " ,@ShortFound_Deposits_SWITCH "
+             + " ,@InsuranceAmt "
+               + " ,@IsWithinInsurance "
            + " ,@Closing_REMARKS "
 
            + " ,@SUM_TXNS_Journals_DSP "
@@ -583,28 +701,49 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@ReplCycleNo", ReplCycleNo);
 
                         cmd.Parameters.AddWithValue("@FUI", FUI);
-                        cmd.Parameters.AddWithValue("@SM_DATA", SM_DATA);
+
+                        cmd.Parameters.AddWithValue("@SM_DATA", "SM_DATA");
                         cmd.Parameters.AddWithValue("@SM_OpeningBalance", SM_OpeningBalance);
                         cmd.Parameters.AddWithValue("@SM_Dispensed", SM_Dispensed);
                         cmd.Parameters.AddWithValue("@SM_Remaining", SM_Remaining);
-
                         cmd.Parameters.AddWithValue("@SM_Cash_Loaded", SM_Cash_Loaded);
                         cmd.Parameters.AddWithValue("@SM_Cash_Loaded_Minus_SM_Remaining", SM_Cash_Loaded_Minus_SM_Remaining);
                         cmd.Parameters.AddWithValue("@SM_Deposits", SM_Deposits);
-                        cmd.Parameters.AddWithValue("@FOUND_BY_RRDM", FOUND_BY_RRDM);
+
+                        cmd.Parameters.AddWithValue("@SWITCH_DATA", "SWITCH_DATA");
+                        cmd.Parameters.AddWithValue("@SWITCH_OpeningBalance", SWITCH_OpeningBalance);
+                        cmd.Parameters.AddWithValue("@SWITCH_Dispensed", SWITCH_Dispensed);
+                        cmd.Parameters.AddWithValue("@SWITCH_Remaining", SWITCH_Remaining);
+                        cmd.Parameters.AddWithValue("@SWITCH_Cash_Loaded", SWITCH_Cash_Loaded);
+                        cmd.Parameters.AddWithValue("@SWITCH_Cash_Loaded_Minus_SWITCH_Remaining", SWITCH_Cash_Loaded_Minus_SWITCH_Remaining);
+                        cmd.Parameters.AddWithValue("@SWITCH_Deposits", SWITCH_Deposits);
+
+                        cmd.Parameters.AddWithValue("@FOUND_BY_RRDM", "FOUND_BY_RRDM");
                         cmd.Parameters.AddWithValue("@RRDM_PresentedErrors", RRDM_PresentedErrors);
+                        cmd.Parameters.AddWithValue("@RRDM_SuspectFound", RRDM_SuspectFound);
 
                         cmd.Parameters.AddWithValue("@RRDM_Deposits_Retracted", RRDM_Deposits_Retracted);
-                        cmd.Parameters.AddWithValue("@GL_ENTRIES_IN_BOOKS", GL_ENTRIES_IN_BOOKS);
+                        cmd.Parameters.AddWithValue("@GL_ENTRIES_IN_BOOKS", "GL_ENTRIES_IN_BOOKS");
                         cmd.Parameters.AddWithValue("@ATM_Replenishment", ATM_Replenishment);
                         cmd.Parameters.AddWithValue("@ATM_Deposits", ATM_Deposits);
                         cmd.Parameters.AddWithValue("@DB_Corrections_on_ATM", DB_Corrections_on_ATM);
 
                         cmd.Parameters.AddWithValue("@CR_Corrections_on_ATM", CR_Corrections_on_ATM);
                         cmd.Parameters.AddWithValue("@IsDifferent", IsDifferent);
-                        cmd.Parameters.AddWithValue("@OverFound", OverFound);
-                        cmd.Parameters.AddWithValue("@ShortFound", ShortFound);
-                        cmd.Parameters.AddWithValue("@Closing_REMARKS", Closing_REMARKS);
+
+                        cmd.Parameters.AddWithValue("@OverFound_Cassettes", OverFound_Cassettes);
+                        cmd.Parameters.AddWithValue("@ShortFound_Cassettes", ShortFound_Cassettes);
+                        cmd.Parameters.AddWithValue("@OverFound_Deposits", OverFound_Deposits);
+                        cmd.Parameters.AddWithValue("@ShortFound_Deposits", ShortFound_Deposits);
+
+                        cmd.Parameters.AddWithValue("@OverFound_Cassettes_SWITCH", OverFound_Cassettes_SWITCH);
+                        cmd.Parameters.AddWithValue("@ShortFound_Cassettes_SWITCH", ShortFound_Cassettes_SWITCH);
+                        cmd.Parameters.AddWithValue("@OverFound_Deposits_SWITCH", OverFound_Deposits_SWITCH);
+                        cmd.Parameters.AddWithValue("@ShortFound_Deposits_SWITCH", ShortFound_Deposits_SWITCH);
+                        cmd.Parameters.AddWithValue("@InsuranceAmt", InsuranceAmt);
+                        cmd.Parameters.AddWithValue("@IsWithinInsurance", IsWithinInsurance);
+
+                        cmd.Parameters.AddWithValue("@Closing_REMARKS", "Closing_REMARKS"); // AT INSERT STAGE
 
                         cmd.Parameters.AddWithValue("@SUM_TXNS_Journals_DSP", SUM_TXNS_Journals_DSP);
                         cmd.Parameters.AddWithValue("@SUM_TXNS_Journal_DEP", SUM_TXNS_Journal_DEP);
@@ -642,43 +781,64 @@ namespace RRDM4ATMs
         {
             int rows;
 
-            string strUpdate = "UPDATE [RRDM_Reconciliation_ITMX].[dbo].ATMs_CASH_RECON_MASTER_RECORD"
+            string strUpdate = " UPDATE [RRDM_Reconciliation_ITMX].[dbo].ATMs_CASH_RECON_MASTER_RECORD"
                 + " SET "
               +"   AtmNo = @AtmNo "
-              + " ,@AtmName = @AtmName"
-      + " ,@Previous_ReplDate = Previous_ReplDate "
-      + " ,@ReplDate = ReplDate "
-     + " ,@ReplCycleNo = ReplCycleNo "
-     + " ,@FUI = FUI "
-      + " ,@SM_DATA = SM_DATA "
-      + " ,@SM_OpeningBalance = SM_OpeningBalance "
-     + " ,@SM_Dispensed = SM_Dispensed "
-      + " ,@SM_Remaining = SM_Remaining "
-     + " ,@SM_Cash_Loaded = SM_Cash_Loaded "
-     + " ,@SM_Cash_Loaded_Minus_SM_Remaining = SM_Cash_Loaded_Minus_SM_Remaining "
-     + " ,@SM_Deposits = SM_Deposits "
-     + " ,@FOUND_BY_RRDM = FOUND_BY_RRDM "
-      + " ,@RRDM_PresentedErrors = RRDM_PresentedErrors "
-     + " ,@RRDM_Deposits_Retracted = RRDM_Deposits_Retracted "
-     + " ,@GL_ENTRIES_IN_BOOKS = GL_ENTRIES_IN_BOOKS "
-    + " ,@ATM_Replenishment = ATM_Replenishment "
-    + " ,@ATM_Deposits = ATM_Deposits "
-     + " ,@DB_Corrections_on_ATM = DB_Corrections_on_ATM "
-     + " ,@CR_Corrections_on_ATM = CR_Corrections_on_ATM "
-      + " ,@IsDifferent = IsDifferent "
-     + " ,@OverFound = OverFound "
-     + " ,@ShortFound = ShortFound "
-     + " ,@Closing_REMARKS = Closing_REMARKS "
-     + " ,@SUM_TXNS_Journals_DSP = SUM_TXNS_Journals_DSP "
-      + " ,@SUM_TXNS_Journal_DEP = SUM_TXNS_Journal_DEP "
-     + " ,@SUM_TXNS_SWITCH_DSP = SUM_TXNS_SWITCH_DSP "
-     + " ,@SUM_TXNS_SWITCH_DEP = SUM_TXNS_SWITCH_DEP "
-      + " ,@SUM_TXNS_COREBANKING_DSP = SUM_TXNS_COREBANKING_DSP "
-      + " ,@SUM_TXNS_COREBANKING_DEP = SUM_TXNS_COREBANKING_DEP "
-      + " ,@CreatedDate = CreatedDate "
-      + " ,@Cut_Off_date = Cut_Off_date "
-      + " ,@LoadedAtRMCycle = LoadedAtRMCycle "
-      + " ,@Operator = Operator "
+              + " , AtmName = @AtmName"
+      + " , Previous_ReplDate = @Previous_ReplDate "
+      + " , ReplDate = @ReplDate "
+     + " , ReplCycleNo = @ReplCycleNo "
+     + " , FUI = @FUI "
+
+      + " , SM_DATA = @SM_DATA "
+      + " , SM_OpeningBalance = @SM_OpeningBalance "
+     + " , SM_Dispensed = @SM_Dispensed "
+      + " , SM_Remaining = @SM_Remaining "
+     + " , SM_Cash_Loaded = @SM_Cash_Loaded "
+     + " , SM_Cash_Loaded_Minus_SM_Remaining = @SM_Cash_Loaded_Minus_SM_Remaining "
+     + " , SM_Deposits = @SM_Deposits "
+
+       + " , SWITCH_DATA = @SWITCH_DATA "
+      + " , SWITCH_OpeningBalance = @SWITCH_OpeningBalance "
+     + " , SWITCH_Dispensed = @SWITCH_Dispensed "
+      + " , SWITCH_Remaining = @SWITCH_Remaining "
+     + " , SWITCH_Cash_Loaded = @SWITCH_Cash_Loaded "
+     + " , SWITCH_Cash_Loaded_Minus_SWITCH_Remaining = @SWITCH_Cash_Loaded_Minus_SWITCH_Remaining "
+     + " , SWITCH_Deposits = @SWITCH_Deposits "
+
+     + " , FOUND_BY_RRDM = @FOUND_BY_RRDM "
+      + " , RRDM_PresentedErrors = @RRDM_PresentedErrors "
+       + " , RRDM_SuspectFound = @RRDM_SuspectFound "
+
+     + " , RRDM_Deposits_Retracted = @RRDM_Deposits_Retracted "
+     + " , GL_ENTRIES_IN_BOOKS = @GL_ENTRIES_IN_BOOKS "
+    + " , ATM_Replenishment = @ATM_Replenishment "
+    + " , ATM_Deposits = @ATM_Deposits "
+     + " , DB_Corrections_on_ATM = @DB_Corrections_on_ATM "
+     + " , CR_Corrections_on_ATM = @CR_Corrections_on_ATM "
+      + " , IsDifferent = @IsDifferent "
+     + " , OverFound_Cassettes = @OverFound_Cassettes "
+     + " , ShortFound_Cassettes = @ShortFound_Cassettes "
+      + " , OverFound_Deposits = @OverFound_Deposits "
+     + " , ShortFound_Deposits = @ShortFound_Deposits "
+     + " , OverFound_Cassettes_SWITCH = @OverFound_Cassettes_SWITCH "
+     + " , ShortFound_Cassettes_SWITCH = @ShortFound_Cassettes_SWITCH "
+      + " , OverFound_Deposits_SWITCH = @OverFound_Deposits_SWITCH "
+     + " , ShortFound_Deposits_SWITCH = @ShortFound_Deposits_SWITCH "
+     + " , InsuranceAmt = @InsuranceAmt "
+     + " , IsWithinInsurance = @IsWithinInsurance "
+     
+            + " , Closing_REMARKS = @Closing_REMARKS "
+     + " , SUM_TXNS_Journals_DSP = @SUM_TXNS_Journals_DSP "
+      + " , SUM_TXNS_Journal_DEP = @SUM_TXNS_Journal_DEP "
+     + " , SUM_TXNS_SWITCH_DSP = @SUM_TXNS_SWITCH_DSP "
+     + " , SUM_TXNS_SWITCH_DEP = @SUM_TXNS_SWITCH_DEP "
+      + " , SUM_TXNS_COREBANKING_DSP = @SUM_TXNS_COREBANKING_DSP "
+      + " , SUM_TXNS_COREBANKING_DEP = @SUM_TXNS_COREBANKING_DEP "
+      + " , CreatedDate = @CreatedDate "
+      + " , Cut_Off_date = @Cut_Off_date "
+      + " , LoadedAtRMCycle = @LoadedAtRMCycle "
+      + " , Operator = @Operator "
 
                 + " WHERE SeqNo=@SeqNo ";
             using (SqlConnection conn =
@@ -697,7 +857,8 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@ReplCycleNo", ReplCycleNo);
 
                         cmd.Parameters.AddWithValue("@FUI", FUI);
-                        cmd.Parameters.AddWithValue("@SM_DATA", SM_DATA);
+
+                        cmd.Parameters.AddWithValue("@SM_DATA", "SM_DATA");
                         cmd.Parameters.AddWithValue("@SM_OpeningBalance", SM_OpeningBalance);
                         cmd.Parameters.AddWithValue("@SM_Dispensed", SM_Dispensed);
                         cmd.Parameters.AddWithValue("@SM_Remaining", SM_Remaining);
@@ -705,20 +866,44 @@ namespace RRDM4ATMs
                         cmd.Parameters.AddWithValue("@SM_Cash_Loaded", SM_Cash_Loaded);
                         cmd.Parameters.AddWithValue("@SM_Cash_Loaded_Minus_SM_Remaining", SM_Cash_Loaded_Minus_SM_Remaining);
                         cmd.Parameters.AddWithValue("@SM_Deposits", SM_Deposits);
-                        cmd.Parameters.AddWithValue("@FOUND_BY_RRDM", FOUND_BY_RRDM);
+
+                        cmd.Parameters.AddWithValue("@SWITCH_DATA", "SWITCH_DATA");
+                        cmd.Parameters.AddWithValue("@SWITCH_OpeningBalance", SWITCH_OpeningBalance);
+                        cmd.Parameters.AddWithValue("@SWITCH_Dispensed", SWITCH_Dispensed);
+                        cmd.Parameters.AddWithValue("@SWITCH_Remaining", SWITCH_Remaining);
+                        cmd.Parameters.AddWithValue("@SWITCH_Cash_Loaded", SWITCH_Cash_Loaded);
+                        cmd.Parameters.AddWithValue("@SWITCH_Cash_Loaded_Minus_SWITCH_Remaining", SWITCH_Cash_Loaded_Minus_SWITCH_Remaining);
+                        cmd.Parameters.AddWithValue("@SWITCH_Deposits", SWITCH_Deposits);
+
+
+                        cmd.Parameters.AddWithValue("@FOUND_BY_RRDM", "FOUND_BY_RRDM");
                         cmd.Parameters.AddWithValue("@RRDM_PresentedErrors", RRDM_PresentedErrors);
+                        cmd.Parameters.AddWithValue("@RRDM_SuspectFound", RRDM_SuspectFound);
 
                         cmd.Parameters.AddWithValue("@RRDM_Deposits_Retracted", RRDM_Deposits_Retracted);
-                        cmd.Parameters.AddWithValue("@GL_ENTRIES_IN_BOOKS", GL_ENTRIES_IN_BOOKS);
+
+                        cmd.Parameters.AddWithValue("@GL_ENTRIES_IN_BOOKS", "GL_ENTRIES_IN_BOOKS");
                         cmd.Parameters.AddWithValue("@ATM_Replenishment", ATM_Replenishment);
                         cmd.Parameters.AddWithValue("@ATM_Deposits", ATM_Deposits);
                         cmd.Parameters.AddWithValue("@DB_Corrections_on_ATM", DB_Corrections_on_ATM);
-
                         cmd.Parameters.AddWithValue("@CR_Corrections_on_ATM", CR_Corrections_on_ATM);
+
                         cmd.Parameters.AddWithValue("@IsDifferent", IsDifferent);
-                        cmd.Parameters.AddWithValue("@OverFound", OverFound);
-                        cmd.Parameters.AddWithValue("@ShortFound", ShortFound);
-                        cmd.Parameters.AddWithValue("@Closing_REMARKS", Closing_REMARKS);
+
+                        cmd.Parameters.AddWithValue("@OverFound_Cassettes", OverFound_Cassettes);
+                        cmd.Parameters.AddWithValue("@ShortFound_Cassettes", ShortFound_Cassettes);
+                        cmd.Parameters.AddWithValue("@OverFound_Deposits", OverFound_Deposits);
+                        cmd.Parameters.AddWithValue("@ShortFound_Deposits", ShortFound_Deposits);
+
+                        cmd.Parameters.AddWithValue("@OverFound_Cassettes_SWITCH", OverFound_Cassettes_SWITCH);
+                        cmd.Parameters.AddWithValue("@ShortFound_Cassettes_SWITCH", ShortFound_Cassettes_SWITCH);
+                        cmd.Parameters.AddWithValue("@OverFound_Deposits_SWITCH", OverFound_Deposits_SWITCH);
+                        cmd.Parameters.AddWithValue("@ShortFound_Deposits_SWITCH", ShortFound_Deposits_SWITCH);
+
+                        cmd.Parameters.AddWithValue("@InsuranceAmt", InsuranceAmt);
+                        cmd.Parameters.AddWithValue("@IsWithinInsurance", IsWithinInsurance);
+
+                        cmd.Parameters.AddWithValue("@Closing_REMARKS", "Closing_REMARKS");
 
                         cmd.Parameters.AddWithValue("@SUM_TXNS_Journals_DSP", SUM_TXNS_Journals_DSP);
                         cmd.Parameters.AddWithValue("@SUM_TXNS_Journal_DEP", SUM_TXNS_Journal_DEP);

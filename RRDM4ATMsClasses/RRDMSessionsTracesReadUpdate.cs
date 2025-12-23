@@ -144,6 +144,11 @@ namespace RRDM4ATMs
 
         bool AutoRec;
 
+        RRDMRepl_SupervisorMode_Details_Recycle SM = new RRDMRepl_SupervisorMode_Details_Recycle();
+
+
+        RRDMGasParameters Gp = new RRDMGasParameters();
+
         // Define the data table 
         public DataTable ATMsReplCyclesSelectedPeriod = new DataTable();
         public DataTable ATMsReplCyclesTheBaddies = new DataTable();
@@ -278,11 +283,14 @@ namespace RRDM4ATMs
             ErrorOutput = "";
 
             int WSesNo;
-
+            
+            RRDM_ATMs_CASH_RECON_MASTER_RECORD Cmr = new RRDM_ATMs_CASH_RECON_MASTER_RECORD();
             // Find If AUDI Type 
             // If found and it is 1 is Audi Type If Zero then is normal 
             RRDMGasParameters Gp = new RRDMGasParameters();
             bool AudiType = false;
+       
+            //Alpha Bank Type
             int IsAmountOneZero;
             Gp.ReadParametersSpecificId(InOperator, "945", "4", "", ""); // 
             if (Gp.RecordFound == true)
@@ -293,8 +301,6 @@ namespace RRDM4ATMs
                 {
                     // Transactions will be done at the end 
                     AudiType = true;
-
-
                 }
                 else
                 {
@@ -305,6 +311,8 @@ namespace RRDM4ATMs
             {
                 AudiType = false;
             }
+
+          
             ExcelStatus = "";
 
             RRDMAuthorisationProcess Ap = new RRDMAuthorisationProcess();
@@ -327,9 +335,18 @@ namespace RRDM4ATMs
             {
                 ATMsReplCyclesSelectedPeriod.Columns.Add("ExcelStatus", typeof(string));
             }
+            if (InOperator == "ALPHA_CY")
+            {
+                ATMsReplCyclesSelectedPeriod.Columns.Add("IsDifferent", typeof(bool));
+                ATMsReplCyclesSelectedPeriod.Columns.Add("Counted Excess", typeof(string));
+                ATMsReplCyclesSelectedPeriod.Columns.Add("Counted Shortage", typeof(string));
+                ATMsReplCyclesSelectedPeriod.Columns.Add("Is_Insured", typeof(bool));
+            }
 
+//            OverFound_Cassettes decimal(18, 2)  Unchecked
+//ShortFound_Cassettes    decimal(18, 2)  Unchecked
 
-            string SqlString = " SELECT *"
+            string SqlString = " SELECT * "
                      + " FROM [dbo].[SessionsStatusTraces] "
                      + " WHERE Operator=@Operator AND AtmNo =@AtmNo AND (SesDtTimeStart >= @SesDtTimeStart AND SesDtTimeEnd <= @SesDtTimeEnd)  "
                      + " Order by SesDtTimeStart DESC ";
@@ -483,7 +500,28 @@ namespace RRDM4ATMs
 
                             }
 
+                            if (InOperator == "ALPHA_CY")
+                            {
+                               
+                                string WSelectionCriteria = " WHERE AtmNo='"+ AtmNo + "' AND ReplCycleNo="+SesNo;
+                                Cmr.Read_CASH_RECON_And_BySelectionCriteria(WSelectionCriteria);
 
+                                if (Cmr.RecordFound == true)
+                                {
+                                    RowSelected["IsDifferent"] = Cmr.IsDifferent;
+                                    RowSelected["Counted Excess"] = Cmr.OverFound_Cassettes.ToString("#,##0.00");
+                                    RowSelected["Counted Shortage"] = Cmr.ShortFound_Cassettes.ToString("#,##0.00");
+                                    RowSelected["Is_Insured"] = Cmr.IsWithinInsurance; 
+                                }
+                                else
+                                {
+                                    RowSelected["IsDifferent"] = false;
+                                    RowSelected["Counted Excess"] = "0.00";
+                                    RowSelected["Counted Shortage"] = "0.00";
+                                    RowSelected["Is_Insured"] = false;
+                                }
+                                
+                            }
                             // ADD ROW
                             ATMsReplCyclesSelectedPeriod.Rows.Add(RowSelected);
 
@@ -507,6 +545,278 @@ namespace RRDM4ATMs
 
                 }
         }
+        public void ReadReplCyclesForFromToDateFillTable_Alpha(string InOperator, string InSignedId, string InAtmNo, DateTime InDtFrom, DateTime InDtTo)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            int WSesNo;
+
+            RRDM_ATMs_CASH_RECON_MASTER_RECORD Cmr = new RRDM_ATMs_CASH_RECON_MASTER_RECORD();
+            // Find If AUDI Type 
+            // If found and it is 1 is Audi Type If Zero then is normal 
+            RRDMGasParameters Gp = new RRDMGasParameters();
+            bool AudiType = false;
+
+            //Alpha Bank Type
+            int IsAmountOneZero;
+            Gp.ReadParametersSpecificId(InOperator, "945", "4", "", ""); // 
+            if (Gp.RecordFound == true)
+            {
+                IsAmountOneZero = (int)Gp.Amount;
+
+                if (IsAmountOneZero == 1)
+                {
+                    // Transactions will be done at the end 
+                    AudiType = true;
+                }
+                else
+                {
+                    AudiType = false;
+                }
+            }
+            else
+            {
+                AudiType = false;
+            }
+
+
+            ExcelStatus = "";
+
+            RRDMAuthorisationProcess Ap = new RRDMAuthorisationProcess();
+
+            ATMsReplCyclesSelectedPeriod = new DataTable();
+            ATMsReplCyclesSelectedPeriod.Clear();
+
+            TotalSelected = 0;
+
+            // DATA TABLE ROWS DEFINITION 
+            ATMsReplCyclesSelectedPeriod.Columns.Add("ReplCycle", typeof(int));
+
+            ATMsReplCyclesSelectedPeriod.Columns.Add("CycleStart", typeof(string));
+            ATMsReplCyclesSelectedPeriod.Columns.Add("CycleEnd", typeof(string));
+
+            ATMsReplCyclesSelectedPeriod.Columns.Add("Mode", typeof(string));
+
+            ATMsReplCyclesSelectedPeriod.Columns.Add("Mode_2", typeof(int));
+            if (AudiType == true)
+            {
+                ATMsReplCyclesSelectedPeriod.Columns.Add("ExcelStatus", typeof(string));
+            }
+            if (InOperator == "ALPHA_CY")
+            {
+                ATMsReplCyclesSelectedPeriod.Columns.Add("IsDifferent", typeof(bool));
+                ATMsReplCyclesSelectedPeriod.Columns.Add("Counted Excess", typeof(string));
+                ATMsReplCyclesSelectedPeriod.Columns.Add("Counted Shortage", typeof(string));
+                ATMsReplCyclesSelectedPeriod.Columns.Add("Is_Insured", typeof(bool));
+            }
+
+            //            OverFound_Cassettes decimal(18, 2)  Unchecked
+            //ShortFound_Cassettes    decimal(18, 2)  Unchecked
+
+            string SqlString = " SELECT * "
+                     + " FROM [dbo].[SessionsStatusTraces] "
+                     + " WHERE Operator=@Operator AND AtmNo =@AtmNo AND ProcessMode <> -1 "
+                     + " AND (SesDtTimeStart >= @SesDtTimeStart AND SesDtTimeEnd <= @SesDtTimeEnd) "
+                     + " Order by SesDtTimeStart DESC ";
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+
+                        cmd.Parameters.AddWithValue("@Operator", InOperator);
+                        cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                        cmd.Parameters.AddWithValue("@SesDtTimeStart", InDtFrom);
+                        cmd.Parameters.AddWithValue("@SesDtTimeEnd", InDtTo);
+
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+
+                            RecordFound = true;
+
+                            ReaderFields(rdr);
+
+                            TotalSelected = TotalSelected + 1;
+                            DataRow RowSelected = ATMsReplCyclesSelectedPeriod.NewRow();
+
+                            RowSelected["ReplCycle"] = WSesNo = (int)rdr["SesNo"];
+
+                            DateTime START_Date = (DateTime)rdr["SesDtTimeStart"];
+                            DateTime END_Date = (DateTime)rdr["SesDtTimeEnd"];
+
+                            RowSelected["CycleStart"] = START_Date.ToString();
+
+                            if (END_Date != NullDate)
+                            {
+                                RowSelected["CycleEnd"] = END_Date.ToString();
+                            }
+                            else
+                            {
+                                RowSelected["CycleEnd"] = "In Progress";
+                            }
+
+                            int TempMode = (int)rdr["ProcessMode"];
+
+                            if (TempMode == -1)
+                            {
+                                RowSelected["Mode"] = "In Progress";
+                            }
+                            if (TempMode == -5)
+                            {
+                                RowSelected["Mode"] = "Missing Journal for this";
+                            }
+                            if (TempMode == -6)
+                            {
+                                RowSelected["Mode"] = "Toxic Journal at SM for this";
+                            }
+                            if (TempMode == 0)
+                            {
+                                RowSelected["Mode"] = "Ready For Repl Workflow";
+                                Ap.ReadAuthorizationForReplenishmentReconcSpecificForAtm(InAtmNo, WSesNo, "Replenishment");
+                                // Check if record in Authorisations 
+                                if (Ap.RecordFound == true)
+                                {
+                                    RowSelected["Mode"] = "Under Author Process_Stage.." + Ap.Stage;
+                                }
+
+                            }
+                            if (TempMode == 1 || TempMode == 2 || TempMode == 3)
+                            {
+                                RowSelected["Mode"] = "Completed";
+                            }
+
+                            RowSelected["Mode_2"] = TempMode;
+                            //   RowSelected["LastTraceNo"] = (int)rdr["LastTraceNo"];
+
+                            // Is used for the CIT EXCEL INPUT at the Finish of workflow 
+                            // 0 It didnt pass through Excel 
+                            // 2 is done by auto load and unload came and reconcile 
+                            // 3 Load but Not Unload - wait 
+                            // 4 Unload but not load - wait 
+                            // 5 Should be made manually  
+                            // 7 Done manually  
+
+                            if (AudiType == true)
+                            {
+
+                                switch (LatestBatchNo)
+                                {
+                                    case 0:
+                                        {
+                                            if (TempMode == -1)
+                                            {
+                                                RowSelected["ExcelStatus"] = ExcelStatus = "N/A";
+                                            }
+                                            else
+                                            {
+                                                RowSelected["ExcelStatus"] = ExcelStatus = "0: Excel_Loaded_But_Not_Processed";
+                                            }
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+
+                                            RowSelected["ExcelStatus"] = ExcelStatus = "2: Auto DONE";
+
+                                            break;
+                                        }
+                                    case 3:
+                                        {
+
+                                            RowSelected["ExcelStatus"] = ExcelStatus = "3: Load but Not Unload - wait";
+
+                                            break;
+                                        }
+
+                                    case 4:
+                                        {
+
+                                            RowSelected["ExcelStatus"] = ExcelStatus = "4: Unload but not load - wait ";
+
+                                            break;
+                                        }
+                                    case 5:
+                                        {
+                                            if (ProcessMode == 2)
+                                            {
+                                                RowSelected["ExcelStatus"] = "Done Manually-" + Recon1.RecFinDtTm.ToString();
+                                            }
+                                            else
+                                            {
+                                                RowSelected["ExcelStatus"] = ExcelStatus = "5: Should be made manually";
+                                            }
+
+
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            RowSelected["ExcelStatus"] = ExcelStatus = "Not Defined";
+                                            break;
+                                        }
+                                }
+
+                            }
+
+                            if (InOperator == "ALPHA_CY")
+                            {
+
+                                string WSelectionCriteria = " WHERE AtmNo='" + AtmNo + "' AND ReplCycleNo=" + SesNo;
+                                Cmr.Read_CASH_RECON_And_BySelectionCriteria(WSelectionCriteria);
+
+                                if (Cmr.RecordFound == true)
+                                {
+                                    RowSelected["IsDifferent"] = Cmr.IsDifferent;
+                                    RowSelected["Counted Excess"] = Cmr.OverFound_Cassettes.ToString("#,##0.00");
+                                    RowSelected["Counted Shortage"] = Cmr.ShortFound_Cassettes.ToString("#,##0.00");
+                                    RowSelected["Is_Insured"] = Cmr.IsWithinInsurance;
+                                }
+                                else
+                                {
+                                    RowSelected["IsDifferent"] = false;
+                                    RowSelected["Counted Excess"] = "0.00";
+                                    RowSelected["Counted Shortage"] = "0.00";
+                                    RowSelected["Is_Insured"] = false;
+                                }
+
+                            }
+                            // ADD ROW
+                            ATMsReplCyclesSelectedPeriod.Rows.Add(RowSelected);
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+
+                    //  InsertWReportAtmRepl(InSignedId);
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+        }
+
+
         // For Form153 _ Show the Baddies
         public void ReadReplCycles_TheBaddies(string InSelectionCriteria)
         {
@@ -905,6 +1215,11 @@ namespace RRDM4ATMs
         // READ ALL THIS CYCLE REPLENISHMENT AND CREATE AND CALCULATE CASH RECONCILIATION RECORD
         public void ReadReplCycles_Created_This_Cycle_For_CASH_RECO(int In_LoadedAtRMCycle, DateTime InCut_Off_Date)
         {
+            // Find Limit Date for MATCHED TRANSACTIONS
+            RRDMMatchingTxns_InGeneralTables_BDC Mgt = new RRDMMatchingTxns_InGeneralTables_BDC();
+            string WTableId = "[RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolATMs]"; 
+            DateTime LIMIT_DATE = Mgt.ReadAndFindMaxDateTimeForMpaAfterMathcing(WTableId);
+            
             RecordFound = false;
             ErrorFound = false;
             ErrorOutput = "";
@@ -913,9 +1228,15 @@ namespace RRDM4ATMs
             ATMsReplCycles_loaded_at_This_Cycle.Clear();
 
             SqlString = " Select * "
-                                  + " FROM [dbo].[SessionsStatusTraces] "
-                                  + " WHERE LoadedAtRMCycle =@LoadedAtRMCycle AND ProcessMode <> -1 "
-                                  + " AND Cast(SesDtTimeEnd as Date) <= @Cut_Off_Date ";
+                                  + " FROM ATMS.[dbo].[SessionsStatusTraces] "
+                                  + " WHERE LoadedAtRMCycle <=@LoadedAtRMCycle "
+                                  + " AND ProcessMode <> -1 " // Not Include the the Running Cycle 
+                                   + " AND ProcessMode <> 2 " // Not include the already reconciled
+                                    + " AND ProcessMode <> 1 " // Not include the already dealt but not reconciled
+                                  + " AND SesDtTimeEnd < @LIMIT_DATE "
+                                  //+ " AND SesNo = 2500 "
+                                  + " Order By AtmNo "
+                                  ;
 
             using (SqlConnection conn =
                         new SqlConnection(connectionString))
@@ -928,7 +1249,8 @@ namespace RRDM4ATMs
                     {
 
                         sqlAdapt.SelectCommand.Parameters.AddWithValue("@LoadedAtRMCycle", In_LoadedAtRMCycle);
-                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@Cut_Off_Date", InCut_Off_Date);
+                        //sqlAdapt.SelectCommand.Parameters.AddWithValue("@Cut_Off_Date", InCut_Off_Date);
+                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@LIMIT_DATE", LIMIT_DATE);
 
                         sqlAdapt.Fill(ATMsReplCycles_loaded_at_This_Cycle);
 
@@ -945,9 +1267,21 @@ namespace RRDM4ATMs
                     return;
                 }
 
+            RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
+            RRDMAtmsClass Ac = new RRDMAtmsClass(); 
+            RRDMJTMIdentificationDetailsClass Jd = new RRDMJTMIdentificationDetailsClass();
+            RRDM_ATMs_GL_DAILY_TRANSACTIONS G_bMaster = new RRDM_ATMs_GL_DAILY_TRANSACTIONS();
+
+            RRDMRepl_SupervisorMode_Details Sm = new RRDMRepl_SupervisorMode_Details();
+            RRDM_SM_SWITCH_TOTALS Sw = new RRDM_SM_SWITCH_TOTALS();
+
             RRDM_ATMs_CASH_RECON_MASTER_RECORD Cr = new RRDM_ATMs_CASH_RECON_MASTER_RECORD();
 
+            RRDMMatchingTxns_MasterPoolATMs Mpa = new RRDMMatchingTxns_MasterPoolATMs(); 
+
+
             int I = 0;
+            //I = I + 1; 
 
             while (I <= (ATMsReplCycles_loaded_at_This_Cycle.Rows.Count - 1))
             {
@@ -956,43 +1290,395 @@ namespace RRDM4ATMs
                 string WAtmNo = (string)ATMsReplCycles_loaded_at_This_Cycle.Rows[I]["AtmNo"];
                 string WAtmName = (string)ATMsReplCycles_loaded_at_This_Cycle.Rows[I]["AtmName"];
 
-                DateTime WSesDtTimeStart = (DateTime)ATMsReplCycles_loaded_at_This_Cycle.Rows[I]["WSesDtTimeStart"];
+                DateTime WSesDtTimeStart = (DateTime)ATMsReplCycles_loaded_at_This_Cycle.Rows[I]["SesDtTimeStart"];
                 DateTime WSesDtTimeEnd = (DateTime)ATMsReplCycles_loaded_at_This_Cycle.Rows[I]["SesDtTimeEnd"];
 
                 string WOperator = (string)ATMsReplCycles_loaded_at_This_Cycle.Rows[I]["Operator"];
 
+                // Find how many days between the two dates  WSesDtTimeEnd and 
+
+                decimal WIsurance = Ac.ReadAtmTo_Get_Insurance_Amt(WAtmNo, WSesDtTimeStart, WSesDtTimeEnd); 
+
+                string WSelectionCriteria = " WHERE ATMAccessID='"+ WAtmNo +"' " ; 
+                //Jd.ReadJTMIdentificationDetailsBySelectionCriteria(WSelectionCriteria);
+                //WAtmName = Jd.AtmNo; 
+                if (WAtmNo == "ATM-4301")
+                {
+                    WAtmNo = "ATM-4301";
+                }
+
                 Cr.AtmNo = WAtmNo;
-                Cr.AtmName = WAtmName;
+                
+                Cr.AtmName = WAtmName; // The Alpha name  
                 Cr.Previous_ReplDate = WSesDtTimeStart;
                 Cr.ReplDate = WSesDtTimeEnd;
                 Cr.ReplCycleNo = WSesNo;
                 Cr.LoadedAtRMCycle = In_LoadedAtRMCycle;
-                Cr.Cut_Off_date = InCut_Off_Date; 
+                Cr.CreatedDate = DateTime.Now; 
+                Cr.Cut_Off_date = InCut_Off_Date;
+                Cr.InsuranceAmt = WIsurance; 
                 Cr.Operator = WOperator; 
-
+                //
+                // BASED ON ATM AND SESSION CREATE THE BASIC RECORD
+                //
                 int InsertSeqNo = Cr.Insert_CASH_RECON(WAtmNo, WSesNo);
 
+                // READ FIELDS 
                 Cr.Read_CASH_RECON_BySeqNo(WOperator, InsertSeqNo);
 
                 // Get the totals and Update all Fields 
-      //           ,[SM_DATA]
-      //,[SM_OpeningBalance]
-      //,[SM_Dispensed]
-      //,[SM_Remaining]
-      //,[SM_Cash_Loaded]
-      //,[SM_Cash_Loaded_Minus_SM_Remaining]
-      //,[SM_Deposits]
-        // UPDATE TOTALS 
-               Cr.Update_CASH_RECON(InsertSeqNo); 
+                //           ,[SM_DATA]
+                int  WFunction = 2;
+                Na.ReadSessionsNotesAndValues(WAtmNo, WSesNo, WFunction); // REPL TO REP IS DONE WITHIN THIS CLASS 
+
+                //JournalPresenter = Na.Balances1.PresenterValue;
+                //textBoxPresenter.Text = JournalPresenter.ToString("#,##0.00");
+                Cr.SM_OpeningBalance = Na.Balances1.OpenBal;
+                Cr.SM_Dispensed = (Na.Balances1.OpenBal - Na.Balances1.MachineBal);
+                Cr.SM_Remaining = Na.Balances1.MachineBal;
+
+                SM.Read_SM_Record_Specific_By_ATMno_ReplCycle(WAtmNo, WSesNo);
+
+                // FIND CASH ADDED
+                Cr.SM_Cash_Loaded = // After date Cap_date
+                              SM.cashaddtype1 * Na.Cassettes_1.FaceValue
+                            + SM.cashaddtype2 * Na.Cassettes_2.FaceValue
+                            + SM.cashaddtype3 * Na.Cassettes_3.FaceValue
+                            + SM.cashaddtype4 * Na.Cassettes_4.FaceValue
+                            ;
+
+                // FIND ADDITIONAL CASH IF ANY
+                SM.Read_SM_Record_For_ATM_For_Added_Cash(WAtmNo, In_LoadedAtRMCycle);
+                decimal TempAddedCash = 0; 
+                if (SM.RecordFound == true)
+                {
+                   
+                    TempAddedCash = // After date Cap_date
+                                         SM.Total_cashaddtype1 * Na.Cassettes_1.FaceValue
+                                       + SM.Total_cashaddtype2 * Na.Cassettes_2.FaceValue
+                                       + SM.Total_cashaddtype3 * Na.Cassettes_3.FaceValue
+                                       + SM.Total_cashaddtype4 * Na.Cassettes_4.FaceValue
+                                       ;
+                    Cr.SM_Cash_Loaded = Cr.SM_Cash_Loaded + TempAddedCash;
+                }
+
+                bool IsAddedPositive = false;
+                bool IsAddedNegative = false;
+                decimal Money_Added = 0;
+                decimal Money_Subtracted = 0;
+
+               
+                // HOW MUCH TO ADD TO COMPLETE THE TOTAL LOADED
+                Cr.SM_Cash_Loaded_Minus_SM_Remaining = Cr.SM_Cash_Loaded - Cr.SM_Remaining; // ADDED AMT
+
+                if (Cr.SM_Cash_Loaded_Minus_SM_Remaining >0)
+                {
+                    // Means they have Added Cash  
+
+                    // Remains was 62,500 and they 2,500 to make 65,000 
+                    IsAddedPositive = true;
+                    Money_Added = Cr.SM_Cash_Loaded_Minus_SM_Remaining; 
+                }
+
+                if (Cr.SM_Cash_Loaded_Minus_SM_Remaining < 0)
+                {
+                    // Means they had replinished less than the remain. 
+
+                    // Remains was 62,250 and they loaded 62,250 
+                    IsAddedNegative = true; 
+                    Money_Subtracted = -Cr.SM_Cash_Loaded_Minus_SM_Remaining; 
+                }
+
+                GetDeposits(WOperator, WAtmNo, WSesNo);
+                Cr.SM_Deposits = WTotalMoneyDecimal;
+
+                //
+                // SWITCH DATA 
+                //
+                WSelectionCriteria = " WHERE OriginSeqNo=" + SM.SeqNo + " AND AdditionalCash = 'N' "; 
+                Sw.Read__SM_SWITCH_TXNS_And_BySelectionCriteria_FOR_TOTALS(WSelectionCriteria);
+
+                if (Sw.RecordFound == true)
+                {
+                    Cr.FUI = Sw.FUI; 
+                    Cr.SWITCH_OpeningBalance = Sw.SWITCH_OpeningBalance;
+                    Cr.SWITCH_Dispensed = Sw.SWITCH_Dispensed;
+                    Cr.SWITCH_Remaining = Sw.SWITCH_Remaining;
+                    Cr.SWITCH_Cash_Loaded = Sw.SWITCH_Cash_Loaded;
+                    Cr.SWITCH_Cash_Loaded_Minus_SWITCH_Remaining = Sw.SWITCH_Cash_Loaded_Minus_SWITCH_Remaining;
+                    Cr.SWITCH_Deposits = Sw.SWITCH_Deposits;
+                }
+
+                WSelectionCriteria = " WHERE OriginSeqNo=" + SM.SeqNo + " AND AdditionalCash = 'Y' ";
+                Sw.Read__SM_SWITCH_TXNS_And_BySelectionCriteria_FOR_TOTALS_ADDED_CASH(WSelectionCriteria);
+
+                if (Sw.RecordFound == true)
+                {
+                   
+                    Cr.SWITCH_Cash_Loaded = Sw.SWITCH_Cash_Loaded;
+                    // HERE YOU GET THE FINAL AND subtract the Original remaining 
+                    Cr.SWITCH_Cash_Loaded_Minus_SWITCH_Remaining = Sw.SWITCH_Cash_Loaded - Cr.SWITCH_Remaining; 
+                  
+                }
 
 
 
+
+                // READ GL ENTRIES RELATED TO ATMS 
+                //ReplCycleNo
+                WSelectionCriteria = " WHERE IsFromCOREBANKING=1 AND LoadedAtRMCycle ="
+                          + In_LoadedAtRMCycle + " AND AtmNo ='"+ WAtmNo +"'"; 
+                G_bMaster.Read_GL_TXNS_And_BySelectionCriteriaGetAll_TXNS_Totals(WSelectionCriteria);
+
+                bool GL_Repl_TXNS_Found = false;
+
+                if (G_bMaster.RecordFound == true)
+                {
+                    // Records found
+                    Cr.ATM_Replenishment = G_bMaster.ATM_Replenishment;
+                    Cr.ATM_Deposits = G_bMaster.ATM_Deposits;
+                    Cr.DB_Corrections_on_ATM = G_bMaster.DB_Corrections_on_ATM;
+                    Cr.CR_Corrections_on_ATM = G_bMaster.CR_Corrections_on_ATM;
+
+                    // If They Replenish the ATM with less money than exist
+                    // eg if current balance is 62000 and want to replenish only 60000
+                    // Then we do not find entry in Cr. ATM_Replenishment and we see 
+                    // Cr.CR_Corrections_on_ATM = 2000
+                    if (Cr.ATM_Replenishment>0 
+                        || Cr.ATM_Deposits>0 
+                        || Cr.DB_Corrections_on_ATM >0
+                        || Cr.CR_Corrections_on_ATM > 0
+                        )
+                    {
+                        // repl info found 
+                        GL_Repl_TXNS_Found = true; 
+                    }
+                }
+                else
+                {
+                    // Records not found 
+                    GL_Repl_TXNS_Found = false;
+
+                    Cr.ATM_Replenishment = 0 ;
+                    Cr.ATM_Deposits = 0 ;
+                    Cr.DB_Corrections_on_ATM = 0 ;
+                    Cr.CR_Corrections_on_ATM = 0 ;
+                }
+
+                //
+                // UPDATE Presenter Error and Suspect 
+                //
+
+                Mpa.ReadTrans_PresnterErrors_Suspect_Between_Dates(WAtmNo,
+                                                        WSesDtTimeStart, WSesDtTimeEnd);
+                Cr.RRDM_PresentedErrors = Mpa.TotalPresenterErrorsAmt;
+                Cr.RRDM_SuspectFound = Mpa.TotalSuspectAmt;
+
+                // ******************
+                // NET BALANCES 
+                // ******************
+                Cr.IsDifferent = false; 
+                // JOURNAL NET 
+                decimal NET_On_ATM_Cash_Journal = 0;
+                NET_On_ATM_Cash_Journal = -(Cr.SM_Cash_Loaded - Cr.SM_Remaining) + Cr.SM_Deposits;
+
+                // SWITCH NET 
+                decimal NET_On_ATM_Cash_SWITCH = 0;
+                NET_On_ATM_Cash_SWITCH = -(Cr.SWITCH_Cash_Loaded - Cr.SWITCH_Remaining) + Cr.SWITCH_Deposits;
+
+                // GENERAL LEDGER NET 
+                decimal NET_On_ATM_Cash_bMaster = 0;
+                NET_On_ATM_Cash_bMaster = -(Cr.ATM_Replenishment + Cr.DB_Corrections_on_ATM)
+                                      + Cr.ATM_Deposits + Cr.CR_Corrections_on_ATM;
+
+                // JOURNAL VS BMaster 
+                Cr.OverFound_Cassettes = 0;
+                Cr.ShortFound_Cassettes = 0;
+                if (NET_On_ATM_Cash_bMaster > NET_On_ATM_Cash_Journal)
+                {
+                    // COUNTED MORE Maybe due to Presenter error 
+                    // We have counted excess vs Journal
+                    Cr.OverFound_Cassettes = NET_On_ATM_Cash_bMaster - NET_On_ATM_Cash_Journal;
+                    Cr.IsDifferent = true; 
+                }
+                if (NET_On_ATM_Cash_bMaster < NET_On_ATM_Cash_Journal)
+                {
+                    // We have counted Shortage vs Journal 
+                    Cr.ShortFound_Cassettes = NET_On_ATM_Cash_Journal - NET_On_ATM_Cash_bMaster;
+                    Cr.IsDifferent = true;
+                }
+
+                // SWITCH VS BMaster 
+                Cr.OverFound_Cassettes_SWITCH = 0;
+                Cr.ShortFound_Cassettes_SWITCH = 0;
+
+                if (NET_On_ATM_Cash_bMaster > NET_On_ATM_Cash_SWITCH)
+                {
+                    // We have counted excess vs Journal
+                    Cr.OverFound_Cassettes_SWITCH = NET_On_ATM_Cash_bMaster - NET_On_ATM_Cash_SWITCH;
+                    Cr.IsDifferent = true;
+                }
+                if (NET_On_ATM_Cash_bMaster < NET_On_ATM_Cash_SWITCH )
+                {
+                    // We have counted Shortage vs Journal 
+                    Cr.ShortFound_Cassettes_SWITCH = NET_On_ATM_Cash_SWITCH - NET_On_ATM_Cash_bMaster;
+                    Cr.IsDifferent = true;
+                }  
+                
+                // Check Insurance
+                if (Cr.SM_Cash_Loaded > WIsurance)
+                {
+                    Cr.IsWithinInsurance = true; 
+                }
+                else
+                {
+                    Cr.IsWithinInsurance = false;
+                }
+            
+                //
+                //********************************
+                // UPDATE MASTER
+                //********************************
+
+                Cr.Update_CASH_RECON(InsertSeqNo);
+
+                // At this point update Ta if reconcile or not 
+                // Read Traces to get values to display 
+                ReadSessionsStatusTraces(WAtmNo, WSesNo);
+
+                if (Cr.IsDifferent == false)
+                {
+                    ProcessMode = 2; // FULLY RECONCILED AT REPLENISHMENT 
+                }
+                else
+                {
+                    ProcessMode = 1; // Not Reconcile 
+                }
+
+                UpdateSessionsStatusTraces(WAtmNo, WSesNo);
+
+                I = I + 1;
             }
-
-            I = I + 1;
+            
         }
 
-   
+        // GET DEPOSITS 
+        int WTotalNotes;
+        decimal WTotalMoneyDecimal;
+
+        int WRetractTotalNotes;
+        decimal WRetractTotalMoney;
+
+
+        int WRECYCLEDTotalNotes;
+        decimal WRECYCLEDTotalMoney;
+
+        int WNCRTotalNotes;
+        decimal WNCRTotalMoney;
+
+        int WTotal_SM_Notes;
+        decimal WTotal_SM_Money;
+        int WDEP_COUNTERFEIT ;
+        int WDEP_SUSPECT ;
+
+        bool DepositsEGPFound;
+        private void GetDeposits(string WOperator, string WAtmNo, int WSesNo)
+        {
+            DepositsEGPFound = false;
+            //
+            // FIND DEPOSITS EGP FROM JOURNAL READ
+            //
+           
+            string ParId = "218";
+            string OccurId = "1";
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+            string From_SM = Gp.OccuranceNm;
+
+            if (From_SM == "YES")
+            {
+                // Find the first fuid to avoid duplication created by two the same journals
+                //
+                SM.Read_SM_AND_Get_First_fuid(WAtmNo, WSesNo);
+
+                if (SM.RecordFound == true)
+                {
+                    // Fuid found
+                }
+                else
+                {
+                    //MessageBox.Show("No Deposits Found");
+                    return;
+                }
+                // Get the totals from SM and not from Mpa            
+                // GET TABLE
+                SM.Read_SM_AND_FillTable_Deposits(WAtmNo, WSesNo);
+                //
+                //***********************
+                // GET SUSPECT
+                // 
+                string SM_SelectionCriteria1 = " WHERE AtmNo ='" + WAtmNo + "' AND RRDM_ReplCycleNo =" + WSesNo
+                                              + " AND FlagValid = 'Y' AND AdditionalCash = 'N' "
+                                                 ;
+
+                SM.Read_SM_Record_Specific_By_Selection(SM_SelectionCriteria1, WAtmNo, WSesNo, 2);
+
+                if (SM.RecordFound == true)
+                {
+                    // Get other Totals 
+
+                    WDEP_COUNTERFEIT = SM.DEP_COUNTERFEIT;
+                    WDEP_SUSPECT = SM.DEP_SUSPECT;
+
+                }
+
+
+                // Read Table 
+                int L = 1;
+                int I = 0;
+
+
+                while (I <= (SM.DataTable_SM_Deposits.Rows.Count - 1))
+                {
+                    // "  SELECT Currency As Ccy, SUM(Cassette) as TotalNotes, sum(Facevalue * CASSETTE) as TotalMoney "
+
+                    string TCcy = (string)SM.DataTable_SM_Deposits.Rows[I]["Ccy"];
+                    string WCcy = TCcy.Trim();
+                    if (WCcy == "" || WCcy != "EUR")
+                    {
+                        I = I + 1;
+                        continue;
+                    }
+
+                    DepositsEGPFound = true;
+                    // Calculate for all 
+                    WTotalNotes = (int)SM.DataTable_SM_Deposits.Rows[I]["TotalCassetteNotes"];
+                    WTotalMoneyDecimal = (decimal)SM.DataTable_SM_Deposits.Rows[I]["TotalCassetteMoney"];
+
+                    WRetractTotalNotes = (int)SM.DataTable_SM_Deposits.Rows[I]["TotalRETRACTNotes"];
+                    WRetractTotalMoney = (decimal)SM.DataTable_SM_Deposits.Rows[I]["TotalRETRACTMoney"];
+
+                    //WTotalNotes = WTotalNotes;
+                    //WTotalMoneyDecimal = WTotalMoneyDecimal;
+                    //WTotalNotes = WTotalNotes + WRetractTotalNotes;
+                    //WTotalMoneyDecimal = WTotalMoneyDecimal + WRetractTotalMoney;
+
+                    WRECYCLEDTotalNotes = (int)SM.DataTable_SM_Deposits.Rows[I]["TotalRECYCLEDNotes"];
+                    WRECYCLEDTotalMoney = (decimal)SM.DataTable_SM_Deposits.Rows[I]["TotalRECYCLEDMoney"];
+
+                    WNCRTotalNotes = (int)SM.DataTable_SM_Deposits.Rows[I]["TotalNCR_DepositsDispensedNotes"];
+                    WNCRTotalMoney = (decimal)SM.DataTable_SM_Deposits.Rows[I]["TotalNCR_DepositsDispensedMoney"];
+
+                    WTotal_SM_Notes = ((WTotalNotes + WRetractTotalNotes + WRECYCLEDTotalNotes) - WNCRTotalNotes);
+                    WTotal_SM_Money = ((WTotalMoneyDecimal + WRetractTotalMoney + WRECYCLEDTotalMoney) - WNCRTotalMoney);
+
+                    I = I + 1;
+                    // Bring the EGP first 
+
+                }
+            }
+        }
+
+
 
         // Methods 
         // Validate new dates 
@@ -2701,6 +3387,56 @@ namespace RRDM4ATMs
             // UPDATE SESSION TRACES
             //
             UpdateSessionsStatusTraces(InAtmNo, InSesNo); // UPDATE TRACES 
+        }
+
+        public void UpdateTracesForOutstaningForceComplete(string InAtmNo, DateTime InDate, int InRMCycle)
+        {
+
+           
+           // Repl1.SignIdRepl = InUserid;
+            Repl1.StartRepl = true;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+
+            //     UpdSesTraces = false;
+            using (SqlConnection conn =
+                new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand("UPDATE [ATMS].[dbo].[SessionsStatusTraces]  SET "
+                           + "[ProcessMode] = 2 , "
+                             + "[ReconcAtRMCycle] = @ReconcAtRMCycle, "
+                            + "[ReplGenComment] = 'Forced Matched' "
+                            + " WHERE AtmNo= @AtmNo AND SesDtTimeStart <=@InDate AND ProcessMode != 2 ", conn))
+                    {
+
+                        cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                        cmd.Parameters.AddWithValue("@InDate", InDate.Date);
+                        cmd.Parameters.AddWithValue("@ReconcAtRMCycle", InRMCycle);
+
+                        // Execute and check success 
+                        int rows = cmd.ExecuteNonQuery();
+                        //  if (rows > 0)
+                        //   {
+                        //       UpdSesTraces = true;
+
+                        //   }
+                        //   else UpdSesTraces = false; // textBoxMsg.Text = " Nothing WAS UPDATED ";
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+
         }
         // 
         // UPDATE TRACES For MAX Date the running cycles

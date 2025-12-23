@@ -1547,6 +1547,58 @@ namespace RRDM4ATMs
         }
 
         //
+        // READ TOTAL DISCREPANCIES PER CYCLE 
+        //
+        
+        public int ReadInPoolTransTotalNOT_MatchedForCycle(int InRMCycle)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+            int TotalDescrepancies = 0; 
+            
+                SqlString = " SELECT Count(*) As TotalDiscr "
+              + " FROM [RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolATMs]"
+              + " WHERE MatchingAtRMCycle = @MatchingAtRMCycle AND Matched = 0 ";
+            
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@MatchingAtRMCycle", InRMCycle);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+
+                            TotalDescrepancies = (int)rdr["TotalDiscr"];
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    CatchDetails(ex);
+                }
+            return TotalDescrepancies; 
+        }
+
+        //
         // READ SPECIFIC TRANSACTION to see if in Matched Transactions
         //
         public void ReadInPoolTransSpecificToSeeIfInMatchedAndDeleteItFromPrimary
@@ -6735,6 +6787,103 @@ namespace RRDM4ATMs
                 //}
 
             }
+        }
+
+        public decimal TotalPresenterErrorsAmt;
+        public decimal TotalSuspectAmt; 
+        public void ReadTrans_PresnterErrors_Suspect_Between_Dates(string InTerminalId,
+                                                        DateTime InDateFrom, DateTime InDateTo)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            //+" when (PresenterError = 'PresenterError' AND TransactionType <> 23) THEN 55 "
+            //+ " when (SuspectDesc = 'SUSPECT FOUND') THEN 225 "
+            //+ " else 0 "
+
+
+            string PhysicalFiledID = "[RRDM_Reconciliation_ITMX].[dbo].tblMatchingTxnsMasterPoolATMs" ;
+            string PhysicalFiledID_Secondary = "[RRDM_Reconciliation_MATCHED_TXNS].[dbo].tblMatchingTxnsMasterPoolATMs";
+
+
+            TotalPresenterErrorsAmt = 0;
+            TotalSuspectAmt = 0;
+
+            // DATA TABLE ROWS DEFINITION 
+
+
+            // FOR MERGED
+
+            // Both 11 and 23
+            SqlString =
+            " WITH MergedTbl AS "
+              + " ( "
+              + " SELECT  * "
+              + " FROM " + PhysicalFiledID
+              + " WHERE TerminalId = @TerminalId AND MetaExceptionId in (55,225) "
+              + " AND (TransDate BETWEEN @DateFrom AND @DateTo) "
+              + " AND NotInJournal = 0 "
+              + " AND ResponseCode = '0' AND (TransType = 11 OR TransType = 23) AND Origin = 'Our Atms'  "
+              + " UNION ALL  "
+              + " SELECT  * "
+              + " FROM " + PhysicalFiledID_Secondary
+              + " Where TerminalId = @TerminalId AND MetaExceptionId in (55,225)  "
+              + " AND (TransDate BETWEEN @DateFrom AND @DateTo) "
+              + " AND NotInJournal = 0 "
+              + " AND ResponseCode = '0' AND (TransType = 11 OR TransType = 23) AND Origin = 'Our Atms'"
+              + " ) "
+              + " SELECT * FROM MergedTbl "; 
+                    
+            using (SqlConnection conn =
+                                     new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@TerminalId", InTerminalId);
+                        cmd.Parameters.AddWithValue("@DateFrom", InDateFrom);
+                        cmd.Parameters.AddWithValue("@DateTo", InDateTo);
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+
+                            RecordFound = true;
+
+                            ReadFieldsInTable(rdr);
+                            if (MetaExceptionId == 55)
+                            {
+                                TotalPresenterErrorsAmt = TotalPresenterErrorsAmt + TransAmount; 
+                            }
+                            if (MetaExceptionId == 225)
+                            {
+                                TotalSuspectAmt = TotalSuspectAmt + TransAmount;
+                            }
+                            
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                    // Insert printing record and update meta exception 
+
+                    //InsertReport(InOperator, InSignedId, InMode);
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
         }
 
 

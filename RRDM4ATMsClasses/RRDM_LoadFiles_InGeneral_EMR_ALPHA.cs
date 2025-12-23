@@ -26,6 +26,8 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput;
 
+        bool LeaveLogicalName ;
+
         // Find Operator
 
         string PRX; // "+PRX+"
@@ -80,6 +82,19 @@ namespace RRDM4ATMs
             //      < add key = "DB_Location_Local" value = "true" />  
             //      < add key = "DB_Location_Remote" value = "false" />
             //      < add key = "DB_Location_Remote_IP" value = "\\172.17.85.25\c$\" />
+
+          
+            WFlogSeqNo = InFlogSeqNo;
+
+            WOperator = InOperator;
+
+            WFileSeqNo = InFlogSeqNo.ToString();
+
+            string WJobCategory = "ATMs";
+            int WReconcCycleNo;
+
+
+
             string SavedOriginalInFullPath = InFullPath;
             bool DB_Location_Local = false;
             bool DB_Location_Remote = false;
@@ -130,6 +145,25 @@ namespace RRDM4ATMs
 
             }
 
+            string ParId = "952";
+            string OccurId = "1";
+            //TEST
+            LeaveLogicalName = false;
+            Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
+
+            if (Gp.RecordFound == true)
+            {
+                if (Gp.OccuranceNm == "YES") // LeaveLogicalName
+                {
+                    LeaveLogicalName = true;
+                }
+                else
+                {
+                    LeaveLogicalName = false;
+                }
+
+            }
+
             bool Panicos = false; 
 
             if (Panicos == true)
@@ -159,14 +193,7 @@ namespace RRDM4ATMs
             // IF TEST IS FALSE Message are not shown
             TEST = false;
 
-            WFlogSeqNo = InFlogSeqNo;
-
-            WOperator = InOperator;
-
-            WFileSeqNo = InFlogSeqNo.ToString();
-
-            string WJobCategory = "ATMs";
-            int WReconcCycleNo;
+           
 
             // Date of the file in string
             //var resultLastThreeDigits = InFullPath.Substring(InFullPath.Length - 3);
@@ -434,9 +461,7 @@ namespace RRDM4ATMs
             //******************************
 
             // CALL STORE PROCEDURE TO UNDO THE REST
-            // THESE ARE FILES LIKE Reconciliation Sessions etc. 
-
-            
+            // THESE ARE FILES LIKE Reconciliation Sessions etc.     
 
             int ReturnCode = -20;
             string ProgressText = "";
@@ -501,7 +526,61 @@ namespace RRDM4ATMs
                 }
             }
 
-            
+            if (LeaveLogicalName == true)
+            {
+                // Turn Terminal Id to logical 
+
+                // HERE WE GET THE DATE AND TIME FROM based24
+
+                // UPDATE Details 
+                
+
+                SQLCmd =
+              " UPDATE [RRDM_Reconciliation_ITMX].[dbo].[BULK_base24]"
+                + " SET  "
+                + " ATM_ID = t2.AtmNo "
+               + " FROM [RRDM_Reconciliation_ITMX].[dbo].[BULK_base24] t1 " // BULK 
+               + " INNER JOIN [ATMS].[dbo].[JTMIdentificationDetails] t2" // ATMS 
+               + " ON "
+               + "  t1.ATM_ID = t2.ATMAccessID"
+               ; 
+               
+                using (SqlConnection conn = new SqlConnection(recconConnString))
+                    try
+                    {
+                        conn.StatisticsEnabled = true;
+                        conn.Open();
+                        using (SqlCommand cmd =
+                            new SqlCommand(SQLCmd, conn))
+                        {
+                           // cmd.Parameters.AddWithValue("@Net_Minus", TempNewCutOff); // Get The previous days 
+                            cmd.CommandTimeout = 350;
+                            Counter = cmd.ExecuteNonQuery();
+                            var stats = conn.RetrieveStatistics();
+                            commandExecutionTimeInMs = (long)stats["ExecutionTime"];
+
+
+                        }
+                        // Close conn
+                        conn.StatisticsEnabled = false;
+                        conn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        conn.StatisticsEnabled = false;
+                        conn.Close();
+
+                        stpErrorText = stpErrorText + "Cancel During Bulk with new atm  Updating_1";
+                        CatchDetails(ex);
+                        return;
+                    }
+
+                stpErrorText += DateTime.Now + "_" + "bMaster Updated from base24..." + Counter.ToString() + "\r\n";
+                stpErrorText += DateTime.Now + "_" + "Time Taken in Ms " + commandExecutionTimeInMs.ToString() + "\r\n";
+
+            }
+
+
 
             RecordFound = false;
 
@@ -604,59 +683,7 @@ namespace RRDM4ATMs
 
             RecordFound = false;
 
-            // Find LAST SEQ NO
-            // REASON: We needed it when we populate TWIN to read from IST all > that this SEQ NO
-            LastSeqNo = 0;
-
-            SQLCmd = "SELECT ISNULL(MAX(SeqNo), 0) AS MaxSeqNo "
-               + "FROM [RRDM_Reconciliation_ITMX].[dbo]."+InOriginFileName
-               + " WITH(NOLOCK) "
-               + " WHERE Processed = 0";
-
-            using (SqlConnection conn =
-                             new SqlConnection(ATMSconnectionString))
-                try
-                {
-                    conn.Open();
-                    using (SqlCommand cmd =
-                        new SqlCommand(SQLCmd, conn))
-                    {
-                        //    cmd.Parameters.AddWithValue("@TransAmt", InTransAmt);
-                        // Read table 
-
-                        SqlDataReader rdr = cmd.ExecuteReader();
-
-                        while (rdr.Read())
-                        {
-                            RecordFound = true;
-
-                            LastSeqNo = (int)rdr["MaxSeqNo"];
-
-                        }
-
-                        // Close Reader
-                        rdr.Close();
-                    }
-
-                    // Close conn
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    conn.Close();
-                    stpErrorText = stpErrorText + "Cancel At _Finding The Maximum";
-
-                    stpReturnCode = -1;
-
-                    stpReferenceCode = stpErrorText;
-
-                    CatchDetails(ex);
-
-                    return;
-                }
-
-           
-
+            
             RecordFound = false;
 
             SQLCmd = "INSERT INTO [RRDM_Reconciliation_ITMX].[dbo]."+InOriginFileName // base24
@@ -809,71 +836,14 @@ namespace RRDM4ATMs
             stpErrorText += DateTime.Now + "_" + "Stage_03_IST_Records_loaded..Records:.." + stpLineCount.ToString() + "\r\n";
             stpErrorText += DateTime.Now + "_" + "Time Taken in Ms " + commandExecutionTimeInMs.ToString() + "\r\n";
             Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
-            
+
             //**********************************************************
             // UPDATE CATEGORY ID BASED ON BINS 
             //**********************************************************
-            
-            SQLCmd = "  UPDATE[RRDM_Reconciliation_ITMX].[dbo]."+InOriginFileName  // base24
-                        + "  SET MatchingCateg = case "  // SET UP THE CATEGORY 
-                        + " WHEN " // CREDIT CARD
-                        +"( Left(CardNumber,6) = '526764' "
-                        + " OR Left(CardNumber,8) = '53281675' "
-                         + " OR Left(CardNumber,8) = '53239590' "
-                          + " OR Left(CardNumber,8) = '53239524' "
-                        + ") "
-                          + " THEN '" + PRX + "302' " // CREDIT Card
-                        + " WHEN " // Debit CARD
-                        + " ( Left(CardNumber,6) = '537485' "
-                        + " OR Left(CardNumber,8) = '53239519' "
-                         + " OR Left(CardNumber,6) = '510215' "
-                            + " OR Left(CardNumber,8) = '53239513' "
-                          + " OR Left(CardNumber,8) = '51508802' "
-                        + ") "
-                        + " THEN '" + PRX + "304' " // Debit Card
-                       
-                  + " ELSE '" + PRX + "306' "
-                 + " end "
-                 + " WHERE LoadedAtRMCycle =" + InReconcCycleNo
-                        ;
+            MethodToUpdateCategoriesALPHA(WOperator, InOriginFileName); 
 
 
-            using (SqlConnection conn = new SqlConnection(recconConnString))
-                try
-                {
-                    conn.StatisticsEnabled = true;
-                    conn.Open();
-                    using (SqlCommand cmd =
-                        new SqlCommand(SQLCmd, conn))
-                    {
-                        //cmd.Parameters.AddWithValue("@LoadedAtRMCycle", InReconcCycleNo);
-                        cmd.CommandTimeout = 350;  // seconds
-                        Counter = cmd.ExecuteNonQuery();
-                        var stats = conn.RetrieveStatistics();
-                        commandExecutionTimeInMs = (long)stats["ExecutionTime"];
-
-
-                    }
-                    // Close conn
-                    conn.StatisticsEnabled = false;
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    conn.StatisticsEnabled = false;
-                    conn.Close();
-                    stpErrorText = stpErrorText + "Cancel At_Updating _TransType";
-                    stpReturnCode = -1;
-
-                    stpReferenceCode = stpErrorText;
-                    CatchDetails(ex);
-
-                    return;
-                }
-
-            stpErrorText += DateTime.Now + "_" + "UPDATING of CATEGORIES finishes .." + Counter.ToString() + "\r\n";
-            stpErrorText += DateTime.Now + "_" + "Time Taken in Ms " + commandExecutionTimeInMs.ToString() + "\r\n";
-            Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
+           
 
             //**********************************************************
             // UPDATE EXTERNAL_DATE with the transaction Date but No Seconds 
@@ -940,6 +910,248 @@ namespace RRDM4ATMs
                 stpReturnCode = 0;
                 return;
             }
+
+
+            // Find LAST SEQ NO
+            // REASON: We needed it when we populate TWIN to read from IST all > that this SEQ NO
+            int MinSeqNo = 0;
+
+            SQLCmd = "SELECT ISNULL(MIN(SeqNo), 0) AS MinSeqNo "
+               + "FROM [RRDM_Reconciliation_ITMX].[dbo]." + InOriginFileName
+               + " WITH(NOLOCK) "
+               + " WHERE Processed = 0";
+
+            using (SqlConnection conn =
+                             new SqlConnection(ATMSconnectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SQLCmd, conn))
+                    {
+                        //    cmd.Parameters.AddWithValue("@TransAmt", InTransAmt);
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+
+                            MinSeqNo = (int)rdr["MinSeqNo"];
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    stpErrorText = stpErrorText + "Cancel At _Finding The Maximum";
+
+                    stpReturnCode = -1;
+
+                    stpReferenceCode = stpErrorText;
+
+                    CatchDetails(ex);
+
+                    return;
+                }
+
+
+            // CREATE TWIN 
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            SQLCmd = " INSERT INTO [RRDM_Reconciliation_ITMX].[dbo].[base24_TWIN]  "
+                + " ([OriginFileName] "
+                  + " ,[OriginalRecordId] "
+          + "  ,[LoadedAtRMCycle] "
+           + " ,[MatchingCateg] "
+           + " ,[Origin] "
+
+           + " ,[TerminalType] "
+           + " ,[TransTypeAtOrigin] "
+           + " ,[TerminalId] "
+           + " ,[TransType] "
+           + "  ,[TransDescr] "
+
+           + "  ,[CardNumber] "
+            + " ,[AccNo] "
+           + "  ,[TransCurr] "
+           + "  ,[TransAmt] "
+           + " ,[AmtFileBToFileC] "
+
+           + " ,[TransDate] "
+           + " ,[TraceNo] "
+           + " ,[RRNumber] "
+           + "  ,[FullTraceNo] "
+           + "  ,[AUTHNUM] "
+
+           + "  ,[ResponseCode] "
+            + " ,[ActionType] "
+            + " ,[Processed] "
+            + " ,[ProcessedAtRMCycle] "
+           + "  ,[Mask] "
+
+           + "  ,[IsSettled] "
+           + "  ,[UniqueRecordId] "
+           + "  ,[Operator] "
+           + "  ,[TXNSRC] "
+           + "  ,[TXNDEST] "
+
+           + "  ,[Comment] "
+           + "  ,[EXTERNAL_DATE] "
+           + "  ,[Net_TransDate] "
+           + "  ,[Card_Encrypted] "
+           + "  ,[ACCEPTOR_ID] "
+
+           + "  ,[ACCEPTORNAME] "
+           + "  ,[CAP_DATE] "
+           + "  ,[SET_DATE]) "
+
+            + " SELECT "
+            + " [OriginFileName] "
+                  + " ,[OriginalRecordId] "
+      + " ,[LoadedAtRMCycle] "
+      + " ,[MatchingCateg] "
+      + " ,[Origin] "
+
+      + " ,[TerminalType] "
+      + " ,[TransTypeAtOrigin] "
+      + " ,[TerminalId] "
+      + " ,[TransType] "
+      + " ,[TransDescr] "
+
+      + " ,[CardNumber] "
+      + " ,[AccNo] "
+      + " ,[TransCurr] "
+      + " ,[TransAmt] "
+      + " ,[AmtFileBToFileC] "
+
+       + " ,[TransDate] "
+       + ",[TraceNo] "
+       + ",[RRNumber] "
+      + " ,[FullTraceNo] "
+      + " ,[AUTHNUM] "
+
+      + " ,[ResponseCode] "
+       + ",[ActionType] "
+       + ",[Processed] "
+      + " ,[ProcessedAtRMCycle] "
+      + " ,[Mask] "
+
+       + ",[IsSettled] "
+      + " ,[UniqueRecordId] "
+       + ",[Operator] "
+      + " ,[TXNSRC] "
+      + " ,[TXNDEST] "
+
+      + " ,[Comment] "
+      + " ,[EXTERNAL_DATE] "
+      + " ,[Net_TransDate] "
+       + ",[Card_Encrypted] "
+      + " ,[ACCEPTOR_ID] "
+
+      + " ,[ACCEPTORNAME] "
+      + " ,[CAP_DATE] "
+     + "  ,[SET_DATE] "
+  + " FROM [RRDM_Reconciliation_ITMX].[dbo].[base24] "
+                + " WHERE SeqNo >= @MinSeqNo " 
+                ;
+
+            using (SqlConnection conn = new SqlConnection(recconConnString))
+                try
+                {
+
+                    conn.Open();
+                    conn.StatisticsEnabled = true;
+                    using (SqlCommand cmd =
+                        new SqlCommand(SQLCmd, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@MinSeqNo", MinSeqNo);
+
+                        cmd.CommandTimeout = 300;  // seconds
+                        Counter = cmd.ExecuteNonQuery();
+                        var stats = conn.RetrieveStatistics();
+                        commandExecutionTimeInMs = (long)stats["ExecutionTime"];
+
+
+                    }
+                    // Close conn
+                    conn.StatisticsEnabled = false;
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.StatisticsEnabled = false;
+                    conn.Close();
+                    stpErrorText = stpErrorText + "Cancel During k Insert in TWIN ";
+                    stpReturnCode = -1;
+
+                    stpReferenceCode = stpErrorText;
+                    CatchDetails(ex);
+                    return;
+                }
+
+            stpErrorText += DateTime.Now + "_" + "Stage_03_Insert_in TWIN Finishes..Records:.." + Counter.ToString() + "\r\n";
+            stpErrorText += DateTime.Now + "_" + "Time Taken in Ms " + commandExecutionTimeInMs.ToString() + "\r\n";
+            Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
+            //
+            // UPDATE TWIN CATEGORIES 
+            //
+            SQLCmd = "  UPDATE[RRDM_Reconciliation_ITMX].[dbo].base24_TWIN "   // base24 TWIN
+                        + " SET MatchingCateg = "
+                        + "  case   "
+                        + "  WHEN MatchingCateg = 'EMR302' THEN  'EMR312'   "
+                        + "  WHEN   MatchingCateg ='EMR304' THEN  'EMR314'   "
+                        + "   WHEN  MatchingCateg ='EMR306' THEN  'EMR316'  "
+                       + "	 ELSE  'EMR399'   "
+                       + "	 end   "
+                       + " WHERE LoadedAtRMCycle =" + InReconcCycleNo
+                        ;
+
+
+            using (SqlConnection conn = new SqlConnection(recconConnString))
+                try
+                {
+                    conn.StatisticsEnabled = true;
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SQLCmd, conn))
+                    {
+                        //cmd.Parameters.AddWithValue("@LoadedAtRMCycle", InReconcCycleNo);
+                        cmd.CommandTimeout = 350;  // seconds
+                        Counter = cmd.ExecuteNonQuery();
+                        var stats = conn.RetrieveStatistics();
+                        commandExecutionTimeInMs = (long)stats["ExecutionTime"];
+
+                    }
+                    // Close conn
+                    conn.StatisticsEnabled = false;
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.StatisticsEnabled = false;
+                    conn.Close();
+                    stpErrorText = stpErrorText + "Cancel At_Updating _TWIN";
+                    stpReturnCode = -1;
+
+                    stpReferenceCode = stpErrorText;
+                    CatchDetails(ex);
+
+                    return;
+                }
+
+            stpErrorText += DateTime.Now + "_" + "UPDATING of TWIN finishes .." + Counter.ToString() + "\r\n";
+            stpErrorText += DateTime.Now + "_" + "Time Taken in Ms " + commandExecutionTimeInMs.ToString() + "\r\n";
+            Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
 
             stpErrorText += DateTime.Now + "_" + "END OF base24 WITH SUCCESS";
 
@@ -1082,6 +1294,60 @@ namespace RRDM4ATMs
                     conn2.Close();
                     CatchDetails(ex);
                 }
+            }
+
+            if (LeaveLogicalName == true)
+            {
+                // Turn Terminal Id to logical 
+
+                // HERE WE GET THE DATE AND TIME FROM based24
+
+                // UPDATE Details 
+
+
+                SQLCmd =
+              " UPDATE [RRDM_Reconciliation_ITMX].[dbo].[BULK_bMaster]"
+                + " SET  "
+                + " ATM_ID = t2.AtmNo "
+               + " FROM [RRDM_Reconciliation_ITMX].[dbo].[BULK_bMaster] t1 " // BULK 
+               + " INNER JOIN [ATMS].[dbo].[JTMIdentificationDetails] t2" // ATMS 
+               + " ON "
+               + "  t1.ATM_ID = t2.ATMAccessID"
+               ;
+
+                using (SqlConnection conn = new SqlConnection(recconConnString))
+                    try
+                    {
+                        conn.StatisticsEnabled = true;
+                        conn.Open();
+                        using (SqlCommand cmd =
+                            new SqlCommand(SQLCmd, conn))
+                        {
+                            // cmd.Parameters.AddWithValue("@Net_Minus", TempNewCutOff); // Get The previous days 
+                            cmd.CommandTimeout = 350;
+                            Counter = cmd.ExecuteNonQuery();
+                            var stats = conn.RetrieveStatistics();
+                            commandExecutionTimeInMs = (long)stats["ExecutionTime"];
+
+
+                        }
+                        // Close conn
+                        conn.StatisticsEnabled = false;
+                        conn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        conn.StatisticsEnabled = false;
+                        conn.Close();
+
+                        stpErrorText = stpErrorText + "Cancel During Bulk with new atm  Updating_1";
+                        CatchDetails(ex);
+                        return;
+                    }
+
+                stpErrorText += DateTime.Now + "_" + "BULK bMaster Updated with logical ATM ID..." + Counter.ToString() + "\r\n";
+                stpErrorText += DateTime.Now + "_" + "Time Taken in Ms " + commandExecutionTimeInMs.ToString() + "\r\n";
+
             }
 
 
@@ -1239,6 +1505,9 @@ namespace RRDM4ATMs
             //DateTime NullFutureDate = new DateTime(1950, 01, 01);
             RecordFound = false;
 
+            // HERE WE INSERT IN THE PLACE OF TRANSACTION DATE A FUTURE ONE
+            // In the place of External Date we insert the Date as appears on bMaster
+
             SQLCmd = "INSERT INTO [RRDM_Reconciliation_ITMX].[dbo]." + InOriginFileName // bMaster
                 + "( "
                  + " [OriginFileName] "
@@ -1296,10 +1565,11 @@ namespace RRDM4ATMs
                  + " when TransactionType = 'DB Card Withdrawal OnLine' THEN 11 "
                  + " when TransactionType = 'Cash Advance' THEN 11 "
                  + " when TransactionType = 'DB Card Deposit OffLine' THEN 23 "
-                  + " when TransactionType = 'DB Card Deposit Online' THEN 23 "
+                 + " when TransactionType = 'DB Card Deposit Online' THEN 23 "
+                 + " when TransactionType = 'CR Card Deposit OnLine' THEN 23 "
                  + " else 99 "
                  + "end "
-
+               
                  + ",TransactionType " // [TransDescr]
 
                  + " , CurrencyCode "
@@ -1337,7 +1607,9 @@ namespace RRDM4ATMs
                           // + " ,  CAST(TransactionDate AS DATE)"
                           + ",cast ('2050-12-31' as date) "
                          // FOR EXTERNAL DATE 
+                         // FOR EXTERNAL DATE  AS DATE TIME 
                          + ", CAST(TransactionDate AS DATETIME) + CAST(TransactionTime AS DATETIME) "
+
                      + ", CAST([Settlement] as date) "
                      + ", CAST([Settlement] as date) "
                     + " FROM [RRDM_Reconciliation_ITMX].[dbo].BULK_" + InOriginFileName+"_ALL"
@@ -1455,7 +1727,6 @@ namespace RRDM4ATMs
                   + ", '' " // Comment
                 + ", 0 " // Unknown ReplNo Cycle 
 
-
                    + ", @LoadedAtRMCycle"
                  + " , @Cut_Off_Date "
                + ", @Operator"
@@ -1530,7 +1801,7 @@ namespace RRDM4ATMs
 
             // HERE WE GET THE DATE AND TIME FROM based24
 
-            // UPDATE Details from IST Based on Accno and Terminal Id
+            // UPDATE Details 
             //
             DateTime TempNewCutOff = WCut_Off_Date.AddDays(-2);
 
@@ -1582,7 +1853,7 @@ namespace RRDM4ATMs
                     conn.StatisticsEnabled = false;
                     conn.Close();
 
-                    stpErrorText = stpErrorText + "Cancel During Card Updating_1";
+                    stpErrorText = stpErrorText + "Cancel During Updating_17";
                     CatchDetails(ex);
                     return;
                 }
@@ -1592,32 +1863,84 @@ namespace RRDM4ATMs
 
             Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
 
-            //**********************************************************
-            // UPDATE CATEGORY ID BASED ON BINS 
-            //**********************************************************
+            // ****************************************
+            // SET UP THE CATEGORIES
+
+            MethodToUpdateCategoriesALPHA(WOperator, InOriginFileName);
+
+            // ****************************************
+            // ****************************************
+
+            ////526764 0074968009
+            ////5374850084350003
+            //SQLCmd = "  UPDATE[RRDM_Reconciliation_ITMX].[dbo]." + InOriginFileName  // bMaster
+            //            + "  SET MatchingCateg = case "  // SET UP THE CATEGORY 
+            //            + " WHEN " // CREDIT CARD
+            //            + "( Left(CardNumber,6) = '526764' "
+            //            + " OR Left(CardNumber,8) = '53281675' "
+            //             + " OR Left(CardNumber,8) = '53239590' "
+            //              + " OR Left(CardNumber,8) = '53239524' "
+            //            + ") "
+            //              + " THEN '" + PRX + "302' " // CREDIT Card
+            //            + " WHEN " // Debit CARD
+            //            + " ( Left(CardNumber,6) = '537485' "
+            //            + " OR Left(CardNumber,8) = '53239519' "
+            //             + " OR Left(CardNumber,6) = '510215' "
+            //                + " OR Left(CardNumber,8) = '53239513' "
+            //              + " OR Left(CardNumber,8) = '51508802' "
+            //            + ") "
+            //            + " THEN '" + PRX + "304' " // Debit Card
+
+            //      + " ELSE '" + PRX + "306' " // Foreign OFF LINE 
+            //      + " end "
+            //     + " WHERE CardNumber <> 'N/A' " // We SELECT all valid card Number taken from base24
+            //                                     // If N/A remains to be updated next day 
+            //            ;
+
+
+            //using (SqlConnection conn = new SqlConnection(recconConnString))
+            //    try
+            //    {
+            //        conn.StatisticsEnabled = true;
+            //        conn.Open();
+            //        using (SqlCommand cmd =
+            //            new SqlCommand(SQLCmd, conn))
+            //        {
+
+            //            cmd.CommandTimeout = 350;  // seconds
+            //            Counter = cmd.ExecuteNonQuery();
+            //            var stats = conn.RetrieveStatistics();
+            //            commandExecutionTimeInMs = (long)stats["ExecutionTime"];
+
+
+            //        }
+            //        // Close conn
+            //        conn.StatisticsEnabled = false;
+            //        conn.Close();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        conn.StatisticsEnabled = false;
+            //        conn.Close();
+            //        stpErrorText = stpErrorText + "Cancel At_bMaster Updating Categories";
+            //        stpReturnCode = -1;
+
+            //        stpReferenceCode = stpErrorText;
+            //        CatchDetails(ex);
+
+            //        return;
+            //    }
+
+            //stpErrorText += DateTime.Now + "_" + "UPDATING of bMaster Categories finishes .." + Counter.ToString() + "\r\n";
+            //stpErrorText += DateTime.Now + "_" + "Time Taken in Ms " + commandExecutionTimeInMs.ToString() + "\r\n";
+            //Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
+
+            // UPDATE EXTERNAL WITHOUT SECONDS CONDITIONAL 
 
             SQLCmd = "  UPDATE[RRDM_Reconciliation_ITMX].[dbo]." + InOriginFileName  // bMaster
-                        + "  SET MatchingCateg = case "  // SET UP THE CATEGORY 
-                        + " WHEN " // CREDIT CARD
-                        + "( Left(CardNumber,6) = '526764' "
-                        + " OR Left(CardNumber,8) = '53281675' "
-                         + " OR Left(CardNumber,8) = '53239590' "
-                          + " OR Left(CardNumber,8) = '53239524' "
-                        + ") "
-                          + " THEN '" + PRX + "302' " // CREDIT Card
-                        + " WHEN " // Debit CARD
-                        + " ( Left(CardNumber,6) = '537485' "
-                        + " OR Left(CardNumber,8) = '53239519' "
-                         + " OR Left(CardNumber,6) = '510215' "
-                            + " OR Left(CardNumber,8) = '53239513' "
-                          + " OR Left(CardNumber,8) = '51508802' "
-                        + ") "
-                        + " THEN '" + PRX + "304' " // Debit Card
-
-                  + " ELSE '" + PRX + "306' " // Foreign OFF LINE 
-                  + " end "
-                 + " WHERE LoadedAtRMCycle =" + InReconcCycleNo
-                        ;
+                       + "  SET EXTERNAL_DATE = DATEADD(MINUTE, DATEDIFF(MINUTE, 0, EXTERNAL_DATE), 0) "  // 
+               + " WHERE TransDescr = 'Cash Advance'  AND  LoadedAtRMCycle =" + InReconcCycleNo
+                       ;
 
 
             using (SqlConnection conn = new SqlConnection(recconConnString))
@@ -1644,7 +1967,7 @@ namespace RRDM4ATMs
                 {
                     conn.StatisticsEnabled = false;
                     conn.Close();
-                    stpErrorText = stpErrorText + "Cancel At_bMaster Updating Categories";
+                    stpErrorText = stpErrorText + "Cancel At_bMaster Updating without seconds ";
                     stpReturnCode = -1;
 
                     stpReferenceCode = stpErrorText;
@@ -1652,10 +1975,6 @@ namespace RRDM4ATMs
 
                     return;
                 }
-
-            stpErrorText += DateTime.Now + "_" + "UPDATING of bMaster Categories finishes .." + Counter.ToString() + "\r\n";
-            stpErrorText += DateTime.Now + "_" + "Time Taken in Ms " + commandExecutionTimeInMs.ToString() + "\r\n";
-            Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
 
             // UPDATE Transaction Trace for bMaster Cash Advance
             //
@@ -1673,7 +1992,7 @@ namespace RRDM4ATMs
 
           + " ON "
           // + " t1.Processed = t2.Processed "
-          + "  t1.TerminalId = t2.TerminalId" //terminal not the same for 123 
+          + "  t1.TerminalId = t2.TerminalId" // 
          // + " AND t1.TraceNo = t2.TraceNo "
           + " AND t1.TransAmt = t2.TransAmt "
           + " AND t1.CardNumber = t2.CardNumber "
@@ -1719,10 +2038,201 @@ namespace RRDM4ATMs
 
             Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
 
+            // UPDATE [RRDM_Reconciliation_ITMX].[dbo].[ATMs_GL_DAILY_TRANSACTIONS]
+            // With ReplCycle 
+            TempNewCutOff = WCut_Off_Date.AddDays(-10);
+
+            SQLCmd =
+          " UPDATE [RRDM_Reconciliation_ITMX].[dbo].[ATMs_GL_DAILY_TRANSACTIONS]"
+          + " SET  "
+           + " ReplCycleNo = t2.SesNo "
+          + " FROM [RRDM_Reconciliation_ITMX].[dbo].[ATMs_GL_DAILY_TRANSACTIONS] t1 "
+          + " INNER JOIN [ATMS].[dbo].[SessionsStatusTraces] t2" // 
+          + " ON "
+          // + " t1.Processed = t2.Processed "
+          + "  t1.AtmNo = t2.AtmNo" //
+       
+          + " AND CAST(t1.TransDate AS DATE) = CAST(t2.SesDtTimeEnd AS DATE) "
+          //   + " AND t1.EXTERNAL_DATE = t2.EXTERNAL_DATE "
+          + " WHERE t1.ReplCycleNo = 0 AND t1.TransDate > @Net_Minus  "
+          // + "      OR (t2.Processed = 1 AND t2.Comment = 'Reversals' AND t2.Net_TransDate>@Net_Minus ) "
+          // + "      OR ( t2.Net_TransDate>@Net_Minus ) "
+          ;
+
+
+            using (SqlConnection conn = new SqlConnection(recconConnString))
+                try
+                {
+                    conn.StatisticsEnabled = true;
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SQLCmd, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Net_Minus", TempNewCutOff); // Get The previous days 
+                        cmd.CommandTimeout = 350;
+                        Counter = cmd.ExecuteNonQuery();
+                        var stats = conn.RetrieveStatistics();
+                        commandExecutionTimeInMs = (long)stats["ExecutionTime"];
+
+
+                    }
+                    // Close conn
+                    conn.StatisticsEnabled = false;
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.StatisticsEnabled = false;
+                    conn.Close();
+
+                    stpErrorText = stpErrorText + "Cancel During of Update of GL with Repl Cycle  ";
+                    CatchDetails(ex);
+                    return;
+                }
+
+            stpErrorText += DateTime.Now + "_" + "Update of GL with Repl Cycle .." + Counter.ToString() + "\r\n";
+            stpErrorText += DateTime.Now + "_" + "Time Taken in Ms " + commandExecutionTimeInMs.ToString() + "\r\n";
+
+            Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
+
+            
+
+            //
+            // UPDATE bMaster CATEGORIES to Correspond to TWIN 
+            //
+            SQLCmd = "  UPDATE[RRDM_Reconciliation_ITMX].[dbo].[bMaster] "   // [bMaster]
+                        + " SET MatchingCateg = "
+                        + "  case   "
+                        + "  WHEN MatchingCateg = 'EMR302' THEN  'EMR312'   "
+                        + "  WHEN   MatchingCateg ='EMR304' THEN  'EMR314'   "
+                        + "   WHEN  MatchingCateg ='EMR306' THEN  'EMR316'  "
+                       + "	 ELSE  'EMR399'   "
+                       + "	 end   "
+                       //+ " WHERE LoadedAtRMCycle =" + InReconcCycleNo
+                        ;
+
+
+            using (SqlConnection conn = new SqlConnection(recconConnString))
+                try
+                {
+                    conn.StatisticsEnabled = true;
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SQLCmd, conn))
+                    {
+                        //cmd.Parameters.AddWithValue("@LoadedAtRMCycle", InReconcCycleNo);
+                        cmd.CommandTimeout = 350;  // seconds
+                        Counter = cmd.ExecuteNonQuery();
+                        var stats = conn.RetrieveStatistics();
+                        commandExecutionTimeInMs = (long)stats["ExecutionTime"];
+
+                    }
+                    // Close conn
+                    conn.StatisticsEnabled = false;
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.StatisticsEnabled = false;
+                    conn.Close();
+                    stpErrorText = stpErrorText + "Cancel At_Updating _bMaster";
+                    stpReturnCode = -1;
+
+                    stpReferenceCode = stpErrorText;
+                    CatchDetails(ex);
+
+                    return;
+                }
+
+            stpErrorText += DateTime.Now + "_" + "UPDATING of bMaster finishes .." + Counter.ToString() + "\r\n";
+            stpErrorText += DateTime.Now + "_" + "Time Taken in Ms " + commandExecutionTimeInMs.ToString() + "\r\n";
+            Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
+
+            //
+            // UPDATE bMaster CATEGORIES for Category Id = 'EMR399'
+            //
+            SQLCmd = "  UPDATE[RRDM_Reconciliation_ITMX].[dbo].[bMaster] "   // [bMaster]
+                        + " SET MatchingCateg = "
+                        + "  case   "
+                        + "  WHEN (TransDescr = 'CR Card Deposit OnLine' "
+                         + "  OR TransDescr = 'Cash Advance' "
+                          + "  OR TransDescr = 'DB Card Deposit Online' "
+                          // + "  OR TransDescr = 'DB Card Withdrawal OnLine' "
+                        + ")"
+                        + " THEN  'EMR312'   "
+
+                        + "  WHEN (TransDescr = 'DB Card Deposit Online' "
+                         + "  OR TransDescr = 'DB Card Withdrawal OnLine' "
+                          + "  OR TransDescr = '10208' "
+                           + "  OR TransDescr = 'DB Card Withdrawal OffLine' "
+                        + ")"
+                        + " THEN  'EMR314'   "
+
+                          + "  WHEN ("
+                         // +" TransDescr = 'DB Card Withdrawal OnLine' "
+                         //+ "  OR "
+                         +"TransDescr = 'Foreign Card Withdrawal' "
+                        + ")"
+                        + " THEN  'EMR316'   "
+                       + "	 ELSE  'EMR399'   "
+                       + "	 end   "
+                        + " WHERE MatchingCateg =  'EMR399' " 
+                        ;
+
+//            TransDescr matchingcateg
+//CR Card Deposit OnLine  EMR312
+//Cash Advance EMR312
+//DB Card Deposit Online  EMR312
+//DB Card Withdrawal OnLine EMR312
+
+//DB Card Deposit Online  EMR314
+//DB Card Withdrawal OnLine EMR314
+//10208   EMR314
+//DB Card Withdrawal OffLine EMR314
+
+//DB Card Withdrawal OnLine   EMR316
+//Foreign Card Withdrawal EMR316
+//DB Card Withdrawal OnLine EMR399
+            using (SqlConnection conn = new SqlConnection(recconConnString))
+                try
+                {
+                    conn.StatisticsEnabled = true;
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SQLCmd, conn))
+                    {
+                        //cmd.Parameters.AddWithValue("@LoadedAtRMCycle", InReconcCycleNo);
+                        cmd.CommandTimeout = 350;  // seconds
+                        Counter = cmd.ExecuteNonQuery();
+                        var stats = conn.RetrieveStatistics();
+                        commandExecutionTimeInMs = (long)stats["ExecutionTime"];
+
+                    }
+                    // Close conn
+                    conn.StatisticsEnabled = false;
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.StatisticsEnabled = false;
+                    conn.Close();
+                    stpErrorText = stpErrorText + "Cancel At_Updating _bMaster 2";
+                    stpReturnCode = -1;
+
+                    stpReferenceCode = stpErrorText;
+                    CatchDetails(ex);
+
+                    return;
+                }
+
+            stpErrorText += DateTime.Now + "_" + "UPDATING of bMaster finishes .." + Counter.ToString() + "\r\n";
+            stpErrorText += DateTime.Now + "_" + "Time Taken in Ms " + commandExecutionTimeInMs.ToString() + "\r\n";
+            Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
+
             //
             // FIND AND UPDATE TRANSACTIONS WITH REVERSALS
 
-            string WFile = "[RRDM_Reconciliation_ITMX].[dbo]."+ InOriginFileName;
+            string WFile = "[RRDM_Reconciliation_ITMX].[dbo]." + InOriginFileName;
 
             HandleReversals_ALPHA(WFile, InOriginFileName, InReconcCycleNo);
 
@@ -1738,7 +2248,7 @@ namespace RRDM4ATMs
                 return;
             }
 
-            stpErrorText += DateTime.Now + "_" + "END OF IST WITH SUCCESS";
+            stpErrorText += DateTime.Now + "_" + "END OF bMaster WITH SUCCESS";
 
             Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
             // Set return code to 1
@@ -1747,7 +2257,7 @@ namespace RRDM4ATMs
             stpReturnCode = 0;
         }
 
-        // HANDLE REVERSALS IST 
+        // HANDLE REVERSALS ALPHA
         public void HandleReversals_ALPHA(string InTable_DB_Name, string InOriginFileName, int InReconcCycleNo)
         {
 
@@ -4338,8 +4848,13 @@ namespace RRDM4ATMs
             stpErrorText += DateTime.Now + "_" + "Time Taken in Ms " + commandExecutionTimeInMs.ToString() + "\r\n";
             Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
 
-            
-
+            // UPDATE HERE "SM_Deposit_analysis with Replenishment Cycle"
+            //SM.Update_SM_Deposit_analysis(WAtmNo, SM.Fuid);
+            RRDMRepl_SupervisorMode_Details SM = new RRDMRepl_SupervisorMode_Details();
+            SM.Update_SM_Deposit_analysis_ALPHA(InRMCycleNo);
+            //2500
+            // *****************************************
+            // CAPTURE CARDS
             SQLCmd =
     " UPDATE [ATMS].[dbo].[CapturedCards] "
     + " SET "
@@ -4798,19 +5313,37 @@ namespace RRDM4ATMs
 
         }
 
-        public void MethodToUpdateErrors(string InOperator, int InRMCycle, string InPhysicalFiledID)
+        public void MethodToUpdateCategoriesALPHA(string InOperator, string InFiledID)
         {
 
-            string SQLCmd =
-          " UPDATE [ATMS].[dbo].[ErrorsTable] "
-           + " SET "
-           + "  SesNo = t2.SesNo  "
-          + " FROM [ATMS].[dbo].[ErrorsTable] t1 "
-          + " INNER JOIN [ATMS].[dbo].[SessionsStatusTraces] t2"
-    + " ON "
-    + " t1.AtmNo = t2.AtmNo "
-    + " WHERE  (t2.ProcessMode IN ( 0 ,-1, -5 )) "
-    + "  AND (t1.[DateTime] BETWEEN t2.SesDtTimeStart AND t2.SesDtTimeEnd)";
+            //526764 0074968009
+            //5374850084350003
+            bool ErrorFound = false; 
+
+            string SQLCmd = "  UPDATE[RRDM_Reconciliation_ITMX].[dbo]." + InFiledID  // Journals, base24, bMaster
+                        + "  SET MatchingCateg = case "  // SET UP THE CATEGORY 
+                        + " WHEN " // CREDIT CARD
+                        + "( Left(CardNumber,6) = '526764' "
+                        + " OR Left(CardNumber,8) = '53281675' "
+                         + " OR Left(CardNumber,8) = '53239590' "
+                          + " OR Left(CardNumber,8) = '53239524' "
+                        + ") "
+                          + " THEN 'EMR302' " // CREDIT Card
+                        + " WHEN " // Debit CARD
+                        + " ( Left(CardNumber,6) = '537485' "
+                        + " OR Left(CardNumber,8) = '53239519' "
+                         + " OR Left(CardNumber,6) = '510215' "
+                            + " OR Left(CardNumber,8) = '53239513' "
+                          + " OR Left(CardNumber,8) = '51508802' "
+                        + ") "
+                        + " THEN 'EMR304' " // Debit Card
+
+                  + " ELSE 'EMR306' " // Foreign OFF LINE 
+                  + " end "
+                 + " WHERE CardNumber <> 'N/A' AND MatchingCateg = '' " // We SELECT all valid card Number taken from base24
+                                                 // If N/A remains to be updated next day 
+                        ;
+
 
             using (SqlConnection conn = new SqlConnection(recconConnString))
                 try
@@ -4820,29 +5353,33 @@ namespace RRDM4ATMs
                     using (SqlCommand cmd =
                         new SqlCommand(SQLCmd, conn))
                     {
-                        // cmd.Parameters.AddWithValue("@RMCycle", InReconcCycleNo);
+
                         cmd.CommandTimeout = 350;  // seconds
                         Counter = cmd.ExecuteNonQuery();
                         var stats = conn.RetrieveStatistics();
                         commandExecutionTimeInMs = (long)stats["ExecutionTime"];
 
+
                     }
                     // Close conn
                     conn.StatisticsEnabled = false;
-
                     conn.Close();
                 }
                 catch (Exception ex)
                 {
                     conn.StatisticsEnabled = false;
                     conn.Close();
+                    ErrorFound = true; 
+                    stpErrorText = stpErrorText + "Cancel At_Categ Definition";
+                    stpReturnCode = -1;
 
-                    stpErrorText = stpErrorText + "Cancel During UPDATE Errors with ReplNo...";
+                    stpReferenceCode = stpErrorText;
                     CatchDetails(ex);
-                    // return;
+
+                    return;
                 }
 
-            stpErrorText += DateTime.Now + "_" + "UPDATE Errors with ReplNo..." + Counter.ToString() + "\r\n";
+            stpErrorText += DateTime.Now + "_" + "UPDATING of bMaster Categories finishes .." + Counter.ToString() + "\r\n";
             stpErrorText += DateTime.Now + "_" + "Time Taken in Ms " + commandExecutionTimeInMs.ToString() + "\r\n";
             Flog.Update_stpErrorText(WFlogSeqNo, stpErrorText);
 

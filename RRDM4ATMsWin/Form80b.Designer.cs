@@ -217,7 +217,7 @@
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1218, 79);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1305, 79);
             this.tableLayoutPanelHeader.TabIndex = 267;
             // 
             // tableLayoutPanel4
@@ -235,7 +235,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 82F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1214, 82);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1301, 82);
             this.tableLayoutPanel4.TabIndex = 249;
             // 
             // tableLayoutPanel1
@@ -244,7 +244,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(1073, 1);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(1160, 1);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
@@ -387,7 +387,7 @@
             this.buttonNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonNext.ForeColor = System.Drawing.Color.White;
-            this.buttonNext.Location = new System.Drawing.Point(1133, 1);
+            this.buttonNext.Location = new System.Drawing.Point(1220, 1);
             this.buttonNext.Margin = new System.Windows.Forms.Padding(2, 1, 10, 1);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(71, 27);
@@ -408,7 +408,7 @@
             this.textBoxMsgBoard.Multiline = true;
             this.textBoxMsgBoard.Name = "textBoxMsgBoard";
             this.textBoxMsgBoard.ReadOnly = true;
-            this.textBoxMsgBoard.Size = new System.Drawing.Size(953, 34);
+            this.textBoxMsgBoard.Size = new System.Drawing.Size(1040, 34);
             this.textBoxMsgBoard.TabIndex = 242;
             this.textBoxMsgBoard.TabStop = false;
             this.textBoxMsgBoard.Text = "No guidance information available.";
@@ -421,7 +421,7 @@
             this.buttonBack.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonBack.ForeColor = System.Drawing.Color.White;
-            this.buttonBack.Location = new System.Drawing.Point(1050, 1);
+            this.buttonBack.Location = new System.Drawing.Point(1137, 1);
             this.buttonBack.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(76, 27);
@@ -449,7 +449,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1212, 591);
+            this.panel1.Size = new System.Drawing.Size(1299, 724);
             this.panel1.TabIndex = 243;
             // 
             // panel8
@@ -1968,6 +1968,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.RowHeadersWidth = 92;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(676, 281);
             this.dataGridView1.TabIndex = 347;
@@ -1996,12 +1997,12 @@
             this.tableLayoutPanel2.Controls.Add(this.textBoxMsgBoard, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonBack, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 600);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 733);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1214, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1301, 36);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
             // tableLayoutPanelMain
@@ -2019,7 +2020,7 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1218, 637);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1305, 770);
             this.tableLayoutPanelMain.TabIndex = 266;
             // 
             // toolTipMessages
@@ -2068,7 +2069,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1218, 637);
+            this.ClientSize = new System.Drawing.Size(1305, 770);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.ForeColor = System.Drawing.Color.White;

@@ -49,10 +49,10 @@ namespace RRDM4ATMs
         public decimal MaxCash;
         public int ReplAlertDays;
 
-        public decimal InsurOne;
-        public decimal InsurTwo;
-        public decimal InsurThree;
-        public decimal InsurFour;
+        public decimal InsurOne; // One day
+        public decimal InsurTwo; // Two Day
+        public decimal InsurThree; // Three day
+        public decimal InsurFour; // Four day 
 
         public string Supplier;
         public string Model;
@@ -801,6 +801,80 @@ namespace RRDM4ATMs
                     CatchDetails(ex);
 
                 }
+        }
+
+        //
+        // READ ATM
+        //
+        public decimal ReadAtmTo_Get_Insurance_Amt(string InAtmNo, DateTime FromDt , DateTime ToDt)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            decimal InsuranceAmt = 0;
+
+            TimeSpan NumberOfDays = ToDt.Date - FromDt.Date; 
+
+            string SqlString = "SELECT *"
+               + " FROM [ATMS].[dbo].ATMsFields"
+               + " WHERE AtmNo=@AtmNo";
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+
+                            ATMSReaderFields(rdr);
+
+                            if (NumberOfDays.Days == 1 )
+                            {
+                                InsuranceAmt = InsurOne; 
+                            }
+                            if (NumberOfDays.Days == 2)
+                            {
+                                InsuranceAmt = InsurTwo;
+                            }
+                            if (NumberOfDays.Days == 3)
+                            {
+                                InsuranceAmt = InsurThree;
+                            }
+                            if (NumberOfDays.Days == 4)
+                            {
+                                InsuranceAmt = InsurFour;
+                            }
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+
+                    CatchDetails(ex);
+
+                }
+
+            return InsuranceAmt;
         }
 
         //

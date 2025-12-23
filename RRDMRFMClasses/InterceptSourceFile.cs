@@ -399,7 +399,7 @@ namespace RRDMRFMClasses
                 }
             }
             #endregion
-
+            /*
             #region Check if system is ready to accept the new file
             // Check in the ReconcCategoryVsSourceFiles
             // Categories where this file participates in must all be in either ProcessMode = 1 or ProcessMode = -1 state.
@@ -474,7 +474,7 @@ namespace RRDMRFMClasses
                 return ProcessFileResult.ReconciliationInProgress;
             }
             #endregion
-
+            */
             #region TODO: Validations
             // ToDo: Validate, Transform file, ...; needs extra design
             #endregion

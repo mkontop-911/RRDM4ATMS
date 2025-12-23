@@ -3620,6 +3620,8 @@ namespace RRDM4ATMs
                 WTXNSRC = "0";
                 WTXNDEST = "0";
 
+                U_TransDate = Ta.SesDtTimeEnd.Date;
+
             }
 
             // Find Current RM Cycle 
@@ -5039,7 +5041,6 @@ namespace RRDM4ATMs
                        new SqlCommand(cmdinsert, conn))
                     {
 
-
                         cmd.Parameters.AddWithValue("@ActionId", ActionId);
                         cmd.Parameters.AddWithValue("@Occurance", Occurance);
                         cmd.Parameters.AddWithValue("@ActionNm", ActionNm);
@@ -5095,6 +5096,7 @@ namespace RRDM4ATMs
                             U_TransDate = DateTime.Now; 
                         }
 
+                        //U_TransDate = DateTime.Now;
 
                         cmd.Parameters.AddWithValue("@U_TransDate", U_TransDate);
 
@@ -5107,6 +5109,16 @@ namespace RRDM4ATMs
                 catch (Exception ex)
                 {
                     conn.Close();
+
+                    MessageBox.Show("ERROR In INSERT IN ACTIONS OCCURANCES"+Environment.NewLine
+                        + "Action Id " + ActionId + Environment.NewLine
+                        + "ActionNm " + ActionNm + Environment.NewLine
+                        + "UniqueKey " + UniqueKey + Environment.NewLine
+                      //  + "Action Id " + ActionId + Environment.NewLine
+
+                        );
+
+
 
                     CatchDetails(ex);
                 }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RRDM4ATMs</RootNamespace>
     <AssemblyName>RRDM4ATMsClasses</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -94,8 +95,10 @@
     <Compile Include="RRDMMatchingTxns_InGeneralTables_ROM.cs" />
     <Compile Include="RRDMMatchingTxns_MasterPoolATMs_ROM.cs" />
     <Compile Include="RRDMRepl_SupervisorMode_Details_ROM.cs" />
+    <Compile Include="RRDMRepl_SupervisorMode_Master_ALPHA.cs" />
     <Compile Include="RRDMRepl_SupervisorMode_Master_ROM.cs" />
     <Compile Include="RRDM_ATMs_CASH_RECON_MASTER_RECORD.cs" />
+    <Compile Include="RRDM_SM_SWITCH_TOTALS.cs" />
     <Compile Include="RRDM_AuditTrailClass_NEW.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="RRDMActions_Occurances_E_WALLET.cs" />
@@ -319,7 +322,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Reactor_Enabled="0" Reactor_Commands="" Reactor_Project="" Reactor_Configuration="" Reactor_Output="" Reactor_Deploy="0" />
+      <UserProperties Reactor_Deploy="0" Reactor_Output="" Reactor_Configuration="" Reactor_Project="" Reactor_Commands="" Reactor_Enabled="0" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

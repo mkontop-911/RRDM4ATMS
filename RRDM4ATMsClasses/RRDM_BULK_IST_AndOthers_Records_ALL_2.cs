@@ -1,13 +1,16 @@
 ﻿using System;
-using System.Text;
-//
-using System.Data.SqlClient;
+using System.Collections;
 using System.Configuration;
 using System.Data;
-using System.Collections;
+//
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq; 
+using System.Text;
+using System.Threading;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace RRDM4ATMs
 {
@@ -1423,9 +1426,15 @@ namespace RRDM4ATMs
 
                     if (FoundExceptions > 0)
                     {
-                        MessageBox.Show("Checked of taps completed. Exceptions found:" + FoundExceptions.ToString() + Environment.NewLine
-                            + "You will find the Errors in..." + ErrorsfilePath
-                            );
+                        string text = "Checked of taps completed. Exceptions found:" + FoundExceptions.ToString() + Environment.NewLine
+                            + "You will find the Errors in..." + ErrorsfilePath;
+                        string caption = "Files_Loading";
+                        int timeout = 5000;
+                        AutoClosingMessageBox.Show(text, caption, timeout);
+
+                        //MessageBox.Show("Checked of taps completed. Exceptions found:" + FoundExceptions.ToString() + Environment.NewLine
+                        //    + "You will find the Errors in..." + ErrorsfilePath
+                        //    );
                         Correct = false;
                     }
                     else Correct = true;
@@ -1467,9 +1476,14 @@ namespace RRDM4ATMs
                     // Console.WriteLine("Check completed!");
                     if (FoundExceptions > 0)
                     {
-                        MessageBox.Show("Checked of taps completed. Exceptions found:" + FoundExceptions.ToString() + Environment.NewLine
-                            + "You will find the Errors in..." + ErrorsfilePath
-                            );
+                        string text = "Checked of taps completed. Exceptions found:" + FoundExceptions.ToString() + Environment.NewLine
+                            + "You will find the Errors in..." + ErrorsfilePath;
+                        string caption = "Files_Loading";
+                        int timeout = 5000;
+                        AutoClosingMessageBox.Show(text, caption, timeout);
+                        //MessageBox.Show("Checked of taps completed. Exceptions found:" + FoundExceptions.ToString() + Environment.NewLine
+                        //    + "You will find the Errors in..." + ErrorsfilePath
+                        //    );
                         Correct = false;
                     }
                     else Correct = true;

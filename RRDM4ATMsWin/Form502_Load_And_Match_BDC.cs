@@ -73,9 +73,9 @@ namespace RRDM4ATMsWin
         // UAT HAS TO WORK as Normal => delete all before first day => set it to long future 
 
         // SECOND CASE FOR PRODUCTTION 
-        //public DateTime FixedDate = new DateTime(2025, 07, 05); // THIS THE second case PRODUCTION DATE
+       // public DateTime FixedDate = new DateTime(2025, 07, 05); // THIS THE second case PRODUCTION DATE
         // UAT DATE
-        public DateTime FixedDate = new DateTime(2050, 07, 05); // THIS THE second case PRODUCTION DATE
+       public DateTime FixedDate = new DateTime(2050, 07, 05); // THIS THE second case PRODUCTION DATE
         // int WNumberOfLoadingAndMatching;
 
         string ReversedCut_Off_Date;
@@ -132,6 +132,8 @@ namespace RRDM4ATMsWin
                             // If 2 then is called for view only 
             InitializeComponent();
 
+            this.WindowState = FormWindowState.Maximized;
+
             RRDMUserSignedInRecords Usi = new RRDMUserSignedInRecords();
             Usi.ReadSignedActivityByKey(WSignRecordNo);
 
@@ -156,7 +158,7 @@ namespace RRDM4ATMsWin
                     ); 
             }
 
-            this.WindowState = FormWindowState.Maximized;
+          
 
             if (InOperator == "BCAIEGCX")
             {
@@ -468,32 +470,32 @@ namespace RRDM4ATMsWin
                                 + "_and Date_" + WCut_Off_Date.ToShortDateString();
             }
 
-            //if (WMode == 2)
-            //{
-            //    // Check Per Row (Rows show the cycles)
-            //    // CHECK IF MATCHING IS DONE 
-            //    Rcs.ReadReconcCategoriesSessions_To_Check_If_MatchingDONE(WReconcCycleNo);
-            //    if (Rcs.RecordFound == true)
-            //    {
-            //        IsMatchingDone = true;
-            //        panelLoaded.Show();
-            //        labelFieldsDefinition.Show();
-            //        panelCategories.Show();
-            //        buttonMatching.Show();
-            //        linkLabelExpand.Show();
+            if (WMode == 2)
+            {
+                // Check Per Row (Rows show the cycles)
+                // CHECK IF MATCHING IS DONE 
+                Rcs.ReadReconcCategoriesSessions_To_Check_If_MatchingDONE(WReconcCycleNo);
+                if (Rcs.RecordFound == true)
+                {
+                    IsMatchingDone = true;
+                    panelLoaded.Show();
+                    labelFieldsDefinition.Show();
+                    panelCategories.Show();
+                    buttonMatching.Show();
+                    linkLabelExpand.Show();
 
-            //    }
-            //    else
-            //    {
-            //        IsMatchingDone = false;
-            //        // MessageBox.Show("ATMs records Shown That Matching is not done.");
-            //        labelFieldsDefinition.Hide();
-            //        panelCategories.Hide();
-            //        buttonMatching.Hide();
-            //        linkLabelExpand.Hide();
-            //    }
+                }
+                else
+                {
+                    IsMatchingDone = false;
+                    // MessageBox.Show("ATMs records Shown That Matching is not done.");
+                    labelFieldsDefinition.Hide();
+                    panelCategories.Hide();
+                    buttonMatching.Hide();
+                    linkLabelExpand.Hide();
+                }
 
-            //}
+            }
             // GRID 2 LOADED FILES
             if (Counter == 2 & FirstMessage == true)
             {
@@ -1520,7 +1522,7 @@ namespace RRDM4ATMsWin
         //int AgingCycle_HST; // THIS IS THE CYCLE FOR MOVING TO HISTORY
         private void buttonDoMatching_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This is version UAT"); 
+           // MessageBox.Show("This is version UAT"); 
             //
             // Start Service
             buttonMatching.Show();
@@ -1700,9 +1702,12 @@ namespace RRDM4ATMsWin
                                            WReconcCycleNo);
             // *****************************
 
+            // FIND NUMBER OF DISCREPANCIES
+            int TotalDescrepancies = Mpa.ReadInPoolTransTotalNOT_MatchedForCycle(WReconcCycleNo);
+
             Mode = 5; // Updating Action 
             ProcessName = "MatchingProcess";
-            Message = "Matching Process Finishes.";
+            Message = "Matching Finishes.Descrep:." + TotalDescrepancies.ToString();
 
             Pt.InsertPerformanceTrace_With_USER(WOperator, WOperator, Mode, ProcessName, "", SavedStartDt, DateTime.Now, Message, WSignedId, WReconcCycleNo);
             //*********************************
@@ -2303,7 +2308,7 @@ namespace RRDM4ATMsWin
                 //    MoveToHistory = true;
                 //}
             //}
-            //MoveToHistory = true;
+            MoveToHistory = false;
             if (MoveToHistory == true)
             {
                 //******************************
@@ -2477,43 +2482,43 @@ namespace RRDM4ATMsWin
             // 
             // AT the END UPDATE STATS
 
-            string connectionStringITMX = ConfigurationManager.ConnectionStrings
-                 ["ReconConnectionString"].ConnectionString;
+            //string connectionStringITMX = ConfigurationManager.ConnectionStrings
+            //     ["ReconConnectionString"].ConnectionString;
 
-            // AT the END UPDATE STATS
-            int ReturnCode = -1;
-            int ret;
-            string RCT = "[RRDM_Reconciliation_ITMX].[dbo].[Stp_00_UPDATE_DB_System_Stats]";
+            //// AT the END UPDATE STATS
+            //int ReturnCode = -1;
+            //int ret;
+            //string RCT = "[RRDM_Reconciliation_ITMX].[dbo].[Stp_00_UPDATE_DB_System_Stats]";
 
-            using (SqlConnection conn =
-               new SqlConnection(connectionStringITMX))
-                try
-                {
-                    conn.Open();
-                    using (SqlCommand cmd =
-                       new SqlCommand(RCT, conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        // Parameters
-                        SqlParameter retCode = new SqlParameter("@ReturnCode", ReturnCode);
-                        retCode.Direction = ParameterDirection.Output;
-                        retCode.SqlDbType = SqlDbType.Int;
-                        cmd.Parameters.Add(retCode);
+            //using (SqlConnection conn =
+            //   new SqlConnection(connectionStringITMX))
+            //    try
+            //    {
+            //        conn.Open();
+            //        using (SqlCommand cmd =
+            //           new SqlCommand(RCT, conn))
+            //        {
+            //            cmd.CommandType = CommandType.StoredProcedure;
+            //            // Parameters
+            //            SqlParameter retCode = new SqlParameter("@ReturnCode", ReturnCode);
+            //            retCode.Direction = ParameterDirection.Output;
+            //            retCode.SqlDbType = SqlDbType.Int;
+            //            cmd.Parameters.Add(retCode);
 
-                        cmd.ExecuteNonQuery();
+            //            cmd.ExecuteNonQuery();
 
-                        ret = (int)cmd.Parameters["@ReturnCode"].Value;
-                        //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
-                        //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
+            //            ret = (int)cmd.Parameters["@ReturnCode"].Value;
+            //            //    if (rows > 0) textBoxMsg.Text = " RECORD INSERTED IN SQL ";
+            //            //    else textBoxMsg.Text = " Nothing WAS UPDATED ";
 
-                    }
-                    // Close conn
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
-                }
+            //        }
+            //        // Close conn
+            //        conn.Close();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show(string.Format("An error occurred: {0}", ex.Message));
+            //    }
             
             IsAllowedToSignIn = true;
             CheckForSignInUsers(IsAllowedToSignIn);

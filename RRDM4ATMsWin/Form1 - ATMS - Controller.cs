@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -455,7 +456,7 @@ namespace RRDM4ATMsWin
                     {
                         W_Application = "ETISALAT";
                         MessageBox.Show(" THIS IS A VERIFICATION MESSAGE" + Environment.NewLine
-                           + "OSMAN THIS IS VERSION 2025_10_08 " + Environment.NewLine
+                           + "OSMAN THIS IS VERSION 2025_11_14 " + Environment.NewLine
                            + "Is this the one you must Have? ");
                     }
                     if (Usi.WFieldNumeric11 == 12)
@@ -3441,9 +3442,6 @@ namespace RRDM4ATMsWin
                 NForm502_Check_Loading.ShowDialog();
             }
 
-
-
-
         }
         // VIEW FILES 
         private void button50_Click_1(object sender, EventArgs e)
@@ -4180,7 +4178,8 @@ namespace RRDM4ATMsWin
             RRDMJournalReadTxns_Text_Class Jrt = new RRDMJournalReadTxns_Text_Class();
             jlnFullPathName = Jrt.ConvertJournal(WJournalTxtFile); // Converted File 
                                                                    // LineCount = Jrt.LineCounter
-
+            jlnFullPathName = Jrt.ConvertJournal_2LessThan_4000(WJournalTxtFile); // Converted File 
+            
         }
         // TEST AUTO
         private void buttonTESTAUto_Click(object sender, EventArgs e)
@@ -4373,6 +4372,29 @@ namespace RRDM4ATMsWin
                );
             Div.ReconstructZip(outputFile, inputFile);
             // Div.MergeFiles_ZIP(WSignedId);
+        }
+        // Copy text Lines 
+        private void buttonCopyTxtLines_Click(object sender, EventArgs e)
+        {
+            //MEEZA_GLOBAL_LCL_20251024.001
+           // "C:\\OSMAN_V2\\BIGFILE.zip";
+            string sourcePath = @"C:\OSMAN_V2\MEEZA_GLOBAL_LCL_20251024.001";
+            string destinationPath = @"C:\OSMAN_V2\MEEZA_GLOBAL_LCL_20251024_2.001";
+            int numberOfLines = 272859; // change this to how many lines you want
+
+            var lines = File.ReadLines(sourcePath).Take(numberOfLines);
+            File.WriteAllLines(destinationPath, lines);
+
+            MessageBox.Show("Copy of lines done"); 
+
+        }
+// EXCELS 
+        private void button4_Click_2(object sender, EventArgs e)
+        {
+            RRDMMatchingTxns_InGeneralTables_BDC Mgt = new RRDMMatchingTxns_InGeneralTables_BDC();
+            RRDMMatchingTxns_MasterPoolATMs Mpa = new RRDMMatchingTxns_MasterPoolATMs();
+
+            Mgt.CREATE_EXCELS_FOR_PRIMARY_DATA_BASE(WCut_Off_Date, WReconcCycleNo);
         }
     }
 }

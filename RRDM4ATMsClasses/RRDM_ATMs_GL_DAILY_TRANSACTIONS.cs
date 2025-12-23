@@ -293,6 +293,91 @@ namespace RRDM4ATMs
 
                 }
         }
+        public decimal ATM_Replenishment;
+        public decimal ATM_Deposits;
+        public decimal DB_Corrections_on_ATM;
+        public decimal CR_Corrections_on_ATM;
+        public void Read_GL_TXNS_And_BySelectionCriteriaGetAll_TXNS_Totals (string InSelectionCriteria)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            ATM_Replenishment = 0;
+            ATM_Deposits = 0;
+            DB_Corrections_on_ATM = 0;
+            CR_Corrections_on_ATM = 0; 
+
+        TotalSelected = 0;
+
+            SqlString = "SELECT * "
+                      + " FROM [RRDM_Reconciliation_ITMX].[dbo].[ATMs_GL_DAILY_TRANSACTIONS] "
+                        + InSelectionCriteria;
+
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+
+                        //cmd.Parameters.AddWithValue("@Operator", InOperator);
+                        //cmd.Parameters.AddWithValue("@SeqNo", InSeqNo);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+
+                            RecordFound = true;
+
+                            TotalSelected = TotalSelected + 1;
+
+                            ReadRecordFields(rdr);
+
+                            if (TransDescr == "ATM Replenishment")
+                            {
+                                // Code 11
+                                ATM_Replenishment = ATM_Replenishment + TransAmt; 
+                            }
+                            if (TransDescr == "ATM Deposits")
+                            {
+                                // Code 21
+                                ATM_Deposits = ATM_Deposits + TransAmt;
+                            }
+                            if (TransDescr == "DB Corrections on ATM")
+                            {
+
+                                DB_Corrections_on_ATM = DB_Corrections_on_ATM + TransAmt;
+                            }
+                            if (TransDescr == "CR Corrections on ATM")
+                            {
+                                CR_Corrections_on_ATM = CR_Corrections_on_ATM + TransAmt;
+                            }
+                          
+
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+
+                }
+        }
 
         //
         // Methods 
@@ -376,9 +461,11 @@ namespace RRDM4ATMs
         //
         // Insert Insert_GL_TXNS 
         //
+        //
         public int Insert_GL_Balances()
         {
-
+            // INSERT IS DONE DURING LOADING OF bMaster
+            // AND ALso Repl Cycle Number is updated too during file loading
             ErrorFound = false;
             ErrorOutput = "";
 

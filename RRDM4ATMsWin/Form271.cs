@@ -87,7 +87,7 @@ namespace RRDM4ATMsWin
 
             InitializeComponent();
 
-            this.WindowState = FormWindowState.Maximized;
+            //this.WindowState = FormWindowState.Maximized;
 
             // ================USER BANK =============================
             //     Us.ReadUsersRecord(WSignedId); // Read USER record for the signed user
@@ -607,7 +607,8 @@ namespace RRDM4ATMsWin
 
                         if (WAuthoriser == true & ReconciliationAuthorOutstanding == true) // Cancel by authoriser without making authorisation.
                         {
-                            if (MessageBox.Show("Warning: Authorisation outstanding " + ". Do You want to abort?  ", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+                            if (MessageBox.Show("Warning: Authorisation outstanding OR Authoriser didnt press Author" + ". Do You want to abort?  ", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
                                            == DialogResult.Yes)
                             {
                                 this.Dispose();

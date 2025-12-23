@@ -318,7 +318,7 @@ namespace RRDM4ATMs
             ErrorOutput = "";
 
             SqlString = "SELECT *"
-                  + " FROM [dbo].[JTMIdentificationDetails] "
+                  + " FROM ATMS.[dbo].[JTMIdentificationDetails] "
                   + " WHERE AtmNo = @AtmNo";
             using (SqlConnection conn =
                           new SqlConnection(connectionString))
@@ -334,6 +334,58 @@ namespace RRDM4ATMs
 
                         SqlDataReader rdr = cmd.ExecuteReader();
                         
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+                            ReaderFields(rdr);
+                        }
+                        ErrorFound = false;
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    ErrorFound = true;
+                    ErrorOutput = ex.Message;
+                    RecordFound = false;
+                    conn.Close();
+                    // Alecos
+                    // CatchDetails(ex);
+
+                }
+        }
+
+        // READ JTMIdentificationDetails by SelectionCriteria
+
+        public void ReadJTMIdentificationDetailsBySelectionCriteria(string InSelectionCriteria)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            SqlString = "SELECT *"
+                  + " FROM [dbo].[JTMIdentificationDetails] "
+
+                  + InSelectionCriteria; 
+               //   + " WHERE AtmNo = @AtmNo";
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                       // cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
                         while (rdr.Read())
                         {
                             RecordFound = true;

@@ -181,7 +181,7 @@ namespace RRDM4ATMs
             + ",[OriginalRecordId] " // seqno // 2
             + ",[UniqueRecordId] " // 3
 
-            + ",[MatchingCateg] " // BDC299 // 4
+          //  + ",[MatchingCateg] " // BDC299 // 4
              + ",[FuID] " // fuid // 5
               + ",[SeqNo01] " // WSeqNo // 6 
 
@@ -225,7 +225,7 @@ namespace RRDM4ATMs
             + ", SeqNo " // seqno // 2
            + ", NEXT VALUE FOR [RRDM_Reconciliation_ITMX].dbo.ReconcSequence " //3
 
-            + ",@MatchingCateg " // BDC299 //4
+           // + ",@MatchingCateg " // BDC299 //4
              + ",ISNULL(fuid, 0) AS fuid " //5
               + ", SeqNo " // SeqNo01 //6
 
@@ -339,62 +339,66 @@ namespace RRDM4ATMs
             //**********************************************************
             // UPDATE CATEGORY ID BASED ON BINS 
             //**********************************************************
+            RRDM_LoadFiles_InGeneral_EMR_ALPHA Lf_Alpha = new RRDM_LoadFiles_InGeneral_EMR_ALPHA();
 
-            SQLCmd = "  UPDATE [RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolATMs] "
-                        + "  SET MatchingCateg = case "  // SET UP THE CATEGORY 
-                        + " WHEN " // CREDIT CARD
-                        + "( Left(CardNumber,6) = '526764' "
-                        + " OR Left(CardNumber,8) = '53281675' "
-                         + " OR Left(CardNumber,8) = '53239590' "
-                          + " OR Left(CardNumber,8) = '53239524' "
-                        + ") "
-                          + " THEN '" + PRX + "302' " // CREDIT Card
-                        + " WHEN " // Debit CARD
-                        + " ( Left(CardNumber,6) = '537485' "
-                        + " OR Left(CardNumber,8) = '53239519' "
-                         + " OR Left(CardNumber,6) = '510215' "
-                            + " OR Left(CardNumber,8) = '53239513' "
-                          + " OR Left(CardNumber,8) = '51508802' "
-                        + ") "
-                        + " THEN '" + PRX + "304' " // Debit Card
-
-                  + " ELSE '" + PRX + "306' "
-                 + " end "
-                        ;
+            Lf_Alpha.MethodToUpdateCategoriesALPHA(WOperator, "tblMatchingTxnsMasterPoolATMs");
 
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-                try
-                {
-                    conn.StatisticsEnabled = true;
-                    conn.Open();
-                    using (SqlCommand cmd =
-                        new SqlCommand(SQLCmd, conn))
-                    {
+            //SQLCmd = "  UPDATE [RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolATMs] "
+            //            + "  SET MatchingCateg = case "  // SET UP THE CATEGORY 
+            //            + " WHEN " // CREDIT CARD
+            //            + "( Left(CardNumber,6) = '526764' "
+            //            + " OR Left(CardNumber,8) = '53281675' "
+            //             + " OR Left(CardNumber,8) = '53239590' "
+            //              + " OR Left(CardNumber,8) = '53239524' "
+            //            + ") "
+            //              + " THEN '" + PRX + "302' " // CREDIT Card
+            //            + " WHEN " // Debit CARD
+            //            + " ( Left(CardNumber,6) = '537485' "
+            //            + " OR Left(CardNumber,8) = '53239519' "
+            //             + " OR Left(CardNumber,6) = '510215' "
+            //                + " OR Left(CardNumber,8) = '53239513' "
+            //              + " OR Left(CardNumber,8) = '51508802' "
+            //            + ") "
+            //            + " THEN '" + PRX + "304' " // Debit Card
 
-                        cmd.CommandTimeout = 350;  // seconds
-                        Counter = cmd.ExecuteNonQuery();
-                        var stats = conn.RetrieveStatistics();
-                        //commandExecutionTimeInMs = (long)stats["ExecutionTime"];
+            //      + " ELSE '" + PRX + "306' "
+            //     + " end "
+            //            ;
 
 
-                    }
-                    // Close conn
-                    conn.StatisticsEnabled = false;
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    conn.StatisticsEnabled = false;
-                    conn.Close();
-                    //stpErrorText = stpErrorText + "Cancel At_Updating _TransType";
-                    //stpReturnCode = -1;
+            //using (SqlConnection conn = new SqlConnection(connectionString))
+            //    try
+            //    {
+            //        conn.StatisticsEnabled = true;
+            //        conn.Open();
+            //        using (SqlCommand cmd =
+            //            new SqlCommand(SQLCmd, conn))
+            //        {
 
-                    //stpReferenceCode = stpErrorText;
-                    CatchDetails(ex);
+            //            cmd.CommandTimeout = 350;  // seconds
+            //            Counter = cmd.ExecuteNonQuery();
+            //            var stats = conn.RetrieveStatistics();
+            //            //commandExecutionTimeInMs = (long)stats["ExecutionTime"];
 
-                    return;
-                }
+
+            //        }
+            //        // Close conn
+            //        conn.StatisticsEnabled = false;
+            //        conn.Close();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        conn.StatisticsEnabled = false;
+            //        conn.Close();
+            //        //stpErrorText = stpErrorText + "Cancel At_Updating _TransType";
+            //        //stpReturnCode = -1;
+
+            //        //stpReferenceCode = stpErrorText;
+            //        CatchDetails(ex);
+
+            //        return;
+            //    }
 
 
             //// Update RMCateg

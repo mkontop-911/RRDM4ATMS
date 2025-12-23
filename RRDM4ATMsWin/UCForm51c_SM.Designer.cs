@@ -335,7 +335,7 @@
             this.tableLayoutPanel2_2.Controls.Add(this.textBoxCcy2CassetteAmountCount, 0, 2);
             this.tableLayoutPanel2_2.Controls.Add(this.textBoxCcy2RetractedNotesCount, 0, 3);
             this.tableLayoutPanel2_2.Location = new System.Drawing.Point(523, 7);
-            this.tableLayoutPanel2_2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel2_2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel2_2.Name = "tableLayoutPanel2_2";
             this.tableLayoutPanel2_2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tableLayoutPanel2_2.RowCount = 7;
@@ -599,7 +599,7 @@
             this.tableLayoutPanel2_1.Controls.Add(this.label22, 0, 4);
             this.tableLayoutPanel2_1.Controls.Add(this.label23, 0, 3);
             this.tableLayoutPanel2_1.Location = new System.Drawing.Point(390, 16);
-            this.tableLayoutPanel2_1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel2_1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel2_1.Name = "tableLayoutPanel2_1";
             this.tableLayoutPanel2_1.RowCount = 7;
             this.tableLayoutPanel2_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
@@ -697,7 +697,7 @@
             this.tableLayoutPanel1_2.Controls.Add(this.textBoxCcy1CassetteAmountCount, 0, 2);
             this.tableLayoutPanel1_2.Controls.Add(this.textBoxCcy1RetractedNotesCount, 0, 3);
             this.tableLayoutPanel1_2.Location = new System.Drawing.Point(156, 9);
-            this.tableLayoutPanel1_2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1_2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1_2.Name = "tableLayoutPanel1_2";
             this.tableLayoutPanel1_2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tableLayoutPanel1_2.RowCount = 7;
@@ -962,7 +962,7 @@
             this.tableLayoutPanel1_1.Controls.Add(this.label2, 0, 3);
             this.tableLayoutPanel1_1.Controls.Add(this.label7, 0, 6);
             this.tableLayoutPanel1_1.Location = new System.Drawing.Point(22, 18);
-            this.tableLayoutPanel1_1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1_1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1_1.Name = "tableLayoutPanel1_1";
             this.tableLayoutPanel1_1.RowCount = 7;
             this.tableLayoutPanel1_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
@@ -1063,7 +1063,7 @@
             this.tableLayoutPanel11.Controls.Add(this.checkBoxAcceptZero, 1, 2);
             this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel11.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel11.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
             this.tableLayoutPanel11.RowCount = 7;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 7F));
@@ -1148,7 +1148,7 @@
             this.tableLayoutPanel6_2.Controls.Add(this.textBoxCcy6CassetteAmountCount, 0, 2);
             this.tableLayoutPanel6_2.Controls.Add(this.textBoxCcy6RetractedNotesCount, 0, 3);
             this.tableLayoutPanel6_2.Location = new System.Drawing.Point(520, 13);
-            this.tableLayoutPanel6_2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel6_2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel6_2.Name = "tableLayoutPanel6_2";
             this.tableLayoutPanel6_2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tableLayoutPanel6_2.RowCount = 7;
@@ -1412,7 +1412,7 @@
             this.tableLayoutPanel6_1.Controls.Add(this.label58, 0, 4);
             this.tableLayoutPanel6_1.Controls.Add(this.label59, 0, 3);
             this.tableLayoutPanel6_1.Location = new System.Drawing.Point(387, 22);
-            this.tableLayoutPanel6_1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel6_1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel6_1.Name = "tableLayoutPanel6_1";
             this.tableLayoutPanel6_1.RowCount = 7;
             this.tableLayoutPanel6_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
@@ -1509,7 +1509,7 @@
             this.tableLayoutPanel5_2.Controls.Add(this.textBoxCcy5CassetteAmountCount, 0, 2);
             this.tableLayoutPanel5_2.Controls.Add(this.textBoxCcy5RetractedNotesCount, 0, 3);
             this.tableLayoutPanel5_2.Location = new System.Drawing.Point(154, 15);
-            this.tableLayoutPanel5_2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel5_2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel5_2.Name = "tableLayoutPanel5_2";
             this.tableLayoutPanel5_2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tableLayoutPanel5_2.RowCount = 7;
@@ -1773,7 +1773,7 @@
             this.tableLayoutPanel5_1.Controls.Add(this.label67, 0, 4);
             this.tableLayoutPanel5_1.Controls.Add(this.label68, 0, 3);
             this.tableLayoutPanel5_1.Location = new System.Drawing.Point(20, 24);
-            this.tableLayoutPanel5_1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel5_1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel5_1.Name = "tableLayoutPanel5_1";
             this.tableLayoutPanel5_1.RowCount = 7;
             this.tableLayoutPanel5_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
@@ -1922,7 +1922,7 @@
             this.tableLayoutPanel4_2.Controls.Add(this.textBoxCcy4CassetteAmountCount, 0, 2);
             this.tableLayoutPanel4_2.Controls.Add(this.textBoxCcy4RetractedNotesCount, 0, 3);
             this.tableLayoutPanel4_2.Location = new System.Drawing.Point(520, 13);
-            this.tableLayoutPanel4_2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel4_2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel4_2.Name = "tableLayoutPanel4_2";
             this.tableLayoutPanel4_2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tableLayoutPanel4_2.RowCount = 7;
@@ -2187,7 +2187,7 @@
             this.tableLayoutPanel4_1.Controls.Add(this.label37, 0, 4);
             this.tableLayoutPanel4_1.Controls.Add(this.label38, 0, 3);
             this.tableLayoutPanel4_1.Location = new System.Drawing.Point(387, 22);
-            this.tableLayoutPanel4_1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel4_1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel4_1.Name = "tableLayoutPanel4_1";
             this.tableLayoutPanel4_1.RowCount = 7;
             this.tableLayoutPanel4_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
@@ -2284,7 +2284,7 @@
             this.tableLayoutPanel3_2.Controls.Add(this.textBoxCcy3CassetteAmountCount, 0, 2);
             this.tableLayoutPanel3_2.Controls.Add(this.textBoxCcy3RetractedNotesCount, 0, 3);
             this.tableLayoutPanel3_2.Location = new System.Drawing.Point(154, 15);
-            this.tableLayoutPanel3_2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel3_2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel3_2.Name = "tableLayoutPanel3_2";
             this.tableLayoutPanel3_2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tableLayoutPanel3_2.RowCount = 7;
@@ -2548,7 +2548,7 @@
             this.tableLayoutPanel3_1.Controls.Add(this.label49, 0, 4);
             this.tableLayoutPanel3_1.Controls.Add(this.label50, 0, 3);
             this.tableLayoutPanel3_1.Location = new System.Drawing.Point(20, 24);
-            this.tableLayoutPanel3_1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel3_1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel3_1.Name = "tableLayoutPanel3_1";
             this.tableLayoutPanel3_1.RowCount = 7;
             this.tableLayoutPanel3_1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
@@ -2900,7 +2900,7 @@
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(2, 2);
-            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(422, 33);
             this.flowLayoutPanel2.TabIndex = 341;

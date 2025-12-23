@@ -1113,7 +1113,7 @@ namespace RRDM4ATMs
                         new SqlCommand("UPDATE [ATMS].[dbo].[MatchingCategoriesVsSourceFiles] SET "
                               + " RMCycle = @NewRMCycle, "
                               + " ExpectedDate = @ExpectedDate, "
-                               + " ProcessMode = 0 , "
+                               + " ProcessMode = 1 , "
                               + " IsReadThisCycle = @IsReadThisCycle "
                               + " WHERE SeqNo = @SeqNo", conn))
                     {

@@ -99,7 +99,7 @@ namespace RRDM4ATMsWin
             try
             {
                 //Rc.ReadReconcCategoriesAndFillTableWithDiscrepancies(WOperator, WSignedId);
-
+               
                 Mc.ReadMatchingCategoriesAndFillTableInDetail(WOperator, W_Application);
                 dataGridView1.DataSource = Mc.TableMatchingCateg.DefaultView;
 

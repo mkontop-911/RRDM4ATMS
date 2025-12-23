@@ -50,7 +50,7 @@ namespace RRDM4ATMsWin
 
             WRMCycleNo = InRMCycleNo;
 
-            WAction = InAction; // 1 Create SM for missing Journal 
+            WAction = InAction; // 1 is normal, 2 is coming from IST replenishement 
             WInAtmNo = InAtmNo;
 
             InitializeComponent();
@@ -71,7 +71,15 @@ namespace RRDM4ATMsWin
             comboBoxFaceValue.DataSource = Gp.GetArrayParamOccurancesIds(WOperator);
             comboBoxFaceValue.DisplayMember = "DisplayValue";
 
-
+            if (WAction == 2)
+            {
+                radioButtonUpdateOnlyDates.Show();
+                buttonUpdateOnlyDATES.Hide();
+            }
+            else
+            {
+                radioButtonUpdateOnlyDates.Hide();
+            }
 
         }
         // Load Form 
@@ -132,6 +140,7 @@ namespace RRDM4ATMsWin
             panelDepBig.Show();
             labelDeposits.Show();
             panelDeposits.Show();
+            panelDepBig.Show();
 
 
             //checkBoxMakeNewReplCycle.Checked = false;
@@ -245,7 +254,7 @@ namespace RRDM4ATMsWin
 
                 SM.Read_SM_AND_FillTable_Deposits_Baddies(WAtmNo, WSesNo);
 
-                
+
 
                 ShowGrid_3();
             }
@@ -524,6 +533,7 @@ namespace RRDM4ATMsWin
             panelDepBig.Show();
             panelDeposits.Show();
             labelDeposits.Show();
+            panelDepBig.Show();
 
             dataGridView3.DataSource = SM.DataTable_SM_Deposits.DefaultView;
 
@@ -1025,6 +1035,13 @@ namespace RRDM4ATMsWin
                 labelDeposits.Hide();
 
                 //dataGridView2.Enabled = false;
+                labelHeader3.Show();
+                panel4.Show();
+                labelDeposits.Show();
+                panelDeposits.Show();
+                panelDepBig.Show();
+
+                buttonUpdateOnlyDATES.Hide();
 
 
 
@@ -1061,6 +1078,13 @@ namespace RRDM4ATMsWin
                     buttonCreateReplenishment.Hide();
                     buttonUpdate.Show();
                     //dataGridView2.Enabled = false;
+                    labelHeader3.Show();
+                    panel4.Show();
+                    labelDeposits.Show();
+                    panelDeposits.Show();
+                    panelDepBig.Show();
+
+                    buttonUpdateOnlyDATES.Hide();
                 }
                 else
                 {
@@ -1546,6 +1570,12 @@ namespace RRDM4ATMsWin
                     //buttonCreateReplenishment.Hide();
                     buttonDelete.Show();
                     //dataGridView2.Enabled = false;
+                    labelHeader3.Show();
+                    panel4.Show();
+                    labelDeposits.Show();
+                    panelDeposits.Show();
+                    panelDepBig.Show();
+                    buttonUpdateOnlyDATES.Hide();
                 }
                 else
                 {
@@ -1681,6 +1711,12 @@ namespace RRDM4ATMsWin
                     buttonFromInProcessTo0.Show();
                     button_0toInProcess.Show();
                     //dataGridView2.Enabled = false;
+                    labelHeader3.Show();
+                    panel4.Show();
+                    labelDeposits.Show();
+                    panelDeposits.Show();
+                    panelDepBig.Show();
+                    buttonUpdateOnlyDATES.Hide();
                 }
                 else
                 {
@@ -2404,6 +2440,7 @@ namespace RRDM4ATMsWin
                     }
                 }
             }
+            OpeningBal = 850000; // FOR BANK DE CAIRE
             // GET DATES 
             Ta.ReadSessionsStatusTraces(WAtmNo, WSesNo);
 
@@ -2572,6 +2609,8 @@ namespace RRDM4ATMsWin
                             + Sm.ATM_total3 * Na.Cassettes_3.FaceValue
                             + Sm.ATM_total4 * Na.Cassettes_4.FaceValue;
 
+                OpeningBal = 850000; // by force for Bank De Caire
+
             }
             else
             {
@@ -2585,8 +2624,10 @@ namespace RRDM4ATMsWin
                                   Sm.ATM_total1 * Na.Cassettes_1.FaceValue
                                 + Sm.ATM_total2 * Na.Cassettes_2.FaceValue
                                 + Sm.ATM_total3 * Na.Cassettes_3.FaceValue
-                                + Sm.ATM_total4 * Na.Cassettes_4.FaceValue
-                                  ;
+                                + Sm.ATM_total4 * Na.Cassettes_4.FaceValue;
+
+                    OpeningBal = 850000; // by force for Bank De Caire
+
                     //MessageBox.Show("The Openning Balance is not available" + Environment.NewLine
                     //   + "Input Open Balance Manually" +
                     //    "");
@@ -2601,6 +2642,8 @@ namespace RRDM4ATMsWin
                                 + Sm.ATM_total3 * Na.Cassettes_3.FaceValue
                                 + Sm.ATM_total4 * Na.Cassettes_4.FaceValue
                                   ;
+                    OpeningBal = 850000; // by force for Bank De Caire
+
                     //Sm.Read_SM_Record_Specific_By_ATMno_ReplCycle(WAtmNo, Na.PreSes);
                     //OpeningBal = // After date Cap_date
                     //    //Sm.ATM_cassette1 
@@ -2613,6 +2656,8 @@ namespace RRDM4ATMsWin
                     //textBoxJournal.Text = LoadedAmount.ToString("#,##0.00");
                 }
 
+                // SET 
+                OpeningBal = 850000;
 
             }
 
@@ -2626,6 +2671,8 @@ namespace RRDM4ATMsWin
 
                 TotalDebit_IST = Mgt.TotalDebit;
                 TotalCredit_IST = Mgt.TotalCredit;
+
+
             }
 
             // FIND THE ONES THAT WERE REVERSED during reconciliation (Actions 91,92) 
@@ -2668,7 +2715,7 @@ namespace RRDM4ATMsWin
 
             if (Na.Is_GL_Adjusted == true)
             {
-               // radioButtonGLBased_Journal.Checked = true;
+                // radioButtonGLBased_Journal.Checked = true;
             }
             ;
 
@@ -2760,7 +2807,7 @@ namespace RRDM4ATMsWin
                         + Sm.cashaddtype3 * Na.Cassettes_3.FaceValue
                         + Sm.cashaddtype4 * Na.Cassettes_4.FaceValue
                           ;
-           
+
             textBoxJournal.Text = LoadedAmount.ToString("#,##0.00");
 
         }
@@ -2781,7 +2828,43 @@ namespace RRDM4ATMsWin
 
         private void buttonRefreshIST_Click(object sender, EventArgs e)
         {
-            Set_IST_INFO(); 
+            Set_IST_INFO();
+        }
+        // Show Update dates
+        private void radioButtonUpdateOnlyDates_CheckedChanged(object sender, EventArgs e)
+        {
+            buttonUpdateOnlyDATES.Show();
+            labelHeader3.Hide();
+            panel4.Hide();
+            labelDeposits.Hide();
+            panelDeposits.Hide();
+            panelDepBig.Hide(); 
+
+            // buttonValidateDates.Show(); 
+        }
+
+        private void buttonUpdateOnlyDATES_Click(object sender, EventArgs e)
+        {
+
+            CheckErrorInDatesUpdate();
+
+            if (ErrorInDates == true)
+            {
+                return;
+            }
+
+            // update 
+            Ta.ReadSessionsStatusTraces(WAtmNo, WSesNo);
+
+            if (SM.RecordFound == true)
+            {
+                Ta.SesDtTimeStart = dateTimePicker1.Value;
+                Ta.SesDtTimeEnd = dateTimePicker2.Value;
+
+                Ta.UpdateSessionsStatusTraces(WAtmNo, WSesNo);
+            }
+
+            Set_IST_INFO();
         }
     }
 }

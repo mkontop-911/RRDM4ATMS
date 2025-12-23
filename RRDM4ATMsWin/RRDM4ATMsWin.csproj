@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RRDM4ATMsWin</RootNamespace>
     <AssemblyName>RRDM4ATMsWin</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -26,6 +26,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -226,6 +227,12 @@
     </Compile>
     <Compile Include="Form14b_Input_Key.Designer.cs">
       <DependentUpon>Form14b_Input_Key.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form152_ALPHA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form152_ALPHA.Designer.cs">
+      <DependentUpon>Form152_ALPHA.cs</DependentUpon>
     </Compile>
     <Compile Include="Form154.cs">
       <SubType>Form</SubType>
@@ -1577,6 +1584,12 @@
     <Compile Include="Form80a1.Designer.cs">
       <DependentUpon>Form80a1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form80a3_Alpha.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form80a3_Alpha.Designer.cs">
+      <DependentUpon>Form80a3_Alpha.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form80a3_EWALLET.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -2397,6 +2410,9 @@
     <EmbeddedResource Include="Form14b_Input_Key.resx">
       <DependentUpon>Form14b_Input_Key.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form152_ALPHA.resx">
+      <DependentUpon>Form152_ALPHA.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form154.resx">
       <DependentUpon>Form154.cs</DependentUpon>
     </EmbeddedResource>
@@ -3062,6 +3078,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form80a1.resx">
       <DependentUpon>Form80a1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form80a3_Alpha.resx">
+      <DependentUpon>Form80a3_Alpha.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form80a3_EWALLET.resx">
       <DependentUpon>Form80a3_EWALLET.cs</DependentUpon>
@@ -5330,7 +5349,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Reactor_Enabled="1" Reactor_Commands="" Reactor_Project="" Reactor_Configuration="" Reactor_Output="&lt;AssemblyLocation&gt;\&lt;AssemblyFileName&gt;" Reactor_Deploy="0" />
+      <UserProperties Reactor_Deploy="0" Reactor_Output="&lt;AssemblyLocation&gt;\&lt;AssemblyFileName&gt;" Reactor_Configuration="" Reactor_Project="" Reactor_Commands="" Reactor_Enabled="1" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

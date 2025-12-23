@@ -91,7 +91,17 @@ namespace RRDM4ATMsWin
             }
             if (WMode == 4)
             {
-                Mc.ReadMatchingCategoriesAndFillTableInDetail(WOperator, W_Application);
+                string WSelection; 
+                if (WOperator == "ALPHA_CY")
+                {
+                    WSelection = "ATMs";
+                }
+                else
+                {
+                    WSelection = "ATMs Reconc";
+                }
+                
+                Mc.ReadMatchingCategoriesAndFillTableInDetail(WOperator, WSelection);
             }
 
             dataGridView1.DataSource = Mc.TableMatchingCateg.DefaultView;

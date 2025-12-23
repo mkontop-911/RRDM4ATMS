@@ -352,8 +352,8 @@ namespace RRDM4ATMsWin
 
                 textBox2.Text = "Fill Data";
 
-                textBox3.Text = "Fill Data";
-                textBox4.Text = "Fill Data";
+                textBoxBR_ID.Text = "Fill Data";
+                textBoxBR_NM.Text = "Fill Data";
                 textBox5.Text = "Fill Data";
 
                 textBox7.Text = "Fill Data"; // Postal Code 
@@ -560,8 +560,8 @@ namespace RRDM4ATMsWin
 
                     Ac.BankId = comboBox24.Text;
 
-                    Ac.Branch = textBox3.Text;
-                    Ac.BranchName = textBox4.Text;
+                    Ac.Branch = textBoxBR_ID.Text;
+                    Ac.BranchName = textBoxBR_NM.Text;
 
                     Ac.Street = textBox5.Text;
                     Ac.Town = textBoxMunicipalityOrVillage.Text;
@@ -1186,8 +1186,8 @@ namespace RRDM4ATMsWin
                     comboBox24.Text = WUserBankId;
                 }
 
-                textBox3.Text = Ac.Branch;
-                textBox4.Text = Ac.BranchName;
+                textBoxBR_ID.Text = Ac.Branch;
+                textBoxBR_NM.Text = Ac.BranchName;
 
                 textBox5.Text = Ac.Street;
                 textBoxMunicipalityOrVillage.Text = Ac.Town;
@@ -1287,17 +1287,21 @@ namespace RRDM4ATMsWin
             }
 
             Ap.ReadTableATMsCostSpecific(WAtmNo);
+            if (Ap.RecordFound == true)
+            {
+                dateTimePicker1.Value = Ap.ManifactureDt;
+                dateTimePicker2.Value = Ap.PurchaseDt;
+                dateTimePicker3.Value = Ap.DueServiceDt;
+                dateTimePicker4.Value = Ap.LastServiceDt;
 
-            dateTimePicker1.Value = Ap.ManifactureDt;
-            dateTimePicker2.Value = Ap.PurchaseDt;
-            dateTimePicker3.Value = Ap.DueServiceDt;
-            dateTimePicker4.Value = Ap.LastServiceDt;
-
-            textBox25.Text = Ap.PurchaseCost.ToString("#,##0.00");
-            comboBox1.Text = Ap.MaintenanceCd.ToString();
-            textBox24.Text = Ap.AnnualMaint.ToString("#,##0.00");
-            textBox23.Text = Ap.CitOnCall.ToString("#,##0.00");
-            textBox26.Text = CitAnnual.ToString("#,##0.00");
+                textBox25.Text = Ap.PurchaseCost.ToString("#,##0.00");
+                comboBox1.Text = Ap.MaintenanceCd.ToString();
+                textBox24.Text = Ap.AnnualMaint.ToString("#,##0.00");
+                textBox23.Text = Ap.CitOnCall.ToString("#,##0.00");
+                textBox26.Text = CitAnnual.ToString("#,##0.00");
+            }
+            
+            
 
             // JOURNAL DETAILS 
             Jd.ReadJTMIdentificationDetailsByAtmNo(WAtmNo);

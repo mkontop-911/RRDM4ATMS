@@ -463,50 +463,50 @@ namespace RRDM4ATMs
                     CatchDetails(ex);
                 }
         }
+        public DataTable IST_STATS_IN_PRIMARY = new DataTable();
+        public DataTable IST_TWIN_STATS_IN_PRIMARY = new DataTable();
+        public DataTable MASTER_STATS_IN_PRIMARY = new DataTable();
+        public DataTable TERMINAL_STATS_IN_PRIMARY = new DataTable();
 
-        public void ReadTransFrom_Bulk_COREBANKING(string InAtmNo)
+        public DataTable Discrepancies_STATS_IN_PRIMARY = new DataTable();
+
+        public void CREATE_EXCELS_FOR_PRIMARY_DATA_BASE(DateTime InCutOffDate, int IN_ReconcCycleNo)
         {
+            // ************
+            // IST 
+            // ************
             RecordFound = false;
             ErrorFound = false;
             ErrorOutput = "";
 
-            //SqlString = "SELECT TOP(1) [COD_GL_ACCT] As AtmGLCash, RIGHT('000' + COD_CC_BRN, 3) As AtmBranch "
-            //      + " FROM[RRDM_Reconciliation_ITMX].[dbo].[BULK_Flexcube] "
-            //      + " WHERE TERM_ID = @TERM_ID AND ACQ_INST_ID = '601520' "
-            //      ;
-            SqlString = "SELECT TOP(1) ('ATM_CASH_'+Right(TerminalId,4)) As AtmGLCash"
-                  + ", Merchant_Name As AtmName "
-                  + ", Right(TerminalId,4) As AtmBranch "
-                 + " FROM[RRDM_Reconciliation_ITMX].[dbo].[BULK_COREBANKING] "
-                  + " WHERE TERMINALID = @TERMINALID AND LEFT(Merchant_Name,7) = 'BK AUDI' "
-                  ;
+            IST_STATS_IN_PRIMARY = new DataTable();
+            IST_STATS_IN_PRIMARY.Clear();
+
+            SqlString = " SELECT MatchingCateg, Net_TransDate, Count(*) as NumberOfRecords "
+                    + " FROM [RRDM_Reconciliation_ITMX].[dbo].[Switch_IST_Txns] "
+                    + " WHERE Net_TransDate<@FromDt "
+                    + " GROUP by MatchingCateg, Net_TransDate "
+                    + " Order By MatchingCateg, Net_TransDate "
+                ;
 
             using (SqlConnection conn =
-                          new SqlConnection(ATMSconnectionString))
+               new SqlConnection(ATMSconnectionString))
                 try
                 {
                     conn.Open();
-                    using (SqlCommand cmd =
-                        new SqlCommand(SqlString, conn))
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    using (SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString, conn))
                     {
-                        cmd.Parameters.AddWithValue("@TERMINALID", InAtmNo);
-                        // Read table 
+                        
+                          sqlAdapt.SelectCommand.Parameters.AddWithValue("@FromDt", InCutOffDate.AddDays(-10));
+                       
 
-                        SqlDataReader rdr = cmd.ExecuteReader();
+                        //Create a datatable that will be filled with the data retrieved from the command
+                        sqlAdapt.SelectCommand.CommandTimeout = 250;   // seconds
+                        sqlAdapt.Fill(IST_STATS_IN_PRIMARY);
 
-                        while (rdr.Read())
-                        {
-                            RecordFound = true;
-
-                            AtmGLCash = (string)rdr["AtmGLCash"];
-                            AtmName = (string)rdr["AtmName"];
-                            AtmBranch = (string)rdr["AtmBranch"];
-                        }
-
-                        // Close Reader
-                        rdr.Close();
                     }
-
                     // Close conn
                     conn.Close();
                 }
@@ -515,6 +515,242 @@ namespace RRDM4ATMs
                     conn.Close();
                     CatchDetails(ex);
                 }
+
+
+            RRDM_EXCEL_AND_Directories XL = new RRDM_EXCEL_AND_Directories();
+          
+            
+               string  WDescription = "IST_STATS_IN_PRIMARY_Minus_10_days " + IN_ReconcCycleNo.ToString();
+                string ExcelPath = "C:\\RRDM\\Working\\" + WDescription + ".xls";
+          
+
+            string WorkingDir = "C:\\RRDM\\Working\\";
+
+            XL.ExportToExcel(IST_STATS_IN_PRIMARY, WorkingDir, ExcelPath);
+
+            // ************
+            // IST TWIN 
+            // ************
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            IST_TWIN_STATS_IN_PRIMARY = new DataTable();
+            IST_TWIN_STATS_IN_PRIMARY.Clear();
+
+            SqlString = " SELECT MatchingCateg, Net_TransDate, Count(*) as NumberOfRecords "
+                    + " FROM [RRDM_Reconciliation_ITMX].[dbo].[Switch_IST_Txns_TWIN] "
+                    + " WHERE Net_TransDate<@FromDt "
+                    + " GROUP by MatchingCateg, Net_TransDate "
+                    + " Order By MatchingCateg, Net_TransDate "
+                ;
+
+            using (SqlConnection conn =
+               new SqlConnection(ATMSconnectionString))
+                try
+                {
+                    conn.Open();
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    using (SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString, conn))
+                    {
+
+                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@FromDt", InCutOffDate.AddDays(-10));
+
+
+                        //Create a datatable that will be filled with the data retrieved from the command
+                        sqlAdapt.SelectCommand.CommandTimeout = 250;   // seconds
+                        sqlAdapt.Fill(IST_TWIN_STATS_IN_PRIMARY);
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    CatchDetails(ex);
+                }
+
+            WDescription = "IST_TWIN_STATS_IN_PRIMARY_Minus_10_days " + IN_ReconcCycleNo.ToString();
+            ExcelPath = "C:\\RRDM\\Working\\" + WDescription + ".xls";
+
+
+            WorkingDir = "C:\\RRDM\\Working\\";
+
+            XL.ExportToExcel(IST_TWIN_STATS_IN_PRIMARY, WorkingDir, ExcelPath);
+
+            // ************
+            // IST TERMINAL STATS
+            // ************
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            TERMINAL_STATS_IN_PRIMARY = new DataTable();
+            TERMINAL_STATS_IN_PRIMARY.Clear();
+
+            SqlString = " SELECT TerminalId, Count(*) as NumberOfRecords "
+                    + " FROM [RRDM_Reconciliation_ITMX].[dbo].[Switch_IST_Txns] "
+                    + " WHERE MatchingCateg = 'BDC201'" 
+                     + " AND Net_TransDate<@FromDt "
+                    + " GROUP by TerminalId "
+                    + " Order By TerminalId "
+
+                ;
+
+            using (SqlConnection conn =
+               new SqlConnection(ATMSconnectionString))
+                try
+                {
+                    conn.Open();
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    using (SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString, conn))
+                    {
+
+                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@FromDt", InCutOffDate.AddDays(-10));
+
+
+                        //Create a datatable that will be filled with the data retrieved from the command
+                        sqlAdapt.SelectCommand.CommandTimeout = 250;   // seconds
+                        sqlAdapt.Fill(TERMINAL_STATS_IN_PRIMARY);
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    CatchDetails(ex);
+                }
+
+
+            WDescription = "TERMINAL_STATS_IN_PRIMARY_Minus_10_days " + IN_ReconcCycleNo.ToString(); ;
+            ExcelPath = "C:\\RRDM\\Working\\" + WDescription + ".xls";
+
+
+            WorkingDir = "C:\\RRDM\\Working\\";
+
+            XL.ExportToExcel(TERMINAL_STATS_IN_PRIMARY, WorkingDir, ExcelPath);
+
+
+            // ************
+            // MASTER
+            // ************
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            MASTER_STATS_IN_PRIMARY = new DataTable();
+            MASTER_STATS_IN_PRIMARY.Clear();
+
+            SqlString = " SELECT MatchingCateg, Net_TransDate, Count(*) as NumberOfRecords "
+                    + " FROM [RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolATMs] "
+                     + " WHERE Net_TransDate<@FromDt "
+                    + " GROUP by MatchingCateg, Net_TransDate "
+                    + " Order By MatchingCateg, Net_TransDate "
+                ;
+
+            using (SqlConnection conn =
+               new SqlConnection(ATMSconnectionString))
+                try
+                {
+                    conn.Open();
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    using (SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString, conn))
+                    {
+
+                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@FromDt", InCutOffDate.AddDays(-10));
+
+
+                        //Create a datatable that will be filled with the data retrieved from the command
+                        sqlAdapt.SelectCommand.CommandTimeout = 250;   // seconds
+                        sqlAdapt.Fill(MASTER_STATS_IN_PRIMARY);
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    CatchDetails(ex);
+                }
+
+            // Create the Excel from TPF table
+
+            //RRDM_EXCEL_AND_Directories XL = new RRDM_EXCEL_AND_Directories();
+
+
+            WDescription = "MASTER_STATS_IN_PRIMARY_Minus_10_days " + IN_ReconcCycleNo.ToString(); ;
+            ExcelPath = "C:\\RRDM\\Working\\" + WDescription + ".xls";
+
+            WorkingDir = "C:\\RRDM\\Working\\";
+
+            XL.ExportToExcel(MASTER_STATS_IN_PRIMARY, WorkingDir, ExcelPath);
+
+            // ************
+            // Discrepancies
+            // ************
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            Discrepancies_STATS_IN_PRIMARY = new DataTable();
+            Discrepancies_STATS_IN_PRIMARY.Clear();
+
+            SqlString = " SELECT Net_TransDate, MatchingCateg, count(*) as Discrepancies "
+                    + " FROM [RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolATMs] "
+                     + " Where Matched = 0 and Net_TransDate > @FirstDate "
+                    + " GROUP by Net_TransDate, MatchingCateg "
+                    + " Order By Net_TransDate, MatchingCateg "
+                ;
+ 
+            using (SqlConnection conn =
+               new SqlConnection(ATMSconnectionString))
+                try
+                {
+                    conn.Open();
+
+                    //Create an Sql Adapter that holds the connection and the command
+                    using (SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString, conn))
+                    {
+
+                        sqlAdapt.SelectCommand.Parameters.AddWithValue("@FirstDate", InCutOffDate.AddDays(-10));
+
+
+                        //Create a datatable that will be filled with the data retrieved from the command
+                        sqlAdapt.SelectCommand.CommandTimeout = 250;   // seconds
+                        sqlAdapt.Fill(Discrepancies_STATS_IN_PRIMARY);
+
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    CatchDetails(ex);
+                }
+
+            // Create the Excel from TPF table
+
+            //RRDM_EXCEL_AND_Directories XL = new RRDM_EXCEL_AND_Directories();
+
+
+            WDescription = "Discrepancies_STATS_IN_PRIMARY_Last_10_Days " + IN_ReconcCycleNo.ToString();
+            ExcelPath = "C:\\RRDM\\Working\\" + WDescription + ".xls";
+
+            WorkingDir = "C:\\RRDM\\Working\\";
+
+            XL.ExportToExcel(Discrepancies_STATS_IN_PRIMARY, WorkingDir, ExcelPath);
+
+
+            MessageBox.Show("Production Of Excels Has Finished"); 
+
         }
         // Get both tables 
         public void ReadTransSpecificFromBothTables_By_SelectionCriteria(string InSelectionCriteria, string InTableName)
@@ -6807,7 +7043,12 @@ namespace RRDM4ATMs
                     CatchDetails(ex);
 
                 }
-            MessageBox.Show("Dublicates were deleted from IST_"+Count.ToString()); 
+
+            string text = "Dublicates were deleted from IST_" + Count.ToString();
+            string caption = "IST_Loading";
+            int timeout = 5000;
+            AutoClosingMessageBox.Show(text, caption, timeout);
+           // MessageBox.Show("Dublicates were deleted from IST_"+Count.ToString()); 
         }
 
 
@@ -8187,6 +8428,50 @@ namespace RRDM4ATMs
             return MaxDt;
         }
 
+        // Find Max dateTime for Mpa Matched Txns At Cycle 
+
+        public DateTime ReadAndFindMaxDateTimeForMpaAfterMathcing(string InTableId)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            SqlString =
+            " SELECT  ISNULL(MAX (TransDate), '1900-01-01') As MaxDt "
+            + " FROM " + InTableId
+            + " WHERE  "
+                        + "     (IsMatchingDone = 1 AND Matched = 1) "
+                        //+ " AND ([MatchingCateg] = @MatchingCateg) "
+                        //+ " AND (TerminalId = @TerminalId)"
+                        + " AND (ResponseCode = '0')";
+
+
+            using (SqlConnection conn =
+                       new SqlConnection(ATMSconnectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        //cmd.Parameters.AddWithValue("@MatchingCateg", InMatchingCateg);
+                        //cmd.Parameters.AddWithValue("@TerminalId", InTerminalId);
+
+                        // Read table 
+                        MaxDt = Convert.ToDateTime(cmd.ExecuteScalar());
+                    }
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex);
+                }
+            return MaxDt;
+        }
+
         // Find Max dateTime for Mpa with TerminalId (ATM)
 
         public DateTime ReadAndFindMaxDateTimeForMpaNoCategory(string InFile, string InTerminalId)
@@ -9457,6 +9742,7 @@ namespace RRDM4ATMs
                " SELECT  ISNULL(MAX([TransDate]),'1900-01-01') As MaxDt "
                + " FROM " + PhysicalName
                + " WHERE LoadedAtRMCycle=@LoadedAtRMCycle AND OriginFileName = @OriginFileName"
+               + " AND ([TransDate] <> '2050-12-31 00:00:00.000') "
                + " ";
 
                 using (SqlConnection conn =

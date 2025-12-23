@@ -517,6 +517,7 @@ namespace RRDM4ATMs
             ErrorOutput = "";
 
             // InMode = 1 comes from loading of files, The AtmNo and Fuid.  
+          // string SM_Table = "[ATM_MT_Journals_AUDI].[dbo].[PANICOS_SM_Table]";
 
             string SqlString = "SELECT * "
           + " FROM " + SM_Table
@@ -758,6 +759,57 @@ namespace RRDM4ATMs
                 }
 
         }
+
+        //
+        // FILL TABLE for CASSETTES WITHDRAWLS
+        //
+        //public void ReadT_SM_AND_FillTable_Handle_AddedCash()
+        //{
+        //    RecordFound = false;
+        //    ErrorFound = false;
+        //    ErrorOutput = "";
+
+        //    DataTable_SM = new DataTable();
+        //    DataTable_SM.Clear();
+
+
+        //    string SqlString = " SELECT AtmNo, fuid "
+        //        + " , cashaddtype1 "
+        //       + " , cashaddtype2 "
+        //       + " , cashaddtype3 "
+        //       + " , cashaddtype4 "
+        //       + "  FROM[ATM_MT_Journals_AUDI].[dbo].[PANICOS_SM_Table] "
+        //       + " WHERE AdditionalCash = 'Y'  AND RRDM_Processed = 0 "
+        //      // + " group by fuid "
+        //       ;
+
+        //    using (SqlConnection conn =
+        //      new SqlConnection(connectionString))
+        //        try
+        //        {
+        //            conn.Open();
+
+        //            //Create an Sql Adapter that holds the connection and the command
+        //            using (SqlDataAdapter sqlAdapt = new SqlDataAdapter(SqlString, conn))
+        //            {
+        //                // sqlAdapt.SelectCommand.Parameters.AddWithValue("@MatchingCateg", InMatchingCateg);
+        //                // sqlAdapt.SelectCommand.Parameters.AddWithValue("@TerminalId", InAtmNo);
+
+        //                //Create a datatable that will be filled with the data retrieved from the command
+
+        //                sqlAdapt.Fill(DataTable_SM);
+
+        //            }
+        //            // Close conn
+        //            conn.Close();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            conn.Close();
+        //            CatchDetails(ex, "", 0);
+        //        }
+
+        //}
 
         // Get read First record in Deposits if exist
         public void Read_SM_Deposits_Get_DetailsOfFirstRecord(string InAtmNo, int InReplCycle, string InCurrency)
@@ -1836,6 +1888,62 @@ namespace RRDM4ATMs
 
         }
 
+        // 
+        // UPDATE  Deposits table with ReplCycle etc 
+        //
+        public void Update_SM_Deposit_analysis_ALPHA(int InLoadedAtRMCycle)
+        {
+            ErrorFound = false;
+            ErrorOutput = "";
+            // The input SeqNo is from Panicos_SM
+            int Counter = 0;
+
+            string SQLCmd =
+        " UPDATE [ATM_MT_Journals_AUDI].[dbo].[SM_Deposit_analysis] "
+        + " SET "
+         + " ReplCycle = t2.RRDM_ReplCycleNo "
+         + " , Processed = 1 "
+     + " FROM [ATM_MT_Journals_AUDI].[dbo].[SM_Deposit_analysis] t1 "
+     + " INNER JOIN  [ATM_MT_Journals_AUDI].[dbo].[PANICOS_SM_Table] t2 "
+     + " ON "
+     + " t1.AtmNo= t2.AtmNo "
+      + "AND t1.OriginSeqNo= t2.SeqNo "
+      + " WHERE t1.LoadedAtRMCycle = @LoadedAtRMCycle AND t2.LoadedAtRMCycle = @LoadedAtRMCycle and t2.AdditionalCash = 'N' "
+      ; 
+     //+ " WHERE  t1.AtmNo = @AtmNo "
+     //+ " AND t1.OriginSeqNo = @SeqNo "; // 
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+                try
+                {
+
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SQLCmd, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@LoadedAtRMCycle", InLoadedAtRMCycle);
+                     //   cmd.Parameters.AddWithValue("@SeqNo", InSeqNo);
+                        cmd.CommandTimeout = 350;
+                        Counter = cmd.ExecuteNonQuery();
+                    }
+                    // Close conn
+
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    conn.Close();
+
+
+                    CatchDetails(ex);
+                    //return;
+                }
+
+            //  return outcome;
+
+        }
+
         // Methods 
         // READ 
         // 
@@ -2209,131 +2317,103 @@ namespace RRDM4ATMs
         }
 
         // 
-        // UPDATE SM
+        // UPDATE  ALPHA ADDITIONAL AMOUNT
         //
-        public void Update_SM_Record_From_Form153(int InSeqNo)
-        {
-            ErrorFound = false;
-            ErrorOutput = "";
+        //public void Update_SM_Record_WithAddedCash_ALPHA()
+        //{
+        //    //string SqlString = " SELECT AtmNo, fuid "
+        //    //   + " , cashaddtype1 "
+        //    //  + " , cashaddtype2 "
+        //    //  + " , cashaddtype3 "
+        //    //  + " , cashaddtype4 "
+        //    //  + "  FROM[ATM_MT_Journals_AUDI].[dbo].[PANICOS_SM_Table] "
+        //    //  + " WHERE AdditionalCash = 'Y'  AND RRDM_Processed = 0 "
 
-            int Counter = 0;
+        //    //          select fuid, sum(cashaddtype1) , sum(cashaddtype2)
+        //    // , sum(cashaddtype3), sum(cashaddtype4)
+        //    //FROM[ATM_MT_Journals_AUDI].[dbo].[PANICOS_SM_Table]
+        //    //group by fuid
+        //    ReadT_SM_AND_FillTable_Handle_AddedCash();
+            
+        //    // ADDED CASH WAS ADDED ON The initial one 
 
-            string SQLCmd =
- " UPDATE[ATM_MT_Journals_AUDI].[dbo].[PANICOS_SM_Table] "
-  + " SET "
-   + "     [SM_dateTime_Start]= @SM_dateTime_Start "
-    + "    ,[SM_dateTime_Finish]= @SM_dateTime_Finish "
-    + "    ,[SM_LAST_CLEARED]= @SM_LAST_CLEARED "
-    + "    , [ATM_cassette1]= @ATM_cassette1 " // YES
-    + "    ,[ATM_cassette2]= @ATM_cassette2 "
-    + "    ,[ATM_cassette3]= @ATM_cassette3 "
-     + "   ,[ATM_cassette4]= @ATM_cassette4 "
-    //+ "     ,[ATM_cassette5]= ISNULL([ATM_cassette5],0) "
+        //    int I = 0;
 
-    + "    ,[ATM_Rejected1]= @ATM_Rejected1 "  // YES
-   + "     ,[ATM_Rejected2]= @ATM_Rejected2 "
-   + "     ,[ATM_Rejected3]= @ATM_Rejected3 "
-    + "    ,[ATM_Rejected4]= @ATM_Rejected4 "
-    //+ "    ,[ATM_Rejected5]= ISNULL([ATM_Rejected5],0) "
+        //    while (I <= (DataTable_SM.Rows.Count - 1))
+        //    {
 
-    + "    ,[ATM_Remaining1]= @ATM_Remaining1 "   // YES
-     + "    ,[ATM_Remaining2]= @ATM_Remaining2 "
-      + "    ,[ATM_Remaining3]= @ATM_Remaining3 "
-       + "    ,[ATM_Remaining4]= @ATM_Remaining4 "
-     //+ "      ,[ATM_Remaining5]= ISNULL([ATM_Remaining5],0) "
+        //        //
+        //        // This table contains all Superviosr mode Actions by ATM
+        //        // Here we are creating the necessary records for the SM 
+        //        //
+        //        string WAtmNo = (string)DataTable_SM.Rows[I]["AtmNo"];
+        //        int Wfuid = (int)DataTable_SM.Rows[I]["fuid"];
+        //        int cashaddtype1 = (int)DataTable_SM.Rows[I]["cashaddtype1"];
+        //        int cashaddtype2 = (int)DataTable_SM.Rows[I]["cashaddtype2"];
+        //        int cashaddtype3 = (int)DataTable_SM.Rows[I]["cashaddtype3"];
+        //        int cashaddtype4 = (int)DataTable_SM.Rows[I]["cashaddtype4"];
 
-     + "       ,[ATM_Dispensed1]= @ATM_Dispensed1 "  // YES
-      + "       ,[ATM_Dispensed2]= @ATM_Dispensed2 "
-      + "        ,[ATM_Dispensed3]= @ATM_Dispensed3 "
-      + "         ,[ATM_Dispensed4]= @ATM_Dispensed4 "
-     //+ "          ,[ATM_Dispensed5]= ISNULL([ATM_Dispensed5],0) "
+        //        //
+        //        Update_SM_Record_WithAddedCash(Wfuid, cashaddtype1
+        //                  , cashaddtype2, cashaddtype3, cashaddtype4); 
 
+        //        // 
+        //        //
+        //        I = I + 1; 
+        //    }
 
-     + "   ,[ATM_total1]= @ATM_total1 " //  YES
-      + "   ,[ATM_total2]= @ATM_total2 "
-      + "    ,[ATM_total3]= @ATM_total3 "
-      + "     ,[ATM_total4]= @ATM_total4 "
-     //+ "     ,[ATM_total5]= ISNULL([ATM_total5],0) "
+        //}
 
-     + "   ,[cashaddtype1]= @cashaddtype1 " // YES 
-      + "   ,[cashaddtype2]= @cashaddtype2 "
-    + "      ,[cashaddtype3]= @cashaddtype3 "
-      + "     ,[cashaddtype4]= @cashaddtype4 "
-       + "     ,[RRDM_Processed]= 0 "
-      //+ "      ,[cashaddtype5]= ISNULL([cashaddtype5],0) "
+        // 
+        // UPDATE SM with added cash 
+        //
+ //       public void Update_SM_Record_WithAddedCash(int Infuid, int Incashaddtype1
+ //                         , int Incashaddtype2, int Incashaddtype3, int Incashaddtype4)
+          
+ //       {
+ //           ErrorFound = false;
+ //           ErrorOutput = "";
 
-      + " WHERE SeqNo = @SeqNo "
-      + "  ";
+ //           int Counter = 0;
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-                try
-                {
-                    conn.Open();
-                    using (SqlCommand cmd =
-                        new SqlCommand(SQLCmd, conn))
-                    {
-                        //cmd.Parameters.AddWithValue("@AtmNo", AtmNo);
-                        //cmd.Parameters.AddWithValue("@FlagValid", FlagValid);
+ //           string SQLCmd =
+ //" UPDATE[ATM_MT_Journals_AUDI].[dbo].[PANICOS_SM_Table] "
+ // + " SET "
+ //    + "   [cashaddtype1]= @cashaddtype1 " // YES 
+ //     + "   ,[cashaddtype2]= @cashaddtype2 "
+ //   + "      ,[cashaddtype3]= @cashaddtype3 "
+ //     + "     ,[cashaddtype4]= @cashaddtype4 "
+ //     + " WHERE fuid = @fuid and AdditionalCash = 'N' "
+ //     + "  ";
 
-                        //cmd.Parameters.AddWithValue("@AdditionalCash", AdditionalCash);
-                        //cmd.Parameters.AddWithValue("@Bank", BANK);
-                        //cmd.Parameters.AddWithValue("@fuid", fuid);
+ //           using (SqlConnection conn = new SqlConnection(connectionString))
+ //               try
+ //               {
+ //                   conn.Open();
+ //                   using (SqlCommand cmd =
+ //                       new SqlCommand(SQLCmd, conn))
+ //                   {
+                        
+ //                       cmd.Parameters.AddWithValue("@fuid", Infuid);
+                      
+ //                       cmd.Parameters.AddWithValue("@cashaddtype1", Incashaddtype1);
+ //                       cmd.Parameters.AddWithValue("@cashaddtype2", Incashaddtype2);
+ //                       cmd.Parameters.AddWithValue("@cashaddtype3", Incashaddtype3);
+ //                       cmd.Parameters.AddWithValue("@cashaddtype4", Incashaddtype4);
 
-                        cmd.Parameters.AddWithValue("@SeqNo", InSeqNo);
+ //                       Counter = cmd.ExecuteNonQuery();
+ //                   }
+ //                   // Close conn
+ //                   conn.Close();
+ //               }
+ //               catch (Exception ex)
+ //               {
+ //                   conn.Close();
 
-                        cmd.Parameters.AddWithValue("@SM_dateTime_Start", SM_dateTime_Start);
-                        cmd.Parameters.AddWithValue("@SM_dateTime_Finish", SM_dateTime_Finish);
+ //                   CatchDetails(ex, "", 0);
+ //               }
 
-                        cmd.Parameters.AddWithValue("@SM_LAST_CLEARED", SM_LAST_CLEARED);
-                        //cmd.Parameters.AddWithValue("@LoadedAtRMCycle", LoadedAtRMCycle);
-
-                        //cmd.Parameters.AddWithValue("@txtline", txtline);
-                        //cmd.Parameters.AddWithValue("@previous_Repl_trace", previous_Repl_trace);
-                        //cmd.Parameters.AddWithValue("@after_Repl_trace", after_Repl_trace);
-
-                        cmd.Parameters.AddWithValue("@ATM_total1", ATM_total1);
-                        cmd.Parameters.AddWithValue("@ATM_total2", ATM_total2);
-                        cmd.Parameters.AddWithValue("@ATM_total3", ATM_total3);
-                        cmd.Parameters.AddWithValue("@ATM_total4", ATM_total4);
-
-                        cmd.Parameters.AddWithValue("@ATM_Dispensed1", ATM_Dispensed1);
-                        cmd.Parameters.AddWithValue("@ATM_Dispensed2", ATM_Dispensed2);
-                        cmd.Parameters.AddWithValue("@ATM_Dispensed3", ATM_Dispensed3);
-                        cmd.Parameters.AddWithValue("@ATM_Dispensed4", ATM_Dispensed4);
-
-                        cmd.Parameters.AddWithValue("@ATM_Remaining1", ATM_Remaining1);
-                        cmd.Parameters.AddWithValue("@ATM_Remaining2", ATM_Remaining2);
-                        cmd.Parameters.AddWithValue("@ATM_Remaining3", ATM_Remaining3);
-                        cmd.Parameters.AddWithValue("@ATM_Remaining4", ATM_Remaining4);
-
-                        cmd.Parameters.AddWithValue("@ATM_Rejected1", ATM_Rejected1);
-                        cmd.Parameters.AddWithValue("@ATM_Rejected2", ATM_Rejected2);
-                        cmd.Parameters.AddWithValue("@ATM_Rejected3", ATM_Rejected3);
-                        cmd.Parameters.AddWithValue("@ATM_Rejected4", ATM_Rejected4);
-
-                        cmd.Parameters.AddWithValue("@ATM_cassette1", ATM_cassette1);
-                        cmd.Parameters.AddWithValue("@ATM_cassette2", ATM_cassette2);
-                        cmd.Parameters.AddWithValue("@ATM_cassette3", ATM_cassette3);
-                        cmd.Parameters.AddWithValue("@ATM_cassette4", ATM_cassette4);
-
-                        cmd.Parameters.AddWithValue("@cashaddtype1", cashaddtype1);
-                        cmd.Parameters.AddWithValue("@cashaddtype2", cashaddtype2);
-                        cmd.Parameters.AddWithValue("@cashaddtype3", cashaddtype3);
-                        cmd.Parameters.AddWithValue("@cashaddtype4", cashaddtype4);
-
-                        Counter = cmd.ExecuteNonQuery();
-                    }
-                    // Close conn
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    conn.Close();
-
-                    CatchDetails(ex, "", 0);
-                }
-
-        }
+ //       }
 
         // Insert Record when Journal is missing
         public void InsertToPANICOS_SM_TableForNewCycle()

@@ -649,7 +649,9 @@ namespace RRDM4ATMs
                             //    RowSelected["MIN Date"] = MinDt.ToString();
                             //}
 
+                          
                             RowSelected["MIN Date"] = "****";
+                            
 
                             RRDMMatchingSourceFiles Msf = new RRDMMatchingSourceFiles();
                             Msf.ReadReconcSourceFilesByFileId(SourceFileID);
@@ -1597,6 +1599,9 @@ namespace RRDM4ATMs
                     CatchDetails(ex);
                 }
         }
+
+        /// <param name="InSeqNo"></param>
+        
 
         /// <summary>
         /// UPDATE MAX_DATE

@@ -247,7 +247,7 @@ namespace RRDM4ATMsWin
                 WSelectionCriteria = " WHERE MatchingCateg ='" + WCategoryId
                                         + "' AND MatchingAtRMCycle=" + WRMCycleNo;
 
-                WSortCriteria = " ORDER BY SeqNo";
+                WSortCriteria = " ORDER BY TransDate ";
 
                 FromReversals = false;
 

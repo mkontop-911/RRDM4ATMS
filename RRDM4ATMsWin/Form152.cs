@@ -475,7 +475,8 @@ namespace RRDM4ATMsWin
             else
             {
                 // Replenishment and reconciliation 
-                if (WProcessMode == -1 || WProcessMode == -5 || WProcessMode == -6)
+                //if (WProcessMode == -1 || WProcessMode == -5 || WProcessMode == -6)
+                if (WProcessMode == -1)
                 {
                     Color Red = Color.Red;
                     textBoxReplStatus.ForeColor = Red;
@@ -796,16 +797,16 @@ namespace RRDM4ATMsWin
             //    return;
             //}
             // Find ATM Branch to be equal to the departmental one
-            if (WSignedId == "ahm.osman")
-            {
-                // Continue
-            }
-            else
-            {
-                MessageBox.Show("Only Osman can sign in ");
+            //if (WSignedId == "ahm.osman")
+            //{
+            //    // Continue
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Only Osman can sign in ");
 
-                return;
-            }
+            //    return;
+            //}
 
             RRDMAccountsClass Acc = new RRDMAccountsClass();
             Acc.ReadAccountsBasedOn_ShortAccID_EntityNo(WOperator, "30", WAtmNo);
@@ -1852,16 +1853,30 @@ namespace RRDM4ATMsWin
                 Usi.ProcessNo = 54; // View only for replenishment already done  
                 Usi.UpdateSignedInTableStepLevelAndOther(WSignRecordNo);
 
-                if (AudiType == true)
+                //Ta.Stats1.NoOfCheques = 1
+                RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
+                Ta.ReadSessionsStatusTraces(WAtmNo, WSesNo);
+
+                if (Ta.Stats1.NoOfCheques == 1)
                 {
-                    Form51_FAB_Type NForm51_AUDI_TYPE;
-                    NForm51_AUDI_TYPE = new Form51_FAB_Type(WSignedId, WSignRecordNo, WOperator, WAtmNo, WSesNo);
-                    NForm51_AUDI_TYPE.ShowDialog();
+
+                    // CALL THE SAME If Recycle or not 
+                    bool IsFromExcel = false;
+                    Form51_Repl_For_IST NForm51_Repl_For_IST;
+                    NForm51_Repl_For_IST = new Form51_Repl_For_IST(WSignedId, WSignRecordNo, WOperator, WAtmNo, WSesNo, IsFromExcel);
+                    NForm51_Repl_For_IST.FormClosed += NForm51_FormClosed;
+                    NForm51_Repl_For_IST.ShowDialog();
                 }
                 else
                 {
-                    NForm51 = new Form51(WSignedId, WSignRecordNo, WOperator, WAtmNo, WSesNo);
-                    NForm51.ShowDialog();
+
+                        // Current Bank De Caire Type 
+                        NForm51 = new Form51(WSignedId, WSignRecordNo, WOperator, WAtmNo, WSesNo);
+                        NForm51.FormClosed += NForm51_FormClosed;
+                        NForm51.ShowDialog();
+
+                    
+
                 }
 
             }

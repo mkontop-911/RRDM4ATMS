@@ -160,8 +160,6 @@ namespace RRDM4ATMsWin
                 TXNS_POSTING.Hide(); 
             }
 
-         
-
             if (WSignedId == "1032-Level2"
                 || WSignedId == "1033-Level3"
                 || WSignedId == "1034-Level4"
@@ -412,27 +410,13 @@ namespace RRDM4ATMsWin
                                          );
         }
 
-        ////
-        //// source code 
-        //// Code Snippet
-        //private const int CP_NOCLOSE_BUTTON = 0x200;
-        //protected override CreateParams CreateParams
-        //{
-        //    get
-        //    {
-        //        CreateParams myCp = base.CreateParams;
-        //        myCp.ClassStyle = myCp.ClassStyle | CP_NOCLOSE_BUTTON;
-        //        return myCp;
-        //    }
-        //}
+      
         DateTime WCut_Off_Date;
         string WJobCategory = "ATMs";
         int WReconcCycleNo;
         private void FormMainScreen_Load(object sender, EventArgs e)
         {
-            RRDMReconcJobCycles Rjc = new RRDMReconcJobCycles();
-
-         
+            RRDMReconcJobCycles Rjc = new RRDMReconcJobCycles();  
 
             WReconcCycleNo = Rjc.ReadLastReconcJobCycleATMsAndNostroWithMinusOne(WOperator, WJobCategory);
             WCut_Off_Date = Rjc.Cut_Off_Date;
@@ -496,25 +480,7 @@ namespace RRDM4ATMsWin
             }
             else checkBoxTransToBePosted.Hide();
 
-            //**************************************************************************
-            // END OF FUNCTION
-            //**************************************************************************
-            //
-            // Unmatched Trans to be posted Grid
-            //**************************************************************************
-            //SelectionCriteria = "Operator ='" + WOperator + "' AND AuthUser ='" + WSignedId + "' AND HostMatched = 0 AND ActionCd2 = 1";
-
-            //WithDate = false;
-            //Tc.ReadAllTransToBePostedToSeeIfAny(WSignedId, SelectionCriteria, NullPastDate, WithDate);
-
-            //if (Tc.RecordFound == true)
-            //{
-            //    //labelTransUnMatched.Text = Tc.TotalSelected.ToString();
-
-            //    checkBoxTransUnMatched.Show();
-            //    checkBoxTransUnMatched.Checked = true;
-            //}
-            //else checkBoxTransUnMatched.Hide();
+            
 
             //**************************************************************************
             //CHECK FOR DISPUTES FOR THE SIGNED PERSON
@@ -789,10 +755,20 @@ namespace RRDM4ATMsWin
             if (Ba.NoOfGroupsRepl == 0) WAction = 1; // Replenishment for individual of more than one ATM,
             //Us.ReadUsersRecord(WSignedId); // READ USER DATA
             //if (Ba.NoOfGroupsRepl > 0) WAction = 5; // Replenishment for Group of ATM 
-
-            NForm152 = new Form152(WSignedId, WSignRecordNo, WOperator, WAction);
-            NForm152.FormClosed += NForm152_FormClosed;
-            NForm152.ShowDialog();
+            if (WOperator == "ALPHA_CY")
+            {
+                Form152_ALPHA NForm152_ALPHA;
+                NForm152_ALPHA = new Form152_ALPHA(WSignedId, WSignRecordNo, WOperator, WAction);
+                NForm152_ALPHA.FormClosed += NForm152_FormClosed;
+                NForm152_ALPHA.ShowDialog();
+            }
+            else
+            {
+                NForm152 = new Form152(WSignedId, WSignRecordNo, WOperator, WAction);
+                NForm152.FormClosed += NForm152_FormClosed;
+                NForm152.ShowDialog();
+            }
+           
         }
 
         void NForm152_FormClosed(object sender, FormClosedEventArgs e)

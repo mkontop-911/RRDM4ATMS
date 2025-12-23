@@ -3193,7 +3193,7 @@ namespace RRDM4ATMs
                 {
                     if (Environment.UserInteractive)
                     {
-                        if (NumberOfUnmatched > 2000)
+                        if (NumberOfUnmatched > 6000)
                         {
                             MessageBox.Show("There are high number of discrepancies!.." + Environment.NewLine
                                 + "Reconciliation Matching Category: " + WReconcCategoryId + Environment.NewLine
@@ -3579,7 +3579,7 @@ namespace RRDM4ATMs
                 {
                     if (ShowMessage == true & Environment.UserInteractive)
                     {
-                        if (NumberOfUnmatched > 2000)
+                        if (NumberOfUnmatched > 6000)
                         {
                             MessageBox.Show("There are high number of discrepancies!" + Environment.NewLine
                                 + "Reconciliation Matching Category: " + WReconcCategoryId + Environment.NewLine
@@ -3946,7 +3946,7 @@ namespace RRDM4ATMs
                 {
                     if (ShowMessage == true & Environment.UserInteractive)
                     {
-                        if (NumberOfUnmatched > 2000)
+                        if (NumberOfUnmatched > 6000)
                         {
                             MessageBox.Show("There are high number of discrepancies!" + Environment.NewLine
                                 + "Reconciliation Matching Category:.. " + WReconcCategoryId + Environment.NewLine
@@ -4328,7 +4328,7 @@ namespace RRDM4ATMs
                 {
                     if (ShowMessage == true & Environment.UserInteractive)
                     {
-                        if (NumberOfUnmatched > 2000)
+                        if (NumberOfUnmatched > 6000)
                         {
                             MessageBox.Show("There are high number of discrepancies!" + Environment.NewLine
                                 + "Reconciliation Matching Category:.. " + WReconcCategoryId + Environment.NewLine
@@ -4609,7 +4609,7 @@ namespace RRDM4ATMs
                     {
                         if (ShowMessage == true & Environment.UserInteractive)
                         {
-                            if (NumberOfUnmatched > 2000)
+                            if (NumberOfUnmatched > 6000)
                             {
                                 MessageBox.Show("There are high number of discrepancies!" + Environment.NewLine
                                     + "Reconciliation Matching Category: " + WReconcCategoryId + Environment.NewLine

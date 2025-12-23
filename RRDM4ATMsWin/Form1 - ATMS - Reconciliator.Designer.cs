@@ -109,6 +109,7 @@
             this.button38 = new System.Windows.Forms.Button();
             this.button48 = new System.Windows.Forms.Button();
             this.Replenishment = new System.Windows.Forms.Panel();
+            this.buttonReplByCIT = new System.Windows.Forms.Button();
             this.button29 = new System.Windows.Forms.Button();
             this.button28 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -142,7 +143,6 @@
             this.textBoxVersionDate = new System.Windows.Forms.TextBox();
             this.panel5 = new System.Windows.Forms.Panel();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.buttonReplByCIT = new System.Windows.Forms.Button();
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -735,7 +735,7 @@
             this.labelReplenishement.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.labelReplenishement.Location = new System.Drawing.Point(29, 1);
             this.labelReplenishement.Name = "labelReplenishement";
-            this.labelReplenishement.Size = new System.Drawing.Size(136, 16);
+            this.labelReplenishement.Size = new System.Drawing.Size(135, 16);
             this.labelReplenishement.TabIndex = 347;
             this.labelReplenishement.Text = "REPLENISHMENT";
             // 
@@ -746,7 +746,7 @@
             this.labelMonitoring.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.labelMonitoring.Location = new System.Drawing.Point(0, 1);
             this.labelMonitoring.Name = "labelMonitoring";
-            this.labelMonitoring.Size = new System.Drawing.Size(104, 16);
+            this.labelMonitoring.Size = new System.Drawing.Size(103, 16);
             this.labelMonitoring.TabIndex = 348;
             this.labelMonitoring.Text = "MONITORING";
             // 
@@ -757,7 +757,7 @@
             this.labelDisputes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.labelDisputes.Location = new System.Drawing.Point(8, 1);
             this.labelDisputes.Name = "labelDisputes";
-            this.labelDisputes.Size = new System.Drawing.Size(84, 16);
+            this.labelDisputes.Size = new System.Drawing.Size(83, 16);
             this.labelDisputes.TabIndex = 350;
             this.labelDisputes.Text = "DISPUTES";
             // 
@@ -785,7 +785,7 @@
             this.labelPosting.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.labelPosting.Location = new System.Drawing.Point(71, 4);
             this.labelPosting.Name = "labelPosting";
-            this.labelPosting.Size = new System.Drawing.Size(75, 16);
+            this.labelPosting.Size = new System.Drawing.Size(74, 16);
             this.labelPosting.TabIndex = 358;
             this.labelPosting.Text = "POSTING";
             // 
@@ -966,7 +966,7 @@
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.label1.Location = new System.Drawing.Point(8, 1);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 16);
+            this.label1.Size = new System.Drawing.Size(60, 16);
             this.label1.TabIndex = 350;
             this.label1.Text = "OTHER";
             // 
@@ -1215,7 +1215,7 @@
             this.labelReconciliation.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.labelReconciliation.Location = new System.Drawing.Point(8, 1);
             this.labelReconciliation.Name = "labelReconciliation";
-            this.labelReconciliation.Size = new System.Drawing.Size(133, 16);
+            this.labelReconciliation.Size = new System.Drawing.Size(132, 16);
             this.labelReconciliation.TabIndex = 425;
             this.labelReconciliation.Text = "RECONCILIATION";
             // 
@@ -1265,6 +1265,21 @@
             this.Replenishment.Name = "Replenishment";
             this.Replenishment.Size = new System.Drawing.Size(200, 235);
             this.Replenishment.TabIndex = 464;
+            // 
+            // buttonReplByCIT
+            // 
+            this.buttonReplByCIT.BackColor = System.Drawing.Color.Olive;
+            this.buttonReplByCIT.FlatAppearance.BorderSize = 0;
+            this.buttonReplByCIT.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonReplByCIT.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonReplByCIT.ForeColor = System.Drawing.Color.White;
+            this.buttonReplByCIT.Location = new System.Drawing.Point(101, 202);
+            this.buttonReplByCIT.Name = "buttonReplByCIT";
+            this.buttonReplByCIT.Size = new System.Drawing.Size(90, 34);
+            this.buttonReplByCIT.TabIndex = 397;
+            this.buttonReplByCIT.Text = "CIT Excel Repl. ";
+            this.buttonReplByCIT.UseVisualStyleBackColor = false;
+            this.buttonReplByCIT.Click += new System.EventHandler(this.buttonReplByCIT_Click);
             // 
             // button29
             // 
@@ -1346,7 +1361,7 @@
             this.labelHost.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.labelHost.Location = new System.Drawing.Point(16, 437);
             this.labelHost.Name = "labelHost";
-            this.labelHost.Size = new System.Drawing.Size(99, 16);
+            this.labelHost.Size = new System.Drawing.Size(98, 16);
             this.labelHost.TabIndex = 460;
             this.labelHost.Text = "WORKFLOW ";
             this.labelHost.Visible = false;
@@ -1724,21 +1739,6 @@
             // timer2
             // 
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
-            // 
-            // buttonReplByCIT
-            // 
-            this.buttonReplByCIT.BackColor = System.Drawing.Color.Olive;
-            this.buttonReplByCIT.FlatAppearance.BorderSize = 0;
-            this.buttonReplByCIT.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonReplByCIT.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.buttonReplByCIT.ForeColor = System.Drawing.Color.White;
-            this.buttonReplByCIT.Location = new System.Drawing.Point(101, 202);
-            this.buttonReplByCIT.Name = "buttonReplByCIT";
-            this.buttonReplByCIT.Size = new System.Drawing.Size(90, 34);
-            this.buttonReplByCIT.TabIndex = 397;
-            this.buttonReplByCIT.Text = "CIT Excel Repl. ";
-            this.buttonReplByCIT.UseVisualStyleBackColor = false;
-            this.buttonReplByCIT.Click += new System.EventHandler(this.buttonReplByCIT_Click);
             // 
             // Form1ATMs_Reconciliator
             // 

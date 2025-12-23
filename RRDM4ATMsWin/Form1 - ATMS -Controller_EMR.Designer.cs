@@ -82,6 +82,7 @@
             this.button85 = new System.Windows.Forms.Button();
             this.button42 = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.buttonDisputePreInv = new System.Windows.Forms.Button();
             this.buttonAudiReports = new System.Windows.Forms.Button();
             this.buttonATMsAndCycles = new System.Windows.Forms.Button();
             this.buttonCitShortages = new System.Windows.Forms.Button();
@@ -113,7 +114,7 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.tableAdapterManager1 = new RRDM4ATMsWin.ATMSDataSet116TableAdapters.TableAdapterManager();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.buttonDisputePreInv = new System.Windows.Forms.Button();
+            this.buttonCycles_Vs_Replen = new System.Windows.Forms.Button();
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -581,6 +582,7 @@
             this.Authorisation.Name = "Authorisation";
             this.Authorisation.Size = new System.Drawing.Size(208, 165);
             this.Authorisation.TabIndex = 491;
+            this.Authorisation.Visible = false;
             // 
             // linkLabelThisCycleOnly
             // 
@@ -751,6 +753,7 @@
             this.buttonExcelLoading.TabIndex = 491;
             this.buttonExcelLoading.Text = "CIT ATMs Feeding \r\nInput Process";
             this.buttonExcelLoading.UseVisualStyleBackColor = false;
+            this.buttonExcelLoading.Visible = false;
             this.buttonExcelLoading.Click += new System.EventHandler(this.buttonExcelLoading_Click);
             // 
             // buttonCIT_Mgmt
@@ -813,6 +816,7 @@
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.buttonCycles_Vs_Replen);
             this.panel4.Controls.Add(this.buttonDisputePreInv);
             this.panel4.Controls.Add(this.buttonAudiReports);
             this.panel4.Controls.Add(this.buttonATMsAndCycles);
@@ -823,6 +827,21 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(122, 418);
             this.panel4.TabIndex = 487;
+            // 
+            // buttonDisputePreInv
+            // 
+            this.buttonDisputePreInv.BackColor = System.Drawing.Color.BlueViolet;
+            this.buttonDisputePreInv.FlatAppearance.BorderSize = 0;
+            this.buttonDisputePreInv.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonDisputePreInv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonDisputePreInv.ForeColor = System.Drawing.Color.White;
+            this.buttonDisputePreInv.Location = new System.Drawing.Point(3, 290);
+            this.buttonDisputePreInv.Name = "buttonDisputePreInv";
+            this.buttonDisputePreInv.Size = new System.Drawing.Size(111, 60);
+            this.buttonDisputePreInv.TabIndex = 494;
+            this.buttonDisputePreInv.Text = "Dispute Pre - Investigation ";
+            this.buttonDisputePreInv.UseVisualStyleBackColor = false;
+            this.buttonDisputePreInv.Click += new System.EventHandler(this.buttonDisputePreInv_Click);
             // 
             // buttonAudiReports
             // 
@@ -846,9 +865,9 @@
             this.buttonATMsAndCycles.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonATMsAndCycles.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)), true);
             this.buttonATMsAndCycles.ForeColor = System.Drawing.Color.White;
-            this.buttonATMsAndCycles.Location = new System.Drawing.Point(4, 132);
+            this.buttonATMsAndCycles.Location = new System.Drawing.Point(3, 247);
             this.buttonATMsAndCycles.Name = "buttonATMsAndCycles";
-            this.buttonATMsAndCycles.Size = new System.Drawing.Size(111, 60);
+            this.buttonATMsAndCycles.Size = new System.Drawing.Size(111, 33);
             this.buttonATMsAndCycles.TabIndex = 493;
             this.buttonATMsAndCycles.Text = "ATMs and Cycles";
             this.buttonATMsAndCycles.UseVisualStyleBackColor = false;
@@ -877,7 +896,7 @@
             this.button24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.button24.ForeColor = System.Drawing.Color.White;
-            this.button24.Location = new System.Drawing.Point(5, 198);
+            this.button24.Location = new System.Drawing.Point(3, 129);
             this.button24.Name = "button24";
             this.button24.Size = new System.Drawing.Size(111, 60);
             this.button24.TabIndex = 490;
@@ -1066,6 +1085,7 @@
             this.buttonCreateSM.TabIndex = 479;
             this.buttonCreateSM.Text = "Create SM for the _Repl Baddies_";
             this.buttonCreateSM.UseVisualStyleBackColor = false;
+            this.buttonCreateSM.Visible = false;
             this.buttonCreateSM.Click += new System.EventHandler(this.buttonCreateSM_Click);
             // 
             // button86
@@ -1081,6 +1101,7 @@
             this.button86.TabIndex = 485;
             this.button86.Text = "Work Allocation For Reconciliation";
             this.button86.UseVisualStyleBackColor = false;
+            this.button86.Visible = false;
             this.button86.Click += new System.EventHandler(this.button86_Click);
             // 
             // Entities
@@ -1245,20 +1266,20 @@
             this.tableAdapterManager1.Connection = null;
             this.tableAdapterManager1.UpdateOrder = RRDM4ATMsWin.ATMSDataSet116TableAdapters.TableAdapterManager.UpdateOrderOption.InsertUpdateDelete;
             // 
-            // buttonDisputePreInv
+            // buttonCycles_Vs_Replen
             // 
-            this.buttonDisputePreInv.BackColor = System.Drawing.Color.BlueViolet;
-            this.buttonDisputePreInv.FlatAppearance.BorderSize = 0;
-            this.buttonDisputePreInv.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonDisputePreInv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.buttonDisputePreInv.ForeColor = System.Drawing.Color.White;
-            this.buttonDisputePreInv.Location = new System.Drawing.Point(5, 264);
-            this.buttonDisputePreInv.Name = "buttonDisputePreInv";
-            this.buttonDisputePreInv.Size = new System.Drawing.Size(111, 60);
-            this.buttonDisputePreInv.TabIndex = 494;
-            this.buttonDisputePreInv.Text = "Dispute Pre - Investigation ";
-            this.buttonDisputePreInv.UseVisualStyleBackColor = false;
-            this.buttonDisputePreInv.Click += new System.EventHandler(this.buttonDisputePreInv_Click);
+            this.buttonCycles_Vs_Replen.BackColor = System.Drawing.Color.YellowGreen;
+            this.buttonCycles_Vs_Replen.FlatAppearance.BorderSize = 0;
+            this.buttonCycles_Vs_Replen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCycles_Vs_Replen.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)), true);
+            this.buttonCycles_Vs_Replen.ForeColor = System.Drawing.Color.White;
+            this.buttonCycles_Vs_Replen.Location = new System.Drawing.Point(6, 193);
+            this.buttonCycles_Vs_Replen.Name = "buttonCycles_Vs_Replen";
+            this.buttonCycles_Vs_Replen.Size = new System.Drawing.Size(111, 48);
+            this.buttonCycles_Vs_Replen.TabIndex = 495;
+            this.buttonCycles_Vs_Replen.Text = "Cycles Vs Replen";
+            this.buttonCycles_Vs_Replen.UseVisualStyleBackColor = false;
+            this.buttonCycles_Vs_Replen.Click += new System.EventHandler(this.buttonCycles_Vs_Replen_Click);
             // 
             // Form_ATMS_Controller_EMR
             // 
@@ -1396,6 +1417,7 @@
         private System.Windows.Forms.Button button75;
         private System.Windows.Forms.Button buttonBT_ROM;
         private System.Windows.Forms.Button buttonDisputePreInv;
+        private System.Windows.Forms.Button buttonCycles_Vs_Replen;
     }
 }
 

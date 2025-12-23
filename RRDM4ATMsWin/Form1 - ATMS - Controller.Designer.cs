@@ -69,6 +69,8 @@
             this.textBoxVersionDate = new System.Windows.Forms.TextBox();
             this.buttonSWVersion = new System.Windows.Forms.Button();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.button4 = new System.Windows.Forms.Button();
+            this.buttonCopyTxtLines = new System.Windows.Forms.Button();
             this.buttonMergeFiles = new System.Windows.Forms.Button();
             this.buttonDivideFiles = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -654,7 +656,7 @@
             this.panel2.ForeColor = System.Drawing.Color.White;
             this.panel2.Location = new System.Drawing.Point(0, 92);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1046, 610);
+            this.panel2.Size = new System.Drawing.Size(1046, 609);
             this.panel2.TabIndex = 49;
             // 
             // textBoxVersionDate
@@ -687,6 +689,8 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.LightGray;
+            this.panel7.Controls.Add(this.button4);
+            this.panel7.Controls.Add(this.buttonCopyTxtLines);
             this.panel7.Controls.Add(this.buttonMergeFiles);
             this.panel7.Controls.Add(this.buttonDivideFiles);
             this.panel7.Controls.Add(this.button2);
@@ -695,8 +699,38 @@
             this.panel7.Controls.Add(this.button1);
             this.panel7.Location = new System.Drawing.Point(66, 571);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(898, 49);
+            this.panel7.Size = new System.Drawing.Size(918, 49);
             this.panel7.TabIndex = 490;
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.button4.ForeColor = System.Drawing.Color.Black;
+            this.button4.Location = new System.Drawing.Point(3, 1);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(109, 46);
+            this.button4.TabIndex = 75;
+            this.button4.Text = "STATS FOR PRIMARY";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click_2);
+            // 
+            // buttonCopyTxtLines
+            // 
+            this.buttonCopyTxtLines.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.buttonCopyTxtLines.FlatAppearance.BorderSize = 0;
+            this.buttonCopyTxtLines.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCopyTxtLines.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.buttonCopyTxtLines.ForeColor = System.Drawing.Color.Black;
+            this.buttonCopyTxtLines.Location = new System.Drawing.Point(385, 1);
+            this.buttonCopyTxtLines.Name = "buttonCopyTxtLines";
+            this.buttonCopyTxtLines.Size = new System.Drawing.Size(93, 46);
+            this.buttonCopyTxtLines.TabIndex = 74;
+            this.buttonCopyTxtLines.Text = "Copy Text File ";
+            this.buttonCopyTxtLines.UseVisualStyleBackColor = false;
+            this.buttonCopyTxtLines.Click += new System.EventHandler(this.buttonCopyTxtLines_Click);
             // 
             // buttonMergeFiles
             // 
@@ -705,7 +739,7 @@
             this.buttonMergeFiles.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonMergeFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.buttonMergeFiles.ForeColor = System.Drawing.Color.Black;
-            this.buttonMergeFiles.Location = new System.Drawing.Point(642, 0);
+            this.buttonMergeFiles.Location = new System.Drawing.Point(686, 3);
             this.buttonMergeFiles.Name = "buttonMergeFiles";
             this.buttonMergeFiles.Size = new System.Drawing.Size(109, 46);
             this.buttonMergeFiles.TabIndex = 73;
@@ -720,7 +754,7 @@
             this.buttonDivideFiles.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDivideFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.buttonDivideFiles.ForeColor = System.Drawing.Color.Black;
-            this.buttonDivideFiles.Location = new System.Drawing.Point(526, 1);
+            this.buttonDivideFiles.Location = new System.Drawing.Point(572, 3);
             this.buttonDivideFiles.Name = "buttonDivideFiles";
             this.buttonDivideFiles.Size = new System.Drawing.Size(109, 46);
             this.buttonDivideFiles.TabIndex = 72;
@@ -735,9 +769,9 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Location = new System.Drawing.Point(210, 1);
+            this.button2.Location = new System.Drawing.Point(259, 1);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(109, 46);
+            this.button2.Size = new System.Drawing.Size(119, 46);
             this.button2.TabIndex = 71;
             this.button2.Text = "Test TPF_MEEZA  Excel";
             this.button2.UseVisualStyleBackColor = false;
@@ -750,9 +784,9 @@
             this.buttonTESTAUto.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonTESTAUto.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.buttonTESTAUto.ForeColor = System.Drawing.Color.Black;
-            this.buttonTESTAUto.Location = new System.Drawing.Point(395, 1);
+            this.buttonTESTAUto.Location = new System.Drawing.Point(482, 1);
             this.buttonTESTAUto.Name = "buttonTESTAUto";
-            this.buttonTESTAUto.Size = new System.Drawing.Size(109, 46);
+            this.buttonTESTAUto.Size = new System.Drawing.Size(85, 46);
             this.buttonTESTAUto.TabIndex = 70;
             this.buttonTESTAUto.Text = "TestAuto";
             this.buttonTESTAUto.UseVisualStyleBackColor = false;
@@ -765,7 +799,7 @@
             this.button22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button22.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.button22.ForeColor = System.Drawing.Color.Black;
-            this.button22.Location = new System.Drawing.Point(757, 3);
+            this.button22.Location = new System.Drawing.Point(799, 3);
             this.button22.Name = "button22";
             this.button22.Size = new System.Drawing.Size(109, 46);
             this.button22.TabIndex = 46;
@@ -1852,7 +1886,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1046, 702);
+            this.ClientSize = new System.Drawing.Size(1046, 701);
             this.ControlBox = false;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.tableLayoutPanelHeader);
@@ -2024,6 +2058,8 @@
         private System.Windows.Forms.Button buttonCorrectCitExcel;
         private System.Windows.Forms.Button buttonDivideFiles;
         private System.Windows.Forms.Button buttonMergeFiles;
+        private System.Windows.Forms.Button buttonCopyTxtLines;
+        private System.Windows.Forms.Button button4;
     }
 }
 

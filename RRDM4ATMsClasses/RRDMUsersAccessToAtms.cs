@@ -266,7 +266,14 @@ namespace RRDM4ATMs
                  + " WHERE UserId = @UserId and Replenishment = 1 AND AtmNo NOT LIKE '%Model%' "
                  + "  ";
             }
-        
+            if (InMode == 2 & InOperator =="ALPHA_CY")
+            {
+                SqlString = "SELECT *"
+                 + " FROM [ATMS].[dbo].[UsersAtmTable] "
+                 + " WHERE UserId = @UserId and Replenishment = 1 AND AtmNo LIKE '%ATM%' AND AtmNo <>'HyosungATM' "
+                 + "  ";
+            }
+
             if (InMode == 4)
             {
                 SqlString = "SELECT *"
@@ -311,12 +318,29 @@ namespace RRDM4ATMs
 
                             Ac.ReadAtm(AtmNo); 
 
+                            if (Ac.Operator == "BCAIEGCX")
+                            {
+                                // OK 
+                                if (Ac.Branch == "015")
+                                {
+                                    // OK 
+                                }
+                                else
+                                {
+                                    // ELSE NOT OK and continue to the next 
+                                    continue; 
+                                }
+                            }
+                            else
+                            {
+                                // No Restriction 
+                            }
 
-                            //
-                            //FILL IN TABLE
-                            //
+                                //
+                                //FILL IN TABLE
+                                //
 
-                            DataRow RowSelected = UserGroups_ToAtms_Table.NewRow();
+                                DataRow RowSelected = UserGroups_ToAtms_Table.NewRow();
 
                             RowSelected["OwnerId"] = UserId;
 

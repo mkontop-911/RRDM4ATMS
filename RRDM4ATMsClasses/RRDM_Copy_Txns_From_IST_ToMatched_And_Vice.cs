@@ -523,11 +523,11 @@ namespace RRDM4ATMs
 
             int MinusMin = 0;
             ParamId = "853";
-            string OccuranceId = "1"; // Short
+            string OccuranceId = "1"; // Short for table cleaning 
             //  OccurId = "1"; // 
             Gp.ReadParameterByOccuranceId(ParamId, OccuranceId);
 
-            AgingDaysShort = (int)Gp.Amount; // 202 dates for testing 
+            AgingDaysShort = (int)Gp.Amount; // 
             //AgingDaysShort = 3; 
 
             RRDMReconcJobCycles Rjc = new RRDMReconcJobCycles();
@@ -542,7 +542,7 @@ namespace RRDM4ATMs
             RRDM_BULK_IST_AndOthers_Records_ALL_2 Bio = new RRDM_BULK_IST_AndOthers_Records_ALL_2();
             string PhysicalName = "[RRDM_Reconciliation_ITMX].[dbo]." + InTableId;
 
-            Bio.DELETE_BDC299ByLowerLimit(PhysicalName, WAgingDateLimitShort);
+            Bio.DELETE_BDC299ByLowerLimit(PhysicalName, WAgingDateLimitShort); // DELETE THE BDC299
 
             
             // PASS THIS DATE TO MASTER TO MOVE OLD RECORDS OR UNMATCHED TO MATCHED DATA BASE
@@ -857,9 +857,9 @@ namespace RRDM4ATMs
                     Gp.OccuranceNm = ReversedCut_Off_Date;
                     Gp.UpdateGasParam(Gp.BankId, ParamId, OccuranceId);
 
-                    // FROM ITMX TO HST
+                    // FROM ITMX TO HST based on date 
                     ret = -1;
-
+                    
                     SPName = "[RRDM_Reconciliation_ITMX].[dbo].[stp_00_MOVE_ITMX_tblMatchingTxnsMasterPoolATMs_To_HST]";
 
                     using (SqlConnection conn2 = new SqlConnection(connectionStringITMX))
@@ -1576,7 +1576,7 @@ namespace RRDM4ATMs
             //  OccurId = "1"; // 
             Gp.ReadParameterByOccuranceId(ParamId, OccuranceId);
 
-            AgingDaysShort = (int)Gp.Amount; // 202 dates for testing 
+            AgingDaysShort = (int)Gp.Amount; // 25 dates for testing 
 
             ParamId = "853";
             OccuranceId = "2"; // Long POS 
@@ -1597,7 +1597,7 @@ namespace RRDM4ATMs
 
             string ReversedCut_Off_Date = WAgingDateLimitShort.ToString("yyyy-MM-dd");
 
-            // Here mature what is needed based on aging dates 
+            // Here mature what is needed based on aging dates // UPDATE AS PROCESS In ORDER to be moved to Matched 
             RRDM_BULK_IST_AndOthers_Records_ALL_2 Bio = new RRDM_BULK_IST_AndOthers_Records_ALL_2();
             string PhysicalName = "[RRDM_Reconciliation_ITMX].[dbo]." + InTableId;
             Bio.UpdateAgingRecords(PhysicalName, InReconcCycleNo, WAgingDateLimitShort, WAgingDateLimit_POS);

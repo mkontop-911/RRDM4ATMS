@@ -2925,6 +2925,8 @@ namespace RRDM4ATMsWin
 // Create TXN SOLO
         private void buttonCreateTXNSolo_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("CR Not activated yet. Activate CR");
+            return; 
             if (Mpa.ActionType != "00" & Mpa.SettledRecord == false )
             {
                 if (Mpa.ActionType == "10")

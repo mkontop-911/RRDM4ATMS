@@ -141,7 +141,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1119, 680);
+            this.ClientSize = new System.Drawing.Size(1119, 717);
             this.Controls.Add(this.buttonExcel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxTotalRec);

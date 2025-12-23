@@ -179,114 +179,6 @@ namespace RRDM4ATMsWin
                     }
                 }
 
-                // Migration 
-                //foreach (Control c in Migration.Controls)
-                //{
-                //    if (c is Button)
-                //    {
-
-                //        WSelectionCriteria = " Where MainFormId ='" + MainFormId + "'"
-                //                               + " AND ButtonName='" + c.Name + "'"
-                //                               + " AND SecLevel" + WSecLevel + "= 1 "
-                //                               + " AND Operator='" + WOperator + "'";
-
-                //        Ur.ReadUserAccessRightsBySelectionCriteria(WSelectionCriteria);
-
-                //        if (Ur.RecordFound == true)
-                //        {
-                //            c.Enabled = true;
-                //        }
-                //        else
-                //        {
-                //            c.Enabled = false;
-                //            c.BackColor = Color.Silver;
-                //            c.ForeColor = Color.DarkGray;
-                //        }
-
-                //    }
-                //}
-
-                // E_Journals
-                //foreach (Control c in E_Journals.Controls)
-                //{
-                //    if (c is Button)
-                //    {
-
-                //        WSelectionCriteria = " Where MainFormId ='" + MainFormId + "'"
-                //                              + " AND ButtonName='" + c.Name + "'"
-                //                              + " AND SecLevel" + WSecLevel + "= 1 "
-                //                              + " AND Operator='" + WOperator + "'";
-
-                //        Ur.ReadUserAccessRightsBySelectionCriteria(WSelectionCriteria);
-
-                //        if (Ur.RecordFound == true)
-                //        {
-                //            c.Enabled = true;
-                //        }
-                //        else
-                //        {
-                //            c.Enabled = false;
-                //            c.BackColor = Color.Silver;
-                //            c.ForeColor = Color.DarkGray;
-                //        }
-
-                //    }
-                //}
-
-                //// SWDistribution
-                //foreach (Control c in SWDistribution.Controls)
-                //{
-                //    if (c is Button)
-                //    {
-
-                //        WSelectionCriteria = " Where MainFormId ='" + MainFormId + "'"
-                //                               + " AND ButtonName='" + c.Name + "'"
-                //                               + " AND SecLevel" + WSecLevel + "= 1 "
-                //                               + " AND Operator='" + WOperator + "'";
-
-                //        Ur.ReadUserAccessRightsBySelectionCriteria(WSelectionCriteria);
-
-                //        if (Ur.RecordFound == true)
-                //        {
-                //            c.Enabled = true;
-                //        }
-                //        else
-                //        {
-                //            c.Enabled = false;
-                //            c.BackColor = Color.Silver;
-                //            c.ForeColor = Color.DarkGray;
-                //        }
-
-                //    }
-                //}
-
-                // Matching
-                //foreach (Control c in Matching.Controls)
-                //{
-                //    if (c is Button)
-                //    {
-
-                //        WSelectionCriteria = " Where MainFormId ='" + MainFormId + "'"
-                //                              + " AND ButtonName='" + c.Name + "'"
-                //                              + " AND SecLevel" + WSecLevel + "= 1 "
-                //                              + " AND Operator='" + WOperator + "'";
-
-                //        Ur.ReadUserAccessRightsBySelectionCriteria(WSelectionCriteria);
-
-                //        if (Ur.RecordFound == true)
-                //        {
-                //            c.Enabled = true;
-                //        }
-                //        else
-                //        {
-                //            c.Enabled = false;
-                //            c.BackColor = Color.Silver;
-                //            c.ForeColor = Color.DarkGray;
-                //        }
-
-                //    }
-                //}
-
                 // ReconcDefinition
                 foreach (Control c in ReconcDefinition.Controls)
                 {
@@ -487,7 +379,7 @@ namespace RRDM4ATMsWin
             string OccurId = "1";
             Gp.ReadParametersSpecificId(WOperator, ParId, OccurId, "", "");
             
-            if (Gp.RecordFound & Gp.OccuranceNm == "YES")
+            if (Gp.RecordFound & Gp.OccuranceNm == "YES" & WOperator != "ALPHA_CY")
             {
                 buttonExcelLoading.Show();
                 //buttonCIT_Mgmt.Show();
@@ -501,7 +393,7 @@ namespace RRDM4ATMsWin
                 buttonCIT_Mgmt.Hide();
                 buttonReplReport.Hide();
                 buttonGL_View.Hide();
-                buttonAudiReports.Hide();
+               // buttonAudiReports.Hide();
             }
 
             toolTipHeadings.ShowAlways = true;
@@ -2147,6 +2039,21 @@ namespace RRDM4ATMsWin
             NForm3_PreInv = new Form3_PreInv(WSignedId, WSignRecordNo, WSecLevel, WOperator);
 
             NForm3_PreInv.ShowDialog();
+        }
+// Cycles Vs Replenishements 
+        private void buttonCycles_Vs_Replen_Click(object sender, EventArgs e)
+        {
+            Form80a3_Alpha NForm80a3_Alpha;
+            string WFunction = "View";
+            string Category = "All";
+
+            string WhatBank = WOperator;
+
+            NForm80a3_Alpha = new Form80a3_Alpha(WSignedId, WSignRecordNo, WOperator, WFunction, Category, WhatBank);
+
+            //NForm80a3.FormClosed += NForm80a1_FormClosed;
+
+            NForm80a3_Alpha.ShowDialog();
         }
     }
 }

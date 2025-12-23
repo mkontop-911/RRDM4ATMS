@@ -1330,7 +1330,10 @@ namespace RRDM4ATMs
                     SqlString =
                       " SELECT AtmsReconcGroup , AtmNo, DepCurNm"
                     + " FROM [ATMS].[dbo].[ATMsFields] "
-                    + " WHERE AtmsReconcGroup = @AtmsReconcGroup AND AtmNo NOT IN ('DBLModelATM','NCRModelATM','WINModelATM')";
+                    + " WHERE AtmsReconcGroup = @AtmsReconcGroup "
+                    + " AND AtmNo NOT IN ('DBLModelATM','NCRModelATM','WINModelATM')"
+                    + " AND LEFT(AtmNo,3 ) = 'ATM' "
+                    ;
                 }
 
 
@@ -1390,27 +1393,6 @@ namespace RRDM4ATMs
                     }
 
 
-                    // FIND 
-                    //Mm.ReadRRDMAtmsMinMaxSpecific(WRMCycle, WAtmNo);
-
-                    //if (Mm.RecordFound == true)
-                    //{
-                    //    // WORK BASED ON INFO
-                    //    if (NumberOfTables == 2 & Mm.MinMaxDtTwoTables == NullPastDate)
-                    //    {
-                    //        // MinMax for two found but it is NULL
-                    //        I++; // Read Next entry of the table 
-                    //        continue;
-                    //    }
-                    //    if (NumberOfTables == 3 & Mm.MinMaxDtThreeTables == NullPastDate)
-                    //    {
-                    //        // MinMax for three found but it is NULL
-                    //        I++; // Read Next entry of the table 
-                    //        continue;
-                    //    }
-                    //}
-                    //else
-                    //{
                         // FIND MINMAX
                         MaxDt01 = NullPastDate;
                         MaxDt02 = NullPastDate;
@@ -1569,7 +1551,7 @@ namespace RRDM4ATMs
 
                     if (NumberOfTables == 3)
                     {
-                        // Insert Records In File03Y from Fiserv
+                        // Insert Records In File03Y from 
 
                         //InsertRecordsInWorkingFile_03(connectionString, WMatchingCategoryId, WAtmNo, MinMaxTrace, WRMCycle);
                         TempCount3 = Mtw.PopulateWorkingFile_ATMs_V03("03", SourceTable_C, WMatchingCateg, WRMCycle, WAtmNo, MinMaxDt_03);

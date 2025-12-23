@@ -676,7 +676,7 @@ namespace RRDM4ATMs
 
             SqlString = "SELECT *"
                + " FROM [ATMS].[dbo].[MatchingCategories] "
-               + " WHERE RunningJobGroup = @RunningJobGroup AND Active = 1  "
+               + " WHERE Active = 1  "
                + " Order by CategoryId ";
 
             using (SqlConnection conn =
@@ -688,7 +688,7 @@ namespace RRDM4ATMs
                         new SqlCommand(SqlString, conn))
                     {
 
-                        cmd.Parameters.AddWithValue("@RunningJobGroup", W_Application);
+                       // cmd.Parameters.AddWithValue("@RunningJobGroup", W_Application);
                         // Read table 
 
                         SqlDataReader rdr = cmd.ExecuteReader();

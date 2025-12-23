@@ -167,6 +167,9 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelHeader = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonUpdateOnlyDATES = new System.Windows.Forms.Button();
+            this.radioButtonUpdateOnlyDates = new System.Windows.Forms.RadioButton();
+            this.panel9 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel3.SuspendLayout();
@@ -195,6 +198,7 @@
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanelHeader.SuspendLayout();
+            this.panel9.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -203,7 +207,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(1139, 2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(1234, 2);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
@@ -317,7 +321,7 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1284, 621);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1379, 697);
             this.tableLayoutPanelMain.TabIndex = 264;
             // 
             // panel1
@@ -331,10 +335,6 @@
             this.panel1.Controls.Add(this.panel_IST_Deposits);
             this.panel1.Controls.Add(this.labelDeposits);
             this.panel1.Controls.Add(this.panelDepBig);
-            this.panel1.Controls.Add(this.radioButtonChangeProcess);
-            this.panel1.Controls.Add(this.radioButtonDeleteCycle);
-            this.panel1.Controls.Add(this.radioButtonUpdate);
-            this.panel1.Controls.Add(this.radioButtonNewCycle);
             this.panel1.Controls.Add(this.label15);
             this.panel1.Controls.Add(this.textBoxNumberOfCycles);
             this.panel1.Controls.Add(this.label14);
@@ -354,7 +354,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1278, 575);
+            this.panel1.Size = new System.Drawing.Size(1373, 651);
             this.panel1.TabIndex = 243;
             // 
             // linkLabelUnmatchedTxns
@@ -386,7 +386,7 @@
             this.label33.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.label33.Location = new System.Drawing.Point(11, 2);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(63, 16);
+            this.label33.Size = new System.Drawing.Size(62, 16);
             this.label33.TabIndex = 499;
             this.label33.Text = "LOADED";
             // 
@@ -529,7 +529,7 @@
             this.label29.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.label29.Location = new System.Drawing.Point(11, 2);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(174, 16);
+            this.label29.Size = new System.Drawing.Size(173, 16);
             this.label29.TabIndex = 499;
             this.label29.Text = "WITHDRAWLS IST BASED";
             // 
@@ -596,7 +596,7 @@
             this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
             this.label11.Location = new System.Drawing.Point(11, 2);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(149, 16);
+            this.label11.Size = new System.Drawing.Size(148, 16);
             this.label11.TabIndex = 499;
             this.label11.Text = "DEPOSITS IST BASED";
             // 
@@ -728,7 +728,7 @@
             this.dataGridView3.ReadOnly = true;
             this.dataGridView3.RowHeadersVisible = false;
             this.dataGridView3.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView3.Size = new System.Drawing.Size(312, 167);
+            this.dataGridView3.Size = new System.Drawing.Size(312, 170);
             this.dataGridView3.TabIndex = 431;
             // 
             // label22
@@ -803,7 +803,7 @@
             // 
             this.radioButtonChangeProcess.AutoSize = true;
             this.radioButtonChangeProcess.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonChangeProcess.Location = new System.Drawing.Point(926, 56);
+            this.radioButtonChangeProcess.Location = new System.Drawing.Point(396, 22);
             this.radioButtonChangeProcess.Name = "radioButtonChangeProcess";
             this.radioButtonChangeProcess.Size = new System.Drawing.Size(117, 30);
             this.radioButtonChangeProcess.TabIndex = 434;
@@ -817,7 +817,7 @@
             // 
             this.radioButtonDeleteCycle.AutoSize = true;
             this.radioButtonDeleteCycle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonDeleteCycle.Location = new System.Drawing.Point(926, 40);
+            this.radioButtonDeleteCycle.Location = new System.Drawing.Point(396, 6);
             this.radioButtonDeleteCycle.Name = "radioButtonDeleteCycle";
             this.radioButtonDeleteCycle.Size = new System.Drawing.Size(97, 17);
             this.radioButtonDeleteCycle.TabIndex = 433;
@@ -831,7 +831,7 @@
             // 
             this.radioButtonUpdate.AutoSize = true;
             this.radioButtonUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonUpdate.Location = new System.Drawing.Point(782, 61);
+            this.radioButtonUpdate.Location = new System.Drawing.Point(277, 29);
             this.radioButtonUpdate.Name = "radioButtonUpdate";
             this.radioButtonUpdate.Size = new System.Drawing.Size(97, 17);
             this.radioButtonUpdate.TabIndex = 432;
@@ -845,7 +845,7 @@
             // 
             this.radioButtonNewCycle.AutoSize = true;
             this.radioButtonNewCycle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonNewCycle.Location = new System.Drawing.Point(782, 40);
+            this.radioButtonNewCycle.Location = new System.Drawing.Point(275, 6);
             this.radioButtonNewCycle.Name = "radioButtonNewCycle";
             this.radioButtonNewCycle.Size = new System.Drawing.Size(120, 17);
             this.radioButtonNewCycle.TabIndex = 431;
@@ -969,7 +969,7 @@
             this.labelHeader1.AutoSize = true;
             this.labelHeader1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.labelHeader1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.labelHeader1.Location = new System.Drawing.Point(469, 8);
+            this.labelHeader1.Location = new System.Drawing.Point(215, 11);
             this.labelHeader1.Name = "labelHeader1";
             this.labelHeader1.Size = new System.Drawing.Size(243, 18);
             this.labelHeader1.TabIndex = 347;
@@ -1054,13 +1054,15 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.panel9);
+            this.panel2.Controls.Add(this.buttonUpdateOnlyDATES);
             this.panel2.Controls.Add(this.labelHeader2);
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.labelHeader3);
             this.panel2.Controls.Add(this.panel4);
-            this.panel2.Location = new System.Drawing.Point(470, 34);
+            this.panel2.Location = new System.Drawing.Point(470, 32);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(592, 399);
+            this.panel2.Size = new System.Drawing.Size(592, 405);
             this.panel2.TabIndex = 0;
             this.panel2.Visible = false;
             // 
@@ -1069,7 +1071,7 @@
             this.labelHeader2.AutoSize = true;
             this.labelHeader2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelHeader2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.labelHeader2.Location = new System.Drawing.Point(30, 46);
+            this.labelHeader2.Location = new System.Drawing.Point(30, 61);
             this.labelHeader2.Name = "labelHeader2";
             this.labelHeader2.Size = new System.Drawing.Size(200, 13);
             this.labelHeader2.TabIndex = 433;
@@ -1083,10 +1085,10 @@
             this.panel3.Controls.Add(this.label13);
             this.panel3.Controls.Add(this.dateTimePicker2);
             this.panel3.Controls.Add(this.dateTimePicker1);
-            this.panel3.Location = new System.Drawing.Point(28, 60);
+            this.panel3.Location = new System.Drawing.Point(28, 75);
             this.panel3.Margin = new System.Windows.Forms.Padding(1);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(457, 80);
+            this.panel3.Size = new System.Drawing.Size(457, 76);
             this.panel3.TabIndex = 432;
             // 
             // buttonValidateDates
@@ -1110,9 +1112,9 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(18, 17);
+            this.label12.Location = new System.Drawing.Point(18, 19);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(139, 16);
+            this.label12.Size = new System.Drawing.Size(138, 16);
             this.label12.TabIndex = 428;
             this.label12.Text = "Repl Cycle START";
             // 
@@ -1122,7 +1124,7 @@
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label13.Location = new System.Drawing.Point(18, 49);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(120, 16);
+            this.label13.Size = new System.Drawing.Size(119, 16);
             this.label13.TabIndex = 429;
             this.label13.Text = "Repl Cycle END";
             // 
@@ -1797,12 +1799,12 @@
             this.tableLayoutPanel2.Controls.Add(this.textBoxMsgBoard, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonBack, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 584);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 660);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1280, 35);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1375, 35);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
             // buttonFinish
@@ -1813,7 +1815,7 @@
             this.buttonFinish.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonFinish.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonFinish.ForeColor = System.Drawing.Color.White;
-            this.buttonFinish.Location = new System.Drawing.Point(1199, 2);
+            this.buttonFinish.Location = new System.Drawing.Point(1294, 2);
             this.buttonFinish.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
             this.buttonFinish.Name = "buttonFinish";
             this.buttonFinish.Size = new System.Drawing.Size(71, 27);
@@ -1834,7 +1836,7 @@
             this.textBoxMsgBoard.Multiline = true;
             this.textBoxMsgBoard.Name = "textBoxMsgBoard";
             this.textBoxMsgBoard.ReadOnly = true;
-            this.textBoxMsgBoard.Size = new System.Drawing.Size(1019, 31);
+            this.textBoxMsgBoard.Size = new System.Drawing.Size(1114, 31);
             this.textBoxMsgBoard.TabIndex = 242;
             this.textBoxMsgBoard.TabStop = false;
             this.textBoxMsgBoard.Text = "No guidance information available.";
@@ -1847,7 +1849,7 @@
             this.buttonBack.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonBack.ForeColor = System.Drawing.Color.White;
-            this.buttonBack.Location = new System.Drawing.Point(1116, 2);
+            this.buttonBack.Location = new System.Drawing.Point(1211, 2);
             this.buttonBack.Margin = new System.Windows.Forms.Padding(2);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(76, 27);
@@ -1908,7 +1910,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1280, 80);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1375, 80);
             this.tableLayoutPanel4.TabIndex = 249;
             // 
             // tableLayoutPanelHeader
@@ -1923,8 +1925,52 @@
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1284, 80);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1379, 80);
             this.tableLayoutPanelHeader.TabIndex = 265;
+            // 
+            // buttonUpdateOnlyDATES
+            // 
+            this.buttonUpdateOnlyDATES.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.buttonUpdateOnlyDATES.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonUpdateOnlyDATES.FlatAppearance.BorderSize = 2;
+            this.buttonUpdateOnlyDATES.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonUpdateOnlyDATES.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
+            this.buttonUpdateOnlyDATES.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonUpdateOnlyDATES.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
+            this.buttonUpdateOnlyDATES.Location = new System.Drawing.Point(489, 111);
+            this.buttonUpdateOnlyDATES.Name = "buttonUpdateOnlyDATES";
+            this.buttonUpdateOnlyDATES.Size = new System.Drawing.Size(83, 24);
+            this.buttonUpdateOnlyDATES.TabIndex = 434;
+            this.buttonUpdateOnlyDATES.Text = "Update Dt";
+            this.buttonUpdateOnlyDATES.UseVisualStyleBackColor = false;
+            this.buttonUpdateOnlyDATES.Visible = false;
+            this.buttonUpdateOnlyDATES.Click += new System.EventHandler(this.buttonUpdateOnlyDATES_Click);
+            // 
+            // radioButtonUpdateOnlyDates
+            // 
+            this.radioButtonUpdateOnlyDates.AutoSize = true;
+            this.radioButtonUpdateOnlyDates.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButtonUpdateOnlyDates.Location = new System.Drawing.Point(110, 6);
+            this.radioButtonUpdateOnlyDates.Name = "radioButtonUpdateOnlyDates";
+            this.radioButtonUpdateOnlyDates.Size = new System.Drawing.Size(138, 17);
+            this.radioButtonUpdateOnlyDates.TabIndex = 435;
+            this.radioButtonUpdateOnlyDates.TabStop = true;
+            this.radioButtonUpdateOnlyDates.Text = "Update_Dates_Only";
+            this.radioButtonUpdateOnlyDates.UseVisualStyleBackColor = true;
+            this.radioButtonUpdateOnlyDates.Visible = false;
+            this.radioButtonUpdateOnlyDates.CheckedChanged += new System.EventHandler(this.radioButtonUpdateOnlyDates_CheckedChanged);
+            // 
+            // panel9
+            // 
+            this.panel9.Controls.Add(this.radioButtonUpdateOnlyDates);
+            this.panel9.Controls.Add(this.radioButtonNewCycle);
+            this.panel9.Controls.Add(this.radioButtonUpdate);
+            this.panel9.Controls.Add(this.radioButtonDeleteCycle);
+            this.panel9.Controls.Add(this.radioButtonChangeProcess);
+            this.panel9.Location = new System.Drawing.Point(31, 5);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(554, 53);
+            this.panel9.TabIndex = 436;
             // 
             // Form154
             // 
@@ -1932,7 +1978,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(113)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1284, 701);
+            this.ClientSize = new System.Drawing.Size(1379, 777);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.ForeColor = System.Drawing.Color.White;
@@ -1984,6 +2030,8 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanelHeader.ResumeLayout(false);
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2129,5 +2177,8 @@
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.LinkLabel linkLabelUnmatchedTxns;
+        private System.Windows.Forms.Button buttonUpdateOnlyDATES;
+        private System.Windows.Forms.RadioButton radioButtonUpdateOnlyDates;
+        private System.Windows.Forms.Panel panel9;
     }
 }

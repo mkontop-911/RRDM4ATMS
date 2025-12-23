@@ -84,7 +84,7 @@
             this.tableLayoutPanelHeader.RowCount = 1;
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanelHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1284, 83);
+            this.tableLayoutPanelHeader.Size = new System.Drawing.Size(1313, 83);
             this.tableLayoutPanelHeader.TabIndex = 260;
             // 
             // tableLayoutPanel4
@@ -102,7 +102,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1280, 80);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1309, 80);
             this.tableLayoutPanel4.TabIndex = 249;
             // 
             // flowLayoutPanel1
@@ -189,7 +189,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 63F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 292F));
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(1139, 2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(1168, 2);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -336,7 +336,7 @@
             this.buttonNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonNext.ForeColor = System.Drawing.Color.White;
-            this.buttonNext.Location = new System.Drawing.Point(1186, 2);
+            this.buttonNext.Location = new System.Drawing.Point(1215, 2);
             this.buttonNext.Margin = new System.Windows.Forms.Padding(2, 2, 10, 2);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(84, 32);
@@ -357,7 +357,7 @@
             this.textBoxMsgBoard.Multiline = true;
             this.textBoxMsgBoard.Name = "textBoxMsgBoard";
             this.textBoxMsgBoard.ReadOnly = true;
-            this.textBoxMsgBoard.Size = new System.Drawing.Size(1019, 32);
+            this.textBoxMsgBoard.Size = new System.Drawing.Size(1048, 32);
             this.textBoxMsgBoard.TabIndex = 242;
             this.textBoxMsgBoard.TabStop = false;
             this.textBoxMsgBoard.Text = "No guidance information available.";
@@ -371,7 +371,7 @@
             this.buttonBack.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonBack.ForeColor = System.Drawing.Color.White;
-            this.buttonBack.Location = new System.Drawing.Point(1116, 2);
+            this.buttonBack.Location = new System.Drawing.Point(1145, 2);
             this.buttonBack.Margin = new System.Windows.Forms.Padding(2);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(66, 32);
@@ -390,7 +390,7 @@
             this.Cancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSteelBlue;
             this.Cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Cancel.ForeColor = System.Drawing.Color.White;
-            this.Cancel.Location = new System.Drawing.Point(1041, 2);
+            this.Cancel.Location = new System.Drawing.Point(1070, 2);
             this.Cancel.Margin = new System.Windows.Forms.Padding(10, 2, 2, 2);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(71, 32);
@@ -412,12 +412,12 @@
             this.tableLayoutPanel2.Controls.Add(this.buttonBack, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.Cancel, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 580);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 700);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1280, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1309, 36);
             this.tableLayoutPanel2.TabIndex = 242;
             // 
             // tableLayoutPanelMain
@@ -434,7 +434,7 @@
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1284, 618);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1313, 738);
             this.tableLayoutPanelMain.TabIndex = 259;
             // 
             // Form271
@@ -442,7 +442,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(119)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(1284, 701);
+            this.ClientSize = new System.Drawing.Size(1313, 821);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Controls.Add(this.tableLayoutPanelHeader);
             this.ForeColor = System.Drawing.Color.White;

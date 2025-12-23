@@ -151,7 +151,7 @@ namespace RRDM4ATMsWin
         // Load
         private void Form200JobCycles_Load(object sender, EventArgs e)
         {
-           
+            RRDMReconcJobCycles Rjc = new RRDMReconcJobCycles();
             int WReconcCycleNo;
 
             Rjc.ReadLastReconcJobCycleATMsAndNostroWithMinusOne_Second_version(WOperator, WJobCategory);
@@ -173,7 +173,7 @@ namespace RRDM4ATMsWin
                 label4.Hide();
                 textBoxCutOff.Hide();
             }
-
+             
             string SelectionCriteria = " WHERE Operator='" + WOperator + "' AND JobCategory ='ATMs'";
             Rjc.ReadReconcJobCyclesFillTable(SelectionCriteria);
 

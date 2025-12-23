@@ -538,6 +538,7 @@ namespace RRDM4ATMs
 + " AND ([MatchingCateg] = @MatchingCateg) "
 + " AND (ResponseCode = '0')"
 + " AND IsReversal = 0 "
++ " AND RRNumber <> '' "
 + ") "
 + ") "
 + "SET IDENTITY_INSERT " + WorkingTableName + " OFF "

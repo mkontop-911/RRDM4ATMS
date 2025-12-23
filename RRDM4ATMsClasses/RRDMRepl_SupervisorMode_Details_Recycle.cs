@@ -408,6 +408,65 @@ namespace RRDM4ATMs
         public int Total_cashaddtype3;
         public int Total_cashaddtype4;
 
+        public void Read_SM_Record_For_ATM_For_Added_Cash(string InAtmNo, int InLoadedAtRMCycle)
+        {
+            RecordFound = false;
+            ErrorFound = false;
+            ErrorOutput = "";
+
+            Total_cashaddtype1 = 0;
+            Total_cashaddtype2 = 0;
+            Total_cashaddtype3 = 0;
+            Total_cashaddtype4 = 0;
+
+        string SqlString = "SELECT * "
+              + " FROM " + SM_Table
+              + " WHERE AtmNo=@AtmNo AND AdditionalCash = 'Y' AND LoadedAtRMCycle = @LoadedAtRMCycle "
+              + " ";
+            using (SqlConnection conn =
+                          new SqlConnection(connectionString))
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd =
+                        new SqlCommand(SqlString, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@AtmNo", InAtmNo);
+                        cmd.Parameters.AddWithValue("@LoadedAtRMCycle", InLoadedAtRMCycle);
+
+                        // Read table 
+
+                        SqlDataReader rdr = cmd.ExecuteReader();
+
+                        while (rdr.Read())
+                        {
+                            RecordFound = true;
+
+                            SM_ReaderFields(rdr);
+
+                            Total_cashaddtype1 = Total_cashaddtype1 + cashaddtype1;
+                            Total_cashaddtype2 = Total_cashaddtype2 + cashaddtype2;
+                            Total_cashaddtype3 = Total_cashaddtype3 + cashaddtype3;
+                            Total_cashaddtype4 = Total_cashaddtype4 + cashaddtype4;
+
+
+                        }
+
+                        // Close Reader
+                        rdr.Close();
+                    }
+
+                    // Close conn
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+
+                    CatchDetails(ex, "", 0);
+                }
+        }
+
         public void Read_ONE_SM_Record_For_ATM_To_See_Recycle(string InAtmNo)
         {
             RecordFound = false;
@@ -521,6 +580,7 @@ namespace RRDM4ATMs
             ErrorOutput = "";
 
             // InMode = 1 comes from loading of files, The AtmNo and Fuid.  
+           // SM_Table = "[ATM_MT_Journals_AUDI].[dbo].[PANICOS_SM_Table]";
 
             string SqlString = "SELECT * "
           + " FROM " + SM_Table
