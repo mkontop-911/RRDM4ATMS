@@ -15,7 +15,7 @@ namespace TWF_ProcessFiles
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
-                .AddJsonFile("RRDMJournalsTransfer_appsettings.json", optional: true, reloadOnChange: true);
+                .AddJsonFile("JT_settings.json", optional: true, reloadOnChange: true);
 
             _configuration = builder.Build();
         }

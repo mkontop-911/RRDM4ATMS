@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.json">
+    <None Update="RRDMJournalsTransfer_appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -25,7 +25,8 @@
     <PostBuildEvent>
       if exist "C:\RRDM\RRDMExec" (
         copy /y "$(TargetDir)*.dll" "C:\RRDM\RRDMExec"
-        copy /y "$(TargetDir)appsettings.json" "C:\RRDM\RRDMExec"
+        copy /y "$(TargetDir)RRDMJournalsTransfer_appsettings.json" "C:\RRDM\RRDMExec"
+        
       )
     </PostBuildEvent>
   </PropertyGroup>
