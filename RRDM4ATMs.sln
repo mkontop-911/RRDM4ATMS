@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36212.18 d17.14
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RRDM4ATMsClasses", "RRDM4ATMsClasses\RRDM4ATMsClasses.csproj", "{7AC63154-20AB-4ABE-BB75-57DA8DB8427E}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -28,8 +28,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RRDMEventSourceInstaller", "RRDMEventSourceInstaller\RRDMEventSourceInstaller.csproj", "{BD75E035-C74B-4026-9599-20B08ACF6F57}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RRDMActiveDirTest", "RRDMActiveDirTest\RRDMActiveDirTest.csproj", "{FE8A054F-B9DA-419A-8FD6-D5FCE8CA75F7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RRDMSMSLib", "RRDMSMSLib\RRDMSMSLib.csproj", "{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RRDM_Encryption", "RRDM_Encryption\RRDM_Encryption.csproj", "{C6EA7FAF-AB36-40E2-AF40-89BE851B4BB0}"
 EndProject
@@ -227,24 +225,6 @@ Global
 		{FE8A054F-B9DA-419A-8FD6-D5FCE8CA75F7}.Release|x64.Build.0 = Release|Any CPU
 		{FE8A054F-B9DA-419A-8FD6-D5FCE8CA75F7}.Release|x86.ActiveCfg = Release|Any CPU
 		{FE8A054F-B9DA-419A-8FD6-D5FCE8CA75F7}.Release|x86.Build.0 = Release|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.Debug|x64.Build.0 = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.Debug|x86.Build.0 = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.DebugLocal|x64.ActiveCfg = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.DebugLocal|x64.Build.0 = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.DebugLocal|x86.ActiveCfg = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.DebugLocal|x86.Build.0 = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.Release|x64.ActiveCfg = Release|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.Release|x64.Build.0 = Release|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.Release|x86.ActiveCfg = Release|Any CPU
-		{D167E85E-0AF6-48D8-9EA3-23CDEA4562A2}.Release|x86.Build.0 = Release|Any CPU
 		{C6EA7FAF-AB36-40E2-AF40-89BE851B4BB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C6EA7FAF-AB36-40E2-AF40-89BE851B4BB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6EA7FAF-AB36-40E2-AF40-89BE851B4BB0}.Debug|x64.ActiveCfg = Debug|Any CPU
