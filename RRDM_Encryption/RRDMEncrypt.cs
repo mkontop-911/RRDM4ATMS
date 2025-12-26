@@ -54,11 +54,11 @@ namespace RRDMEncrypt
                 saltBytes = new byte[saltSize];
 
                 // Initialize a random number generator.
-                RNGCryptoServiceProvider rng = default(RNGCryptoServiceProvider);
-                rng = new RNGCryptoServiceProvider();
-
-                // Fill the salt with cryptographically strong byte values.
-                rng.GetNonZeroBytes(saltBytes);
+                using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+                {
+                    // Fill the salt with cryptographically strong byte values.
+                    rng.GetBytes(saltBytes);
+                }
             }
 
             // Convert plain text into a byte array.
@@ -97,23 +97,26 @@ namespace RRDMEncrypt
             {
 
                 case "SHA1":
-                    hash = new SHA1Managed();
+                    hash = SHA1.Create();
 
                     break;
                 case "SHA256":
-                    hash = new SHA256Managed();
+                    hash = SHA256.Create();
 
                     break;
                 case "SHA384":
-                    hash = new SHA384Managed();
+                    hash = SHA384.Create();
 
                     break;
                 case "SHA512":
-                    hash = new SHA512Managed();
+                    hash = SHA512.Create();
 
                     break;
+                case "MD5":
+                    hash = MD5.Create();
+                    break;
                 default:
-                    hash = new MD5CryptoServiceProvider();
+                    hash = SHA512.Create();
 
                     break;
             }
@@ -202,9 +205,12 @@ namespace RRDMEncrypt
                     hashSizeInBits = 512;
 
                     break;
-                default:
-                    // Must be MD5
+                case "MD5":
                     hashSizeInBits = 128;
+                    break;
+                default:
+                    // Default changed to SHA512
+                    hashSizeInBits = 512;
 
                     break;
             }
@@ -242,62 +248,7 @@ namespace RRDMEncrypt
 
         #endregion
 
-        #region "Other Encryption SHA512"
 
-
-        static readonly string securityCode = "#TheGoodBlandIsTheTrueAboutYou#";
-        /// <summary>
-        /// Encrypt text string
-        /// </summary>
-        /// <param name="key"> data to encryptorDecrypt</param>
-        /// <param name="encrypt">Weather encrypt or decrypt</param>
-        /// <returns>An encrypted or decrypted string</returns>
-        private static string EncryptorDecrypt(string key, bool encrypt)
-        {
-            byte[] toEncryptorDecryptArray = null;
-            ICryptoTransform cTransform = default(ICryptoTransform);
-            // Transform the specified region of bytes array to resultArray
-            MD5CryptoServiceProvider md5Hasing = new MD5CryptoServiceProvider();
-            byte[] keyArrays = md5Hasing.ComputeHash(UTF8Encoding.UTF8.GetBytes(securityCode));
-            md5Hasing.Clear();
-            TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider
-            {
-                Key = keyArrays,
-                Mode = CipherMode.ECB,
-                Padding = PaddingMode.PKCS7
-            };
-            if (encrypt == true)
-            {
-                toEncryptorDecryptArray = UTF8Encoding.UTF8.GetBytes(key);
-                cTransform = tdes.CreateEncryptor();
-            }
-            else
-            {
-                toEncryptorDecryptArray = Convert.FromBase64String(key.Replace(' ', '+'));
-                cTransform = tdes.CreateDecryptor();
-            }
-
-            byte[] resultsArray = cTransform.TransformFinalBlock(toEncryptorDecryptArray, 0, toEncryptorDecryptArray.Length);
-            tdes.Clear();
-
-            if (encrypt == true)
-            {
-                //if encrypt we need to return encrypted string
-                return Convert.ToBase64String(resultsArray, 0, resultsArray.Length);
-            }
-            //else we need to return decrypted string
-            return UTF8Encoding.UTF8.GetString(resultsArray);
-        }
-
-        //Sample code for SHA512 hashing
-        private static string CreateSHAHash(string PasswordSHA512)
-        {
-            System.Security.Cryptography.SHA512Managed sha512 = new System.Security.Cryptography.SHA512Managed();
-            Byte[] EncryptedSHA512 = sha512.ComputeHash(System.Text.Encoding.UTF8.GetBytes(string.Concat(PasswordSHA512, securityCode)));
-            sha512.Clear();
-            return Convert.ToBase64String(EncryptedSHA512);
-        }
-        #endregion
 
         #region "SHA"
         //'http://www.obviex.com/samples/encryptionwithsalt.aspx
@@ -696,29 +647,45 @@ namespace RRDMEncrypt
             }
 
             // Generate password, which will be used to derive the key.
-            PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, saltValueBytes, hashAlgorithm, passwordIterations);
-
-            // Convert key to a byte array adjusting the size from bits to bytes.
-            byte[] keyBytes = password.GetBytes(keySize / 8);
-
-            // Initialize Rijndael key object.
-            RijndaelManaged symmetricKey = new RijndaelManaged();
-
-            // If we do not have initialization vector, we cannot use the CBC mode.
-            // The only alternative is the ECB mode (which is not as good).
-            if ((initVectorBytes.Length == 0))
+            // WARNING: Replaced PasswordDeriveBytes (PBKDF1) with Rfc2898DeriveBytes (PBKDF2). This BREAKS COMPATIBILITY with old keys.
+            // Mapping algorithm name to known names for Rfc2898DeriveBytes
+            HashAlgorithmName hashAlgoName = HashAlgorithmName.SHA1;
+            if (!string.IsNullOrEmpty(hashAlgorithm))
             {
-                symmetricKey.Mode = CipherMode.ECB;
-            }
-            else
-            {
-                symmetricKey.Mode = CipherMode.CBC;
+                 switch(hashAlgorithm.ToUpper()) {
+                     case "SHA256": hashAlgoName = HashAlgorithmName.SHA256; break;
+                     case "SHA384": hashAlgoName = HashAlgorithmName.SHA384; break;
+                     case "SHA512": hashAlgoName = HashAlgorithmName.SHA512; break;
+                     case "MD5": hashAlgoName = HashAlgorithmName.MD5; break;
+                 }
             }
 
-            // Create encryptor and decryptor, which we will use for cryptographic
-            // operations.
-            encryptor = symmetricKey.CreateEncryptor(keyBytes, initVectorBytes);
-            decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes);
+            using (Rfc2898DeriveBytes password = new Rfc2898DeriveBytes(passPhrase, saltValueBytes, passwordIterations, hashAlgoName))
+            {
+                // Convert key to a byte array adjusting the size from bits to bytes.
+                byte[] keyBytes = password.GetBytes(keySize / 8);
+
+                // Initialize Rijndael key object.
+                // Replaced RijndaelManaged with Aes.Create(). AES is Rijndael with 128-bit block size.
+                using (Aes symmetricKey = Aes.Create())
+                {
+                    // If we do not have initialization vector, we cannot use the CBC mode.
+                    // The only alternative is the ECB mode (which is not as good).
+                    if ((initVectorBytes.Length == 0))
+                    {
+                        symmetricKey.Mode = CipherMode.ECB;
+                    }
+                    else
+                    {
+                        symmetricKey.Mode = CipherMode.CBC;
+                    }
+
+                    // Create encryptor and decryptor, which we will use for cryptographic
+                    // operations.
+                    encryptor = symmetricKey.CreateEncryptor(keyBytes, initVectorBytes);
+                    decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes);
+                }
+            }
         }
 
         // <summary>
@@ -876,19 +843,23 @@ namespace RRDMEncrypt
             // size as cipher text. Cipher text is always longer than plain text
             // (in block cipher encryption), so we will just use the number of
             // decrypted data byte after we know how big it is.
-            decryptedBytes = new byte[cipherTextBytes.Length];
+            // decryptedBytes = new byte[cipherTextBytes.Length]; <-- discarding this allocation strategy slightly
 
             // Let's make cryptographic operations thread-safe.
             lock (this)
             {
                 // To perform decryption, we must use the Read mode.
-                CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
-
-                // Decrypting data and get the count of plain text bytes.
-                decryptedByteCount = cryptoStream.Read(decryptedBytes, 0, decryptedBytes.Length);
-                // Release memory.
-                memoryStream.Close();
-                cryptoStream.Close();
+                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
+                {
+                   // Create a temporary buffer to hold the decrypted data. 
+                   // Since we don't know the exact size (padding removal), use a MemoryStream to collect it.
+                   using (MemoryStream plainTextStream = new MemoryStream()) 
+                   {
+                        cryptoStream.CopyTo(plainTextStream);
+                        decryptedBytes = plainTextStream.ToArray();
+                        decryptedByteCount = decryptedBytes.Length;
+                   }
+                }
             }
 
             // If we are using salt, get its length from the first 4 bytes of plain
@@ -982,9 +953,10 @@ namespace RRDMEncrypt
             byte[] salt = new byte[saltLen];
 
             // Populate salt with cryptographically strong bytes.
-            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-
-            rng.GetNonZeroBytes(salt);
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            {
+                rng.GetNonZeroBytes(salt);
+            }
 
             // Split salt length (always one byte) into four two-bit pieces and
             // store these pieces in the first four bytes of the salt array.
@@ -1020,8 +992,11 @@ namespace RRDMEncrypt
             byte[] randomBytes = new byte[4];
 
             // Generate 4 random bytes.
-            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-            rng.GetBytes(randomBytes);
+            // Generate 4 random bytes.
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomBytes);
+            }
 
             // Convert four random bytes into a positive integer value.
             int seed = ((randomBytes[0] & 0x7f) << 24) | (randomBytes[1] << 16) | (randomBytes[2] << 8) | (randomBytes[3]);
