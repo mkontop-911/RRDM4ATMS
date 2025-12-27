@@ -15,10 +15,9 @@ namespace RRDM4ATMs
         public AutoClosingMessageBox(string text, string caption, int timeout)
         {
             _caption = caption;
-            _timeoutTimer = new System.Threading.Timer(OnTimerElapsed,
-                null, timeout, System.Threading.Timeout.Infinite);
-            using (_timeoutTimer)
-                MessageBox.Show(text, caption);
+            _timeoutTimer = new System.Threading.Timer(OnTimerElapsed, null, timeout, System.Threading.Timeout.Infinite);
+            using (_timeoutTimer) 
+                _ = MessageBox.Show(text, caption);
         }
         public static void Show(string text, string caption, int timeout)
         {
