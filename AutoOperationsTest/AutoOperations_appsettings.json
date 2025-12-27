@@ -1,0 +1,12 @@
+{
+    "ConnectionStrings": {
+        "ATMSConnectionString": "Server=localhost;Database=ATMS;Integrated Security=true;TrustServerCertificate=true;",
+        "ReconConnectionString": "Server=localhost;Database=Recon;Integrated Security=true;TrustServerCertificate=true;"
+    },
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft": "Warning"
+        }
+    }
+}
