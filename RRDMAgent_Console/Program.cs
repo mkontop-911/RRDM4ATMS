@@ -2,9 +2,9 @@
 using System.Data;
 using System.IO;
 using System.Threading;
-using System.Configuration;
-using System.Data.SqlClient;
 using System.Collections;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 //
 using System.Windows.Forms; // for MessageBox
 using System.Diagnostics;
@@ -31,6 +31,18 @@ namespace RRDMAgent_Console
         #region Main Program()
         static void Main(string[] args)
         {
+            #region Build Configuration
+            // Build configuration from appsettings.json
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production"}.json", optional: true)
+                .Build();
+
+            // Make configuration available to RRDMAgent_Classes
+            RRDMAgentStartPoint.Configuration = configuration;
+            #endregion
+
             #region Read parameters passed to the program
             if (args.Length != 1)
             {

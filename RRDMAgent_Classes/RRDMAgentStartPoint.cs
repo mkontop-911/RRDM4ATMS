@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Data;
 using System.IO;
 using System.Threading;
+using Microsoft.Extensions.Configuration;
 
 using RRDM4ATMs;
 using System.Windows.Forms;
@@ -67,6 +68,9 @@ namespace RRDMAgent_Classes
         private static string instanceMutexName = "";
 
         public static string argOperator = "";
+        
+        // Configuration object for dependency injection
+        public static IConfiguration Configuration { get; set; }
 
         public static int glbRRDMAgentSleep;  // read from parameters
         public static int glbRRDMAgentServiceTimeout;  // read from parameters
