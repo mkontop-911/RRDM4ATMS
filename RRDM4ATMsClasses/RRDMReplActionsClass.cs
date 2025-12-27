@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using RRDM4ATMs;
 
@@ -92,8 +92,7 @@ namespace RRDM4ATMs
 
         //     int I;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-        ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         string WhatFile = "[ATMS].[dbo].[ReplActionsTable]";
 
@@ -890,7 +889,7 @@ namespace RRDM4ATMs
                                     Tp.TransDesc = "BANK TO CIT : " + CitId + " For ATM: " + AtmNo;
 
                                     string WUser = "1000" ; 
-                                    Acc.ReadAndFindAccount("1000", Operator, "", Ac.DepCurNm, "User or CIT Cash");
+                                    Acc.ReadAndFindAccount("1000", "", "", Operator, "", Ac.DepCurNm, "User or CIT Cash");
                                     if (Acc.RecordFound == false)
                                     {
                                         ErrorFound = false;
@@ -908,7 +907,7 @@ namespace RRDM4ATMs
                                     Tp.TransDesc2 = "CIT Got Money from: " + InCitId + " For ATM: " + AtmNo;
 
                                     WUser = CitId ; 
-                                    Acc.ReadAndFindAccount(WUser, Operator, "", Ac.DepCurNm, "User or CIT Cash");
+                                    Acc.ReadAndFindAccount(WUser, "", "", Operator, "", Ac.DepCurNm, "User or CIT Cash");
                                     if (Acc.RecordFound == false)
                                     {
                                         ErrorFound = false;
@@ -1479,3 +1478,5 @@ namespace RRDM4ATMs
         }
     }
 }
+
+

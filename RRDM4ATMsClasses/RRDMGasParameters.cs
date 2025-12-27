@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using System.Text;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Collections;
 using System.Data;
@@ -44,8 +44,7 @@ namespace RRDM4ATMs
         public DataTable DataTableAllParameters = new DataTable();
         public int TotalSelected;
 
-        readonly string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        readonly string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         // READ Parameters Fields
         private void ReadParametersFields(SqlDataReader rdr)
@@ -1867,3 +1866,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

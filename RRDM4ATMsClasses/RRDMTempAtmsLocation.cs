@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -66,8 +66,7 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         // Read Fields
         private void ReadFields(SqlDataReader rdr)
@@ -675,7 +674,7 @@ namespace RRDM4ATMs
             public static List<ATMDetails> GetListofATMs()
             {
                 List<ATMDetails> ListATMs = new List<ATMDetails>();
-                string CS = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+                string CS = AppConfig.GetConnectionString("ATMSConnectionString");
                 using (SqlConnection con = new SqlConnection(CS))
                 {
                     try
@@ -720,7 +719,7 @@ namespace RRDM4ATMs
             public static ATMDetails GetATMDetails(Int32 Id)
             {
                 ATMDetails Rec = null;
-                string CS = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+                string CS = AppConfig.GetConnectionString("ATMSConnectionString");
                 using (SqlConnection con = new SqlConnection(CS))
                 {
                     try
@@ -769,7 +768,7 @@ namespace RRDM4ATMs
             public static List<ATMDistrict> GetListofDistricts()
             {
                 List<ATMDistrict> ListDistricts = new List<ATMDistrict>();
-                string CS = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+                string CS = AppConfig.GetConnectionString("ATMSConnectionString");
                 using (SqlConnection con = new SqlConnection(CS))
                 {
                     try
@@ -803,7 +802,7 @@ namespace RRDM4ATMs
             public static List<ATMDistrict> GetListofDistrictsInGroup(int GroupNo)
             {
                 List<ATMDistrict> ListDistricts = new List<ATMDistrict>();
-                string CS = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+                string CS = AppConfig.GetConnectionString("ATMSConnectionString");
                 using (SqlConnection con = new SqlConnection(CS))
                 {
                     try
@@ -848,7 +847,7 @@ namespace RRDM4ATMs
             public static List<ATMDistrict> GetListofDistrictsInGroupForUser(int GroupNo, string UserId)
             {
                 List<ATMDistrict> ListDistricts = new List<ATMDistrict>();
-                string CS = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+                string CS = AppConfig.GetConnectionString("ATMSConnectionString");
                 using (SqlConnection con = new SqlConnection(CS))
                 {
                     try
@@ -901,4 +900,6 @@ namespace RRDM4ATMs
       
     }
 }
+
+
 

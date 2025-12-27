@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Collections;
 using System.Globalization;
@@ -20,6 +20,9 @@ namespace RRDM4ATMs
         public string CategoryName;
 
         public string Origin;
+        public string CostCentre;
+        public string Product;
+        public string TransTypeAtOrigin;
         public int AtmGroup;
 
         public bool IsOneMatchingCateg;
@@ -50,11 +53,11 @@ namespace RRDM4ATMs
         public int TotalReconc;
         public int TotalNotReconc;
         public int TotalUnMatchedRecords;
+        public int TotalCatForUser;
 
         string SqlString; // Do not delete 
 
-        readonly string connectionString = ConfigurationManager.ConnectionStrings
-            ["ATMSConnectionString"].ConnectionString;
+        readonly string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         // Reconc Cat Reader Fields 
         private void ReconcCatReaderFields(SqlDataReader rdr)
@@ -314,7 +317,37 @@ namespace RRDM4ATMs
 
                     CatchDetails(ex);
                 }
+
         }
+
+        public void ReadReconcCategoriesNumberForUser(string InUserId)
+        {
+            TotalCatForUser = 0;
+            string countSql = "SELECT COUNT(*) FROM [ATMS].[dbo].[ReconcCategories] WHERE OwnerUserID = @OwnerUserID";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand(countSql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@OwnerUserID", InUserId);
+                        object result = cmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            TotalCatForUser = Convert.ToInt32(result);
+                        }
+                    }
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    CatchDetails(ex);
+                }
+            }
+        }
+
 
         //
         // Methods 
@@ -2160,3 +2193,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

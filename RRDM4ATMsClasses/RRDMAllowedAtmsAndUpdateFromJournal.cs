@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -15,8 +15,7 @@ namespace RRDM4ATMs
     public class RRDMAllowedAtmsAndUpdateFromJournal
     {
         // THIS CLASS PROVIDES A TABLE WITH ALLOWED ATMS FOR THIS USER 
-        string connectionString = ConfigurationManager.ConnectionStrings
-          ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
         RRDMNotesBalances Na = new RRDMNotesBalances();
         RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate(); 
        // UsersAndSignedRecord Ua = new UsersAndSignedRecord();
@@ -139,7 +138,7 @@ namespace RRDM4ATMs
                 //
                 // Insert Performance Record
                 //
-                Pt.InsertPerformanceTrace(Am.BankId, Am.Operator, "LoadTrans", WAtmNo, DateTime.Now); 
+                Pt.InsertPerformanceTrace(Am.BankId, Am.Operator, 0, "LoadTrans", WAtmNo, DateTime.Now, DateTime.Now, "Started"); 
 
                 // Find current status for Money
                 //TEST
@@ -309,3 +308,4 @@ namespace RRDM4ATMs
 
     }
 }
+

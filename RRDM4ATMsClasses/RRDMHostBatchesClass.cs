@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -49,8 +49,7 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput; 
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
         //
         // READ Host File Based on batch no  
         //
@@ -345,3 +344,5 @@ namespace RRDM4ATMs
         }
     }
 }
+
+

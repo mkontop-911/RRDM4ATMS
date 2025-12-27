@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 ////using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -35,8 +35,7 @@ namespace RRDM4ATMs
         public int TotalSelected;
         string SqlString; // Do not delete
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
         //
         // READ UserVsAuthorisation and FILL Table
         // CALLED FROM FORM13
@@ -534,3 +533,5 @@ namespace RRDM4ATMs
        
     }
 }
+
+

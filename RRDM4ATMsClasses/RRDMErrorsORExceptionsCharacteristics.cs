@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -85,8 +85,7 @@ namespace RRDM4ATMs
 
         RRDMMatchingMasksVsMetaExceptions Rme = new RRDMMatchingMasksVsMetaExceptions(); 
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         // Define the data table 
         public DataTable ExceptionsCharacteristicsTable = new DataTable();
@@ -844,3 +843,5 @@ namespace RRDM4ATMs
         }
     }
 }
+
+

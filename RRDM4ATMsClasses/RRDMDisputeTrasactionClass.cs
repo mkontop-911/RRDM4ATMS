@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 
@@ -77,8 +77,7 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput; 
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-            ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
        
         // READ DISPUTE Transaction 
@@ -638,3 +637,5 @@ namespace RRDM4ATMs
       WHERE DisputeNumber = 6 */
     }
 }
+
+

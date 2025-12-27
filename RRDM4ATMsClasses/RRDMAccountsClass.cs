@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Text;
 
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 using System.Collections;
@@ -58,8 +58,7 @@ namespace RRDM4ATMs
 
         RRDMGasParameters Gp = new RRDMGasParameters();  
 
-        readonly string connectionString = ConfigurationManager.ConnectionStrings
-                                  ["ATMSConnectionString"].ConnectionString;
+        readonly string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         // Account Fields
         private void ReadAccountFields(SqlDataReader rdr)
@@ -2591,3 +2590,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

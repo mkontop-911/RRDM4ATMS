@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Collections;
 using System.IO;
@@ -70,8 +70,7 @@ namespace RRDM4ATMs
         public int TotalSelected;
         string SqlString; // Do not delete 
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-            ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
         //
         // Methods 
         // READ Specific by SeqNo
@@ -1367,3 +1366,5 @@ namespace RRDM4ATMs
         }   
     }
 }
+
+

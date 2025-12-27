@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.IO;
 using System.Collections;
@@ -18,8 +18,7 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
         // 
         public void CreateBulk_And_STD_RRDM_Tables(string InFullPath_01, string InTableId, string InDelimiter)
         {
@@ -1415,3 +1414,5 @@ namespace RRDM4ATMs
       
     }
 }
+
+

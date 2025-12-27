@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -127,6 +127,7 @@ namespace RRDM4ATMs
         public string RequestorMachine;
         public string Command;
         public int Priority;
+        public string BatchID;
     
         public string AtmNo;
         public string BankID;
@@ -165,7 +166,7 @@ namespace RRDM4ATMs
         // Define the data table 
         public DataTable QueueJournalTable = new DataTable();
 
-        string connectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         // READ a single JTMQueue row which is the oldest in the queue and with the highest priority
         public void ReadSingleJTMQueueByPriority()
@@ -717,7 +718,7 @@ namespace RRDM4ATMs
         //    ErrorFound = false;
         //    ErrorOutput = "";
         //    int ReturnCode = -1;
-        //    string connectionString = ConfigurationManager.ConnectionStrings["ATMSJournalsConnectionString"].ConnectionString;
+        //    string connectionString = AppConfig.GetConnectionString("ATMSJournalsConnectionString");
 
         //    using (SqlConnection conn = new SqlConnection(connectionString))
         //    {
@@ -775,7 +776,7 @@ namespace RRDM4ATMs
             ErrorFound = false;
             ErrorOutput = "";
             int ReturnCode = -1;
-            connectionString = ConfigurationManager.ConnectionStrings["ATMSJournalsConnectionString"].ConnectionString;
+            connectionString = AppConfig.GetConnectionString("ATMSJournalsConnectionString");
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -961,3 +962,5 @@ namespace RRDM4ATMs
       
     }
 }
+
+

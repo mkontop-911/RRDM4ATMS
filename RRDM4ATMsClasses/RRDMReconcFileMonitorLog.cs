@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 // using System.IO;
 
@@ -56,7 +56,7 @@ namespace RRDM4ATMs
         public DataTable DataTableLast_20_Journals = new DataTable();
 
         // Uses AgentConnection String
-        string connectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
         // Read Fields 
         private void ReadFields(SqlDataReader rdr)
         {
@@ -1756,7 +1756,7 @@ namespace RRDM4ATMs
             ErrorFound = true;
             ErrorOutput = "An error occured while READING from [ReconcFileMonitorLog]... ";
 
-            // string connectionString = ConfigurationManager.ConnectionStrings["AgentConnectionString"].ConnectionString;
+            // string connectionString = AppConfig.GetConnectionString("AgentConnectionString");
 
             string SqlString = "SELECT * FROM [dbo].[ReconcFileMonitorLog]"
                             + " WHERE SeqNo = @SeqNo ";
@@ -1891,7 +1891,7 @@ namespace RRDM4ATMs
             ErrorFound = true;
             ErrorOutput = "An error occured while READING from [ReconcFileMonitorLog]... ";
 
-            // string connectionString = ConfigurationManager.ConnectionStrings["AgentConnectionString"].ConnectionString;
+            // string connectionString = AppConfig.GetConnectionString("AgentConnectionString");
 
             string SqlString = "SELECT * FROM ATMS.[dbo].[ReconcFileMonitorLog]"
                             + " WHERE stpFuid = @stpFuid ";
@@ -2144,3 +2144,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

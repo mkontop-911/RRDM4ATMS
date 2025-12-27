@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 ////using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Windows.Forms;
 
@@ -65,8 +65,7 @@ namespace RRDM4ATMs
 
         public int TotalSelected;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         // Reader Fields 
         private void AuthReaderFields(SqlDataReader rdr)
@@ -1321,8 +1320,7 @@ namespace RRDM4ATMs
            
             string connectionStringShortTime = "";
            
-            connectionStringShortTime = ConfigurationManager.ConnectionStrings
-                     ["ATMSConnectionStringShortTime"].ConnectionString;
+            connectionStringShortTime = AppConfig.GetConnectionString("ATMSConnectionStringShortTime");
             
 
             using (SqlConnection conn =
@@ -1915,3 +1913,5 @@ namespace RRDM4ATMs
        
     }
 }
+
+

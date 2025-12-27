@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -27,8 +27,7 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput; 
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         // Read Record Fields
         private void ReadHstFields(SqlDataReader rdr)
@@ -289,3 +288,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

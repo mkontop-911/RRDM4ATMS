@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 
@@ -27,6 +27,7 @@ namespace RRDM4ATMs
 
         public string RMCateg; //* BDC201, BDC202 etc
         public int RMCategCycle; //*
+        public int MaskRecordId;
 
         public int ActionSeqNo;
 
@@ -170,8 +171,7 @@ namespace RRDM4ATMs
         public bool RecordFound;
         public bool ErrorFound;
         public string ErrorOutput;
-        readonly string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        readonly string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         RRDMAtmsDailyTransHistory Ah = new RRDMAtmsDailyTransHistory();
         RRDMAtmsMainClass Am = new RRDMAtmsMainClass();
@@ -4370,3 +4370,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

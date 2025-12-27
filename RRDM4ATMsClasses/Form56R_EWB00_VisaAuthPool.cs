@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -31,7 +31,7 @@ namespace RRDM4ATMs
             //pass parmeters to report
             try
             {
-                string RSUri = ConfigurationManager.AppSettings["ReportServerUri"];
+                string RSUri = AppConfig.Configuration["ReportServerUri"];
                 string RSReportName = "/EWBankVisaAuthPool";
 
                 // Set the processing mode for the ReportViewer to Remote
@@ -65,3 +65,4 @@ namespace RRDM4ATMs
         }
     }
 }
+

@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 ////using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Collections;
 
@@ -94,8 +94,7 @@ namespace RRDM4ATMs
 
         RRDMMatchingCategories Rc = new RRDMMatchingCategories();
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-            ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         // READ USER FIELDS
         private void ReadUserFields(SqlDataReader rdr)
@@ -1639,3 +1638,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

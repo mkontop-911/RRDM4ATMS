@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Text;
 
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 using System.Collections;
@@ -28,8 +28,7 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput; 
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         // READ BANK 
 
@@ -414,3 +413,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

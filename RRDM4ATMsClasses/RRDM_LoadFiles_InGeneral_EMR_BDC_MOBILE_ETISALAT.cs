@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Windows.Forms;
 
@@ -52,9 +52,9 @@ namespace RRDM4ATMs
         RRDMMatchingTxns_InGeneralTables_BDC Mg = new RRDMMatchingTxns_InGeneralTables_BDC();
         RRDMGasParameters Gp = new RRDMGasParameters();
 
-        readonly string connectionString_ETI = ConfigurationManager.ConnectionStrings["ETISALATConnectionString"].ConnectionString;
-        readonly string ATMSconnectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
-        readonly string recconConnString = ConfigurationManager.ConnectionStrings["ReconConnectionString"].ConnectionString;
+        readonly string connectionString_ETI = AppConfig.GetConnectionString("ETISALATConnectionString");
+        readonly string ATMSconnectionString = AppConfig.GetConnectionString("ATMSConnectionString");
+        readonly string recconConnString = AppConfig.GetConnectionString("ReconConnectionString");
         DateTime WCut_Off_Date;
         DateTime FileDATEresult;
         // 
@@ -98,7 +98,7 @@ namespace RRDM4ATMs
 
             try
             {
-                string DB_Location = ConfigurationManager.AppSettings.Get("DB_Location_Local");
+                string DB_Location = AppConfig.Configuration["DB_Location_Local"];
                 if (DB_Location == "true")
                     DB_Location_Local = true;
                 else
@@ -106,12 +106,12 @@ namespace RRDM4ATMs
                     DB_Location_Local = false;
                 }
 
-                DB_Location = ConfigurationManager.AppSettings.Get("DB_Location_Remote");
+                DB_Location = AppConfig.Configuration["DB_Location_Remote"];
                 // DB_Location = "true"; 
                 if (DB_Location == "true")
                 {
                     DB_Location_Remote = true;
-                    DB_Location_Calling_IP = ConfigurationManager.AppSettings.Get("DB_Location_Calling_IP");
+                    DB_Location_Calling_IP = AppConfig.Configuration["DB_Location_Calling_IP"];
 
                     // '\\172.17.85.25\c$\'+ substring(@fullpath,4,len(@fullpath)-3)
 
@@ -4576,3 +4576,6 @@ namespace RRDM4ATMs
         }
     }
 }
+
+
+

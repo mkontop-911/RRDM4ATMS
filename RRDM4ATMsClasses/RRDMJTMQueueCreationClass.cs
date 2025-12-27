@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -44,8 +44,7 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         RRDMAtmsClass Ac = new RRDMAtmsClass();
 
@@ -83,7 +82,7 @@ namespace RRDM4ATMs
 
                     int I = 0;
 
-                    while (I <= (Jd.ATMsJournalDetailsSelected.Rows.Count - 1))
+                    while (I <= (Jd.ATMsJournalDetailsTable.Rows.Count - 1))
                     {
 
                         Jq.MsgDateTime = DateTime.Now;
@@ -98,21 +97,21 @@ namespace RRDM4ATMs
                         
                         Jq.BatchID = InBatch;
 
-                        Jq.AtmNo = (string)Jd.ATMsJournalDetailsSelected.Rows[I]["AtmNo"];
-                        Jq.BankID = (string)Jd.ATMsJournalDetailsSelected.Rows[I]["BankID"];
-                        Jq.ATMIPAddress = (string)Jd.ATMsJournalDetailsSelected.Rows[I]["ATMIPAddress"];
+                        Jq.AtmNo = (string)Jd.ATMsJournalDetailsTable.Rows[I]["AtmNo"];
+                        Jq.BankID = (string)Jd.ATMsJournalDetailsTable.Rows[I]["BankID"];
+                        Jq.ATMIPAddress = (string)Jd.ATMsJournalDetailsTable.Rows[I]["ATMIPAddress"];
 
-                        Jq.ATMMachineName = (string)Jd.ATMsJournalDetailsSelected.Rows[I]["ATMMachineName"];
-                        Jq.ATMWindowsAuth = (bool)Jd.ATMsJournalDetailsSelected.Rows[I]["ATMWindowsAuth"];
-                        Jq.ATMAccessID = (string)Jd.ATMsJournalDetailsSelected.Rows[I]["ATMAccessID"];
+                        Jq.ATMMachineName = (string)Jd.ATMsJournalDetailsTable.Rows[I]["ATMMachineName"];
+                        Jq.ATMWindowsAuth = (bool)Jd.ATMsJournalDetailsTable.Rows[I]["ATMWindowsAuth"];
+                        Jq.ATMAccessID = (string)Jd.ATMsJournalDetailsTable.Rows[I]["ATMAccessID"];
 
-                        Jq.ATMAccessPassword = (string)Jd.ATMsJournalDetailsSelected.Rows[I]["ATMAccessPassword"];
-                        Jq.TypeOfJournal = (string)Jd.ATMsJournalDetailsSelected.Rows[I]["TypeOfJournal"];
-                        Jq.SourceFileName = (string)Jd.ATMsJournalDetailsSelected.Rows[I]["SourceFileName"];
+                        Jq.ATMAccessPassword = (string)Jd.ATMsJournalDetailsTable.Rows[I]["ATMAccessPassword"];
+                        Jq.TypeOfJournal = (string)Jd.ATMsJournalDetailsTable.Rows[I]["TypeOfJournal"];
+                        Jq.SourceFileName = (string)Jd.ATMsJournalDetailsTable.Rows[I]["SourceFileName"];
 
-                        Jq.SourceFilePath = (string)Jd.ATMsJournalDetailsSelected.Rows[I]["SourceFilePath"];
-                        Jq.DestnFilePath = (string)Jd.ATMsJournalDetailsSelected.Rows[I]["DestnFilePath"];
-                        Jq.Operator = (string)Jd.ATMsJournalDetailsSelected.Rows[I]["Operator"];
+                        Jq.SourceFilePath = (string)Jd.ATMsJournalDetailsTable.Rows[I]["SourceFilePath"];
+                        Jq.DestnFilePath = (string)Jd.ATMsJournalDetailsTable.Rows[I]["DestnFilePath"];
+                        Jq.Operator = (string)Jd.ATMsJournalDetailsTable.Rows[I]["Operator"];
 
                         Jq.InsertNewRecordInJTMQueue();
 
@@ -144,3 +143,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

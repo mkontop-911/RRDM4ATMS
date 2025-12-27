@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -44,8 +44,7 @@ namespace RRDM4ATMs
 
         string SqlString;
 
-        string connectionStringATMs = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionStringATMs = AppConfig.GetConnectionString("ATMSConnectionString");
 
      
         //
@@ -485,3 +484,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

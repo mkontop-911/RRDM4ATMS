@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 //using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Windows.Forms;
 
@@ -38,3 +38,4 @@ namespace RRDM4ATMs
         static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
     }
 }
+

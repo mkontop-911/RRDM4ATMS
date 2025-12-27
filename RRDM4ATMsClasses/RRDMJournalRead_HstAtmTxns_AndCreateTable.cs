@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -15,8 +15,7 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-          ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
         RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
@@ -365,7 +364,7 @@ namespace RRDM4ATMs
                         fuid = (int)HstAtmTxnsDataTable.Rows[K]["fuid"];
                         trandesc = (string)HstAtmTxnsDataTable.Rows[K]["trandesc"];
 
-                        if (trandesc == "ΚΑΤΑΘΕΣΗ")
+                        if (trandesc == "????T?S?")
                         {
                             trandesc = "DEP CHEQUES";
                         }
@@ -1249,3 +1248,5 @@ namespace RRDM4ATMs
       
     }
 }
+
+

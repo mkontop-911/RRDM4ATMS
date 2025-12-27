@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Text;
 using System.Windows.Forms;
 
@@ -103,8 +103,7 @@ namespace RRDM4ATMs
 
         public bool RecordFound;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         //string ViewAtmsMain = "[ATMS].[dbo].[ViewAtmsMainVsUserOwners]";
 
@@ -1817,3 +1816,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

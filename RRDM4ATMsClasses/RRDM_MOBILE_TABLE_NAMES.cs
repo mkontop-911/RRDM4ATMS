@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 //using System.Windows.Forms;
@@ -34,3 +34,4 @@ namespace RRDM4ATMs
 
     }
 }
+

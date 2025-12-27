@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 namespace RRDM4ATMs
 {
@@ -17,8 +17,7 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-          ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         RRDMNotesBalances Na = new RRDMNotesBalances();
         RRDMTracesReadUpdate Ta = new RRDMTracesReadUpdate();
@@ -330,7 +329,7 @@ namespace RRDM4ATMs
 
                             fuid = (int)rdr["fuid"];
                             trandesc = (string)rdr["trandesc"]; // Description 
-                            if (trandesc == "ΚΑΤΑΘΕΣΗ")
+                            if (trandesc == "????T?S?")
                             {
                                 trandesc = "DEP CHEQUES";
                             }
@@ -701,7 +700,7 @@ namespace RRDM4ATMs
                                 else Tc.SuccTran = false;
 
                                 // ADD THE TRANSACTION 
-                                Tc.InsertTransInPool(InAtmNo);
+                                Tc.InsertTransInPool(WOperator, InAtmNo);
 
                                 //   PresError = (string)rdr["PresError"];
 
@@ -764,7 +763,7 @@ namespace RRDM4ATMs
 
                                     // GET The just inserted last Error No
                                     //
-                                    Ec.ReadLastErrorNo(WOperator, WAtmNo, WSesNo); // GET THE just inserted error number 
+                                    //Ec.ReadLastErrorNo(WOperator, WAtmNo, WSesNo); // GET THE just inserted error number 
 
                                     // Update Error Number in transaction 
 
@@ -969,7 +968,7 @@ namespace RRDM4ATMs
                                 // b) CIT provider STATEMENT 
 
                                 Ct.InsertTranForCashOut(WSignedId, WSignRecordNo, WOperator,
-                                    InAtmNo, WSesNo, StartTrxn, EndTrxn);
+                                    InAtmNo, WSesNo, StartTrxn, EndTrxn, 0);
 
                             }
 
@@ -1010,7 +1009,7 @@ namespace RRDM4ATMs
 
             Am.ReadAtmsMainSpecific(WAtmNo);
 
-            Ec.ReadAllErrorsTableForCounters(WOperator, "EWB110", WAtmNo);
+            Ec.ReadAllErrorsTableForCounters(WOperator, "EWB110", WAtmNo, WSesNo, "All");
             Am.ErrOutstanding = Ec.NumOfErrors;
             Am.ProcessMode = Ta.ProcessMode;
 
@@ -1169,7 +1168,7 @@ namespace RRDM4ATMs
             Tc.CardNo = "";
             Tc.CardOrigin = 1;
 
-            Acc.ReadAndFindAccount("1000", WOperator, InAtmNo, InCurrNm, "ATM Cash");
+            Acc.ReadAndFindAccount("1000", "", "", WOperator, InAtmNo, InCurrNm, "ATM Cash");
             if (Acc.RecordFound == false)
             {
                 ErrorFound = true;
@@ -1191,7 +1190,9 @@ namespace RRDM4ATMs
             Tc.SuccTran = true;
 
             // ADD THE TRANSACTION 
-            Tc.InsertTransInPool(InAtmNo);
+            Tc.InsertTransInPool(WOperator, InAtmNo);
         }
     }
 }
+
+

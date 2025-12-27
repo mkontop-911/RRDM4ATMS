@@ -1,18 +1,18 @@
-﻿using System;
-using System.Data.SqlClient;
+using System;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Collections;
 using System.IO;
 using System.Data;
 using System.Drawing;
+using RRDM4ATMs;
 
 namespace RRDM4ATMsClasses
 {
     public class RRDM_AuditTrailClass_NEW
     {
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         DateTime NullPastDate = new DateTime(1900, 01, 01);
 
@@ -400,3 +400,5 @@ namespace RRDM4ATMsClasses
         }
     }
 }
+
+

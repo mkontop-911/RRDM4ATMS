@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Data;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -41,8 +41,7 @@ namespace RRDM4ATMs
 
         DateTime NullPastDate = new DateTime(1900, 01, 01);
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
         // Holiday Fields 
         private void ReadHolidaysFields(SqlDataReader rdr)
         {
@@ -784,3 +783,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -15,8 +15,7 @@ namespace RRDM4ATMs
         public bool Major_ErrorFound;
         public string ErrorOutput;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-          ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
         RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
@@ -693,10 +692,10 @@ namespace RRDM4ATMs
 
                                     if (
                                         (
-                                           TransactionType == 11  // trandesc == "WITHDRAWAL" OR trandesc == "ΑΝΑΛΗΨΗ"
+                                           TransactionType == 11  // trandesc == "WITHDRAWAL" OR trandesc == "???????"
                                         || TransactionType == 23 // trandesc == "DEPOSIT_BNA" // BNA // 
                                         || TransactionType == 24 // trandesc == "DEPOSIT" // Cheque Deposit // 
-                                        || TransactionType == 25  //trandesc == "ΚΑΤΑΘΕΣΗ" // Envelop Deposit // 
+                                        || TransactionType == 25  //trandesc == "????T?S?" // Envelop Deposit // 
                                         || TransactionType == 33  //trandesc == "TRANSFE" // Transfer //
                                         )
                                         & Result.Substring(0, 2) == "OK" & TranAmount > 0)
@@ -1736,10 +1735,10 @@ namespace RRDM4ATMs
 
                                     if (
                                         (
-                                           TransactionType == 11  // trandesc == "WITHDRAWAL" OR trandesc == "ΑΝΑΛΗΨΗ"
+                                           TransactionType == 11  // trandesc == "WITHDRAWAL" OR trandesc == "???????"
                                         || TransactionType == 23 // trandesc == "DEPOSIT_BNA" // BNA // 
                                         || TransactionType == 24 // trandesc == "DEPOSIT" // Cheque Deposit // 
-                                        || TransactionType == 25  //trandesc == "ΚΑΤΑΘΕΣΗ" // Envelop Deposit // 
+                                        || TransactionType == 25  //trandesc == "????T?S?" // Envelop Deposit // 
                                         || TransactionType == 33  //trandesc == "TRANSFE" // Transfer //
                                         )
                                         & Result.Substring(0, 2) == "OK" & TranAmount > 0)
@@ -2786,3 +2785,5 @@ namespace RRDM4ATMs
        
     }
 }
+
+

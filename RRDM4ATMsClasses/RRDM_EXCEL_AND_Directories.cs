@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Collections;
 using System.IO;
@@ -71,7 +71,7 @@ namespace RRDM4ATMs
                 excelApp.Workbooks.Add();
 
                 // single worksheet
-                Excel._Worksheet workSheet = excelApp.ActiveSheet;
+                Excel._Worksheet workSheet = (Excel._Worksheet)excelApp.ActiveSheet;
 
                 // column headings
                 for (var i = 0; i < tbl.Columns.Count; i++)
@@ -149,7 +149,7 @@ namespace RRDM4ATMs
         {
             // SEE Form80b3 
             bool IsSuccess = false; 
-            string ATMSconnectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+            string ATMSconnectionString = AppConfig.GetConnectionString("ATMSConnectionString");
            
                 string SqlString = " SELECT * FROM " + InFileName;
             try
@@ -891,3 +891,4 @@ namespace RRDM4ATMs
 
     }
 }
+

@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Linq;
 
@@ -85,9 +85,8 @@ namespace RRDM4ATMs
 
         string SqlString; // Do not delete 
 
-        readonly string connectionStringATMs = ConfigurationManager.ConnectionStrings
-            ["ATMSConnectionString"].ConnectionString;
-        //readonly string connectionStringRec = ConfigurationManager.ConnectionStrings
+        readonly string connectionStringATMs = AppConfig.GetConnectionString("ATMSConnectionString");
+        //readonly string connectionStringRec = AppConfig.Configuration.GetConnectionString
         //    ["ReconConnectionString"].ConnectionString;
 
         RRDMMatchingCategories Mc = new RRDMMatchingCategories();
@@ -2970,13 +2969,13 @@ namespace RRDM4ATMs
             string connectionString = "";
             //if (W_Application == "ETISALAT")
             //{
-            //    connectionString = ConfigurationManager.ConnectionStrings["ETISALATConnectionString"].ConnectionString;
+            //    connectionString = AppConfig.GetConnectionString("ETISALATConnectionString");
             //}
             //if (W_Application == "QAHERA")
             //{
-            //    connectionString = ConfigurationManager.ConnectionStrings["QAHERAConnectionString"].ConnectionString;
+            //    connectionString = AppConfig.GetConnectionString("QAHERAConnectionString");
             //}
-            connectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+            connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
             if (IS_Matching_At_SET_DATE == true)
             {
@@ -3204,14 +3203,14 @@ namespace RRDM4ATMs
             string connectionString = ""; 
             //if (W_Application == "ETISALAT")
             //{
-            //    connectionString = ConfigurationManager.ConnectionStrings["ETISALATConnectionString"].ConnectionString;
+            //    connectionString = AppConfig.GetConnectionString("ETISALATConnectionString");
             //}
             //if (W_Application == "QAHERA")
             //{
-            //    connectionString = ConfigurationManager.ConnectionStrings["QAHERAConnectionString"].ConnectionString;
+            //    connectionString = AppConfig.GetConnectionString("QAHERAConnectionString");
             //}
 
-            connectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+            connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
 
 
@@ -3436,14 +3435,14 @@ namespace RRDM4ATMs
             string connectionString = "";
             //if (W_Application == "ETISALAT")
             //{
-            //    connectionString = ConfigurationManager.ConnectionStrings["ETISALATConnectionString"].ConnectionString;
+            //    connectionString = AppConfig.GetConnectionString("ETISALATConnectionString");
             //}
             //if (W_Application == "QAHERA")
             //{
-            //    connectionString = ConfigurationManager.ConnectionStrings["QAHERAConnectionString"].ConnectionString;
+            //    connectionString = AppConfig.GetConnectionString("QAHERAConnectionString");
             //}
 
-            connectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+            connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
 
             using (SqlConnection conn =
@@ -5700,4 +5699,6 @@ namespace RRDM4ATMs
         }
     }
 }
+
+
 

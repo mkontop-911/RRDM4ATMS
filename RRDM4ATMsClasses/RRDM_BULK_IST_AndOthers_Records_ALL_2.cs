@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
 //
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.IO;
 using System.Linq; 
 using System.Text;
@@ -68,12 +68,12 @@ namespace RRDM4ATMs
 
 
         // Uses ReconConnection String
-        string connectionString = ConfigurationManager.ConnectionStrings["ReconConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ReconConnectionString");
 
-        //string connectionString = ConfigurationManager.ConnectionStrings
+        //string connectionString = AppConfig.Configuration.GetConnectionString
         // ["ATMSConnectionString"].ConnectionString;
 
-        //string ReconConnectionString = ConfigurationManager.ConnectionStrings
+        //string ReconConnectionString = AppConfig.Configuration.GetConnectionString
         //["RRDM_Reconciliation_ITMX"].ConnectionString;
 
         // Read Fields In Table 
@@ -1272,7 +1272,7 @@ namespace RRDM4ATMs
             bool Correct = false; 
 
             //InTableId = "[ETISALAT].[dbo].[BULK_ETISALAT_TPF_TXNS_ALL]";
-            //InConnectionString = ConfigurationManager.ConnectionStrings["ETISALATConnectionString"].ConnectionString;
+            //InConnectionString = AppConfig.GetConnectionString("ETISALATConnectionString");
             //InInputFilePath = "C:\\VBoxShared\\ETISALAT_TPF_TXNS_20250110.001";
 
             //*******************************************
@@ -2102,3 +2102,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -110,8 +110,7 @@ namespace RRDM4ATMs
 
         //string MatchingMasterFileId = "[RRDM_Reconciliation_ITMX].[dbo].[tblMatchingTxnsMasterPoolITMX]";
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-            ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         //
         // Read Fields
@@ -936,3 +935,5 @@ namespace RRDM4ATMs
      
     }
 }
+
+

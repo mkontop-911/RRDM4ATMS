@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Windows.Forms;
 
@@ -65,8 +65,7 @@ namespace RRDM4ATMs
         // DATATable for Grid 
         // public DataTable GridDays = new DataTable();
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
    //     NotesBalances Na = new NotesBalances();
     //    DepositsClass Dc = new DepositsClass();
@@ -375,6 +374,11 @@ namespace RRDM4ATMs
         //
         // This record is created at Repl-End in EJournal operation just after Cash In Time at 9:00 am 
         // 
+        public void InsertInAtmsStats(string InOperator, string InAtmNo, int InReplCycle, DateTime InDate)
+        {
+             InsertInAtmsStatsProcess(InOperator, InAtmNo, InReplCycle, 0);
+        }
+
         public void InsertInAtmsStatsProcess(string InOperator, 
                                 string InAtmNo, int InReplCycle, decimal InCashLoaded)
         {
@@ -554,3 +558,5 @@ if (Environment.MachineName== "RRDM-PANICOS")
      
     }
 }
+
+

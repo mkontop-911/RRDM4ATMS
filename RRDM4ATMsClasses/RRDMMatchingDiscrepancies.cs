@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -44,8 +44,7 @@ namespace RRDM4ATMs
         // Define the data table 
         public DataTable TableMatchingDiscrepancies = new DataTable();
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;    
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");    
      
         int rows;
 
@@ -202,3 +201,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

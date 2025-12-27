@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 //using System.Collections;
 
@@ -30,8 +30,7 @@ namespace RRDM4ATMs
         public bool RecordFound;
         public bool ErrorFound;
         public string ErrorOutput;
-        readonly string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        readonly string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         //
         // READ Selection Physical Inspection records and fill Table 
@@ -467,4 +466,6 @@ namespace RRDM4ATMs
        
     }
     }
+
+
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using System.Text;
 using System.Security.Cryptography;
@@ -12,7 +12,7 @@ namespace RRDM4ATMs
         public RRDMEncryptPasswordOrField_2() : base() { }
         // Declarations 
 
-        //string connectionString = ConfigurationManager.ConnectionStrings
+        //string connectionString = AppConfig.Configuration.GetConnectionString
 
         //
         // Generate Password 
@@ -166,3 +166,4 @@ namespace RRDM4ATMs
 
     }
 }
+

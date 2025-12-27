@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Windows.Forms;
 
@@ -107,8 +107,8 @@ namespace RRDM4ATMs
 
         public int TotalSelected;
 
-        readonly string ATMSconnectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
-        readonly string recconConnString = ConfigurationManager.ConnectionStrings["ReconConnectionString"].ConnectionString;
+        readonly string ATMSconnectionString = AppConfig.GetConnectionString("ATMSConnectionString");
+        readonly string recconConnString = AppConfig.GetConnectionString("ReconConnectionString");
 
         // Read Fields In Table 
         private void ReadFieldsInTable(SqlDataReader rdr)
@@ -9917,10 +9917,8 @@ namespace RRDM4ATMs
             string PhysicalName = "";
 
             string ConnectionString = "EMPTY"; 
-            string ETISALATConnectionString = ConfigurationManager.ConnectionStrings
-                  ["ETISALATConnectionString"].ConnectionString;
-            string QAHERAConnectionString = ConfigurationManager.ConnectionStrings
-                  ["QAHERAConnectionString"].ConnectionString;
+            string ETISALATConnectionString = AppConfig.GetConnectionString("ETISALATConnectionString");
+            string QAHERAConnectionString = AppConfig.GetConnectionString("QAHERAConnectionString");
 
             DateTime MaxDt = NullPastDate;
 
@@ -13175,3 +13173,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

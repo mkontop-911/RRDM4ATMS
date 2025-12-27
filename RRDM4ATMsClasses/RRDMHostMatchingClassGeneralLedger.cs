@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Text;
 
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -79,8 +79,7 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput; 
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass();
 
@@ -335,3 +334,5 @@ namespace RRDM4ATMs
         }    
     }
 }
+
+

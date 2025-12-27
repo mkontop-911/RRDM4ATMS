@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Text;
 
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 
@@ -69,8 +69,7 @@ namespace RRDM4ATMs
 
         //RRDMMatchingTxns_MasterPoolITMX Mp = new RRDMMatchingTxns_MasterPoolITMX(); 
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-            ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         DateTime NullPastDate = new DateTime(1900, 01, 01);
 
@@ -877,3 +876,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

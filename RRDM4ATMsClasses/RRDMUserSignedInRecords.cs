@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 ////using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Collections;
 
@@ -77,8 +77,7 @@ namespace RRDM4ATMs
         RRDMDisputesTableClass Di = new RRDMDisputesTableClass();
 
         RRDMMatchingCategories Rc = new RRDMMatchingCategories();
-        readonly string connectionString = ConfigurationManager.ConnectionStrings
-            ["ATMSConnectionString"].ConnectionString;  
+        readonly string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");  
 
         // READ SIGNED RECORD FIELDS 
         private void ReadSignedRecFields(SqlDataReader rdr)
@@ -587,3 +586,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

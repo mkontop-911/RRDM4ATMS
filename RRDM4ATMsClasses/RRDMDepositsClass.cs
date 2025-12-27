@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 
@@ -109,8 +109,7 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput; 
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         public DataTable DataTableNotes = new DataTable();
         public DataTable DataTableTotals = new DataTable();
@@ -683,3 +682,5 @@ namespace RRDM4ATMs
        
     }
 }
+
+

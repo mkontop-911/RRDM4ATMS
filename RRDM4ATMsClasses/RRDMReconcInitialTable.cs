@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Text;
 //
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 
@@ -36,7 +36,7 @@ namespace RRDM4ATMs
         public string ErrorOutput;
 
         // Uses ReconConnection String
-        string connectionString = ConfigurationManager.ConnectionStrings["ReconConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ReconConnectionString");
 
 
         //#region Create UNIV InMem DataTable
@@ -350,3 +350,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

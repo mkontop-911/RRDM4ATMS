@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.IO;
 
@@ -36,8 +36,7 @@ namespace RRDM4ATMs
         public int TotalSelected;
         string SqlString; // Do not delete 
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-            ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
         //
         // Methods 
         // READ fields  
@@ -465,3 +464,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

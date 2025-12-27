@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Data;
 ////using System.Windows.Forms;
-//using System.Data.SqlClient;
+//using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Text; 
 
@@ -12,8 +12,7 @@ namespace RRDM4ATMs
     {
         public RRDMJournalAndAllowUpdate() : base() { }
         // THIS CLASS PROVIDES A TABLE WITH ALLOWED ATMS FOR THIS USER 
-        readonly string connectionString = ConfigurationManager.ConnectionStrings
-          ["ATMSConnectionString"].ConnectionString;
+        readonly string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
         RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
         RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate(); 
        // UsersAndSignedRecord Ua = new UsersAndSignedRecord();
@@ -446,3 +445,5 @@ namespace RRDM4ATMs
         }
     }
 }
+
+

@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 //using System.Linq;
 
@@ -40,8 +40,7 @@ namespace RRDM4ATMs
 
         string SqlString; // Do not delete 
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-            ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         string WSignedId;
         string WOperator;
@@ -455,3 +454,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -103,8 +103,7 @@ namespace RRDM4ATMs
 
         //string ErrorsFileId = "[ATMS].[dbo].[ErrorsTable]";
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         RRDMTransAndTransToBePostedClass Tp = new RRDMTransAndTransToBePostedClass();
         RRDMAccountsClass Acc = new RRDMAccountsClass();
@@ -905,3 +904,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

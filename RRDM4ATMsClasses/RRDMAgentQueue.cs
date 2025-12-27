@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -121,7 +121,7 @@ namespace RRDM4ATMs
 
         // Define the data table 
         public DataTable AgentServiceTable = new DataTable();
-        readonly string connectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+        readonly string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         // READ a single AgentQueue row which is the oldest in the queue and with the highest priority
         public void ReadSingleAgentRequestByPriority()
@@ -503,3 +503,5 @@ namespace RRDM4ATMs
        
     }
 }
+
+

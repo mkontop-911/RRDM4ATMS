@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 // using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 //multilingual
 using System.Resources;
@@ -36,8 +36,7 @@ namespace RRDM4ATMs
 
         DateTime LongDateInPast = new DateTime(1900, 01, 01);
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         RRDMAtmsClass Ac = new RRDMAtmsClass();
 
@@ -575,3 +574,5 @@ namespace RRDM4ATMs
         }
     }
 }
+
+

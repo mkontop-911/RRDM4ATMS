@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Text;
 
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 using System.Collections;
@@ -50,8 +50,7 @@ namespace RRDM4ATMs
         // Define the data table 
         public DataTable ActionsDataTable;
         
-        readonly string connectionString = ConfigurationManager.ConnectionStrings
-                                  ["ATMSConnectionString"].ConnectionString;
+        readonly string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         // Action Fields
         private void ReadActionFields(SqlDataReader rdr)
@@ -754,3 +753,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

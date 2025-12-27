@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Windows.Forms;
 
@@ -51,8 +51,8 @@ namespace RRDM4ATMs
         RRDMMatchingTxns_InGeneralTables_BDC Mg = new RRDMMatchingTxns_InGeneralTables_BDC();
         RRDMGasParameters Gp = new RRDMGasParameters();
 
-        readonly string ATMSconnectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
-        readonly string recconConnString = ConfigurationManager.ConnectionStrings["ReconConnectionString"].ConnectionString;
+        readonly string ATMSconnectionString = AppConfig.GetConnectionString("ATMSConnectionString");
+        readonly string recconConnString = AppConfig.GetConnectionString("ReconConnectionString");
         DateTime WCut_Off_Date;
         DateTime FileDATEresult;
         // 
@@ -781,8 +781,7 @@ namespace RRDM4ATMs
 
             string WFullPath_01 = InFullPath;
 
-            string QAHERAConnectionString = ConfigurationManager.ConnectionStrings
-                  ["QAHERAConnectionString"].ConnectionString;
+            string QAHERAConnectionString = AppConfig.GetConnectionString("QAHERAConnectionString");
 
             string SPName = "[QAHERA].[dbo].[BULK_SP_QAHERA_TPF_TXNS]";
 
@@ -902,8 +901,7 @@ namespace RRDM4ATMs
 
             string WFullPath_01 = InFullPath;
 
-            string QAHERAConnectionString = ConfigurationManager.ConnectionStrings
-                  ["QAHERAConnectionString"].ConnectionString;
+            string QAHERAConnectionString = AppConfig.GetConnectionString("QAHERAConnectionString");
 
             string SPName = "[QAHERA].[dbo].[BULK_SP_QAHERA_MEEZA_TXNS]";
 
@@ -1021,8 +1019,7 @@ namespace RRDM4ATMs
 
             string WFullPath_01 = InFullPath;
 
-            string QAHERAConnectionString = ConfigurationManager.ConnectionStrings
-                  ["QAHERAConnectionString"].ConnectionString;
+            string QAHERAConnectionString = AppConfig.GetConnectionString("QAHERAConnectionString");
 
             string SPName = "[QAHERA].[dbo].[BULK_SP_QAHERA_AMAN_TXNS]";
 
@@ -1140,8 +1137,7 @@ namespace RRDM4ATMs
 
             string WFullPath_01 = InFullPath;
 
-            string QAHERAConnectionString = ConfigurationManager.ConnectionStrings
-                  ["QAHERAConnectionString"].ConnectionString;
+            string QAHERAConnectionString = AppConfig.GetConnectionString("QAHERAConnectionString");
 
             string SPName = "[QAHERA].[dbo].[BULK_SP_QAHERA_FAWRY_TXNS]";
             //[dbo].[BULK_SP__QAHERA_FAWRY_TXNS]
@@ -1258,8 +1254,7 @@ namespace RRDM4ATMs
 
             string WFullPath_01 = InFullPath;
 
-            string QAHERAConnectionString = ConfigurationManager.ConnectionStrings
-                  ["QAHERAConnectionString"].ConnectionString;
+            string QAHERAConnectionString = AppConfig.GetConnectionString("QAHERAConnectionString");
 
             string SPName = "[QAHERA].[dbo].[BULK_SP_QAHERA_DISPUTE_TXNS]";
             //[dbo].[BULK_SP__QAHERA_FAWRY_TXNS]
@@ -1379,8 +1374,7 @@ namespace RRDM4ATMs
 
             string WFullPath_01 = InFullPath;
 
-            string QAHERAConnectionString = ConfigurationManager.ConnectionStrings
-                  ["QAHERAConnectionString"].ConnectionString;
+            string QAHERAConnectionString = AppConfig.GetConnectionString("QAHERAConnectionString");
 
             string SPName = "[QAHERA].[dbo].[BULK_SP_QAHERA_SURPLUS_TXNS]";
             //[dbo].[BULK_SP__QAHERA_FAWRY_TXNS]
@@ -1500,8 +1494,7 @@ namespace RRDM4ATMs
 
             string WFullPath_01 = InFullPath;
 
-            string QAHERAConnectionString = ConfigurationManager.ConnectionStrings
-                  ["QAHERAConnectionString"].ConnectionString;
+            string QAHERAConnectionString = AppConfig.GetConnectionString("QAHERAConnectionString");
 
             string SPName = "[QAHERA].[dbo].[BULK_SP_QAHERA_NODE_TOTALS_TXNS]";
             //[dbo].[BULK_SP__QAHERA_FAWRY_TXNS]
@@ -1618,8 +1611,7 @@ namespace RRDM4ATMs
 
             string WFullPath_01 = InFullPath;
 
-            string QAHERAConnectionString = ConfigurationManager.ConnectionStrings
-                  ["QAHERAConnectionString"].ConnectionString;
+            string QAHERAConnectionString = AppConfig.GetConnectionString("QAHERAConnectionString");
 
             string SPName = "[QAHERA].[dbo].[BULK_SP_QAHERA_MEEZA_TOTALS_TXNS]";
             //[dbo].[BULK_SP__QAHERA_FAWRY_TXNS]
@@ -1738,8 +1730,7 @@ namespace RRDM4ATMs
 
             string WFullPath_01 = InFullPath;
 
-            string QAHERAConnectionString = ConfigurationManager.ConnectionStrings
-                  ["QAHERAConnectionString"].ConnectionString;
+            string QAHERAConnectionString = AppConfig.GetConnectionString("QAHERAConnectionString");
 
             string SPName = "[QAHERA].[dbo].[BULK_SP_QAHERA_SW34_TXNS]";
 
@@ -2499,3 +2490,5 @@ namespace RRDM4ATMs
         }
     }
 }
+
+

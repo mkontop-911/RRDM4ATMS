@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Configuration;
 using System.Data;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
@@ -65,8 +65,7 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput;
 
-        readonly string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        readonly string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         //
         // Convert Journal
@@ -1300,8 +1299,7 @@ namespace RRDM4ATMs
             Ac.ReadAtm(InAtmNo);
             EjournalTypeId = Ac.EjournalTypeId;
 
-            string connectionString_AUDI = ConfigurationManager.ConnectionStrings
-                  ["JournalsConnectionString_AUDI"].ConnectionString;
+            string connectionString_AUDI = AppConfig.GetConnectionString("JournalsConnectionString_AUDI");
 
             //#region Create a new file with sequence number in front of each line
             ////Add sequence number in front of each line of the line
@@ -3481,3 +3479,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

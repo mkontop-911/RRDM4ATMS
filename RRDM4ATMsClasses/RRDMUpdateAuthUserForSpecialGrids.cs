@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 //using System.Windows.Forms;
 using System.Configuration;
@@ -14,10 +14,9 @@ namespace RRDM4ATMs
         public bool ErrorFound;
         public string ErrorOutput; 
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
-        RRDMAllowedAtmsAndUpdateFromJournalΧΧΧΧ Aj = new RRDMAllowedAtmsAndUpdateFromJournalΧΧΧΧ();
+        RRDMAllowedAtmsAndUpdateFromJournal Aj = new RRDMAllowedAtmsAndUpdateFromJournal();
         RRDMUpdateGrids Ug = new RRDMUpdateGrids();
         RRDMTransAndTransToBePostedClass Tc = new RRDMTransAndTransToBePostedClass(); 
 
@@ -79,3 +78,4 @@ namespace RRDM4ATMs
 
     }
 }
+

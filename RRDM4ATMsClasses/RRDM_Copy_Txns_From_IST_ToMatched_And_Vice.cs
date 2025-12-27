@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.IO;
 using System.Collections;
@@ -25,13 +25,11 @@ namespace RRDM4ATMs
         public string ErrorReference;
         public int ret;
 
-        string connectionStringITMX = ConfigurationManager.ConnectionStrings
-             ["ReconConnectionString"].ConnectionString;
+        string connectionStringITMX = AppConfig.GetConnectionString("ReconConnectionString");
 
         string SPName;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         readonly DateTime NullPastDate = new DateTime(1900, 01, 01);
         // 
@@ -2594,8 +2592,7 @@ namespace RRDM4ATMs
             ErrorReference = "";
             ret = -1;
 
-            string connectionStringITMX = ConfigurationManager.ConnectionStrings
-                 ["ReconConnectionString"].ConnectionString;
+            string connectionStringITMX = AppConfig.GetConnectionString("ReconConnectionString");
 
             string SPName = "[RRDM_Reconciliation_ITMX].[dbo].[stp_00_UNDO_RMCYCLE_FILES_MATCHING_CATEGORY_ONLY]";
 
@@ -2658,3 +2655,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

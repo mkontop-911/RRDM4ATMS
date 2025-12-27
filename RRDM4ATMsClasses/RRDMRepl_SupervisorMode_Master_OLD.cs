@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace RRDM4ATMs
@@ -15,8 +15,7 @@ namespace RRDM4ATMs
         public bool Major_ErrorFound;
         public string ErrorOutput;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-          ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         RRDMSessionsNotesBalances Na = new RRDMSessionsNotesBalances();
         RRDMSessionsTracesReadUpdate Ta = new RRDMSessionsTracesReadUpdate();
@@ -1843,3 +1842,5 @@ namespace RRDM4ATMs
       
     }
 }
+
+

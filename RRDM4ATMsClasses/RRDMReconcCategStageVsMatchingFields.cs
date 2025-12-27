@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
+using RRDM4ATMs;
 
 namespace RRDM4ATMsWin
 {
@@ -42,8 +43,7 @@ namespace RRDM4ATMsWin
         public bool ErrorFound;
         public string ErrorOutput;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-           ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         //
         // READ Category vs Matching Fields ALL 
@@ -428,3 +428,5 @@ namespace RRDM4ATMsWin
         }
     }
 }
+
+

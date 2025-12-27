@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Threading;
 using static System.Threading.Thread;
@@ -36,7 +36,7 @@ namespace RRDM4ATMs
         string SqlString; 
 
 
-        string connectionString = ConfigurationManager.ConnectionStrings ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         DateTime NullFutureDate = new DateTime(2050, 12, 31);
 
@@ -283,7 +283,7 @@ namespace RRDM4ATMs
 
             _semaphore= new SemaphoreSlim(NumberOfThreads);
 
-            string sConnectionString = System.Configuration.ConfigurationManager.AppSettings["ConnectionString"];
+            string sConnectionString = AppConfig.Configuration["ConnectionString"];
 
             SqlConnection oConnection;
             SqlCommand oCommand;
@@ -398,7 +398,7 @@ namespace RRDM4ATMs
                 //int rows; 
                 bool ErrorFound = false;
                 string ErrorOutput = "";
-                string connectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+                string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
 
                 using (SqlConnection conn =
@@ -442,7 +442,7 @@ namespace RRDM4ATMs
             //int rows; 
             bool ErrorFound = false;
             string ErrorOutput = "";
-            string connectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
+            string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
 
             using (SqlConnection conn =
@@ -505,4 +505,6 @@ namespace RRDM4ATMs
 
 
 }
+
+
 

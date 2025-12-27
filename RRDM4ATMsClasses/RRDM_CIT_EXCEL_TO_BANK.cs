@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 //using System.Windows.Forms;
@@ -116,8 +116,7 @@ namespace RRDM4ATMs
 
         public DataTable DataTableATMFields = new DataTable();
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-            ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         // Read Table Fields
         private void ReadTableFields_CIT_EXCEL(SqlDataReader rdr)
@@ -2896,3 +2895,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+

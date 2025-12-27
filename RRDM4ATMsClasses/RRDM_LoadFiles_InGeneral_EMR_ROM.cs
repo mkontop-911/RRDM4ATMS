@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 //using System.Windows.Forms;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Windows.Forms;
 
@@ -48,8 +48,8 @@ namespace RRDM4ATMs
         RRDMMatchingTxns_InGeneralTables_BDC Mg = new RRDMMatchingTxns_InGeneralTables_BDC();
         RRDMGasParameters Gp = new RRDMGasParameters();
 
-        readonly string ATMSconnectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
-        readonly string recconConnString = ConfigurationManager.ConnectionStrings["ReconConnectionString"].ConnectionString;
+        readonly string ATMSconnectionString = AppConfig.GetConnectionString("ATMSConnectionString");
+        readonly string recconConnString = AppConfig.GetConnectionString("ReconConnectionString");
         DateTime WCut_Off_Date;
         DateTime FileDATEresult;
         // 
@@ -8397,3 +8397,5 @@ namespace RRDM4ATMs
         }
     }
 }
+
+

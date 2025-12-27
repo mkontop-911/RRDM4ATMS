@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 //using System.Collections.Generic;
 //using System.Linq;
 using System.Text;
 using System.Data;
 using System.Windows.Forms;
 //using System.Threading.Tasks;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using RRDM4ATMs;
 
@@ -20,8 +20,7 @@ namespace RRDM4ATMsWin
         public string Text;
         public string AttachmentPath;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-          ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
 
         public void InsertHelpItem()
         {
@@ -196,3 +195,5 @@ namespace RRDM4ATMsWin
 
     }
 }
+
+

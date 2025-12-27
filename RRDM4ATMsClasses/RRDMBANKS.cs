@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using System.Text;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 using System.Collections;
@@ -56,8 +56,7 @@ namespace RRDM4ATMs
         private bool _ErrorFound;
         private string _ErrorOutput;
 
-        string connectionString = ConfigurationManager.ConnectionStrings
-                                  ["ATMSConnectionString"].ConnectionString;
+        string connectionString = AppConfig.GetConnectionString("ATMSConnectionString");
         // string connectionString;
 
         public string BankId { get { return _BankId; } set { _BankId = value; } }
@@ -96,7 +95,7 @@ namespace RRDM4ATMs
        // {
        //     try
        //     {
-       //         connectionString = ConfigurationManager.ConnectionStrings
+       //         connectionString = AppConfig.Configuration.GetConnectionString
        //["ATMSConnectionString"].ConnectionString;
        //     }
        //     catch (Exception ex)
@@ -1022,3 +1021,5 @@ namespace RRDM4ATMs
 
     }
 }
+
+
