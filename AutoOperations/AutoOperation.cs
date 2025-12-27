@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
+using Microsoft.Extensions.Configuration;
 using System.ComponentModel;
 using System.Drawing;
 using System.Collections;
@@ -74,7 +75,34 @@ namespace AutoOperations
 
     public class RRDM_Auto_Load_Match : Logger
     {
-        public RRDM_Auto_Load_Match() : base() { }
+        private static IConfiguration _staticConfiguration;
+
+        /// <summary>
+        /// Configures the static IConfiguration instance for the class.
+        /// Call this method from consuming applications to inject configuration.
+        /// </summary>
+        /// <param name="configuration">The IConfiguration instance to use</param>
+        public static void ConfigureConfiguration(IConfiguration configuration)
+        {
+            _staticConfiguration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        }
+
+        public RRDM_Auto_Load_Match() : base() 
+        {
+            // Initialize configuration if not already set
+            if (_staticConfiguration == null)
+            {
+                // Fallback: Build configuration from appsettings.json
+                _staticConfiguration = new ConfigurationBuilder()
+                    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .Build();
+            }
+
+            // Initialize connection strings from configuration
+            ATMSconnectionString = _staticConfiguration.GetConnectionString("ATMSConnectionString");
+            recconConnString = _staticConfiguration.GetConnectionString("ReconConnectionString");
+        }
 
         public bool RecordFound;
         public bool ErrorFound;
@@ -127,8 +155,8 @@ namespace AutoOperations
         bool CommandSent;
 
 
-        readonly string ATMSconnectionString = ConfigurationManager.ConnectionStrings["ATMSConnectionString"].ConnectionString;
-        readonly string recconConnString = ConfigurationManager.ConnectionStrings["ReconConnectionString"].ConnectionString;
+        readonly string ATMSconnectionString;
+        readonly string recconConnString;
 
         RRDMReconcJobCycles Rjc = new RRDMReconcJobCycles();
         RRDMMatchingSourceFiles Rs = new RRDMMatchingSourceFiles();
@@ -2112,8 +2140,7 @@ namespace AutoOperations
 
                 // 
                 // 
-                string connectionStringITMX = ConfigurationManager.ConnectionStrings
-                 ["ReconConnectionString"].ConnectionString;
+                string connectionStringITMX = _staticConfiguration.GetConnectionString("ReconConnectionString");
 
                 string RCT = "[RRDM_Reconciliation_ITMX].[dbo].[Stp_00_UPDATE_DB_System_Stats]";
 
